@@ -1,0 +1,17 @@
+.has-leader .site-inner {
+	margin-top: 0;
+	padding-top: 0;
+}
+
+.big-leader {
+	max-height: 700px;
+}
+
+.big-leader .entry-title {
+	bottom: 10px;
+	color: #fff;
+	position: absolute;
+	right: 0;
+	left: 0;
+	text-align: center;
+}
