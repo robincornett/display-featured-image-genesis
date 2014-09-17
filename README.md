@@ -12,7 +12,7 @@ This plugin takes a different approach to how we use and display featured images
 
 ## Requirements
 * WordPress 3.8, tested up to 4.0
-* the Genesis Framework with an HTML5 child theme.
+* the Genesis Framework
 
 ## Installation
 
@@ -42,16 +42,28 @@ Then go to your Plugins screen and click __Activate__.
 
 ## Frequently Asked Questions
 
+### How do I stop the featured image action from showing on my custom post types?
 
-### What is Simplify Feed?
+You'll want to add a filter to your theme (functions.php file). Here's an example:
 
-If you use native WordPress galleries in your posts, they're sent to your feed as thumbnails. Even if you do not use an RSS/email service, you can still use this plugin to sort out your galleries for subscribers who use an RSS reader. If you select Simplify Feed, your galleries will be converted, but there will not be an email sized image created, and no alternate feed will be created.
+```php
+add_filter( 'display_featured_image_genesis_skipped_posttypes', 'rgc_skip_post_types' );
+function rgc_skip_post_types( $post_types ) {
+	$post_types[] = 'listing';
+	$post_types[] = 'staff';
+
+	return $post_types;
+}
+```
 
 ## Credits
 
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+###1.0.1
+* added the filter for certain post types, and optional filter for other custom post types
 
 ###1.0.0
 * Initial release on Github

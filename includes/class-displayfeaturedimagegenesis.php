@@ -1,6 +1,6 @@
 <?php
 /**
- * Send Images to RSS
+ * Display Featured Image for Genesis
  *
  * @package   DisplayFeaturedImageGenesis
  * @author    Robin Cornett <hello@robincornett.com>
@@ -18,7 +18,6 @@ class Display_Featured_Image_Genesis {
 	function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
-		add_action( 'genesis_before', array( $this, 'do_featured_image' ) );
 	}
 
 	/**
@@ -45,6 +44,17 @@ class Display_Featured_Image_Genesis {
 
 	}
 
+
+	/**
+	 * skip certain post types
+	 * @return filter creates a new filter for themes/plugins to use to skip certain post types
+	 *
+	 * @since 1.0.1
+	 */
+	public function get_skipped_posttypes() {
+		return apply_filters( 'display_featured_image_genesis_skipped_posttypes', array( 'attachment', 'revision', 'nav_menu_item' ) );
+	}
+
 	/**
 	 * enqueue plugin styles and scripts.
 	 * @return enqueue
@@ -52,13 +62,19 @@ class Display_Featured_Image_Genesis {
 	 * @since  1.0.0
 	 */
 	public function load_scripts() {
-		$image = $this->get_image_variables();
 
-		if ( has_post_thumbnail() && $image->content === false ) {
+		if ( !is_home() && in_array( get_post_type(), $this->get_skipped_posttypes() ) ) {
+			return;
+		}
+
+		$image = $this->get_image_variables();
+		if ( ( has_post_thumbnail() && $image->content === false ) || is_home() ) {
 
 			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), 1.0 );
 
-			if ( ( $image->original[1] ) >= $image->large ) {
+			add_action( 'genesis_before', array( $this, 'do_featured_image' ) );
+
+			if ( ( $image->original[1] ) > $image->large ) {
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.0.0' );
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), '1.0.0' );
 
@@ -80,7 +96,7 @@ class Display_Featured_Image_Genesis {
 		$image = $this->get_image_variables();
 
 		if ( $image->content === false ) {
-			if ( has_post_thumbnail( $post->ID ) && $image->original[1] > $image->large ) {
+			if ( ( has_post_thumbnail() || is_home() ) && $image->original[1] > $image->large ) {
 				$classes[] = 'has-leader';
 			}
 			elseif ( has_post_thumbnail( $post->ID ) && ( ( $image->original[1] <= $image->large ) && ( $image->original[1] > $image->medium ) ) ) {
@@ -119,7 +135,6 @@ class Display_Featured_Image_Genesis {
 	 * @since  1.0.0
 	 */
 	public function do_backstretch_image() {
-		global $post;
 
 		$image = $this->get_image_variables();
 
