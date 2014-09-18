@@ -26,8 +26,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 // Include classes
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimage-output.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimage-settings.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-output.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-settings.php';
 
 // Instantiate dependent classes
 $displayfeaturedimagegenesis_output   = new Display_Featured_Image_Genesis_Output();
