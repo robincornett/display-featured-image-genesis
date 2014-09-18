@@ -10,25 +10,26 @@
 class Display_Featured_Image_Genesis_Output {
 	/**
 	 * set and retreive variables for the featured image.
-	 * @return $image
+	 * @return $item
 	 *
 	 * @since  1.1.0
 	 */
 	protected function get_image_variables() {
-		$image = new stdClass();
+		$item = new stdClass();
 		global $post;
 		if ( is_home() ) {
 			$postspage       = get_option( 'page_for_posts' );
-			$image->original = wp_get_attachment_image_src( get_post_thumbnail_id( $postspage ), 'original' );
+			$item->original = wp_get_attachment_image_src( get_post_thumbnail_id( $postspage ), 'original' );
 		}
 		else {
-			$image->original = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'original' );
+			$item->original = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'original' );
 		}
-		$image->large   = get_option( 'large_size_w' );
-		$image->medium  = get_option( 'medium_size_w' );
-		$image->content = strpos( $post->post_content, $image->original[0] );
+		$item->large   = get_option( 'large_size_w' );
+		$item->medium  = get_option( 'medium_size_w' );
+		$item->reduce  = get_option( 'displayfeaturedimage_less_header', 0 );
+		$item->content = strpos( $post->post_content, $item->original[0] );
 
-		return $image;
+		return $item;
 
 	}
 
@@ -54,21 +55,21 @@ class Display_Featured_Image_Genesis_Output {
 			return;
 		}
 
-		$image = $this->get_image_variables();
-		if ( ( has_post_thumbnail() && $image->content === false ) || is_home() ) {
+		$item = $this->get_image_variables();
+		if ( ( has_post_thumbnail() && $item->content === false ) || is_home() ) {
 
 			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), 1.0 );
 
 			add_action( 'genesis_before', array( $this, 'do_featured_image' ) );
 
-			if ( ( $image->original[1] ) > $image->large ) {
+			if ( ( $item->original[1] ) > $item->large ) {
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.0.0' );
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), '1.0.0' );
 
-				wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchImg', array( 'src' => $image->original[0] ) );
-
-				$headerheight = get_option( 'displayfeaturedimage_less_header', 0 );
-				wp_localize_script( 'displayfeaturedimage-backstretch-set', 'HeaderHeight', array( 'height' => esc_attr( $headerheight ) ) );
+				wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array(
+					'src' => $item->original[0],
+					'height' => esc_attr( $item->reduce )
+				));
 
 			}
 		}
@@ -83,13 +84,13 @@ class Display_Featured_Image_Genesis_Output {
 	public function add_body_class( $classes ) {
 		global $post;
 
-		$image = $this->get_image_variables();
+		$item = $this->get_image_variables();
 
-		if ( $image->content === false ) {
-			if ( ( has_post_thumbnail() || is_home() ) && $image->original[1] > $image->large ) {
+		if ( $item->content === false ) {
+			if ( ( has_post_thumbnail() || is_home() ) && $item->original[1] > $item->large ) {
 				$classes[] = 'has-leader';
 			}
-			elseif ( has_post_thumbnail() && ( ( $image->original[1] <= $image->large ) && ( $image->original[1] > $image->medium ) ) ) {
+			elseif ( has_post_thumbnail() && ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) ) {
 				$classes[] = 'large-featured';
 			}
 		}
@@ -105,13 +106,13 @@ class Display_Featured_Image_Genesis_Output {
 	public function do_featured_image() {
 		global $post;
 
-		$image = $this->get_image_variables();
+		$item = $this->get_image_variables();
 
-		if ( $image->content === false ) {
-			if ( $image->original[1] > $image->large ) {
+		if ( $item->content === false ) {
+			if ( $item->original[1] > $item->large ) {
 				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image' ) );
 			}
-			elseif ( ( $image->original[1] <= $image->large ) && ( $image->original[1] > $image->medium ) ) {
+			elseif ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) {
 				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) );
 			}
 		}
@@ -126,7 +127,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_backstretch_image() {
 
-		$image = $this->get_image_variables();
+		$item = $this->get_image_variables();
 
 		if ( ! is_home() ) {
 			remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
@@ -152,7 +153,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_large_image() {
 		global $post;
-		echo get_the_post_thumbnail( $post->ID, 'original', array( 'class' => 'aligncenter', 'alt' => the_title_attribute( 'echo=0' ) ) );
+		echo get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter', 'alt' => the_title_attribute( 'echo=0' ) ) );
 	}
 
 }

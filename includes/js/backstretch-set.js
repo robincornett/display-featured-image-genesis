@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
 
-	$(".big-leader").css({'height':($(window).height())-([HeaderHeight.height])+'px'});
-	$(".big-leader").backstretch([BackStretchImg.src],{'positionType':'fixed','fade':750,'centeredY':false});
+	$(".big-leader").css({'height':($(window).height())-([BackStretchVars.height])+'px'});
+	$(".big-leader").backstretch([BackStretchVars.src],{'fade':750,'centeredY':false});
 });
