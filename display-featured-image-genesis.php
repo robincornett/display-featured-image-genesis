@@ -19,11 +19,23 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis.php';
-
-add_action( 'init', 'displayfeaturedimagegenesis_instantiate' );
-function displayfeaturedimagegenesis_instantiate() {
-	if ( basename( get_template_directory() ) == 'genesis' ) {
-		new Display_Featured_Image_Genesis();
-	}
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
 }
+
+// Include classes
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimage-output.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimage-settings.php';
+
+// Instantiate dependent classes
+$displayfeaturedimagegenesis_output   = new Display_Featured_Image_Genesis_Output();
+$displayfeaturedimagegenesis_settings = new Display_Featured_Image_Genesis_Settings();
+
+$displayfeaturedimage = new Display_Featured_Image_Genesis(
+	$displayfeaturedimagegenesis_output,
+	$displayfeaturedimagegenesis_settings
+);
+
+$displayfeaturedimage->run();

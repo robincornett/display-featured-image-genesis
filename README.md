@@ -1,6 +1,6 @@
 # Display Featured Image for Genesis
 
-This plugin works within the Genesis Framework, to display your post/page featured images in new and fun ways. For now, an HTML5 theme is required.
+This plugin works within the Genesis Framework, to display your post/page featured images in new and fun ways. It should work with either HTML5 or XHTML themes, but older themes may have a width set on elements which may not allow the full backstretch experience.
 
 ## Description
 
@@ -55,12 +55,26 @@ function rgc_skip_post_types( $post_types ) {
 	return $post_types;
 }
 ```
+### The backstretch image is a little too tall.
 
+If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Settings > Media and change the 'Reduction amount' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
+
+Additionally/alternatively, you could set a max-height for the backstretch image via css:
+
+```css
+.backstretch {
+	max-height: 700px;
+}
+```
 ## Credits
 
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+###1.1.1
+* added a setting in the admin to optionally reduce the height of the backstretch image
+* refactoring
 
 ###1.0.1
 * added the filter for certain post types, and optional filter for other custom post types
