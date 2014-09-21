@@ -40,6 +40,10 @@ Using git, browse to your `/wp-content/plugins/` directory and clone this reposi
 
 Then go to your Plugins screen and click __Activate__.
 
+## Screenshots
+![Screenshot of a page using the Backstretch Featured Image](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-1.jpg)  
+__Screenshot of a page using the Backstretch Featured Image.__
+
 ## Frequently Asked Questions
 
 ### How do I stop the featured image action from showing on my custom post types?
