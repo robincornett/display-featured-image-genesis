@@ -18,7 +18,7 @@ class Display_Featured_Image_Genesis_Output {
 		$item = new stdClass();
 		global $post;
 		if ( is_home() ) {
-			$postspage       = get_option( 'page_for_posts' );
+			$postspage      = get_option( 'page_for_posts' );
 			$item->original = wp_get_attachment_image_src( get_post_thumbnail_id( $postspage ), 'original' );
 		}
 		else {
@@ -113,7 +113,8 @@ class Display_Featured_Image_Genesis_Output {
 				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image' ) );
 			}
 			elseif ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) {
-				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) );
+				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) ); // HTML5
+				add_action( 'genesis_before_post_content', array( $this, 'do_large_image' ) );  // XHTML
 			}
 		}
 
