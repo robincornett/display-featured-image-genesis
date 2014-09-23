@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, genesis, studiopress
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -59,10 +59,13 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 
 == Upgrade Notice ==
 = 1.1.1 =
-New setting to optionally reduce backstretch image height
+corrected XHTML hooks
 == Changelog ==
 
 = 1.1.1 =
+* corrected XHTML hooks
+
+= 1.1.0 =
 * added a setting in the admin to optionally reduce the height of the backstretch image (eg. due to header height issues)
 * refactoring
 * wp.org release

@@ -114,7 +114,7 @@ class Display_Featured_Image_Genesis_Output {
 			}
 			elseif ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) {
 				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) ); // HTML5
-				add_action( 'genesis_before_post_content', array( $this, 'do_large_image' ) );  // XHTML
+				add_action( 'genesis_before_post', array( $this, 'do_large_image' ) );  // XHTML
 			}
 		}
 
@@ -131,7 +131,8 @@ class Display_Featured_Image_Genesis_Output {
 		$item = $this->get_image_variables();
 
 		if ( ! is_home() ) {
-			remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
+			remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
+			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
 		}
 
 		echo '<div class="big-leader"><div class="wrap">';
@@ -154,7 +155,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_large_image() {
 		global $post;
-		echo get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter', 'alt' => the_title_attribute( 'echo=0' ) ) );
+		echo get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter featured', 'alt' => the_title_attribute( 'echo=0' ) ) );
 	}
 
 }
