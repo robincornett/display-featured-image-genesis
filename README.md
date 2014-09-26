@@ -76,6 +76,9 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 
 ## Changelog
 
+###1.1.2
+* plugin properly deactivates if Genesis isn't running
+
 ###1.1.1
 * corrected XHTML hooks
 
