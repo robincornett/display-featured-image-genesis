@@ -15,3 +15,7 @@
 	left: 0;
 	text-align: center;
 }
+
+img.featured {
+	max-width: 100%;
+}
