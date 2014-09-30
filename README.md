@@ -76,6 +76,9 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 
 ## Changelog
 
+###1.1.3
+* output is now properly managed to show only on single posts/pages and home page, not archives
+
 ###1.1.2
 * plugin properly deactivates if Genesis isn't running
 

@@ -29,8 +29,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_init', array( $this->settings, 'register_settings' ) );
 		add_action( 'load-options-media.php', array( $this->settings, 'help' ) );
-		add_action( 'wp_enqueue_scripts', array( $this->output, 'load_scripts' ) );
-		add_filter( 'body_class', array( $this->output, 'add_body_class' ) );
+		add_action( 'get_header', array( $this->output, 'manage_output' ) );
 	}
 
 	/**

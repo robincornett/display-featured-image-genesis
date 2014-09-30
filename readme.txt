@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, genesis, studiopress
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.1.1
+Stable tag: 1.1.3
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -58,9 +58,16 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 1. Screenshot of a page using the Backstretch Featured Image
 
 == Upgrade Notice ==
-= 1.1.1 =
-corrected XHTML hooks
+= 1.1.3 =
+proper deactivation, better handling of output
+
 == Changelog ==
+
+= 1.1.3 =
+* output is now properly managed to show only on single posts/pages and home page, not archives
+
+= 1.1.2 =
+* proper deactivation if Genesis isn't the active theme.
 
 = 1.1.1 =
 * corrected XHTML hooks
