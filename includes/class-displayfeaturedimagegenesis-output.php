@@ -8,6 +8,22 @@
  */
 
 class Display_Featured_Image_Genesis_Output {
+
+	/**
+	 * set parameters for scripts, etc. to run.
+	 *
+	 * @since 1.1.3
+	 */
+	public function manage_output() {
+		if ( in_array( get_post_type(), $this->get_skipped_posttypes() ) ) {
+			return;
+		}
+		elseif ( is_home() || is_singular() ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
+			add_filter( 'body_class', array( $this, 'add_body_class' ) );
+		}
+	}
+
 	/**
 	 * set and retreive variables for the featured image.
 	 * @return $item
@@ -50,10 +66,6 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function load_scripts() {
-
-		if ( !is_home() && in_array( get_post_type(), $this->get_skipped_posttypes() ) ) {
-			return;
-		}
 
 		$item = $this->get_image_variables();
 		if ( ( has_post_thumbnail() && $item->content === false ) || is_home() ) {
