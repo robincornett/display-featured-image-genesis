@@ -28,6 +28,7 @@ class Display_Featured_Image_Genesis {
 		}
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_init', array( $this->settings, 'register_settings' ) );
+		add_action( 'customize_register', array( $this, 'load_customizer' ) );
 		add_action( 'load-options-media.php', array( $this->settings, 'help' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
 	}
@@ -76,6 +77,15 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'display-featured-image-genesis', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Set up Customizer options for default featured image
+	 *
+	 * @since 1.2.0
+	 */
+	function load_customizer() {
+		require plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-customizer.php';
 	}
 
 }

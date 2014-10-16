@@ -33,12 +33,28 @@ class Display_Featured_Image_Genesis_Output {
 	protected function get_image_variables() {
 		$item = new stdClass();
 		global $post;
-		if ( is_home() ) {
-			$postspage      = get_option( 'page_for_posts' );
+		$fallback        = get_option( 'displayfeaturedimage_default' );
+		$postspage       = get_option( 'page_for_posts' );
+		$postspage_image = get_post_thumbnail_id( $postspage );
+
+		// Set Featured Image Source
+		if ( is_home() && !empty( $postspage_image ) ) {
 			$item->original = wp_get_attachment_image_src( get_post_thumbnail_id( $postspage ), 'original' );
+		}
+		elseif ( !empty( $fallback ) && !has_post_thumbnail() ) {
+			$fallback_id    = $this->get_image_id( $fallback );
+			$item->original = wp_get_attachment_image_src( $fallback_id, 'original' );
 		}
 		else {
 			$item->original = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'original' );
+		}
+
+		// Set Post/Page Title
+		if ( is_home() ) {
+			$item->title = get_post( $postspage )->post_title;
+		}
+		else {
+			$item->title = get_the_title();
 		}
 		$item->large   = get_option( 'large_size_w' );
 		$item->medium  = get_option( 'medium_size_w' );
@@ -68,21 +84,26 @@ class Display_Featured_Image_Genesis_Output {
 	public function load_scripts() {
 
 		$item = $this->get_image_variables();
-		if ( ( has_post_thumbnail() && $item->content === false ) || is_home() ) {
+		if ( ( !empty( $item->original ) && $item->content === false ) || is_home() ) {
 
 			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), 1.0 );
 
-			add_action( 'genesis_before', array( $this, 'do_featured_image' ) );
-
-			if ( ( $item->original[1] ) > $item->large ) {
+			if ( ( ( $item->original[1] ) > $item->large ) ) {
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.0.0' );
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), '1.0.0' );
 
 				wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array(
-					'src' => $item->original[0],
+					'src'    => $item->original[0],
 					'height' => esc_attr( $item->reduce )
 				));
 
+				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image_title' ) );
+
+			}
+
+			elseif ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) {
+				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) ); // HTML5
+				add_action( 'genesis_before_post', array( $this, 'do_large_image' ) );  // XHTML
 			}
 		}
 	}
@@ -98,11 +119,11 @@ class Display_Featured_Image_Genesis_Output {
 
 		$item = $this->get_image_variables();
 
-		if ( $item->content === false ) {
-			if ( ( has_post_thumbnail() || is_home() ) && $item->original[1] > $item->large ) {
+		if ( !empty( $item->original ) && $item->content === false ) {
+			if ( $item->original[1] > $item->large ) {
 				$classes[] = 'has-leader';
 			}
-			elseif ( has_post_thumbnail() && ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) ) {
+			elseif ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) {
 				$classes[] = 'large-featured';
 			}
 		}
@@ -110,35 +131,12 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
-	 * do the featured image
+	 * backstretch image title (for images which are larger than Media Settings > Large )
 	 * @return image
 	 *
 	 * @since  1.0.0
 	 */
-	public function do_featured_image() {
-		global $post;
-
-		$item = $this->get_image_variables();
-
-		if ( $item->content === false ) {
-			if ( $item->original[1] > $item->large ) {
-				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image' ) );
-			}
-			elseif ( ( $item->original[1] <= $item->large ) && ( $item->original[1] > $item->medium ) ) {
-				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) ); // HTML5
-				add_action( 'genesis_before_post', array( $this, 'do_large_image' ) );  // XHTML
-			}
-		}
-
-	}
-
-	/**
-	 * backstretch image (for images which are larger than Media Settings > Large )
-	 * @return image
-	 *
-	 * @since  1.0.0
-	 */
-	public function do_backstretch_image() {
+	public function do_backstretch_image_title() {
 
 		$item = $this->get_image_variables();
 
@@ -148,14 +146,7 @@ class Display_Featured_Image_Genesis_Output {
 		}
 
 		echo '<div class="big-leader"><div class="wrap">';
-		if ( is_home() ) {
-			$title = get_post( get_option( 'page_for_posts' ) )->post_title;
-			echo '<h1 class="entry-title">' . $title . '</h1>';
-		}
-		else {
-			echo '<h1 class="entry-title">' . get_the_title() . '</h1>';
-		}
-
+		echo '<h1 class="entry-title">' . $item->title . '</h1>';
 		echo '</div></div>';
 	}
 
@@ -168,6 +159,38 @@ class Display_Featured_Image_Genesis_Output {
 	public function do_large_image() {
 		global $post;
 		echo get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter featured', 'alt' => the_title_attribute( 'echo=0' ) ) );
+	}
+
+	/**
+	 * Get the ID of each image dynamically.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @author Philip Newcomer
+	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
+	 */
+	protected function get_image_id( $attachment_url ) {
+		global $wpdb;
+		$attachment_id = false;
+
+		// Get the upload directory paths
+		$upload_dir_paths = wp_upload_dir();
+
+		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
+		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
+
+			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
+			$attachment_url = preg_replace( '(-\d{3,4}x\d{3,4}.)', '.', $attachment_url );
+
+			// Remove the upload path base directory from the attachment URL
+			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
+
+			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
+			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
+
+		}
+
+		return $attachment_id;
 	}
 
 }
