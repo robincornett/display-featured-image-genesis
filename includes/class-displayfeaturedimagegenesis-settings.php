@@ -32,6 +32,7 @@ class Display_Featured_Image_Genesis_Settings {
 			'media',
 			'display_featured_image_section'
 		);
+
 	}
 
 	/**
