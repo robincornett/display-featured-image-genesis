@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Customize Background Image Control Class
+ * Upload Default Featured Image Control Class
  *
  * @package WordPress
  * @subpackage Customize
