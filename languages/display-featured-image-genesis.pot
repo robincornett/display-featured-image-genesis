@@ -4,9 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Display Featured Image for Genesis 1.2.0\n"
+"Project-Id-Version: Display Featured Image for Genesis 1.2.1\n"
 "POT-Creation-Date: 2014-09-17 21:11-0500\n"
-"PO-Revision-Date: 2014-10-15 15:45-0500\n""Last-Translator: Robin Cornett <hello@robincornett.com>\n"
+"PO-Revision-Date: 2014-10-21 18:03-0500\n"
+"Last-Translator: Robin Cornett <hello@robincornett.com>\n"
 "Language-Team: Robin Cornett <hello@robincornett.com>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
@@ -24,62 +25,55 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Textdomain-Support: yes\n"
 
-#: ../includes/class-displayfeaturedimagegenesis-customizer.php:25
-msgid "No Image"
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-customizer.php:29
-msgid "Upload New"
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-customizer.php:30
-msgid "Uploaded"
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-customizer.php:33
-msgid "Default"
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-customizer.php:52
-msgid "Default Featured Image"
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-customizer.php:62
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:23
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:78
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:25
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:120
 msgid "Display Featured Image for Genesis"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-customizer.php:63
-msgid ""
-"You may set a default image to be used as the backstretch or large featured "
-"image if no image is selected for the post/page."
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:30
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:32
 msgid "Height"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:45
-msgid ""
-"Change this setting to reduce the maximum height of the backstretch image."
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:40
+msgid "Default Featured Image"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:57
+msgid ""
+"The Display Featured Image for Genesis plugin has two optional settings: 1) "
+"change the height of the backstretch effect, and 2) set a default "
+"backstretch image to use if no featured image is set."
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:69
 msgid "Pixels to remove "
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:59
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:71
 msgid ""
 "Changing this number will reduce the backstretch image height by this number "
 "of pixels. Default is zero."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:73
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:95
+msgid "Sorry, your image is too small to serve as the default featured image."
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:98
+msgid "Select Default Image"
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:99
+msgid ""
+"If you would like to use a default image for the featured image, upload it "
+"here. Must be a backstretch sized image."
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:112
 msgid "Reducto!"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:74
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:113
 msgid ""
 "Depending on how your header/nav are set up, or if you just do not want your "
 "backstretch image to extend to the bottom of the user screen, you may want "
@@ -87,13 +81,25 @@ msgid ""
 "image, making it shorter."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:63
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:115
+msgid "Set a Default Featured Image"
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:116
+msgid ""
+"You may set a large image to be used sitewide if a featured image is not "
+"available. This image will show on posts, pages, and archives. It must be "
+"larger than your site&#39;s Large Image setting, or else it will not "
+"display. This is for a backstretch image only."
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis.php:65
 msgid ""
 "Sorry, Display Featured Image for Genesis works only with the Genesis "
 "Framework. It has been deactivated."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:67
+#: ../includes/class-displayfeaturedimagegenesis.php:69
 #, php-format
 msgid ""
 "Sorry, Display Featured Image for Genesis works only with the Genesis "

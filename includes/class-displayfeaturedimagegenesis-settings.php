@@ -17,6 +17,8 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function register_settings() {
 		register_setting( 'media', 'displayfeaturedimage_less_header', 'absint' );
+		register_setting( 'media', 'displayfeaturedimage_default' );
+
 
 		add_settings_section(
 			'display_featured_image_section',
@@ -33,6 +35,16 @@ class Display_Featured_Image_Genesis_Settings {
 			'display_featured_image_section'
 		);
 
+		add_settings_field(
+			'displayfeaturedimage_default',
+			'<label for="displayfeaturedimage_default">' . __( 'Default Featured Image', 'display-featured-image-genesis' ) . '</label>',
+			array( $this, 'set_default_image' ),
+			'media',
+			'display_featured_image_section'
+		);
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
 	}
 
 	/**
@@ -42,7 +54,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function section_description() {
-		echo '<p>' . __( 'Change this setting to reduce the maximum height of the backstretch image.', 'display-featured-image-genesis' ) . '</p>';
+		echo '<p>' . __( 'The Display Featured Image for Genesis plugin has two optional settings: 1) change the height of the backstretch effect, and 2) set a default backstretch image to use if no featured image is set.', 'display-featured-image-genesis' ) . '</p>';
 	}
 
 	/**
@@ -58,6 +70,33 @@ class Display_Featured_Image_Genesis_Settings {
 		echo '<input type="number" step="1" min="0" max="400" id="displayfeaturedimage_less_header" name="displayfeaturedimage_less_header" value="' . esc_attr( $value ) . '" class="small-text" />';
 		echo '<p class="description">' . __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' ) . '</p>';
 
+	}
+
+	/**
+	 * Default image uploader
+	 *
+	 * @return  image
+	 *
+	 * @since  1.2.1
+	 */
+	public function set_default_image() {
+		$value    = get_option( 'displayfeaturedimage_default' );
+		$id       = Display_Featured_Image_Genesis_Common::get_image_id( $value );
+		$url      = wp_get_attachment_image_src( $id, 'medium' );
+		$original = wp_get_attachment_image_src( $id, 'original' );
+		$large    = get_option( 'large_size_w' );
+
+		if ( $value && $original[1] >= $large ) {
+			echo '<div id="upload_logo_preview">';
+			echo '<img src="' . $url[0] . '" style="max-width:400px" />';
+			echo '</div>';
+		}
+		elseif ( $value && $original[1] <= $large ) {
+			echo '<div class="error"><p>' . __( 'Sorry, your image is too small to serve as the default featured image.', 'display-featured-image-genesis' ) . '</p></div>';
+		}
+		echo '<input type="text" id="default_image_url" name="displayfeaturedimage_default" value="' . $value . '" />';
+		echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Default Image', 'display-featured-image-genesis' ) . '" />';
+		echo '<p class="description">' . __( 'If you would like to use a default image for the featured image, upload it here. Must be a backstretch sized image.', 'display-featured-image-genesis' ) . '</p>';
 	}
 
 	/**
@@ -78,6 +117,22 @@ class Display_Featured_Image_Genesis_Settings {
 			'title'   => __( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
 			'content' => $displayfeaturedimage_help,
 		) );
+
+	}
+
+	/**
+	 * enqueue admin scripts
+	 * @return scripts to use image uploader
+	 *
+	 * @since  1.2.1
+	 */
+	public function enqueue_scripts() {
+		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), '1.0.0' );
+
+		if ( 'options-media' == get_current_screen()->id ) {
+			wp_enqueue_media();
+			wp_enqueue_script( 'displayfeaturedimage-upload' );
+		}
 
 	}
 
