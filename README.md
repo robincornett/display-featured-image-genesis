@@ -10,8 +10,9 @@ This plugin takes a different approach to how we use and display featured images
 * display the image above your post/page content, centered and up to the width of the content, if your image is larger than your Medium Media Setting, and less than or equal to your Large Media Setting.
 * display _nothing_ if your featured image width is less than or equal to your Medium Media Setting.
 * display _nothing_ if your featured image is already displayed in your content (the original image, not a resized version).
+* display a _default featured image_ as a backstretch image if one is uploaded.
 
-__New in 1.2.0:__ you can now use the WordPress Customizer to set a _Default Featured Image_ to be used site-wide. This image will be used on any post/page/custom post type which does not have a featured image set.
+__New in 1.2.0:__ on the Media Settings page, you can now upload a _Default Featured Image_ to be used site-wide. This image will be used on any post/page/custom post type which does not have a featured image set, plus archive and taxonomy pages.
 
 _Note: This plugin works with the Genesis Framework and child themes only._
 
@@ -70,6 +71,19 @@ function rgc_skip_post_types( $post_types ) {
 
 It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image in the Customizer.
 
+### Can I force my site to use the default image on a post type even if it has its own Featured Image?
+
+Yes! You'll want to add a filter to your theme (functions.php file). Here's an example:
+
+```php
+add_filter( 'display_featured_image_genesis_use_default', 'rgc_force_default_image' );
+function rgc_force_default_image( $post_types ) {
+	$post_types[] = 'attorney';
+
+	return $post_types;
+}
+```
+
 ### The backstretch image is a little too tall.
 
 If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Settings > Media and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
@@ -86,6 +100,11 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+###1.2.1
+* moved default image from Customizer to Media Settings page
+* new filter for forcing default image for any post type
+* common class
 
 ###1.2.0
 * new feature: default featured image to display if no image is set
