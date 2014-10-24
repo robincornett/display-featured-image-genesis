@@ -14,7 +14,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since  1.1.0
 	 */
-	static function get_image_variables() {
+	public static function get_image_variables() {
 		$item = new stdClass();
 		global $post;
 
@@ -78,7 +78,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @author Philip Newcomer
 	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
 	 */
-	static function get_image_id( $attachment_url ) {
+	private static function get_image_id( $attachment_url ) {
 		global $wpdb;
 		$attachment_id = false;
 
@@ -109,7 +109,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 1.0.1
 	 */
-	static function get_skipped_posttypes() {
+	public static function get_skipped_posttypes() {
 		return apply_filters( 'display_featured_image_genesis_skipped_posttypes', array( 'attachment', 'revision', 'nav_menu_item' ) );
 	}
 
@@ -119,7 +119,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 1.2.0
 	 */
-	static function use_fallback_image() {
+	public static function use_fallback_image() {
 		return apply_filters( 'display_featured_image_genesis_use_default', array( 'attachment', 'revision', 'nav_menu_item' ) );
 	}
 
