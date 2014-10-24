@@ -16,8 +16,6 @@
  */
 class Display_Featured_Image_Genesis {
 
-	public static $instance;
-
 	function __construct( $common, $output, $settings ) {
 		$this->common   = $common;
 		$this->output   = $output;
@@ -68,7 +66,7 @@ class Display_Featured_Image_Genesis {
 			echo '<div class="error"><p>' . sprintf(
 				__( 'Sorry, Display Featured Image for Genesis works only with the Genesis Framework. It has been deactivated. But since we&#39;re talking anyway, did you know that your server is running PHP version %1$s, which is outdated? You should ask your host to update that for you.', 'display-featured-image-genesis' ),
 				PHP_VERSION
-				) . '</p></div>';
+			) . '</p></div>';
 		}
 
 		if ( isset( $_GET['activate'] ) ) {
