@@ -101,6 +101,9 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 
 ## Changelog
 
+###1.2.2
+* default image validation
+
 ###1.2.1
 * moved default image from Customizer to Media Settings page
 * new filter for forcing default image for any post type

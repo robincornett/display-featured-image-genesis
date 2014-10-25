@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, genesis, studiopress
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.2.0
+Stable tag: 1.2.2
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -76,10 +76,13 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 2. Use the WordPress Customizer to set a Default Featured Image.
 
 == Upgrade Notice ==
-= 1.2.1 =
+= 1.2.2 =
 New feature: Set a Default Featured Image
 
 == Changelog ==
+
+= 1.2.2 =
+* default image validation
 
 = 1.2.1 =
 * moved default image from Customizer to Media Settings page

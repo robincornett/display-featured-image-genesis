@@ -17,7 +17,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function register_settings() {
 		register_setting( 'media', 'displayfeaturedimage_less_header', 'absint' );
-		register_setting( 'media', 'displayfeaturedimage_default' );
+		register_setting( 'media', 'displayfeaturedimage_default', array( $this, 'validate_image' ) );
 
 
 		add_settings_section(
@@ -82,17 +82,79 @@ class Display_Featured_Image_Genesis_Settings {
 	public function set_default_image() {
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
-		if ( $item->fallback && $item->original[1] >= $item->large ) {
+		if ( !empty( $item->fallback ) ) {
 			echo '<div id="upload_logo_preview">';
-			echo '<img src="' . $item->original[0] . '" style="max-width:400px" />';
+			echo '<img src="' . $item->fallback . '" style="max-width:400px" />';
 			echo '</div>';
-		}
-		elseif ( $item->fallback && $item->original[1] <= $item->large ) {
-			echo '<div class="error"><p>' . __( 'Sorry, your image is too small to serve as the default featured image.', 'display-featured-image-genesis' ) . '</p></div>';
 		}
 		echo '<input type="text" id="default_image_url" name="displayfeaturedimage_default" value="' . $item->fallback . '" />';
 		echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Default Image', 'display-featured-image-genesis' ) . '" />';
 		echo '<p class="description">' . __( 'If you would like to use a default image for the featured image, upload it here. Must be a backstretch sized image.', 'display-featured-image-genesis' ) . '</p>';
+	}
+
+	/**
+	 * Returns previous value for image if not correct file type/size
+	 * @param  string $new_value New value
+	 * @return string            New or previous value, depending on allowed image size.
+	 * @since  1.2.2
+	 */
+	function validate_image( $new_value ) {
+
+		// not using get_image_variables since we need to check before commit to option
+		$new_value = esc_url( $new_value );
+		$valid     = $this->is_valid_img_ext( $new_value );
+		$large     = get_option( 'large_size_w' );
+		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		$file      = wp_get_attachment_image_src( $id, 'original' );
+
+		// ok for field to be empty
+		if ( empty( $new_value ) ) {
+			return;
+		}
+		// check if file type is legit. if not, wp_die()
+		elseif ( !$valid ) {
+			wp_die( sprintf(
+				__( 'Sorry, that is an invalid file type. <a href="%1$s">Return to the Media Settings page and try again.</a>', 'display-featured-image-genesis' ),
+				esc_url( admin_url( 'options-media.php' ) )
+			) );
+			return get_option( 'displayfeaturedimage_default', '' );
+		}
+		// if file is an image, but is too small, throw it back
+		elseif ( $file[1] <= $large ) {
+			wp_die( sprintf(
+				__( 'Sorry, that image is too small to use as your Default Featured Image. Your image needs to be at least %1$s pixels wide. <a href="%2$s">Return to the Media Settings page and try again.</a>', 'display-featured-image-genesis' ),
+				$large+1,
+				esc_url( admin_url( 'options-media.php' ) )
+			) );
+
+			return get_option( 'displayfeaturedimage_default', '' );
+		}
+		return $new_value;
+
+	}
+
+	/**
+	 * returns file extension
+	 * @since  1.2.2
+	 */
+	private function get_file_ext( $file ) {
+		$parsed = @parse_url( $file, PHP_URL_PATH );
+		return $parsed ? strtolower( pathinfo( $parsed, PATHINFO_EXTENSION ) ) : false;
+	}
+
+	/**
+	 * check if file type is image
+	 * @return file       check file extension against list
+	 * @since  1.2.2
+	 */
+	private function is_valid_img_ext( $file ) {
+		$file_ext = $this->get_file_ext( $file );
+
+		$this->valid = empty( $this->valid )
+			? (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) )
+			: $this->valid;
+
+		return ( $file_ext && in_array( $file_ext, $this->valid ) );
 	}
 
 	/**
@@ -103,13 +165,18 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function help() {
 		$screen = get_current_screen();
+		$large  = get_option( 'large_size_w' );
 
 		$displayfeaturedimage_help =
 			'<h3>' . __( 'Reducto!', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your backstretch image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the backstretch image, making it shorter.', 'display-featured-image-genesis' ) . '</p>' .
 
 			'<h3>' . __( 'Set a Default Featured Image', 'display-featured-image-genesis' ) . '</h3>' .
-			'<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives. It must be larger than your site&#39;s Large Image setting, or else it will not display. This is for a backstretch image only.', 'display-featured-image-genesis' ) . '</p>';
+			'<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives.', 'display-featured-image-genesis' ) . '</p>' .
+			'<p>' . sprintf(
+				__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
+				$large+1
+			) . '</p>';
 
 		$screen->add_help_tab( array(
 			'id'      => 'displayfeaturedimage-help',
