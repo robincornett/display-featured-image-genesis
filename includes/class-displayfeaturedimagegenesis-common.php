@@ -78,7 +78,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @author Philip Newcomer
 	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
 	 */
-	private static function get_image_id( $attachment_url ) {
+	public static function get_image_id( $attachment_url ) {
 		global $wpdb;
 		$attachment_id = false;
 
