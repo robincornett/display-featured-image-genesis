@@ -98,7 +98,16 @@ class Display_Featured_Image_Genesis_Output {
 
 		echo '<div class="big-leader"><div class="wrap">';
 		if ( !empty( $item->title ) ) {
+			$excerpt = get_the_excerpt();
+			if ( is_single() && has_excerpt() && !in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
+			echo '<div class="entry-header">';
 			echo '<h1 class="entry-title">' . $item->title . '</h1>';
+			echo wpautop( $excerpt );
+			echo '</div>';
+			}
+			else {
+				echo '<h1 class="entry-title featured-image-overlay">' . $item->title . '</h1>';
+			}
 		}
 		if ( is_category() || is_tag() || is_tax() ) {
 			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );

@@ -14,17 +14,22 @@
 	position: absolute;
 }
 
-.big-leader .entry-title {
+.big-leader .entry-title.featured-image-overlay {
 	color: #fff;
-	margin-bottom: 24px;
 	position: relative;
 	text-align: center;
 }
 
+.big-leader .entry-header,
 .big-leader .archive-description {
 	background: rgba(255,255,255,.85);
 	color: #333;
+	margin-bottom: 24px;
 	padding: 24px;
+}
+
+.big-leader p:last-child {
+	margin-bottom: 0;
 }
 
 img.featured {

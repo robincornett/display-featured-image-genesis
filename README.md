@@ -12,6 +12,8 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image is already displayed in your content (the original image, not a resized version).
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
+__New in 1.3.0:__ optional Genesis archive headlines, descriptions, and excerpts for single posts/pages will display over the backstretch featured image.
+
 __New in 1.2.0:__ on the Media Settings page, you can now upload a _Default Featured Image_ to be used site-wide. This image will be used on any post/page/custom post type which does not have a featured image set, plus archive and taxonomy pages.
 
 _Note: This plugin works with the Genesis Framework and child themes only._
@@ -95,11 +97,32 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 	max-height: 700px !important;
 }
 ```
+
+### I'm using excerpts for a post type/posts/etc, but don't want them to show on the single page, even with the featured image.
+
+There's a filter for that, too. For example, adding this to your functions.php file would make sure that the excerpt does not show on single posts, or posts from the Staff post type, even if they have an excerpt.
+
+```
+add_filter( 'display_featured_image_genesis_omit_excerpt', 'rgc_omit_excerpts' );
+function rgc_omit_excerpts( $post_types ) {
+	$post_types[] = 'staff';
+	$post_types[] = 'post';
+
+	return $post_types;
+}
+```
+
+_Note: styling for the post title with excerpt is styled to be consistent with the optional Genesis taxonomy/author/custom post type archive titles and descriptions. You can override these in your stylesheet._
+
 ## Credits
 
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+###1.3.0
+* optional taxonomy/author/CPT headline/description now show over leader image
+* optional excerpt displays on single posts/pages as part of overlay; output is the same as taxonomy/author/CPT
 
 ###1.2.2
 * default image validation

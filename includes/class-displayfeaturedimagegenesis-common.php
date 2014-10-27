@@ -123,4 +123,14 @@ class Display_Featured_Image_Genesis_Common {
 		return apply_filters( 'display_featured_image_genesis_use_default', array( 'attachment', 'revision', 'nav_menu_item' ) );
 	}
 
+	/**
+	 * don't show excerpts even if they exist.
+	 * @return filter creates a new filter for themes/plugins to omit the excerpt on a post type even if an excerpt exists.
+	 *
+	 * @since 1.3.0
+	 */
+	public static function omit_excerpt() {
+		return apply_filters( 'display_featured_image_genesis_omit_excerpt', array( 'attachment', 'revision', 'nav_menu_item' ) );
+	}
+
 }

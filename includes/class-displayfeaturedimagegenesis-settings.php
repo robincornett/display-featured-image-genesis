@@ -89,7 +89,10 @@ class Display_Featured_Image_Genesis_Settings {
 		}
 		echo '<input type="url" id="default_image_url" name="displayfeaturedimage_default" value="' . $item->fallback . '" />';
 		echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Default Image', 'display-featured-image-genesis' ) . '" />';
-		echo '<p class="description">' . __( 'If you would like to use a default image for the featured image, upload it here. Must be a backstretch sized image.', 'display-featured-image-genesis' ) . '</p>';
+		echo '<p class="description">' . sprintf(
+			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
+			$item->large+1
+		) . '</p>';
 	}
 
 	/**
