@@ -102,7 +102,7 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 
 There's a filter for that, too. For example, adding this to your functions.php file would make sure that the excerpt does not show on single posts, or posts from the Staff post type, even if they have an excerpt.
 
-```
+```php
 add_filter( 'display_featured_image_genesis_omit_excerpt', 'rgc_omit_excerpts' );
 function rgc_omit_excerpts( $post_types ) {
 	$post_types[] = 'staff';
