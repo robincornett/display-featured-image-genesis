@@ -7,13 +7,24 @@
 	max-height: 700px;
 }
 
-.big-leader .entry-title {
-	bottom: 10px;
-	color: #fff;
-	position: absolute;
-	right: 0;
+.big-leader .wrap {
+	bottom: 0;
 	left: 0;
+	right: 0;
+	position: absolute;
+}
+
+.big-leader .entry-title {
+	color: #fff;
+	margin-bottom: 24px;
+	position: relative;
 	text-align: center;
+}
+
+.big-leader .archive-description {
+	background: rgba(255,255,255,.85);
+	color: #333;
+	padding: 24px;
 }
 
 img.featured {

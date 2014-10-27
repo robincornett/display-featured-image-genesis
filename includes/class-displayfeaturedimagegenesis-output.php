@@ -97,7 +97,21 @@ class Display_Featured_Image_Genesis_Output {
 		}
 
 		echo '<div class="big-leader"><div class="wrap">';
-		echo '<h1 class="entry-title">' . $item->title . '</h1>';
+		if ( !empty( $item->title ) ) {
+			echo '<h1 class="entry-title">' . $item->title . '</h1>';
+		}
+		if ( is_category() || is_tag() || is_tax() ) {
+			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
+			genesis_do_taxonomy_title_description();
+		}
+		elseif ( is_author() ) {
+			remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
+			genesis_do_author_title_description();
+		}
+		elseif ( is_post_type_archive() ) {
+			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+			genesis_do_cpt_archive_title_description();
+		}
 		echo '</div></div>';
 	}
 
