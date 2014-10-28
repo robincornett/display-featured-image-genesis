@@ -20,7 +20,7 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image width is less than or equal to your Medium Media Setting.
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
-__New in 1.3.0:__ optional Genesis archive headlines, descriptions, and excerpts for single posts/pages will display over the backstretch featured image.
+__New in 1.3.0:__ optional Genesis archive headlines will display over the leader image. Archive descriptions and optional excerpts may display there, or above the content.
 
 __New in 1.2.0:__ on the Media Settings page, you can now upload a _Default Featured Image_ to be used site-wide. This image will be used on any post/page/custom post type which does not have a featured image set, plus archive and taxonomy pages.
 
@@ -100,8 +100,8 @@ New feature: Set a Default Featured Image (1.2.0); show archive headlines/descri
 == Changelog ==
 
 = 1.3.0 =
-* optional taxonomy/author/CPT headline/description now show over leader image
-* optional excerpt displays on single posts/pages as part of overlay; output is the same as taxonomy/author/CPT
+* optional taxonomy/author/CPT headline now shows over leader image
+* optional taxonomy/author/CPT description and single post excerpt display optionally over leader image as well
 
 = 1.2.2 =
 * default image validation

@@ -16,8 +16,9 @@
  */
 class Display_Featured_Image_Genesis {
 
-	function __construct( $common, $output, $settings ) {
+	function __construct( $common, $description, $output, $settings ) {
 		$this->common   = $common;
+		$this->archive  = $description;
 		$this->output   = $output;
 		$this->settings = $settings;
 	}

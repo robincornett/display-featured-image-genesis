@@ -49,6 +49,7 @@ class Display_Featured_Image_Genesis_Output {
 				) );
 
 				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image_title' ) );
+				add_action( 'genesis_before_loop', array( $this, 'move_titles' ) );
 
 			}
 
@@ -96,30 +97,36 @@ class Display_Featured_Image_Genesis_Output {
 			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
 		}
 
+		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
+		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
+		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+
+
 		echo '<div class="big-leader"><div class="wrap">';
-		if ( !empty( $item->title ) ) {
-			$excerpt = get_the_excerpt();
-			if ( is_single() && has_excerpt() && !in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
-			echo '<div class="entry-header">';
-			echo '<h1 class="entry-title">' . $item->title . '</h1>';
-			echo wpautop( $excerpt );
-			echo '</div>';
+		$move_excerpts = get_option( 'displayfeaturedimage_excerpts' );
+
+		if ( $move_excerpts ) {
+
+			if ( !empty( $item->description ) && !in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
+				Display_Featured_Image_Genesis_Description::do_excerpt();
+				genesis_do_taxonomy_title_description();
+				genesis_do_author_title_description();
+				genesis_do_cpt_archive_title_description();
 			}
 			else {
 				echo '<h1 class="entry-title featured-image-overlay">' . $item->title . '</h1>';
 			}
+
 		}
-		if ( is_category() || is_tag() || is_tax() ) {
-			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
-			genesis_do_taxonomy_title_description();
-		}
-		elseif ( is_author() ) {
-			remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
-			genesis_do_author_title_description();
-		}
-		elseif ( is_post_type_archive() ) {
+
+		else {
+			if ( !empty( $item->title ) ) {
+				echo '<h1 class="entry-title featured-image-overlay">' . $item->title . '</h1>';
+			}
+
 			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
-			genesis_do_cpt_archive_title_description();
+			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
+			remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 		}
 		echo '</div></div>';
 	}
@@ -133,6 +140,28 @@ class Display_Featured_Image_Genesis_Output {
 	public function do_large_image() {
 		global $post;
 		echo get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter featured', 'alt' => the_title_attribute( 'echo=0' ) ) );
+	}
+
+	/**
+	 * Separate archive titles from descriptions. Titles show in leader image
+	 * area; descriptions show before loop.
+	 *
+	 * @return descriptions
+	 *
+	 * @since  1.3.0
+	 *
+	 */
+	public function move_titles() {
+		$move_excerpts = get_option( 'displayfeaturedimage_excerpts' );
+
+		if ( $move_excerpts ) {
+			return;
+		}
+		else {
+			Display_Featured_Image_Genesis_Description::do_tax_description();
+			Display_Featured_Image_Genesis_Description::do_author_description();
+			Display_Featured_Image_Genesis_Description::do_cpt_archive_description();
+		}
 	}
 
 }

@@ -1,6 +1,5 @@
 .has-leader .site-inner {
 	margin-top: 0;
-	padding-top: 0;
 }
 
 .big-leader {
@@ -20,7 +19,7 @@
 	text-align: center;
 }
 
-.big-leader .entry-header,
+.big-leader .excerpt,
 .big-leader .archive-description {
 	background: rgba(255,255,255,.85);
 	color: #333;

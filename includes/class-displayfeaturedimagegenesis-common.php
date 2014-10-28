@@ -19,9 +19,10 @@ class Display_Featured_Image_Genesis_Common {
 		global $post;
 
 		// variables internal to this function
-		$frontpage          = get_option( 'show_on_front' ); // either 'posts' or 'page'
-		$postspage          = get_option( 'page_for_posts' );
-		$postspage_image    = get_post_thumbnail_id( $postspage );
+		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
+		$postspage       = get_option( 'page_for_posts' );
+		$move_excerpts   = get_option( 'displayfeaturedimage_excerpts' );
+		$postspage_image = get_post_thumbnail_id( $postspage );
 		if ( is_singular() ) {
 			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'displayfeaturedimage_backstretch' );
 		}
@@ -49,9 +50,29 @@ class Display_Featured_Image_Genesis_Common {
 		// Set Post/Page Title
 		if ( is_singular() && ! is_front_page() ) {
 			$item->title = get_the_title();
+			if ( has_excerpt() ) {
+				$item->description = get_the_excerpt();
+			}
 		}
 		elseif ( is_home() && $frontpage === 'page' ) {
 			$item->title = get_post( $postspage )->post_title;
+		}
+		elseif ( is_category() || is_tag() || is_tax() ) {
+			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
+			if ( ! $term || ! isset( $term->meta ) ) {
+				return;
+			}
+			$item->title       = $term->meta['headline'];
+			$item->description = $term->meta['intro_text'];
+
+		}
+		elseif ( is_author() ) {
+			$item->title       = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+			$item->description = get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) );
+		}
+		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() && !empty( $item->fallback ) ) {
+			$item->title       = genesis_get_cpt_option( 'headline' );
+			$item->description = genesis_get_cpt_option( 'intro_text' );
 		}
 		else {
 			$item->title = '';

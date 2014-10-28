@@ -18,6 +18,7 @@ class Display_Featured_Image_Genesis_Settings {
 	public function register_settings() {
 		register_setting( 'media', 'displayfeaturedimage_less_header', 'absint' );
 		register_setting( 'media', 'displayfeaturedimage_default', array( $this, 'validate_image' ) );
+		register_setting( 'media', 'displayfeaturedimage_excerpts', array( $this, 'one_zero' ) );
 
 
 		add_settings_section(
@@ -43,6 +44,14 @@ class Display_Featured_Image_Genesis_Settings {
 			'display_featured_image_section'
 		);
 
+		add_settings_field(
+			'displayfeaturedimage_excerpts',
+			'<label for="displayfeaturedimage_excerpts">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
+			array( $this, 'move_excerpts' ),
+			'media',
+			'display_featured_image_section'
+		);
+
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 	}
@@ -54,7 +63,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function section_description() {
-		echo '<p>' . __( 'The Display Featured Image for Genesis plugin has two optional settings: 1) change the height of the backstretch effect, and 2) set a default backstretch image to use if no featured image is set.', 'display-featured-image-genesis' ) . '</p>';
+		echo '<p>' . __( 'The Display Featured Image for Genesis plugin has three optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) . '</p>';
 	}
 
 	/**
@@ -96,12 +105,24 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
+	 * move excerpts to leader image area
+	 * @return 0 1 checkbox
+	 *
+	 * @since  1.3.0
+	 */
+	public function move_excerpts() {
+		$value = get_option( 'displayfeaturedimage_excerpts' );
+
+		echo '<input type="checkbox" name="displayfeaturedimage_excerpts" id="displayfeaturedimage_excerpts" value="1"' . checked( 1, $value, false ) . ' class="code" /> <label for="displayfeaturedimage_excerpts">' . __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) . '</label>';
+	}
+
+	/**
 	 * Returns previous value for image if not correct file type/size
 	 * @param  string $new_value New value
 	 * @return string            New or previous value, depending on allowed image size.
 	 * @since  1.2.2
 	 */
-	function validate_image( $new_value ) {
+	public function validate_image( $new_value ) {
 
 		// not using get_image_variables since we need to check before commit to option
 		$new_value = esc_url( $new_value );
@@ -140,7 +161,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * returns file extension
 	 * @since  1.2.2
 	 */
-	private function get_file_ext( $file ) {
+	protected function get_file_ext( $file ) {
 		$parsed = @parse_url( $file, PHP_URL_PATH );
 		return $parsed ? strtolower( pathinfo( $parsed, PATHINFO_EXTENSION ) ) : false;
 	}
@@ -150,7 +171,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @return file       check file extension against list
 	 * @since  1.2.2
 	 */
-	private function is_valid_img_ext( $file ) {
+	protected function is_valid_img_ext( $file ) {
 		$file_ext = $this->get_file_ext( $file );
 
 		$this->valid = empty( $this->valid )
@@ -158,6 +179,20 @@ class Display_Featured_Image_Genesis_Settings {
 			: $this->valid;
 
 		return ( $file_ext && in_array( $file_ext, $this->valid ) );
+	}
+
+	/**
+	 * Returns a 1 or 0, for all truthy / falsy values.
+	 *
+	 * Uses double casting. First, we cast to bool, then to integer.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param mixed $new_value Should ideally be a 1 or 0 integer passed in
+	 * @return integer 1 or 0.
+	 */
+	public function one_zero( $new_value ) {
+		return (int) (bool) $new_value;
 	}
 
 	/**
@@ -171,7 +206,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$large  = get_option( 'large_size_w' );
 
 		$displayfeaturedimage_help =
-			'<h3>' . __( 'Reducto!', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'Display Featured Image for Genesis has three optional settings:', 'display-featured-image-genesis' ) . '</p>' .
+			'<h3>' . __( 'Height', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your backstretch image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the backstretch image, making it shorter.', 'display-featured-image-genesis' ) . '</p>' .
 
 			'<h3>' . __( 'Set a Default Featured Image', 'display-featured-image-genesis' ) . '</h3>' .
@@ -179,7 +215,9 @@ class Display_Featured_Image_Genesis_Settings {
 			'<p>' . sprintf(
 				__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 				$large+1
-			) . '</p>';
+			) . '</p>' .
+			'<h3>' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'By default, archive descriptions (set on the Genesis Archive Settings pages) show below the Default Featured Image, while the archive title displays on top of the image. If you check this box, archives with both a Headline and Intro Text will output both in a box overlaying the Featured Image. Posts which use an optional Excerpt will behave the same way.', 'display-featured-image-genesis' ) . '</p>';
 
 		$screen->add_help_tab( array(
 			'id'      => 'displayfeaturedimage-help',
