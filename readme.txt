@@ -68,7 +68,7 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 		max-height: 700px !important;
 	}
 
-= I'm using excerpts for a post type/posts/etc, but don't want them to show on the single page, even with the featured image. =
+= I checked the __Move Excerpts/Archive Descriptions__ option, but don't want excerpts to show on a certain custom post type, even with the featured image. =
 
 There's a filter for that, too. For example, adding this to your functions.php file would make sure that the excerpt does not show on single posts, or posts from the Staff post type, even if they have an excerpt.
 
@@ -80,12 +80,12 @@ There's a filter for that, too. For example, adding this to your functions.php f
 		return $post_types;
 	}
 
-_Note: styling for the post title with excerpt is styled to be consistent with the optional Genesis taxonomy/author/custom post type archive titles and descriptions. You can override these in your stylesheet._
+_Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, the titles and descriptions will move to overlay the leader image.
 
 
 == Screenshots ==
 1. Screenshot of a page using the Backstretch Featured Image
-2. Use the WordPress Customizer to set a Default Featured Image.
+2. Set a Default Featured Image on the Settings > Media page.
 
 == Upgrade Notice ==
 = 1.3.0 =
