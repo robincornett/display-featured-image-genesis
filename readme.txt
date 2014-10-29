@@ -2,7 +2,7 @@
 
 Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
-Tags: backstretch, featured image, genesis, studiopress
+Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails
 Requires at least: 3.8
 Tested up to: 4.0
 Stable tag: 1.3.0
@@ -20,11 +20,9 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image width is less than or equal to your Medium Media Setting.
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
-__New in 1.3.0:__ optional Genesis archive headlines will display over the leader image. Archive descriptions and optional excerpts may display there, or above the content.
+More words at [my site](http://robincornett.com/plugins/display-featured-image-genesis/).
 
-__New in 1.2.0:__ on the Media Settings page, you can now upload a _Default Featured Image_ to be used site-wide. This image will be used on any post/page/custom post type which does not have a featured image set, plus archive and taxonomy pages.
-
-_Note: This plugin works with the Genesis Framework and child themes only._
+*Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress.*
 
 == Installation ==
 
@@ -52,14 +50,12 @@ It seems that you can also include [conditional tags](http://codex.wordpress.org
 
 Yes! You'll want to add a filter to your theme (functions.php file). Here's an example:
 
-```php
-add_filter( 'display_featured_image_genesis_use_default', 'rgc_force_default_image' );
-function rgc_force_default_image( $post_types ) {
-	$post_types[] = 'attorney';
+	add_filter( 'display_featured_image_genesis_use_default', 'rgc_force_default_image' );
+	function rgc_force_default_image( $post_types ) {
+		$post_types[] = 'attorney';
 
-	return $post_types;
-}
-```
+		return $post_types;
+	}
 
 = The backstretch image is a little too tall. =
 
@@ -76,15 +72,13 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 
 There's a filter for that, too. For example, adding this to your functions.php file would make sure that the excerpt does not show on single posts, or posts from the Staff post type, even if they have an excerpt.
 
-```php
-add_filter( 'display_featured_image_genesis_omit_excerpt', 'rgc_omit_excerpts' );
-function rgc_omit_excerpts( $post_types ) {
-	$post_types[] = 'staff';
-	$post_types[] = 'post';
+	add_filter( 'display_featured_image_genesis_omit_excerpt', 'rgc_omit_excerpts' );
+	function rgc_omit_excerpts( $post_types ) {
+		$post_types[] = 'staff';
+		$post_types[] = 'post';
 
-	return $post_types;
-}
-```
+		return $post_types;
+	}
 
 _Note: styling for the post title with excerpt is styled to be consistent with the optional Genesis taxonomy/author/custom post type archive titles and descriptions. You can override these in your stylesheet._
 
@@ -95,7 +89,7 @@ _Note: styling for the post title with excerpt is styled to be consistent with t
 
 == Upgrade Notice ==
 = 1.3.0 =
-New feature: Set a Default Featured Image (1.2.0); show archive headlines/descriptions/excerpts with backstretch featured image
+New feature: Set a Default Featured Image (1.2.0); show archive headlines/descriptions/excerpts with backstretch featured image (1.3.0)
 
 == Changelog ==
 

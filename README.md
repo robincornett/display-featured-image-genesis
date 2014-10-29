@@ -12,11 +12,9 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image is already displayed in your content (the original image, not a resized version).
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
-__New in 1.3.0:__ optional Genesis archive headlines will display over the leader image. Archive descriptions and optional excerpts may display there, or above the content.
+More words at [my site](http://robincornett.com/plugins/display-featured-image-genesis/).
 
-__New in 1.2.0:__ on the Media Settings page, you can now upload a _Default Featured Image_ to be used site-wide. This image will be used on any post/page/custom post type which does not have a featured image set, plus archive and taxonomy pages.
-
-_Note: This plugin works with the Genesis Framework and child themes only._
+*Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress.*
 
 ## Requirements
 * WordPress 3.8, tested up to 4.0
@@ -50,10 +48,10 @@ Then go to your Plugins screen and click __Activate__.
 
 ## Screenshots
 ![Screenshot of a page using the Backstretch Featured Image](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-1.jpg)  
-__Screenshot of a page using the Backstretch Featured Image.__
+_Screenshot of a page using the Backstretch Featured Image._
 
-![Screenshot of the WordPress Customizer](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
-__Use the WordPress Customizer to set a Default Featured Image.__
+![Set a Default Featured Image on the Settings > Media page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
+_Set a Default Featured Image on the Settings > Media page._
 
 ## Frequently Asked Questions
 
