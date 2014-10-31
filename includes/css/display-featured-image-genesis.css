@@ -27,8 +27,12 @@
 	padding: 24px;
 }
 
-.big-leader p:last-child {
+.big-leader .excerpt .entry-title {
 	margin-bottom: 0;
+}
+.big-leader p {
+	margin-bottom: 0;
+	margin-top: 18px;
 }
 
 img.featured {

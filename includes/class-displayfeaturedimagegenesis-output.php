@@ -16,7 +16,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 		$fallback = get_option( 'displayfeaturedimage_default' );
-		if ( ( empty( $fallback ) && !is_home() && !is_singular() ) || ( in_array( get_post_type(), Display_Featured_Image_Genesis_Common::get_skipped_posttypes() ) ) ) {
+		if ( ( empty( $fallback ) && ! is_home() && ! is_singular() ) || ( in_array( get_post_type(), Display_Featured_Image_Genesis_Common::get_skipped_posttypes() ) ) ) {
 			return;
 		}
 		else {
@@ -35,7 +35,7 @@ class Display_Featured_Image_Genesis_Output {
 	public function load_scripts() {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
-		if ( ( !empty( $item->original ) && $item->content === false ) || ( !is_singular() && !empty( $item->original ) ) ) {
+		if ( ( ! empty( $item->original ) && false === $item->content ) || ( ! is_singular() && ! empty( $item->original ) ) ) {
 
 			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), 1.0 );
 
@@ -71,7 +71,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
-		if ( ( !empty( $item->original ) && $item->content === false ) || ( !is_singular() && !empty( $item->original ) ) ) {
+		if ( ( ! empty( $item->original ) && false === $item->content ) || ( ! is_singular() && ! empty( $item->original ) ) ) {
 			if ( $item->original[1] > $item->large ) {
 				$classes[] = 'has-leader';
 			}
@@ -92,7 +92,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
-		if ( is_singular() && !is_front_page() ) {
+		if ( is_singular() && ! is_front_page() ) {
 			remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
 			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
 		}
@@ -107,21 +107,21 @@ class Display_Featured_Image_Genesis_Output {
 
 		if ( $move_excerpts ) {
 
-			if ( !empty( $item->description ) && !in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
+			if ( ! empty( $item->description ) && ! in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
 				Display_Featured_Image_Genesis_Description::do_excerpt();
 				genesis_do_taxonomy_title_description();
 				genesis_do_author_title_description();
 				genesis_do_cpt_archive_title_description();
 			}
-			else {
-				echo '<h1 class="entry-title featured-image-overlay">' . $item->title . '</h1>';
+			elseif ( ! is_front_page() ) {
+				echo '<div class="excerpt"><h1 class="entry-title">' . esc_attr( $item->title ) . '</h1></div>';
 			}
 
 		}
 
 		else {
-			if ( !empty( $item->title ) ) {
-				echo '<h1 class="entry-title featured-image-overlay">' . $item->title . '</h1>';
+			if ( ! empty( $item->title ) ) {
+				echo '<h1 class="entry-title featured-image-overlay">' . esc_attr( $item->title ) . '</h1>';
 			}
 
 			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
@@ -139,7 +139,9 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_large_image() {
 		global $post;
-		echo get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter featured', 'alt' => the_title_attribute( 'echo=0' ) ) );
+		$image = get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter featured', 'alt' => the_title_attribute( 'echo=0' ) ) );
+
+		echo $image;
 	}
 
 	/**
