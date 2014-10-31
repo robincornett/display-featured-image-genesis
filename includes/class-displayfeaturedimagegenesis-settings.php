@@ -92,15 +92,16 @@ class Display_Featured_Image_Genesis_Settings {
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		if ( !empty( $item->fallback ) ) {
+			$preview = wp_get_attachment_image_src( $item->fallback_id, 'medium' );
 			echo '<div id="upload_logo_preview">';
-			echo '<img src="' . $item->fallback . '" style="max-width:400px" />';
+			echo '<img src="' . esc_url( $preview[0] ) . '" style="max-width:400px" />';
 			echo '</div>';
 		}
 		echo '<input type="url" id="default_image_url" name="displayfeaturedimage_default" value="' . $item->fallback . '" />';
 		echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Default Image', 'display-featured-image-genesis' ) . '" />';
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
-			$item->large+1
+			absint( $item->large+1 )
 		) . '</p>';
 	}
 
@@ -147,7 +148,7 @@ class Display_Featured_Image_Genesis_Settings {
 		elseif ( $file[1] <= $large ) {
 			wp_die( sprintf(
 				__( 'Sorry, that image is too small to use as your Default Featured Image. Your image needs to be at least %1$s pixels wide. <a href="%2$s">Return to the Media Settings page and try again.</a>', 'display-featured-image-genesis' ),
-				$large+1,
+				absint( $large+1 ),
 				esc_url( admin_url( 'options-media.php' ) )
 			) );
 
@@ -214,7 +215,7 @@ class Display_Featured_Image_Genesis_Settings {
 			'<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives.', 'display-featured-image-genesis' ) . '</p>' .
 			'<p>' . sprintf(
 				__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
-				$large+1
+				absint( $large+1 )
 			) . '</p>' .
 			'<h3>' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'By default, archive descriptions (set on the Genesis Archive Settings pages) show below the Default Featured Image, while the archive title displays on top of the image. If you check this box, archives with both a Headline and Intro Text will output both in a box overlaying the Featured Image. Posts which use an optional Excerpt will behave the same way.', 'display-featured-image-genesis' ) . '</p>';
