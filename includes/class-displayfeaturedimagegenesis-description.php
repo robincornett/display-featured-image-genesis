@@ -16,13 +16,56 @@ class Display_Featured_Image_Genesis_Description {
 
 	public static function do_excerpt() {
 
-		if ( !is_single() || !has_excerpt() ) {
+		if ( ! is_singular() || is_front_page() ) {
 			return;
 		}
-		else {
-			$item = Display_Featured_Image_Genesis_Common::get_image_variables();
-			printf( '<div class="excerpt"><h1 class="entry-title">%s</h1>%s</div>', $item->title, $item->description );
+		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+
+		$headline = $intro_text = '';
+
+		if ( $item->title ) {
+			$headline = sprintf( '<h1 class="entry-title">%s</h1>', esc_attr( $item->title ) );
 		}
+		if ( has_excerpt() ) {
+			$intro_text = wpautop( $item->description );
+		}
+		if ( $headline || $intro_text ) {
+			printf( '<div class="excerpt">%s</div>', $headline . $intro_text );
+		}
+	}
+
+	/**
+	 * Show optional excerpt on blog or front page.
+	 *
+	 * If it's not the front page and isn't home, nothing happens.
+	 *
+	 * If there's an excerpt and the move excerpts option is selected, it runs through `wpautop()` before being added to a div.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return null Return early if not blog/front page.
+	 */
+	public static function do_front_blog_excerpt() {
+
+		if ( ! is_front_page() && ! is_home() ) {
+			return;
+		}
+
+		$item      = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$frontpage = get_option( 'show_on_front' );
+		$headline  = $intro_text = '';
+
+		if ( is_home() && 'page' === $frontpage ) {
+			$headline = sprintf( '<h1 class="entry-title">%s</h1>', esc_attr( $item->title ) );
+			$intro_text = wpautop( $item->description );
+		}
+		else {
+			$intro_text = wpautop( get_bloginfo( 'description' ) );
+		}
+		if ( $headline || $intro_text ) {
+			printf( '<div class="excerpt">%s</div>', $headline . $intro_text );
+		}
+
 	}
 
 	/**
