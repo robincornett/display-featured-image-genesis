@@ -30,8 +30,7 @@ class Display_Featured_Image_Genesis {
 			return;
 		}
 
-		add_image_size( 'displayfeaturedimage_backstretch', 2000 );
-
+		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_init', array( $this->settings, 'register_settings' ) );
 		add_action( 'load-options-media.php', array( $this->settings, 'help' ) );
@@ -72,6 +71,21 @@ class Display_Featured_Image_Genesis {
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
+		}
+	}
+
+
+	/**
+	 * add plugin support for new image size and excerpts on pages, if move excerpts option is enabled
+	 *
+	 * @since 1.3.0
+	 */
+	function add_plugin_supports() {
+		add_image_size( 'displayfeaturedimage_backstretch', 2000, 2000, false );
+
+		$move_excerpts = get_option( 'displayfeaturedimage_excerpts' );
+		if ( $move_excerpts ) {
+			add_post_type_support( 'page', 'excerpt' );
 		}
 	}
 

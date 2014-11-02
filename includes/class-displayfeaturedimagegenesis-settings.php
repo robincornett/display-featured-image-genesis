@@ -20,7 +20,6 @@ class Display_Featured_Image_Genesis_Settings {
 		register_setting( 'media', 'displayfeaturedimage_default', array( $this, 'validate_image' ) );
 		register_setting( 'media', 'displayfeaturedimage_excerpts', array( $this, 'one_zero' ) );
 
-
 		add_settings_section(
 			'display_featured_image_section',
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
