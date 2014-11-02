@@ -105,22 +105,19 @@ class Display_Featured_Image_Genesis_Output {
 		echo '<div class="big-leader"><div class="wrap">';
 		$move_excerpts = get_option( 'displayfeaturedimage_excerpts' );
 
-		if ( $move_excerpts ) {
+		// if move excerpts is enabled
+		if ( $move_excerpts && ! in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
 
-			if ( ! empty( $item->description ) && ! in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
-				Display_Featured_Image_Genesis_Description::do_excerpt();
-				genesis_do_taxonomy_title_description();
-				genesis_do_author_title_description();
-				genesis_do_cpt_archive_title_description();
-			}
-			elseif ( ! is_front_page() ) {
-				echo '<div class="excerpt"><h1 class="entry-title">' . esc_attr( $item->title ) . '</h1></div>';
-			}
+			Display_Featured_Image_Genesis_Description::do_front_blog_excerpt();
+			Display_Featured_Image_Genesis_Description::do_excerpt();
+			genesis_do_taxonomy_title_description();
+			genesis_do_author_title_description();
+			genesis_do_cpt_archive_title_description();
 
 		}
 
 		else {
-			if ( ! empty( $item->title ) ) {
+			if ( ! empty( $item->title ) && ! is_front_page() ) {
 				echo '<h1 class="entry-title featured-image-overlay">' . esc_attr( $item->title ) . '</h1>';
 			}
 

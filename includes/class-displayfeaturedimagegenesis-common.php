@@ -28,14 +28,14 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// variables used outside this function
-		$item->fallback    = get_option( 'displayfeaturedimage_default' );
+		$item->fallback    = esc_attr( get_option( 'displayfeaturedimage_default' ) );
 		$item->fallback_id = self::get_image_id( $item->fallback );
-		$item->large       = get_option( 'large_size_w' );
-		$item->medium      = get_option( 'medium_size_w' );
-		$item->reduce      = get_option( 'displayfeaturedimage_less_header', 0 );
+		$item->large       = absint( get_option( 'large_size_w' ) );
+		$item->medium      = absint( get_option( 'medium_size_w' ) );
+		$item->reduce      = absint( get_option( 'displayfeaturedimage_less_header', 0 ) );
 
 		// Set Featured Image Source
-		if ( is_home() && $frontpage === 'page' && !empty( $postspage_image ) ) { // if on the blog page and it has a post_thumbnail
+		if ( is_home() && 'page' === $frontpage && !empty( $postspage_image ) ) { // if on the blog page and it has a post_thumbnail
 			$item->original = wp_get_attachment_image_src( $postspage_image, 'displayfeaturedimage_backstretch' );
 		}
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
@@ -48,14 +48,15 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// Set Post/Page Title
-		if ( is_singular() && ! is_front_page() ) {
+		if ( is_singular() ) {
 			$item->title = get_the_title();
 			if ( has_excerpt() ) {
 				$item->description = get_the_excerpt();
 			}
 		}
-		elseif ( is_home() && $frontpage === 'page' ) {
+		elseif ( is_home() && 'page' === $frontpage ) {
 			$item->title = get_post( $postspage )->post_title;
+			$item->description = get_post( $postspage )->post_excerpt;
 		}
 		elseif ( is_category() || is_tag() || is_tax() ) {
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
@@ -70,7 +71,7 @@ class Display_Featured_Image_Genesis_Common {
 			$item->title       = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
 			$item->description = get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) );
 		}
-		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() && !empty( $item->fallback ) ) {
+		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() && ! empty( $item->fallback ) ) {
 			$item->title       = genesis_get_cpt_option( 'headline' );
 			$item->description = genesis_get_cpt_option( 'intro_text' );
 		}
@@ -79,11 +80,8 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// declare this last so that $item->original is set.
-		if ( !empty( $post->post_content ) ) {
+		if ( ! is_admin() ) {
 			$item->content = strpos( $post->post_content, $item->original[0] );
-		}
-		else {
-			$item->content = '';
 		}
 
 		return $item;
