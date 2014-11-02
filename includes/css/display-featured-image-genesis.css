@@ -7,32 +7,39 @@
 }
 
 .big-leader .wrap {
+	position: absolute;
+	right: 0;
 	bottom: 0;
 	left: 0;
-	right: 0;
-	position: absolute;
 }
 
 .big-leader .entry-title.featured-image-overlay {
-	color: #fff;
 	position: relative;
+	color: #fff;
 	text-align: center;
 }
 
 .big-leader .excerpt,
 .big-leader .archive-description {
-	background: rgba(255,255,255,.85);
-	color: #333;
 	margin-bottom: 24px;
 	padding: 24px;
+	background: rgba(255,255,255,0.85);
 }
 
-.big-leader .excerpt .entry-title {
-	margin-bottom: 0;
-}
 .big-leader p {
-	margin-bottom: 0;
 	margin-top: 18px;
+}
+
+.home .big-leader p {
+	margin-top: 0;
+	margin-bottom: 18px;
+}
+
+.big-leader p,
+.big-leader .excerpt .entry-title,
+.big-leader .archive-description .archive-title,
+.home .big-leader p:last-child {
+	margin-bottom: 0;
 }
 
 img.featured {
