@@ -47,6 +47,8 @@ class Display_Featured_Image_Genesis_Common {
 			$item->original = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
 		}
 
+		$item->title = $item->description = '';
+
 		// Set Post/Page Title
 		if ( is_singular() ) {
 			$item->title = get_the_title();
@@ -74,9 +76,6 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() && ! empty( $item->fallback ) ) {
 			$item->title       = genesis_get_cpt_option( 'headline' );
 			$item->description = genesis_get_cpt_option( 'intro_text' );
-		}
-		else {
-			$item->title = '';
 		}
 
 		// declare this last so that $item->original is set.
