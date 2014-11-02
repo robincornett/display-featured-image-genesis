@@ -24,7 +24,7 @@ class Display_Featured_Image_Genesis {
 	}
 
 	public function run() {
-		if ( basename( get_template_directory() ) !== 'genesis' ) {
+		if ( 'genesis' !== basename( get_template_directory() ) ) {
 			add_action( 'admin_init', array( $this, 'deactivate' ) );
 			add_action( 'admin_notices', array( $this, 'error_message' ) );
 			return;
