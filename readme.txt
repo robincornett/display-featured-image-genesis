@@ -34,7 +34,7 @@ More words at [my site](http://robincornett.com/plugins/display-featured-image-g
 
 = Where do I set a Default Featured Image? =
 
-Display Featured Image for Genesis has its own settings page, under the main Genesis Settings menu.
+Display Featured Image for Genesis has its own settings page, under the main Appearance menu.
 
 = How do I stop the featured image action from showing on my custom post types? =
 

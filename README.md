@@ -57,7 +57,7 @@ _Set a Default Featured Image on the Appearance > Display Featured Image for Gen
 
 ### Where do I set a Default Featured Image?
 
-Display Featured Image for Genesis has its own settings page, under the main Genesis Settings menu.
+Display Featured Image for Genesis has its own settings page, under the main Appearance menu.
 
 ### How do I stop the featured image action from showing on my custom post types?
 
