@@ -50,10 +50,14 @@ Then go to your Plugins screen and click __Activate__.
 ![Screenshot of a page using the Backstretch Featured Image](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-1.jpg)  
 _Screenshot of a page using the Backstretch Featured Image._
 
-![Set a Default Featured Image on the Settings > Media page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
-_Set a Default Featured Image on the Settings > Media page._
+![Set a Default Featured Image on the Display Featured Image for Genesis Settings page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
+_Set a Default Featured Image on the Display Featured Image for Genesis Settings page._
 
 ## Frequently Asked Questions
+
+### Where do I set a Default Featured Image?
+
+Display Featured Image for Genesis has its own settings page, under the main Genesis Settings menu.
 
 ### How do I stop the featured image action from showing on my custom post types?
 
@@ -69,7 +73,7 @@ function rgc_skip_post_types( $post_types ) {
 }
 ```
 
-It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image in the Customizer.
+It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image on the plugin's settings page.
 
 ### Can I force my site to use the default image on a post type even if it has its own Featured Image?
 
@@ -86,7 +90,7 @@ function rgc_force_default_image( $post_types ) {
 
 ### The backstretch image is a little too tall.
 
-If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Settings > Media and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
+If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Genesis > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
 
 Additionally/alternatively, you could set a max-height for the backstretch image area via css:
 

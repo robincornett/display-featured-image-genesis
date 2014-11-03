@@ -32,6 +32,10 @@ More words at [my site](http://robincornett.com/plugins/display-featured-image-g
 
 == Frequently Asked Questions ==
 
+= Where do I set a Default Featured Image? =
+
+Display Featured Image for Genesis has its own settings page, under the main Genesis Settings menu.
+
 = How do I stop the featured image action from showing on my custom post types? =
 
 You'll want to add a filter to your theme (functions.php file). Here's an example:
@@ -44,7 +48,7 @@ You'll want to add a filter to your theme (functions.php file). Here's an exampl
 		return $post_types;
 	}
 
-It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image in the Customizer.
+It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image on the plugin's settings page.
 
 = Can I force my site to use the default image on a post type even if it has its own Featured Image? =
 
@@ -59,7 +63,7 @@ Yes! You'll want to add a filter to your theme (functions.php file). Here's an e
 
 = The backstretch image is a little too tall. =
 
-If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Settings > Media and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
+If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Genesis > Display Featured Image for Genesis Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
 
 Additionally/alternatively, you could set a max-height for the backstretch image area via css:
 
@@ -85,7 +89,7 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 
 == Screenshots ==
 1. Screenshot of a page using the Backstretch Featured Image
-2. Set a Default Featured Image on the Settings > Media page.
+2. Set a Default Featured Image on the Genesis > Display Featured Image Settings page.
 
 == Upgrade Notice ==
 = 1.3.0 =

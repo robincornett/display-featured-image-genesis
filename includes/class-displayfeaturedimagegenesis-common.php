@@ -35,16 +35,14 @@ class Display_Featured_Image_Genesis_Common {
 		$item->reduce      = absint( get_option( 'displayfeaturedimage_less_header', 0 ) );
 
 		// Set Featured Image Source
+		$item->original = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
+
 		if ( is_home() && 'page' === $frontpage && !empty( $postspage_image ) ) { // if on the blog page and it has a post_thumbnail
 			$item->original = wp_get_attachment_image_src( $postspage_image, 'displayfeaturedimage_backstretch' );
 		}
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
 		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) && !in_array( get_post_type(), self::use_fallback_image() ) ) {
 			$item->original = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'displayfeaturedimage_backstretch' );
-		}
-		// otherwise use $item->fallback. should include !is_singular AND $item->fallback, and is_singular with either a small image or no post_thumbnail
-		else {
-			$item->original = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
 		}
 
 		$item->title = $item->description = '';

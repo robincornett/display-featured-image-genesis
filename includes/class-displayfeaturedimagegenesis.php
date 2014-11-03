@@ -32,8 +32,7 @@ class Display_Featured_Image_Genesis {
 
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action( 'admin_init', array( $this->settings, 'register_settings' ) );
-		add_action( 'load-options-media.php', array( $this->settings, 'help' ) );
+		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
 	}
 
