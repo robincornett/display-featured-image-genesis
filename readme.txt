@@ -63,7 +63,7 @@ Yes! You'll want to add a filter to your theme (functions.php file). Here's an e
 
 = The backstretch image is a little too tall. =
 
-If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Genesis > Display Featured Image for Genesis Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
+If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Appearance > Display Featured Image for Genesis Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
 
 Additionally/alternatively, you could set a max-height for the backstretch image area via css:
 
@@ -89,7 +89,7 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 
 == Screenshots ==
 1. Screenshot of a page using the Backstretch Featured Image
-2. Set a Default Featured Image on the Genesis > Display Featured Image Settings page.
+2. Set a Default Featured Image on the Appearance > Display Featured Image Settings page.
 
 == Upgrade Notice ==
 = 1.3.0 =

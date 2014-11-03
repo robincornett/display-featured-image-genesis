@@ -50,8 +50,8 @@ Then go to your Plugins screen and click __Activate__.
 ![Screenshot of a page using the Backstretch Featured Image](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-1.jpg)  
 _Screenshot of a page using the Backstretch Featured Image._
 
-![Set a Default Featured Image on the Display Featured Image for Genesis Settings page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
-_Set a Default Featured Image on the Display Featured Image for Genesis Settings page._
+![Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
+_Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page._
 
 ## Frequently Asked Questions
 
@@ -90,7 +90,7 @@ function rgc_force_default_image( $post_types ) {
 
 ### The backstretch image is a little too tall.
 
-If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Genesis > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
+If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
 
 Additionally/alternatively, you could set a max-height for the backstretch image area via css:
 

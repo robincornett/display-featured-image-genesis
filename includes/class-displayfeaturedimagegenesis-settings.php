@@ -11,8 +11,7 @@ class Display_Featured_Image_Genesis_Settings {
 
 	public function do_submenu_page() {
 
-		add_submenu_page(
-			'genesis',
+		add_theme_page(
 			__( 'Display Featured Image for Genesis: Settings', 'display-featured-image-genesis' ),
 			__( 'Display Featured Image Settings', 'display-featured-image-genesis' ),
 			'manage_options',
@@ -21,7 +20,7 @@ class Display_Featured_Image_Genesis_Settings {
 		);
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'load-genesis_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
+		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
 	}
 
@@ -281,7 +280,7 @@ class Display_Featured_Image_Genesis_Settings {
 	public function enqueue_scripts() {
 		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), '1.0.0' );
 
-		if ( 'genesis_page_displayfeaturedimagegenesis' === get_current_screen()->id ) {
+		if ( 'appearance_page_displayfeaturedimagegenesis' === get_current_screen()->id ) {
 			wp_enqueue_media();
 			wp_enqueue_script( 'displayfeaturedimage-upload' );
 		}
