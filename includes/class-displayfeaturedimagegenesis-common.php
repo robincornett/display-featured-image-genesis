@@ -126,7 +126,17 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 1.0.1
 	 */
 	public static function get_skipped_posttypes() {
-		return apply_filters( 'display_featured_image_genesis_skipped_posttypes', array( 'attachment', 'revision', 'nav_menu_item' ) );
+
+		$skip = get_option( 'displayfeaturedimage_exclude_front' );
+
+		$post_types   = array();
+		$post_types[] = 'attachment';
+		$post_types[] = 'revision';
+		$post_types[] = 'nav_menu_item';
+		if ( $skip ) $post_types[] = is_front_page();
+
+		return apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
+
 	}
 
 	/**
@@ -136,7 +146,14 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 1.2.0
 	 */
 	public static function use_fallback_image() {
-		return apply_filters( 'display_featured_image_genesis_use_default', array( 'attachment', 'revision', 'nav_menu_item' ) );
+
+		$post_types   = array();
+		$post_types[] = 'attachment';
+		$post_types[] = 'revision';
+		$post_types[] = 'nav_menu_item';
+
+		return apply_filters( 'display_featured_image_genesis_use_default', $post_types );
+
 	}
 
 	/**
@@ -146,7 +163,14 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 1.3.0
 	 */
 	public static function omit_excerpt() {
-		return apply_filters( 'display_featured_image_genesis_omit_excerpt', array( 'attachment', 'revision', 'nav_menu_item' ) );
+
+		$post_types   = array();
+		$post_types[] = 'attachment';
+		$post_types[] = 'revision';
+		$post_types[] = 'nav_menu_item';
+
+		return apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
+
 	}
 
 }

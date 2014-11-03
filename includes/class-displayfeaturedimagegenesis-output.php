@@ -19,10 +19,10 @@ class Display_Featured_Image_Genesis_Output {
 		if ( ( empty( $fallback ) && ! is_home() && ! is_singular() ) || ( in_array( get_post_type(), Display_Featured_Image_Genesis_Common::get_skipped_posttypes() ) ) ) {
 			return;
 		}
-		else {
-			add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
-			add_filter( 'body_class', array( $this, 'add_body_class' ) );
-		}
+
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
+		add_filter( 'body_class', array( $this, 'add_body_class' ) );
+
 	}
 
 
@@ -49,7 +49,6 @@ class Display_Featured_Image_Genesis_Output {
 				) );
 
 				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image_title' ) );
-				add_action( 'genesis_before_loop', array( $this, 'move_titles' ) );
 
 			}
 
@@ -117,6 +116,7 @@ class Display_Featured_Image_Genesis_Output {
 		}
 
 		else {
+
 			if ( ! empty( $item->title ) && ! is_front_page() ) {
 				echo '<h1 class="entry-title featured-image-overlay">' . esc_attr( $item->title ) . '</h1>';
 			}
@@ -124,6 +124,9 @@ class Display_Featured_Image_Genesis_Output {
 			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 			remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
+
+			add_action( 'genesis_before_loop', array( $this, 'move_titles' ) );
+
 		}
 		echo '</div></div>';
 	}
@@ -151,16 +154,11 @@ class Display_Featured_Image_Genesis_Output {
 	 *
 	 */
 	public function move_titles() {
-		$move_excerpts = get_option( 'displayfeaturedimage_excerpts' );
 
-		if ( $move_excerpts ) {
-			return;
-		}
-		else {
-			Display_Featured_Image_Genesis_Description::do_tax_description();
-			Display_Featured_Image_Genesis_Description::do_author_description();
-			Display_Featured_Image_Genesis_Description::do_cpt_archive_description();
-		}
+		Display_Featured_Image_Genesis_Description::do_tax_description();
+		Display_Featured_Image_Genesis_Description::do_author_description();
+		Display_Featured_Image_Genesis_Description::do_cpt_archive_description();
+
 	}
 
 }

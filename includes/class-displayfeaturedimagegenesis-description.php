@@ -51,17 +51,16 @@ class Display_Featured_Image_Genesis_Description {
 			return;
 		}
 
-		$item      = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$frontpage = get_option( 'show_on_front' );
-		$headline  = $intro_text = '';
+		$item       = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$frontpage  = get_option( 'show_on_front' );
+		$headline   = '';
+		$intro_text = wpautop( get_bloginfo( 'description' ) );
 
 		if ( is_home() && 'page' === $frontpage ) {
 			$headline = sprintf( '<h1 class="entry-title">%s</h1>', esc_attr( $item->title ) );
 			$intro_text = wpautop( $item->description );
 		}
-		else {
-			$intro_text = wpautop( get_bloginfo( 'description' ) );
-		}
+
 		if ( $headline || $intro_text ) {
 			printf( '<div class="excerpt">%s</div>', $headline . $intro_text );
 		}

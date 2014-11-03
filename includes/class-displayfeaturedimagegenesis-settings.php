@@ -44,8 +44,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function register_settings() {
+
 		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimage_less_header', 'absint' );
 		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimage_default', array( $this, 'validate_image' ) );
+		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimage_exclude_front', array( $this, 'one_zero' ) );
 		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimage_excerpts', array( $this, 'one_zero' ) );
 
 		add_settings_section(
@@ -72,6 +74,14 @@ class Display_Featured_Image_Genesis_Settings {
 		);
 
 		add_settings_field(
+			'displayfeaturedimage_exclude_front',
+			'<label for="displayfeaturedimage_exclude_front">' . __( 'Skip Front Page', 'display-featured-image-genesis' ) . '</label>',
+			array( $this, 'exclude_front' ),
+			'displayfeaturedimagegenesis',
+			'display_featured_image_section'
+		);
+
+		add_settings_field(
 			'displayfeaturedimage_excerpts',
 			'<label for="displayfeaturedimage_excerpts">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'move_excerpts' ),
@@ -90,7 +100,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function section_description() {
-		echo '<p>' . __( 'The Display Featured Image for Genesis plugin has three optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) . '</p>';
+		echo '<p>' . __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) . '</p>';
 	}
 
 	/**
@@ -130,6 +140,18 @@ class Display_Featured_Image_Genesis_Settings {
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $item->large+1 )
 		) . '</p>';
+	}
+
+	/**
+	 * option to exclude default featured image on front page
+	 * @return 0 1 checkbox
+	 *
+	 * @since  x.y.z
+	 */
+	public function exclude_front() {
+		$value = get_option( 'displayfeaturedimage_exclude_front' );
+
+		echo '<input type="checkbox" name="displayfeaturedimage_exclude_front" id="displayfeaturedimage_exclude_front" value="1"' . checked( 1, $value, false ) . ' class="code" /> <label for="displayfeaturedimage_exclude_front">' . __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) . '</label>';
 	}
 
 	/**
@@ -246,6 +268,14 @@ class Display_Featured_Image_Genesis_Settings {
 				absint( $large+1 )
 			) . '</p>';
 
+		$skipfront_help =
+			'<h3>' . __( 'Show on Front Page', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'If you set a Default Featured Image, it will show on every post/page of your site. This may not be desirable on child themes with a front page constructed with widgets, so you can select this option to prevent the Featured Image from showing on the front page.', 'display-featured-image-genesis' ) . '</p>' .
+			'<p>' . sprintf(
+				__( 'If you want to prevent entire groups of posts from not using the Featured Image, you will want to <a href="%s" target="_blank">add a filter</a> to your theme functions.php file.', 'display-featured-image-genesis' ),
+				esc_url( 'https://github.com/robincornett/display-featured-image-genesis#how-do-i-stop-the-featured-image-action-from-showing-on-my-custom-post-types' )
+			) . '</p>';
+
 		$excerpts_help =
 			'<h3>' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'By default, archive descriptions (set on the Genesis Archive Settings pages) show below the Default Featured Image, while the archive title displays on top of the image. If you check this box, all headlines, descriptions, and optional excerpts will display in a box overlaying the Featured Image.', 'display-featured-image-genesis' ) . '</p>';
@@ -261,6 +291,12 @@ class Display_Featured_Image_Genesis_Settings {
 			'id'      => 'displayfeaturedimage_default-help',
 			'title'   => __( 'Default Featured Image', 'display-featured-image-genesis' ),
 			'content' => $default_help,
+		) );
+
+		$screen->add_help_tab( array(
+			'id'      => 'displayfeaturedimage_exclude_front-help',
+			'title'   => __( 'Show on Front Page', 'display-featured-image-genesis' ),
+			'content' => $skipfront_help,
 		) );
 
 		$screen->add_help_tab( array(
