@@ -9,6 +9,10 @@
 
 class Display_Featured_Image_Genesis_Settings {
 
+	/**
+	 * variable set for featured image option
+	 * @var option
+	 */
 	protected $displaysetting;
 
 	/**
@@ -358,6 +362,9 @@ class Display_Featured_Image_Genesis_Settings {
 		if ( 'appearance_page_displayfeaturedimagegenesis' === get_current_screen()->id ) {
 			wp_enqueue_media();
 			wp_enqueue_script( 'displayfeaturedimage-upload' );
+			wp_localize_script( 'displayfeaturedimage-upload', 'objectL10n', array(
+				'text' => __( 'Choose Image', 'display-featured-image-genesis' ),
+			) );
 		}
 
 	}
