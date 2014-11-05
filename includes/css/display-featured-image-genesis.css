@@ -1,19 +1,44 @@
 .has-leader .site-inner {
 	margin-top: 0;
-	padding-top: 0;
 }
 
 .big-leader {
-	max-height: 700px;
+	/*max-height: 700px;*/
 }
 
-.big-leader .entry-title {
-	bottom: 10px;
-	color: #fff;
+.big-leader .wrap {
 	position: absolute;
 	right: 0;
+	bottom: 0;
 	left: 0;
+}
+
+.big-leader .entry-title.featured-image-overlay {
+	position: relative;
+	color: #fff;
 	text-align: center;
+}
+
+.big-leader .excerpt,
+.big-leader .archive-description {
+	margin-bottom: 24px;
+	padding: 24px;
+	background: rgba(255,255,255,0.85);
+}
+
+.big-leader p {
+	margin-top: 18px;
+}
+
+.home .big-leader p {
+	margin-top: 0;
+}
+
+.big-leader p,
+.big-leader .excerpt .entry-title,
+.big-leader .archive-description .archive-title,
+.home .big-leader p:last-child {
+	margin-bottom: 0;
 }
 
 img.featured {

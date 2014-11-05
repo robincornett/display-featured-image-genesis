@@ -12,9 +12,23 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image is already displayed in your content (the original image, not a resized version).
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
-__New in 1.2.0:__ on the Media Settings page, you can now upload a _Default Featured Image_ to be used site-wide. This image will be used on any post/page/custom post type which does not have a featured image set, plus archive and taxonomy pages.
+More words at [my site](http://robincornett.com/plugins/display-featured-image-genesis/).
 
-_Note: This plugin works with the Genesis Framework and child themes only._
+_Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress._
+
+#### An Image for Every Page
+
+__Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
+
+#### Simple Styling
+
+__Display Featured Image for Genesis__ has some styling built in but I have intentionally tried to keep it minimal. All styling is for the backstretch image options, as the large options seem pretty straightforward. Stying for titles are largely inherited from your theme--for example, the title will use the same size and font for your page titles, whether you are using a Featured Image or not. Some styles you can incorporate into your own theme:
+
+* `.has-leader` applies to any page using a leader/backstretch image. Applies to the whole page.
+* `.big-leader` the container which holds the leader/backstretch image and the post/page Title and excerpt or description.
+* `.featured-image-overlay` style appended to the post/page title if Move Excerpts option _is not_ selected (default).
+* `.excerpt` (for single posts/pages) and `.archive-description` (for archives) are styled as a unit. These are the containers for the post/page/archive/taxonomy title and description if the Move Excerpts option _is_ selected.
+* `.featured` is appended to the large image output directly above the post/page content.
 
 ## Requirements
 * WordPress 3.8, tested up to 4.0
@@ -48,12 +62,20 @@ Then go to your Plugins screen and click __Activate__.
 
 ## Screenshots
 ![Screenshot of a page using the Backstretch Featured Image](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-1.jpg)  
-__Screenshot of a page using the Backstretch Featured Image.__
+_Screenshot of a page using the Backstretch Featured Image._
 
-![Screenshot of the WordPress Customizer](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
-__Use the WordPress Customizer to set a Default Featured Image.__
+![Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
+_Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page._
 
 ## Frequently Asked Questions
+
+### Where do I set a Default Featured Image?
+
+Display Featured Image for Genesis has its own settings page, under the main Appearance menu.
+
+### Does this work with any Genesis child theme?
+
+Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
 
 ### How do I stop the featured image action from showing on my custom post types?
 
@@ -69,7 +91,7 @@ function rgc_skip_post_types( $post_types ) {
 }
 ```
 
-It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image in the Customizer.
+It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image on the plugin's settings page.
 
 ### Can I force my site to use the default image on a post type even if it has its own Featured Image?
 
@@ -86,45 +108,73 @@ function rgc_force_default_image( $post_types ) {
 
 ### The backstretch image is a little too tall.
 
-If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Settings > Media and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
+If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
 
 Additionally/alternatively, you could set a max-height for the backstretch image area via css:
 
 ```css
 .big-leader {
-	max-height: 700px !important;
+	max-height: 700px;
 }
 ```
+
+### I checked the __Move Excerpts/Archive Descriptions__ option, but don't want excerpts to show on a certain custom post type, even with the featured image.
+
+There's a filter for that, too. For example, adding this to your functions.php file would make sure that the excerpt does not show on single posts, or posts from the Staff post type, even if they have an excerpt.
+
+```php
+add_filter( 'display_featured_image_genesis_omit_excerpt', 'rgc_omit_excerpts' );
+function rgc_omit_excerpts( $post_types ) {
+	$post_types[] = 'staff';
+	$post_types[] = 'post';
+
+	return $post_types;
+}
+```
+
+_Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, the titles and descriptions will move to overlay the leader image.
+
 ## Credits
 
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
 
-###1.2.1
+### 1.4.0
+* all settings updated for bloat and moved to a new submenu page under Appearance
+* efficiency in descriptions, output, and variables
+
+### 1.3.0
+* optional taxonomy/author/CPT headline now shows over leader image
+* optional taxonomy/author/CPT description and single post excerpt display optionally over leader image as well
+
+### 1.2.2
+* default image validation
+
+### 1.2.1
 * moved default image from Customizer to Media Settings page
 * new filter for forcing default image for any post type
 * common class
 
-###1.2.0
+### 1.2.0
 * new feature: default featured image to display if no image is set
 * better method naming/organization
 
-###1.1.3
+### 1.1.3
 * output is now properly managed to show only on single posts/pages and home page, not archives
 
-###1.1.2
+### 1.1.2
 * plugin properly deactivates if Genesis isn't running
 
-###1.1.1
+### 1.1.1
 * corrected XHTML hooks
 
-###1.1.0
+### 1.1.0
 * added a setting in the admin to optionally reduce the height of the backstretch image
 * refactoring
 
-###1.0.1
+### 1.0.1
 * added the filter for certain post types, and optional filter for other custom post types
 
-###1.0.0
+### 1.0.0
 * Initial release on Github
