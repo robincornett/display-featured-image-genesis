@@ -21,18 +21,19 @@ class Display_Featured_Image_Genesis_Common {
 		// variables internal to this function
 		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage       = get_option( 'page_for_posts' );
-		$move_excerpts   = get_option( 'displayfeaturedimage_excerpts' );
+		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
+		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
 		if ( is_singular() ) {
 			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'displayfeaturedimage_backstretch' );
 		}
 
 		// variables used outside this function
-		$item->fallback    = esc_attr( get_option( 'displayfeaturedimage_default' ) );
+		$item->fallback    = esc_attr( $displaysetting['default'] );
 		$item->fallback_id = self::get_image_id( $item->fallback );
 		$item->large       = absint( get_option( 'large_size_w' ) );
 		$item->medium      = absint( get_option( 'medium_size_w' ) );
-		$item->reduce      = absint( get_option( 'displayfeaturedimage_less_header', 0 ) );
+		$item->reduce      = absint( $displaysetting['less_header'] );
 
 		// Set Featured Image Source
 		$item->original = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
@@ -127,7 +128,8 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function get_skipped_posttypes() {
 
-		$skip = get_option( 'displayfeaturedimage_exclude_front' );
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$skip = $displaysetting['exclude_front'];
 
 		$post_types   = array();
 		$post_types[] = 'attachment';

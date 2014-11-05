@@ -36,6 +36,10 @@ More words at [my site](http://robincornett.com/plugins/display-featured-image-g
 
 Display Featured Image for Genesis has its own settings page, under the main Appearance menu.
 
+= Does this work with any Genesis child theme? =
+
+Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
+
 = How do I stop the featured image action from showing on my custom post types? =
 
 You'll want to add a filter to your theme (functions.php file). Here's an example:

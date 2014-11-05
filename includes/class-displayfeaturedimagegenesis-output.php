@@ -15,7 +15,8 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 1.1.3
 	 */
 	public function manage_output() {
-		$fallback = get_option( 'displayfeaturedimage_default' );
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$fallback       = $displaysetting['default'];
 		if ( ( empty( $fallback ) && ! is_home() && ! is_singular() ) || ( in_array( get_post_type(), Display_Featured_Image_Genesis_Common::get_skipped_posttypes() ) ) ) {
 			return;
 		}
@@ -102,7 +103,8 @@ class Display_Featured_Image_Genesis_Output {
 
 
 		echo '<div class="big-leader"><div class="wrap">';
-		$move_excerpts = get_option( 'displayfeaturedimage_excerpts' );
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$move_excerpts  = $displaysetting['move_excerpts'];
 
 		// if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
