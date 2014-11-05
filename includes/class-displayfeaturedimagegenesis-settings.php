@@ -18,7 +18,7 @@ class Display_Featured_Image_Genesis_Settings {
 	/**
 	 * add a submenu page under Appearance
 	 * @return submenu Display Featured image settings page
-	 * @since  x.y.z
+	 * @since  1.4.0
 	 */
 	public function do_submenu_page() {
 
@@ -39,7 +39,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * create settings form
 	 * @return form Display Featured Image for Genesis settings
 	 *
-	 * @since  x.y.z
+	 * @since  1.4.0
 	 */
 	public function do_settings_form() {
 		$page_title = get_admin_page_title();
@@ -168,7 +168,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * option to exclude featured image on front page
 	 * @return 0 1 checkbox
 	 *
-	 * @since  x.y.z
+	 * @since  1.4.0
 	 */
 	public function exclude_front() {
 		echo '<input type="checkbox" name="displayfeaturedimagegenesis[exclude_front]" id="displayfeaturedimagegenesis[exclude_front]" value="1"' . checked( 1, $this->displaysetting['exclude_front'], false ) . ' class="code" /> <label for="displayfeaturedimagegenesis[exclude_front]">' . __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) . '</label>';
@@ -189,7 +189,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @param  string $new_value various settings
 	 * @return string            number or URL
 	 *
-	 * @since  x.y.z
+	 * @since  1.4.0
 	 */
 	public function do_validation_things( $new_value ) {
 
