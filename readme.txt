@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -22,7 +22,21 @@ This plugin takes a different approach to how we use and display featured images
 
 More words at [my site](http://robincornett.com/plugins/display-featured-image-genesis/).
 
-*Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress.*
+_Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress._
+
+= An Image for Every Page =
+
+__Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
+
+= Simple Styling =
+
+__Display Featured Image for Genesis__ has some styling built in but I have intentionally tried to keep it minimal. All styling is for the backstretch image options, as the large options seem pretty straightforward. Stying for titles are largely inherited from your theme--for example, the title will use the same size and font for your page titles, whether you are using a Featured Image or not. Some styles you can incorporate into your own theme:
+
+* `.has-leader` applies to any page using a leader/backstretch image. Applies to the whole page.
+* `.big-leader` the container which holds the leader/backstretch image and the post/page Title and excerpt or description.
+* `.featured-image-overlay` style appended to the post/page title if Move Excerpts option _is not_ selected (default).
+* `.excerpt` (for single posts/pages) and `.archive-description` (for archives) are styled as a unit. These are the containers for the post/page/archive/taxonomy title and description if the Move Excerpts option _is_ selected.
+* `.featured` is appended to the large image output directly above the post/page content.
 
 == Installation ==
 
@@ -31,10 +45,6 @@ More words at [my site](http://robincornett.com/plugins/display-featured-image-g
 1. Optionally, visit the Settings > Media page to change the default behavior of the plugin.
 
 == Frequently Asked Questions ==
-
-= Where do I set a Default Featured Image? =
-
-Display Featured Image for Genesis has its own settings page, under the main Appearance menu.
 
 = Does this work with any Genesis child theme? =
 
@@ -96,10 +106,14 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 2. Set a Default Featured Image on the Appearance > Display Featured Image Settings page.
 
 == Upgrade Notice ==
-= 1.3.0 =
-New feature: Set a Default Featured Image (1.2.0); show archive headlines/descriptions/excerpts with backstretch featured image (1.3.0)
+= 1.4.0 =
+New feature: set a default image to be used sitewide!
 
 == Changelog ==
+
+= 1.4.0 =
+* all settings updated for bloat and moved to a new submenu page under Appearance
+* efficiency in descriptions, output, and variables
 
 = 1.3.0 =
 * optional taxonomy/author/CPT headline now shows over leader image
