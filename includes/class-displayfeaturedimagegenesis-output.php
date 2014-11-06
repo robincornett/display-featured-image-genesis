@@ -17,7 +17,7 @@ class Display_Featured_Image_Genesis_Output {
 	public function manage_output() {
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$fallback       = $displaysetting['default'];
-		if ( ( empty( $fallback ) && ! is_home() && ! is_singular() ) || ( in_array( get_post_type(), Display_Featured_Image_Genesis_Common::get_skipped_posttypes() ) ) ) {
+		if ( is_admin() || ( empty( $fallback ) && ! is_home() && ! is_singular() ) || ( in_array( get_post_type(), Display_Featured_Image_Genesis_Common::get_skipped_posttypes() ) ) ) {
 			return;
 		}
 
