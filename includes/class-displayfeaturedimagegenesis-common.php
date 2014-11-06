@@ -24,31 +24,45 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
+
 		if ( is_singular() ) {
-			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'displayfeaturedimage_backstretch' );
+			$image_id       = get_post_thumbnail_id( $post->ID );
+			$post_thumbnail = wp_get_attachment_image_src( $image_id, 'original' );
 		}
 
 		// variables used outside this function
-		$item->fallback    = esc_attr( $displaysetting['default'] );
-		$item->fallback_id = self::get_image_id( $item->fallback );
+		$item->fallback    = esc_attr( $displaysetting['default'] ); // url only
+		$item->fallback_id = self::get_image_id( $item->fallback ); // gets image id with attached metadata
 		$item->large       = absint( get_option( 'large_size_w' ) );
 		$item->medium      = absint( get_option( 'medium_size_w' ) );
 		$item->reduce      = absint( $displaysetting['less_header'] );
 
 		// Set Featured Image Source
-		$item->original = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
+		$image_id = $item->fallback_id; // set here with fallback preemptively
 
-		if ( is_home() && 'page' === $frontpage && !empty( $postspage_image ) ) { // if on the blog page and it has a post_thumbnail
-			$item->original = wp_get_attachment_image_src( $postspage_image, 'displayfeaturedimage_backstretch' );
+		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) { // if on the blog page and it has a post_thumbnail
+			$image_id = get_post_thumbnail_id( $postspage );
 		}
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
-		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) && !in_array( get_post_type(), self::use_fallback_image() ) ) {
-			$item->original = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'displayfeaturedimage_backstretch' );
+		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) /*&& ! in_array( get_post_type(), self::use_fallback_image() )*/ ) {
+			$image_id = get_post_thumbnail_id( $post->ID );
+		}
+		$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
+
+		// declare this last so that $item->backstretch is set.
+		if ( ! is_admin() ) {
+			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
+			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
+			// reset backstretch image source to fallback if it exists and the featured image is being used in content.
+			if ( ( ! empty( $item->fallback ) && false !== $item->content ) || in_array( get_post_type(), self::use_fallback_image() ) ) {
+				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
+				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
+			}
 		}
 
+		// Set Post/Page Title
 		$item->title = $item->description = '';
 
-		// Set Post/Page Title
 		if ( is_singular() ) {
 			$item->title = get_the_title();
 			if ( has_excerpt() ) {
@@ -56,7 +70,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 		elseif ( is_home() && 'page' === $frontpage ) {
-			$item->title = get_post( $postspage )->post_title;
+			$item->title       = get_post( $postspage )->post_title;
 			$item->description = get_post( $postspage )->post_excerpt;
 		}
 		elseif ( is_category() || is_tag() || is_tax() ) {
@@ -75,11 +89,6 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() && ! empty( $item->fallback ) ) {
 			$item->title       = genesis_get_cpt_option( 'headline' );
 			$item->description = genesis_get_cpt_option( 'intro_text' );
-		}
-
-		// declare this last so that $item->original is set.
-		if ( ! is_admin() ) {
-			$item->content = strpos( $post->post_content, $item->original[0] );
 		}
 
 		return $item;
