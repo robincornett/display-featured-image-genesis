@@ -44,17 +44,19 @@ class Display_Featured_Image_Genesis_Common {
 			$image_id = get_post_thumbnail_id( $postspage );
 		}
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
-		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) /*&& ! in_array( get_post_type(), self::use_fallback_image() )*/ ) {
+		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
 			$image_id = get_post_thumbnail_id( $post->ID );
 		}
 		$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
 
+		// set a content variable so backstretch doesn't show if full size image exists in post.
+		$item->content = '';
 		// declare this last so that $item->backstretch is set.
-		if ( ! is_admin() ) {
+		if ( ! is_admin() && is_singular() ) {
 			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 			// reset backstretch image source to fallback if it exists and the featured image is being used in content.
-			if ( ( ! empty( $item->fallback ) && false !== $item->content ) || in_array( get_post_type(), self::use_fallback_image() ) ) {
+			if ( ( ! empty( $item->fallback ) && false !== $item->content ) || empty( $post->post_content ) ) {
 				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
 				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
 			}
