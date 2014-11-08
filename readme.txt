@@ -9,7 +9,7 @@ Stable tag: 1.4.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
-This plugin works within the Genesis Framework, to display your featured images in beautiful and dynamic ways.
+This plugin works within the Genesis Framework, to display featured images in beautiful and dynamic ways.
 
 == Description ==
 
@@ -83,7 +83,7 @@ Additionally/alternatively, you could set a max-height for the backstretch image
 
 
 	.big-leader {
-		max-height: 700px !important;
+		max-height: 700px;
 	}
 
 = I checked the __Move Excerpts/Archive Descriptions__ option, but don't want excerpts to show on a certain custom post type, even with the featured image. =
@@ -98,7 +98,7 @@ There's a filter for that, too. For example, adding this to your functions.php f
 		return $post_types;
 	}
 
-_Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, the titles and descriptions will move to overlay the leader image.
+_Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, all titles and descriptions will move to overlay the leader image.
 
 
 == Screenshots ==

@@ -1,6 +1,6 @@
 # Display Featured Image for Genesis
 
-This plugin works within the Genesis Framework, to display your post/page featured images in new and fun ways. It should work with either HTML5 or XHTML themes, but older themes may have a width set on elements which may not allow the full backstretch experience.
+This plugin works within the Genesis Framework, to display featured images in new and fun ways. It should work with either HTML5 or XHTML themes, but older themes may have a width set on elements which may not allow the full backstretch experience.
 
 ## Description
 
@@ -132,7 +132,7 @@ function rgc_omit_excerpts( $post_types ) {
 }
 ```
 
-_Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, the titles and descriptions will move to overlay the leader image.
+_Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, all titles and descriptions will move to overlay the leader image.
 
 ## Credits
 
