@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -106,10 +106,13 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 2. Set a Default Featured Image on the Appearance > Display Featured Image Settings page.
 
 == Upgrade Notice ==
-= 1.4.0 =
-New feature: set a default image to be used sitewide!
+= 1.4.1 =
+bugfix: correctly added post type support for excerpts to pages
 
 == Changelog ==
+
+= 1.4.1 =
+* bugfix: correctly added post type support for excerpts to pages
 
 = 1.4.0 =
 * all settings updated for bloat and moved to a new submenu page under Appearance

@@ -140,6 +140,9 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 
 ## Changelog
 
+### 1.4.1
+* bugfix: correctly added post type support for excerpts to pages
+
 ### 1.4.0
 * all settings updated for bloat and moved to a new submenu page under Appearance
 * efficiency in descriptions, output, and variables
