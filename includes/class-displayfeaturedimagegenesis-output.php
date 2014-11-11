@@ -92,7 +92,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
-		if ( is_singular() && ! is_front_page() ) {
+		if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
 			remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
 			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
 		}

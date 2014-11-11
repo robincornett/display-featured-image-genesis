@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails
 Requires at least: 3.8
 Tested up to: 4.0
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -110,6 +110,9 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 bugfix: correctly added post type support for excerpts to pages
 
 == Changelog ==
+
+= 1.4.2 =
+* bugfix: titles fixed for Genesis Blog Template
 
 = 1.4.1 =
 * bugfix: correctly added post type support for excerpts to pages
