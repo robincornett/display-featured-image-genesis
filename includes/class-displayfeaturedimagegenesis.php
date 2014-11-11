@@ -57,20 +57,23 @@ class Display_Featured_Image_Genesis {
 	 * @since 1.1.0
 	 */
 	public function error_message() {
-		if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-			echo '<div class="error"><p>' . sprintf(
-				__( 'Sorry, Display Featured Image for Genesis works only with the Genesis Framework. It has been deactivated.', 'display-featured-image-genesis' ) ) . '</p></div>';
-		}
-		else {
-			echo '<div class="error"><p>' . sprintf(
-				__( 'Sorry, Display Featured Image for Genesis works only with the Genesis Framework. It has been deactivated. But since we&#39;re talking anyway, did you know that your server is running PHP version %1$s, which is outdated? You should ask your host to update that for you.', 'display-featured-image-genesis' ),
+
+		$error = sprintf(
+			__( 'Sorry, Display Featured Image for Genesis works only with the Genesis Framework. It has been deactivated.', 'display-featured-image-genesis' ) );
+
+		if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
+			$error = $error . sprintf(
+				__( ' But since we\'re talking anyway, did you know that your server is running PHP version %1$s, which is outdated? You should ask your host to update that for you.', 'display-featured-image-genesis' ),
 				PHP_VERSION
-			) . '</p></div>';
+			);
 		}
+
+		echo '<div class="error"><p>' . $error . '</p></div>';
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
+
 	}
 
 
