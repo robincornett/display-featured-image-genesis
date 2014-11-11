@@ -82,8 +82,8 @@ class Display_Featured_Image_Genesis {
 	function add_plugin_supports() {
 		add_image_size( 'displayfeaturedimage_backstretch', 2000, 2000, false );
 
-		$move_excerpts = get_option( 'displayfeaturedimage_excerpts' );
-		if ( $move_excerpts ) {
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		if ( $displaysetting['move_excerpts'] ) {
 			add_post_type_support( 'page', 'excerpt' );
 		}
 	}
