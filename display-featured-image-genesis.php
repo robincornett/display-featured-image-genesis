@@ -12,7 +12,7 @@
  * Plugin Name:       Display Featured Image for Genesis
  * Plugin URI:        http://github.com/robincornett/display-featured-image-genesis/
  * Description:       This plugin requires the Genesis Framework. It varies the display of the post or page featured image, depending on size.
- * Version:           1.4.1
+ * Version:           1.4.2
  * Author:            Robin Cornett
  * Author URI:        http://robincornett.com
  * License:           GPL-2.0+
