@@ -36,13 +36,20 @@ class Display_Featured_Image_Genesis_Output {
 	public function load_scripts() {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
-		if ( ( ! empty( $item->backstretch ) && false === $item->content ) || ( ! is_singular() && ! empty( $item->backstretch ) ) ) {
 
-			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), 1.0 );
+		// if there is no backstretch image set, or it is too small, die
+		if ( empty( $item->backstretch ) || $item->backstretch[1] <= $item->medium ) {
+			return;
+		}
+		// if the featured image is not part of the content, or we're not on a singular page, carry on
+		if ( false === $item->content || ! is_singular() ) {
 
+			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), '1.4.2' );
+
+			//check if the image is large enough for backstretch
 			if ( $item->backstretch[1] > $item->large ) {
-				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.0.0' );
-				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), '1.0.0' );
+				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.4.2' );
+				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), '1.4.2' );
 
 				wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array(
 					'src'    => esc_url( $item->backstretch[0] ),
@@ -53,7 +60,8 @@ class Display_Featured_Image_Genesis_Output {
 
 			}
 
-			elseif ( ( $item->backstretch[1] <= $item->large ) && ( $item->backstretch[1] > $item->medium ) ) {
+			// otherwise it's a large image.
+			elseif ( $item->backstretch[1] <= $item->large ) {
 				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) ); // HTML5
 				add_action( 'genesis_before_post', array( $this, 'do_large_image' ) );  // XHTML
 			}
@@ -71,11 +79,15 @@ class Display_Featured_Image_Genesis_Output {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
-		if ( ( ! empty( $item->backstretch ) && false === $item->content ) || ( ! is_singular() && ! empty( $item->backstretch ) ) ) {
+		if ( empty( $item->backstretch ) || $item->backstretch[1] <= $item->medium ) {
+			return $classes;
+		}
+
+		if ( false === $item->content || ! is_singular() ) {
 			if ( $item->backstretch[1] > $item->large ) {
 				$classes[] = 'has-leader';
 			}
-			elseif ( ( $item->backstretch[1] <= $item->large ) && ( $item->backstretch[1] > $item->medium ) ) {
+			elseif ( $item->backstretch[1] <= $item->large ) {
 				$classes[] = 'large-featured';
 			}
 		}
