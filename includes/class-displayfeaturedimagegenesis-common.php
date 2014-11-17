@@ -37,16 +37,23 @@ class Display_Featured_Image_Genesis_Common {
 		$item->medium      = absint( get_option( 'medium_size_w' ) );
 		$item->reduce      = absint( $displaysetting['less_header'] );
 
-		// Set Featured Image Source
-		$image_id = $item->fallback_id; // set here with fallback preemptively
+		// Set Featured Image source ID
+		$image_id = ''; // blank if nothing else
 
-		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) { // if on the blog page and it has a post_thumbnail
+		// set here with fallback preemptively, if it exists
+		if ( ! empty( $item->fallback ) ) {
+			$image_id = $item->fallback_id;
+		}
+
+		// if it's a home page with a static front page, and there is a featured image set on the home page
+		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) {
 			$image_id = get_post_thumbnail_id( $postspage );
 		}
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
 		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
 			$image_id = get_post_thumbnail_id( $post->ID );
 		}
+		//now actually set the backstretch image source, which includes some metadata
 		$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
@@ -56,7 +63,7 @@ class Display_Featured_Image_Genesis_Common {
 			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 			// reset backstretch image source to fallback if it exists and the featured image is being used in content.
-			if ( ( ! empty( $item->fallback ) && false !== $item->content ) || empty( $post->post_content ) ) {
+			if ( ! empty( $item->fallback ) && false !== $item->content ) {
 				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
 				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
 			}
