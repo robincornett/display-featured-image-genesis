@@ -75,7 +75,6 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function add_body_class( $classes ) {
-		global $post;
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
