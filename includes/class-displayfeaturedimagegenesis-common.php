@@ -12,7 +12,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * current plugin version
 	 * @var string
 	 */
-	public static $version = '1.4.2';
+	public static $version = '1.4.3';
 
 	/**
 	 * set and retreive variables for the featured image.
