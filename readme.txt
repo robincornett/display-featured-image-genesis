@@ -106,10 +106,15 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 2. Set a Default Featured Image on the Appearance > Display Featured Image Settings page.
 
 == Upgrade Notice ==
-= 1.4.2 =
-New Feature (1.4.0): Default Featured Image. Bugfixes in 1.4.2
+= 1.4.3 =
+better decision making process, scripts moved to footer
 
 == Changelog ==
+
+= 1.4.3 =
+* better decision making process for firing up scripts/styles
+* moved scripts to footer
+* set plugin version to be used for scripts/style versions
 
 = 1.4.2 =
 * bugfix: titles fixed for Genesis Blog Template

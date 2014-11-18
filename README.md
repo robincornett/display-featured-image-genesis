@@ -140,6 +140,11 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 
 ## Changelog
 
+### 1.4.3
+* better decision making process for firing up scripts/styles
+* moved scripts to footer
+* set plugin version to be used for scripts/style versions
+
 ### 1.4.2
 * bugfix: titles fixed for Genesis Blog Template
 
