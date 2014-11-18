@@ -357,7 +357,9 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since  1.2.1
 	 */
 	public function enqueue_scripts() {
-		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), '1.0.0' );
+		$version = Display_Featured_Image_Genesis_Common::$version;
+
+		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
 
 		if ( 'appearance_page_displayfeaturedimagegenesis' === get_current_screen()->id ) {
 			wp_enqueue_media();

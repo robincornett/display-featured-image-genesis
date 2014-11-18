@@ -35,7 +35,8 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function load_scripts() {
 
-		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$version = Display_Featured_Image_Genesis_Common::$version;
+		$item    = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		// if there is no backstretch image set, or it is too small, die
 		if ( empty( $item->backstretch ) || $item->backstretch[1] <= $item->medium ) {
@@ -44,12 +45,12 @@ class Display_Featured_Image_Genesis_Output {
 		// if the featured image is not part of the content, or we're not on a singular page, carry on
 		if ( false === $item->content || ! is_singular() ) {
 
-			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), '1.4.2' );
+			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), $version );
 
 			//check if the image is large enough for backstretch
 			if ( $item->backstretch[1] > $item->large ) {
-				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), '1.4.2' );
-				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), '1.4.2' );
+				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
+				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
 				wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array(
 					'src'    => esc_url( $item->backstretch[0] ),
