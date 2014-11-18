@@ -11,6 +11,7 @@ class Display_Featured_Image_Genesis_Common {
 	/**
 	 * current plugin version
 	 * @var string
+	 * @since  1.4.3
 	 */
 	public static $version = '1.4.3';
 
