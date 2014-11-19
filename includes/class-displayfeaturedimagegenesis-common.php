@@ -32,12 +32,13 @@ class Display_Featured_Image_Genesis_Common {
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
 
-		if ( is_singular() ) {
-			$image_id       = get_post_thumbnail_id( $post->ID );
-			$post_thumbnail = wp_get_attachment_image_src( $image_id, 'original' );
+		if ( is_singular() ) { // just checking for handling conditional variables set by width
+			$thumbnail_id   = get_post_thumbnail_id( $post->ID );
+			$metadata       = wp_get_attachment_metadata( $thumbnail_id ); // needed only for the next line
+			$width          = $metadata['width'];
 		}
 
-		// variables used outside this function
+		// sitewide variables used outside this function
 		$item->fallback    = esc_attr( $displaysetting['default'] ); // url only
 		$item->fallback_id = self::get_image_id( $item->fallback ); // gets image id with attached metadata
 		$item->large       = absint( get_option( 'large_size_w' ) );
@@ -54,14 +55,20 @@ class Display_Featured_Image_Genesis_Common {
 
 		// if it's a home page with a static front page, and there is a featured image set on the home page
 		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) {
-			$image_id = get_post_thumbnail_id( $postspage );
+			$image_id = $postspage_image;
 		}
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
-		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
+		elseif ( is_singular() && ( $width > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
 			$image_id = get_post_thumbnail_id( $post->ID );
 		}
 		//now actually set the backstretch image source, which includes some metadata
+		$metadata = wp_get_attachment_metadata( $image_id );
+
 		$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
+		$item->width = '';
+		if ( ! empty( $item->backstretch ) ) {
+			$item->width = $metadata['width'];
+		}
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
 		$item->content = '';
