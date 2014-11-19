@@ -68,7 +68,8 @@ class Display_Featured_Image_Genesis_Common {
 		$metadata = wp_get_attachment_metadata( $image_id );
 
 		// turn Photon off so we can get the correct image
-		if ( class_exists( 'Jetpack_Photon' ) ) {
+		$photon_removed = '';
+		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
 			$photon_removed = remove_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ) );
 		}
 
