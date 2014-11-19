@@ -160,7 +160,7 @@ class Display_Featured_Image_Genesis_Settings {
 		echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Default Image', 'display-featured-image-genesis' ) . '" />';
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
-			absint( $item->large+1 )
+			absint( $item->large + 1 )
 		) . '</p>';
 	}
 
@@ -217,7 +217,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$valid     = $this->is_valid_img_ext( $new_value );
 		$large     = get_option( 'large_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$file      = wp_get_attachment_image_src( $id, 'original' );
+		$metadata  = wp_get_attachment_metadata( $id );
+		$width     = $metadata['width'];
 
 		// ok for field to be empty
 		if ( $new_value ) {
@@ -234,7 +235,7 @@ class Display_Featured_Image_Genesis_Settings {
 				);
 			}
 			// if file is an image, but is too small, throw it back
-			elseif ( $file[1] <= $large ) {
+			elseif ( $width <= $large ) {
 				$message   = __( 'Sorry, your image is too small. The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
 				$new_value = $this->displaysetting['default'];
 
@@ -308,7 +309,7 @@ class Display_Featured_Image_Genesis_Settings {
 			'<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives.', 'display-featured-image-genesis' ) . '</p>' .
 			'<p>' . sprintf(
 				__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
-				absint( $large+1 )
+				absint( $large + 1 )
 			) . '</p>';
 
 		$skipfront_help =
