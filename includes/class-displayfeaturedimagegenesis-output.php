@@ -62,9 +62,8 @@ class Display_Featured_Image_Genesis_Output {
 			}
 
 			// otherwise it's a large image.
-			elseif ( $item->backstretch[1] <= $item->large ) {
-				add_action( 'genesis_before_entry', array( $this, 'do_large_image' ) ); // HTML5
-				add_action( 'genesis_before_post', array( $this, 'do_large_image' ) );  // XHTML
+			elseif ( $item->width <= $item->large ) {
+				add_action( 'genesis_before_loop', array( $this, 'do_large_image' ) ); // works for both HTML5 and XHTML
 			}
 		}
 	}
@@ -152,8 +151,8 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_large_image() {
-		global $post;
-		$image = get_the_post_thumbnail( $post->ID, 'large', array( 'class' => 'aligncenter featured', 'alt' => the_title_attribute( 'echo=0' ) ) );
+		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$image = '<img src="' . $item->backstretch[0] . '" class="aligncenter featured" alt="' . the_title_attribute( "echo=0" ) . '" />';
 
 		echo $image;
 	}
