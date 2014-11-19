@@ -33,9 +33,11 @@ class Display_Featured_Image_Genesis_Common {
 		$postspage_image = get_post_thumbnail_id( $postspage );
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
-			$thumbnail_id   = get_post_thumbnail_id( $post->ID );
-			$metadata       = wp_get_attachment_metadata( $thumbnail_id ); // needed only for the next line
-			$width          = $metadata['width'];
+			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( $post->ID ) ); // needed only for the next line
+			$width = '';
+			if ( $thumb_metadata ) {
+				$width = $thumb_metadata['width'];
+			}
 		}
 
 		// sitewide variables used outside this function
