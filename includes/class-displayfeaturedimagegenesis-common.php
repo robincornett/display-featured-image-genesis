@@ -22,6 +22,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since  1.1.0
 	 */
 	public static function get_image_variables() {
+
 		$item = new stdClass();
 		global $post;
 
@@ -66,6 +67,11 @@ class Display_Featured_Image_Genesis_Common {
 		//now actually set the backstretch image source, which includes some metadata
 		$metadata = wp_get_attachment_metadata( $image_id );
 
+		// turn Photon off so we can get the correct image
+		if ( class_exists( 'Jetpack_Photon' ) ) {
+			$photon_removed = remove_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ) );
+		}
+
 		$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
 		$item->width = '';
 		if ( ! empty( $item->backstretch ) ) {
@@ -83,6 +89,11 @@ class Display_Featured_Image_Genesis_Common {
 				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
 				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
 			}
+		}
+
+		// turn Photon back on
+		if ( $photon_removed ) {
+			add_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ), 10, 3 );
 		}
 
 		// Set Post/Page Title
