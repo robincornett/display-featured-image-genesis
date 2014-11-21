@@ -286,7 +286,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @param mixed $new_value Should ideally be a 1 or 0 integer passed in
 	 * @return integer 1 or 0.
 	 */
-	public function one_zero( $new_value ) {
+	protected function one_zero( $new_value ) {
 		return (int) (bool) $new_value;
 	}
 
