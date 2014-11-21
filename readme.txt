@@ -107,7 +107,7 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 
 == Upgrade Notice ==
 = 1.4.3 =
-better decision making process, scripts moved to footer
+better decision making process, scripts moved to footer, photon support
 
 == Changelog ==
 
