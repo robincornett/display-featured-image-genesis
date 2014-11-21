@@ -9,12 +9,20 @@
 class Display_Featured_Image_Genesis_Common {
 
 	/**
+	 * current plugin version
+	 * @var string
+	 * @since  1.4.3
+	 */
+	public static $version = '1.4.3';
+
+	/**
 	 * set and retreive variables for the featured image.
 	 * @return $item
 	 *
 	 * @since  1.1.0
 	 */
 	public static function get_image_variables() {
+
 		$item = new stdClass();
 		global $post;
 
@@ -25,29 +33,51 @@ class Display_Featured_Image_Genesis_Common {
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
 
-		if ( is_singular() ) {
-			$image_id       = get_post_thumbnail_id( $post->ID );
-			$post_thumbnail = wp_get_attachment_image_src( $image_id, 'original' );
+		if ( is_singular() ) { // just checking for handling conditional variables set by width
+			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( $post->ID ) ); // needed only for the next line
+			$width = '';
+			if ( $thumb_metadata ) {
+				$width = $thumb_metadata['width'];
+			}
 		}
 
-		// variables used outside this function
+		// sitewide variables used outside this function
 		$item->fallback    = esc_attr( $displaysetting['default'] ); // url only
 		$item->fallback_id = self::get_image_id( $item->fallback ); // gets image id with attached metadata
 		$item->large       = absint( get_option( 'large_size_w' ) );
 		$item->medium      = absint( get_option( 'medium_size_w' ) );
 		$item->reduce      = absint( $displaysetting['less_header'] );
 
-		// Set Featured Image Source
-		$image_id = $item->fallback_id; // set here with fallback preemptively
+		// Set Featured Image source ID
+		$image_id = ''; // blank if nothing else
 
-		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) { // if on the blog page and it has a post_thumbnail
-			$image_id = get_post_thumbnail_id( $postspage );
+		// set here with fallback preemptively, if it exists
+		if ( ! empty( $item->fallback ) ) {
+			$image_id = $item->fallback_id;
+		}
+
+		// if it's a home page with a static front page, and there is a featured image set on the home page
+		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) {
+			$image_id = $postspage_image;
 		}
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
-		elseif ( is_singular() && ( $post_thumbnail[1] > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
+		elseif ( is_singular() && ( $width > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
 			$image_id = get_post_thumbnail_id( $post->ID );
 		}
+		//now actually set the backstretch image source, which includes some metadata
+		$metadata = wp_get_attachment_metadata( $image_id );
+
+		// turn Photon off so we can get the correct image
+		$photon_removed = '';
+		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
+			$photon_removed = remove_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ) );
+		}
+
 		$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
+		$item->width = '';
+		if ( ! empty( $item->backstretch ) ) {
+			$item->width = $metadata['width'];
+		}
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
 		$item->content = '';
@@ -56,10 +86,15 @@ class Display_Featured_Image_Genesis_Common {
 			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 			// reset backstretch image source to fallback if it exists and the featured image is being used in content.
-			if ( ( ! empty( $item->fallback ) && false !== $item->content ) || empty( $post->post_content ) ) {
+			if ( ! empty( $item->fallback ) && false !== $item->content ) {
 				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
 				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
 			}
+		}
+
+		// turn Photon back on
+		if ( $photon_removed ) {
+			add_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ), 10, 3 );
 		}
 
 		// Set Post/Page Title
