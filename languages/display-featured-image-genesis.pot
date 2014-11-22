@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Display Featured Image for Genesis 1.4.4\n"
+"Project-Id-Version: Display Featured Image for Genesis 1.4.3\n"
 "POT-Creation-Date: 2014-09-17 21:11-0500\n"
 "POT-Revision-Date: 2014-11-22 21:07-0500\n"
 "Last-Translator: Robin Cornett <hello@robincornett.com>\n"
