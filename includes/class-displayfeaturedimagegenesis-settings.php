@@ -65,12 +65,14 @@ class Display_Featured_Image_Genesis_Settings {
 
 		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
 
-		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', array(
+		$defaults = array(
 			'less_header'   => 0,
 			'default'       => '',
 			'exclude_front' => 0,
 			'move_excerpts' => 0
-		) );
+		);
+
+		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', $defaults );
 
 		add_settings_section(
 			'display_featured_image_section',
