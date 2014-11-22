@@ -49,6 +49,7 @@ class Display_Featured_Image_Genesis_Settings {
 			echo '<form action="options.php" method="post">';
 				settings_fields( 'displayfeaturedimagegenesis' );
 				do_settings_sections( 'displayfeaturedimagegenesis' );
+				wp_nonce_field( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce', false );
 				submit_button();
 				settings_errors();
 			echo '</form>';
@@ -196,6 +197,12 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since  1.4.0
 	 */
 	public function do_validation_things( $new_value ) {
+
+		if ( empty( $_POST['displayfeaturedimagegenesis_nonce'] ) ) {
+			wp_die( __( 'Something unexpected happened. Please try again.', 'display-featured-image-genesis' ) );
+		}
+
+		check_admin_referer( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce' );
 
 		$new_value['less_header']   = absint( $new_value['less_header'] );
 
