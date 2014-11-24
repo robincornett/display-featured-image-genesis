@@ -175,7 +175,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function exclude_front() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[exclude_front]" value="0" />';
-		echo '<input type="checkbox" name="displayfeaturedimagegenesis[exclude_front]" id="displayfeaturedimagegenesis[exclude_front]" value="1"' . checked( 1, $this->displaysetting['exclude_front'], false ) . ' class="code" /> <label for="displayfeaturedimagegenesis[exclude_front]">' . __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) . '</label>';
+		echo '<label for="displayfeaturedimagegenesis[exclude_front]"><input type="checkbox" name="displayfeaturedimagegenesis[exclude_front]" id="displayfeaturedimagegenesis[exclude_front]" value="1"' . checked( 1, esc_attr( $this->displaysetting['exclude_front'] ), false ) . ' class="code" />' . __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) . '</label>';
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function move_excerpts() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[move_excerpts]" value="0" />';
-		echo '<input type="checkbox" name="displayfeaturedimagegenesis[move_excerpts]" id="displayfeaturedimagegenesis[move_excerpts]" value="1"' . checked( 1, $this->displaysetting['move_excerpts'], false ) . ' class="code" /> <label for="displayfeaturedimagegenesis[move_excerpts]">' . __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) . '</label>';
+		echo '<label for="displayfeaturedimagegenesis[move_excerpts]"><input type="checkbox" name="displayfeaturedimagegenesis[move_excerpts]" id="displayfeaturedimagegenesis[move_excerpts]" value="1"' . checked( 1, esc_attr( $this->displaysetting['move_excerpts'] ), false ) . ' class="code" />' . __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) . '</label>';
 	}
 
 	/**
