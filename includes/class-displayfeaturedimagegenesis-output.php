@@ -38,17 +38,18 @@ class Display_Featured_Image_Genesis_Output {
 		$version = Display_Featured_Image_Genesis_Common::$version;
 		$item    = Display_Featured_Image_Genesis_Common::get_image_variables();
 
-		// if there is no backstretch image set, or it is too small, die
+		//* if there is no backstretch image set, or it is too small, die
 		if ( empty( $item->backstretch ) || $item->width <= $item->medium ) {
 			return;
 		}
-		// if the featured image is not part of the content, or we're not on a singular page, carry on
+		//* if the featured image is not part of the content, or we're not on a singular page, carry on
 		if ( false === $item->content || ! is_singular() ) {
 
 			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), $version );
 
-			//check if the image is large enough for backstretch
+			//* check if the image is large enough for backstretch
 			if ( $item->width > $item->large ) {
+
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
@@ -61,7 +62,7 @@ class Display_Featured_Image_Genesis_Output {
 
 			}
 
-			// otherwise it's a large image.
+			//* otherwise it's a large image.
 			elseif ( $item->width <= $item->large ) {
 				add_action( 'genesis_before_loop', array( $this, 'do_large_image' ) ); // works for both HTML5 and XHTML
 			}
