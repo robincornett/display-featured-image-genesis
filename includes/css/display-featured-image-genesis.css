@@ -3,7 +3,13 @@
 }
 
 .big-leader {
-	/*max-height: 700px;*/
+	overflow: hidden;
+	position: relative;
+}
+
+.backstretch.no-js {
+	background-size: cover;
+	height: 600px;
 }
 
 .big-leader .wrap {
@@ -11,6 +17,7 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
+	z-index: 1;
 }
 
 .big-leader .entry-title.featured-image-overlay {
@@ -43,4 +50,14 @@
 
 img.featured {
 	max-width: 100%;
+}
+
+
+@media only screen and (max-width: 768px) {
+
+	.backstretch.no-js {
+		height: 300px;
+
+	}
+
 }

@@ -113,12 +113,13 @@ class Display_Featured_Image_Genesis_Output {
 		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 
+		echo '<div class="big-leader">';
+		echo '<div class="wrap">';
 
-		echo '<div class="big-leader"><div class="wrap">';
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts  = $displaysetting['move_excerpts'];
 
-		// if move excerpts is enabled
+		//* if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
 
 			Display_Featured_Image_Genesis_Description::do_front_blog_excerpt();
@@ -142,7 +143,16 @@ class Display_Featured_Image_Genesis_Output {
 			add_action( 'genesis_before_loop', array( $this, 'move_titles' ) );
 
 		}
-		echo '</div></div>';
+
+		//* close wrap
+		echo '</div>';
+
+		//* if javascript not enabled, do a fallback background image
+		$no_js  = '<noscript><div class="backstretch no-js" style="background-image: url(' . $item->backstretch[0] . '); }"></div></noscript>';
+		echo $no_js;
+
+		//* close big-leader
+		echo '</div>';
 	}
 
 	/**
