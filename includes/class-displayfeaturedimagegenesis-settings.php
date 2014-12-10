@@ -70,7 +70,8 @@ class Display_Featured_Image_Genesis_Settings {
 			'less_header'   => 0,
 			'default'       => '',
 			'exclude_front' => 0,
-			'move_excerpts' => 0
+			'move_excerpts' => 0,
+			'feed_image'    => 0
 		);
 
 		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', $defaults );
@@ -110,6 +111,14 @@ class Display_Featured_Image_Genesis_Settings {
 			'displayfeaturedimagegenesis[move_excerpts]',
 			'<label for="displayfeaturedimagegenesis[move_excerpts]">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'move_excerpts' ),
+			'displayfeaturedimagegenesis',
+			'display_featured_image_section'
+		);
+
+		add_settings_field(
+			'displayfeaturedimagegenesis[feed_image]',
+			'<label for="displayfeaturedimagegenesis[feed_image]">' . __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ) . '</label>',
+			array( $this, 'add_image_to_feed' ),
 			'displayfeaturedimagegenesis',
 			'display_featured_image_section'
 		);
@@ -187,6 +196,17 @@ class Display_Featured_Image_Genesis_Settings {
 	public function move_excerpts() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[move_excerpts]" value="0" />';
 		echo '<label for="displayfeaturedimagegenesis[move_excerpts]"><input type="checkbox" name="displayfeaturedimagegenesis[move_excerpts]" id="displayfeaturedimagegenesis[move_excerpts]" value="1"' . checked( 1, esc_attr( $this->displaysetting['move_excerpts'] ), false ) . ' class="code" />' . __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) . '</label>';
+	}
+
+	/**
+	 * option to move excerpts to leader image area
+	 * @return 0 1 checkbox
+	 *
+	 * @since  1.3.0
+	 */
+	public function add_image_to_feed() {
+		echo '<input type="hidden" name="displayfeaturedimagegenesis[feed_image]" value="0" />';
+		echo '<label for="displayfeaturedimagegenesis[feed_image]"><input type="checkbox" name="displayfeaturedimagegenesis[feed_image]" id="displayfeaturedimagegenesis[feed_image]" value="1"' . checked( 1, esc_attr( $this->displaysetting['feed_image'] ), false ) . ' class="code" />' . __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ) . '</label>';
 	}
 
 	/**
