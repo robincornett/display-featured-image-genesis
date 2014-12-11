@@ -357,6 +357,11 @@ class Display_Featured_Image_Genesis_Settings {
 			'<h3>' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'By default, archive descriptions (set on the Genesis Archive Settings pages) show below the Default Featured Image, while the archive title displays on top of the image. If you check this box, all headlines, descriptions, and optional excerpts will display in a box overlaying the Featured Image.', 'display-featured-image-genesis' ) . '</p>';
 
+		$feed_help =
+			'<h3>' . __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'This plugin does not add the Featured Image to your content, so normally you will not see your Featured Image in the feed. If you select this option, however, the Featured Image (if it is set) will be added to each entry in your RSS feed.', 'display-featured-image-genesis' ) . '</p>' .
+			'<p>' . __( 'If your RSS feed is set to Full Text, the Featured Image will be added to the entry content. If it is set to Summary, the Featured Image will be added to the excerpt instead.', 'display-featured-image-genesis' ) . '</p>';
+
 
 		$screen->add_help_tab( array(
 			'id'      => 'displayfeaturedimage_less_header-help',
@@ -380,6 +385,12 @@ class Display_Featured_Image_Genesis_Settings {
 			'id'      => 'displayfeaturedimage_excerpts-help',
 			'title'   => __( 'Move Excerpts', 'display-featured-image-genesis' ),
 			'content' => $excerpts_help,
+		) );
+
+		$screen->add_help_tab( array(
+			'id'      => 'displayfeaturedimage_feed-help',
+			'title'   => __( 'RSS Feed', 'display-featured-image-genesis' ),
+			'content' => $feed_help,
 		) );
 
 	}
