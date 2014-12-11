@@ -232,6 +232,8 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value['move_excerpts'] = $this->one_zero( $new_value['move_excerpts'] );
 
+		$new_value['feed_image']    = $this->one_zero( $new_value['feed_image'] );
+
 		return $new_value;
 
 	}
