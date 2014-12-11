@@ -188,6 +188,12 @@ class Display_Featured_Image_Genesis_Output {
 
 	}
 
+	/**
+	 * Decide whether or not to add the featured image to the feed or the feed excerpt
+	 *
+	 * @return filter the_excerpt_rss (if summaries) or the_content_feed (full text)
+	 * @since  x.y.z
+	 */
 	public function maybe_do_feed() {
 
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
@@ -198,18 +204,35 @@ class Display_Featured_Image_Genesis_Output {
 			return;
 		}
 
-		if ( '0' === $rss_option ) {
-			add_filter( 'the_content_feed', array( $this, 'add_image_to_feed' ), 15 );
+		if ( '1' === $rss_option ) {
+			add_filter( 'the_excerpt_rss', array( $this, 'add_image_to_feed' ), 1000, 1 );
 		}
 		else {
-			add_filter( 'the_excerpt_rss', array( $this, 'add_image_to_feed' ), 1000, 1 );
+			add_filter( 'the_content_feed', array( $this, 'add_image_to_feed' ), 15 );
 		}
 
 	}
 
+	/**
+	 * add the featured image to the feed, unless it already exists
+	 * includes allowances for Send Images to RSS plugin, which processes before this
+	 *
+	 * @param return $content
+	 * @since  x.y.z
+	 */
 	public function add_image_to_feed( $content ) {
 
 		if ( ! has_post_thumbnail() ) {
+			return $content;
+		}
+
+		$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id(), 'original' );
+		if ( class_exists( 'SendImagesRSS' ) ) {
+			$post_thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id(), 'mailchimp' );
+		}
+		$image_content  = strpos( $content, 'src="' . $post_thumbnail[0] );
+
+		if ( false !== $image_content ) {
 			return $content;
 		}
 
