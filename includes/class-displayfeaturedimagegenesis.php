@@ -31,6 +31,7 @@ class Display_Featured_Image_Genesis {
 		}
 
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
+		add_action( 'admin_init', array( $this, 'check_settings' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
@@ -91,6 +92,40 @@ class Display_Featured_Image_Genesis {
 		if ( $displaysetting['move_excerpts'] ) {
 			add_post_type_support( 'page', 'excerpt' );
 		}
+	}
+
+	/**
+	 * check existing settings array to see if a setting is in the array
+	 * @return updated setting updates to default (0)
+	 * @since  x.y.z
+	 */
+	public function check_settings() {
+
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+
+		//* return early if the option doesn't exist yet
+		if ( empty( $displaysetting ) ) {
+			return;
+		}
+
+		if ( empty( $displaysetting['feed_image'] ) ) {
+			$this->update_settings( array(
+				'feed_image'    => 0
+			) );
+		}
+
+	}
+
+	/**
+	 * Takes an array of new settings, merges them with the old settings, and pushes them into the database.
+	 *
+	 * @since x.y.z
+	 *
+	 * @param string|array $new     New settings. Can be a string, or an array.
+	 * @param string       $setting Optional. Settings field name. Default is displayfeaturedimagegenesis.
+	 */
+	protected function update_settings( $new = '', $setting = 'displayfeaturedimagegenesis' ) {
+		return update_option( $setting, wp_parse_args( $new, get_option( $setting ) ) );
 	}
 
 	/**
