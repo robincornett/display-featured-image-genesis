@@ -16,10 +16,11 @@
  */
 class Display_Featured_Image_Genesis {
 
-	function __construct( $common, $description, $output, $settings ) {
+	function __construct( $common, $description, $output, $rss, $settings ) {
 		$this->common   = $common;
 		$this->archive  = $description;
 		$this->output   = $output;
+		$this->rss      = $rss;
 		$this->settings = $settings;
 	}
 
@@ -35,7 +36,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
-		add_action( 'template_redirect', array( $this->output, 'maybe_do_feed' ) );
+		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
 
 	}
 
