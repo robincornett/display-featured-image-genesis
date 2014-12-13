@@ -20,6 +20,17 @@ _Note: although this plugin requires the [Genesis Framework by StudioPress](http
 
 __Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
 
+#### New: Add Your Featured Image to Your RSS Feed
+
+Now you can add the Featured Image from each post to your RSS feed. This is an optional setting and applied intelligently:
+
+* if your feed is set to output the full text, the Featured Image will be added to the beginning of your post content as a full width image.
+* if your feed is set to output only the summary of your content, the Featured image will be added to the beginning of your summary as a thumbnail, aligned to the left.
+
+You can check/change your feed settings on your site's Settings > Reading page.
+
+_If you are already inserting your Featured Image into your feed through another function or plugin, you'll want to remove that before activating this feature; otherwise you will have two copies of the image added to your feed!_
+
 #### Simple Styling
 
 __Display Featured Image for Genesis__ has some styling built in but I have intentionally tried to keep it minimal. All styling is for the backstretch image options, as the large options seem pretty straightforward. Stying for titles are largely inherited from your theme--for example, the title will use the same size and font for your page titles, whether you are using a Featured Image or not. Some styles you can incorporate into your own theme:
@@ -29,15 +40,6 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 * `.featured-image-overlay` style appended to the post/page title if Move Excerpts option _is not_ selected (default).
 * `.excerpt` (for single posts/pages) and `.archive-description` (for archives) are styled as a unit. These are the containers for the post/page/archive/taxonomy title and description if the Move Excerpts option _is_ selected.
 * `.featured` is appended to the large image output directly above the post/page content.
-
-#### New: Add Your Featured Image to Your RSS Feed
-
-Now you can add the Featured Image from each post to your RSS feed. This is an optional setting and applied intelligently:
-
-* if your feed is set to output the full text, the Featured Image will be added to the beginning of your post content as a full width image.
-* if your feed is set to output only the summary of your content, the Featured image will be added to the beginning of your summary as a thumbnail, aligned to the left.
-
-You can check/change your feed settings on your site's Settings > Reading page.
 
 ## Requirements
 * WordPress 3.8, tested up to 4.1
@@ -149,7 +151,7 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 
 ## Changelog
 
-### x.y.z (in process)
+### 1.5.0 - 2014-12-13
 * added new setting to include Featured Image in RSS feeds
 * added fallback image output if js is disabled
 * fixed output if user is using Photon (the Jetpack module)

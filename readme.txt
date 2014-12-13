@@ -2,10 +2,10 @@
 
 Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
-Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails
+Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 3.8
-Tested up to: 4.0
-Stable tag: 1.4.3
+Tested up to: 4.1
+Stable tag: 1.5.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -27,6 +27,17 @@ _Note: although this plugin requires the [Genesis Framework by StudioPress](http
 = An Image for Every Page =
 
 __Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
+
+= New: Add Your Featured Image to Your RSS Feed =
+
+Now you can add the Featured Image from each post to your RSS feed. This is an optional setting and applied intelligently:
+
+* if your feed is set to output the full text, the Featured Image will be added to the beginning of your post content as a full width image.
+* if your feed is set to output only the summary of your content, the Featured image will be added to the beginning of your summary as a thumbnail, aligned to the left.
+
+You can check/change your feed settings on your site's Settings > Reading page.
+
+_If you are already inserting your Featured Image into your feed through another function or plugin, you'll want to remove that before activating this feature; otherwise you will have two copies of the image added to your feed!_
 
 = Simple Styling =
 
@@ -106,10 +117,16 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 2. Set a Default Featured Image on the Appearance > Display Featured Image Settings page.
 
 == Upgrade Notice ==
-= 1.4.3 =
-better decision making process, scripts moved to footer, photon support
+= 1.5.0 =
+New feature! Add featured image to your RSS feed.
 
 == Changelog ==
+
+= 1.5.0 =
+* added new setting to include Featured Image in RSS feeds
+* added fallback image output if js is disabled
+* fixed output if user is using Photon (the Jetpack module)
+* fixed output for large image (not backstretch)
 
 = 1.4.3 =
 * better decision making process for firing up scripts/styles

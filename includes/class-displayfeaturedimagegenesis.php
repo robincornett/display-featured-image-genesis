@@ -98,7 +98,7 @@ class Display_Featured_Image_Genesis {
 	/**
 	 * check existing settings array to see if a setting is in the array
 	 * @return updated setting updates to default (0)
-	 * @since  x.y.z
+	 * @since  1.5.0
 	 */
 	public function check_settings() {
 
@@ -111,7 +111,7 @@ class Display_Featured_Image_Genesis {
 
 		if ( empty( $displaysetting['feed_image'] ) ) {
 			$this->update_settings( array(
-				'feed_image'    => 0
+				'feed_image' => 0
 			) );
 		}
 
@@ -120,7 +120,7 @@ class Display_Featured_Image_Genesis {
 	/**
 	 * Takes an array of new settings, merges them with the old settings, and pushes them into the database.
 	 *
-	 * @since x.y.z
+	 * @since 1.5.0
 	 *
 	 * @param string|array $new     New settings. Can be a string, or an array.
 	 * @param string       $setting Optional. Settings field name. Default is displayfeaturedimagegenesis.

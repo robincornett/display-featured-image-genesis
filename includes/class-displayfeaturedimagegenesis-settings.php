@@ -202,7 +202,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * option to add images to feed
 	 * @return 0 1 checkbox
 	 *
-	 * @since  x.y.z
+	 * @since  1.5.0
 	 */
 	public function add_image_to_feed() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[feed_image]" value="0" />';

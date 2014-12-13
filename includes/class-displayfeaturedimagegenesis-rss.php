@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_RSS {
 	 * Decide whether or not to add the featured image to the feed or the feed excerpt
 	 *
 	 * @return filter the_excerpt_rss (if summaries) or the_content_feed (full text)
-	 * @since  x.y.z
+	 * @since  1.5.0
 	 */
 	public function maybe_do_feed() {
 
@@ -42,7 +42,7 @@ class Display_Featured_Image_Genesis_RSS {
 	 * includes allowances for Send Images to RSS plugin, which processes before this
 	 *
 	 * @param return $content
-	 * @since  x.y.z
+	 * @since  1.5.0
 	 */
 	public function add_image_to_feed( $content ) {
 
