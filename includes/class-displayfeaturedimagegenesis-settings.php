@@ -70,6 +70,7 @@ class Display_Featured_Image_Genesis_Settings {
 			'less_header'   => 0,
 			'default'       => '',
 			'exclude_front' => 0,
+			'keep_titles'   => 0,
 			'move_excerpts' => 0,
 			'feed_image'    => 0
 		);
@@ -103,6 +104,14 @@ class Display_Featured_Image_Genesis_Settings {
 			'displayfeaturedimagegenesis[exclude_front]',
 			'<label for="displayfeaturedimagegenesis[exclude_front]">' . __( 'Skip Front Page', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'exclude_front' ),
+			'displayfeaturedimagegenesis',
+			'display_featured_image_section'
+		);
+
+		add_settings_field(
+			'displayfeaturedimagegenesis[keep_titles]',
+			'<label for="displayfeaturedimagegenesis[keep_titles]">' . __( 'Do Not Move Titles', 'display-featured-image-genesis' ) . '</label>',
+			array( $this, 'keep_titles' ),
 			'displayfeaturedimagegenesis',
 			'display_featured_image_section'
 		);
@@ -188,6 +197,17 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
+	 * option to not move titles
+	 * @return 0 1 checkbox
+	 *
+	 * @since  x.y.z
+	 */
+	public function keep_titles() {
+		echo '<input type="hidden" name="displayfeaturedimagegenesis[keep_titles]" value="0" />';
+		echo '<label for="displayfeaturedimagegenesis[keep_titles]"><input type="checkbox" name="displayfeaturedimagegenesis[keep_titles]" id="displayfeaturedimagegenesis[keep_titles]" value="1"' . checked( 1, esc_attr( $this->displaysetting['keep_titles'] ), false ) . ' class="code" />' . __( 'Do not move the titles to overlay the Featured Image.', 'display-featured-image-genesis' ) . '</label>';
+	}
+
+	/**
 	 * option to move excerpts to leader image area
 	 * @return 0 1 checkbox
 	 *
@@ -229,6 +249,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$new_value['default']       = $this->validate_image( $new_value['default'] );
 
 		$new_value['exclude_front'] = $this->one_zero( $new_value['exclude_front'] );
+
+		$new_value['keep_titles']   = $this->one_zero( $new_value['keep_titles'] );
 
 		$new_value['move_excerpts'] = $this->one_zero( $new_value['move_excerpts'] );
 

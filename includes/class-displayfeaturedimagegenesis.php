@@ -115,6 +115,13 @@ class Display_Featured_Image_Genesis {
 			) );
 		}
 
+		//* new setting for titles added in x.y.z
+		if ( empty( $displaysetting['keep_titles'] ) ) {
+			$this->update_settings( array(
+				'keep_titles' => 0
+			) );
+		}
+
 	}
 
 	/**

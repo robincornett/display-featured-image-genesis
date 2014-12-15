@@ -103,20 +103,23 @@ class Display_Featured_Image_Genesis_Output {
 	public function do_backstretch_image_title() {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$keep_titles    = $displaysetting['keep_titles'];
 
-		if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
-			remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
-			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
+		if ( ! $keep_titles ) {
+			if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
+				remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
+				remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
+			}
+
+			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
+			remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
+			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 		}
-
-		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
-		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
-		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 
 		echo '<div class="big-leader">';
 		echo '<div class="wrap">';
 
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts  = $displaysetting['move_excerpts'];
 
 		//* if move excerpts is enabled
@@ -130,7 +133,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		}
 
-		else {
+		elseif ( ! $keep_titles ) {
 
 			if ( ! empty( $item->title ) && ! is_front_page() ) {
 				echo '<h1 class="entry-title featured-image-overlay">' . esc_attr( $item->title ) . '</h1>';
