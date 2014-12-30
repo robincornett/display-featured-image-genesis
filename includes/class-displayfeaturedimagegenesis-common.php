@@ -64,6 +64,14 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_singular() && ( $width > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
 			$image_id = get_post_thumbnail_id( $post->ID );
 		}
+
+		elseif ( is_category() || is_tax() ) {
+			$term      = get_queried_object();
+			$t_id      = $term->term_id;
+			$term_meta = get_option( "taxonomy_$t_id" );
+			$image_id  = self::get_image_id( $term_meta['dfig_image'] );
+		}
+
 		//now actually set the backstretch image source, which includes some metadata
 		$metadata = wp_get_attachment_metadata( $image_id );
 
