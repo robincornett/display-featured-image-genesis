@@ -77,25 +77,4 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		}
 	}
 
-	/**
-	 * enqueue admin scripts
-	 * @return scripts to use image uploader
-	 *
-	 * @since  1.2.1
-	 */
-	public function enqueue_scripts() {
-		$version = Display_Featured_Image_Genesis_Common::$version;
-
-		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
-
-		if ( ! empty( get_current_screen()->taxonomy ) ) {
-			wp_enqueue_media();
-			wp_enqueue_script( 'displayfeaturedimage-upload' );
-			wp_localize_script( 'displayfeaturedimage-upload', 'objectL10n', array(
-				'text' => __( 'Choose Image', 'display-featured-image-genesis' ),
-			) );
-		}
-
-	}
-
 }

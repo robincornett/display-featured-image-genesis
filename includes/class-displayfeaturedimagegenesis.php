@@ -39,6 +39,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
 		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 	}
 
@@ -145,6 +146,27 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'display-featured-image-genesis', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * enqueue admin scripts
+	 * @return scripts to use image uploader
+	 *
+	 * @since  1.2.1
+	 */
+	public function enqueue_scripts() {
+		$version = Display_Featured_Image_Genesis_Common::$version;
+
+		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
+
+		if ( 'appearance_page_displayfeaturedimagegenesis' === get_current_screen()->id || ! empty( get_current_screen()->taxonomy ) ) {
+			wp_enqueue_media();
+			wp_enqueue_script( 'displayfeaturedimage-upload' );
+			wp_localize_script( 'displayfeaturedimage-upload', 'objectL10n', array(
+				'text' => __( 'Choose Image', 'display-featured-image-genesis' ),
+			) );
+		}
+
 	}
 
 }
