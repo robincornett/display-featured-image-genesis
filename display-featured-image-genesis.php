@@ -31,6 +31,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesi
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-output.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-rss.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-settings.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-taxonomies.php';
 
 // Instantiate dependent classes
 $displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();
@@ -38,13 +39,15 @@ $displayfeaturedimagegenesis_description = new Display_Featured_Image_Genesis_De
 $displayfeaturedimagegenesis_output      = new Display_Featured_Image_Genesis_Output();
 $displayfeaturedimagegenesis_rss         = new Display_Featured_Image_Genesis_RSS();
 $displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Settings();
+$displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies();
 
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_common,
 	$displayfeaturedimagegenesis_description,
 	$displayfeaturedimagegenesis_output,
 	$displayfeaturedimagegenesis_rss,
-	$displayfeaturedimagegenesis_settings
+	$displayfeaturedimagegenesis_settings,
+	$displayfeaturedimagegenesis_taxonomies
 );
 
 $displayfeaturedimage->run();
