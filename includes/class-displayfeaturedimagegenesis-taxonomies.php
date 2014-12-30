@@ -17,8 +17,6 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			add_action( $taxonomy->name . '_edit_form_fields', array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
 			add_action( 'edited_' . $taxonomy->name, array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
 			add_action( 'create_' . $taxonomy->name, array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
-
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		}
 	}
 
@@ -28,7 +26,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		//* this will add the custom meta field to the add new term page
 		echo '<div class="form-field">';
 			echo '<label for="term_meta[dfig_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
-			echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" value="" />';
+			echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" style="width:200px;" />';
 			echo '<input id="upload_default_image" type="button" class="upload_term_meta_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			echo '<p>' . __( 'Set Featured Image for Taxonomy','display-featured-image-genesis' ) . '</p>';
 		echo '</div>';
@@ -54,7 +52,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 						echo '<img src="' . esc_url( $preview[0] ) . '" width="300" />';
 						echo '</div>';
 					}
-					echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" value="' . esc_url( $term_meta['dfig_image'] ) . '" />';
+					echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" value="' . esc_url( $term_meta['dfig_image'] ) . '" style="width:200px;" />';
 					echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 					echo '<p>' . __( 'Set Featured Image for Taxonomy', 'display-featured-image-genesis' ) . '</p>';
 				echo '</td>';
@@ -69,12 +67,83 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			$cat_keys  = array_keys( $_POST['term_meta'] );
 			foreach ( $cat_keys as $key ) {
 				if ( isset ( $_POST['term_meta'][$key] ) ) {
-					$term_meta[$key] = $_POST['term_meta'][$key];
+					$term_meta[$key] = $this->validate_image( $_POST['term_meta'][$key] );
 				}
 			}
 			//* Save the option array.
 			update_option( "taxonomy_$t_id", $term_meta );
 		}
+	}
+
+	/**
+	 * Returns previous value for image if not correct file type/size
+	 * @param  string $new_value New value
+	 * @return string            New or previous value, depending on allowed image size.
+	 * @since  1.2.2
+	 */
+	protected function validate_image( $new_value ) {
+
+		$new_value = esc_url( $new_value );
+		$valid     = $this->is_valid_img_ext( $new_value );
+		$large     = get_option( 'large_size_w' );
+		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		$metadata  = wp_get_attachment_metadata( $id );
+		$width     = $metadata['width'];
+
+		// ok for field to be empty
+		if ( $new_value ) {
+
+			if ( ! $valid ) {
+				$message   = __( 'Sorry, that is an invalid file type. The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
+				$new_value = $this->displaysetting['default'];
+
+				add_settings_error(
+					$this->displaysetting['default'],
+					esc_attr( 'invalid' ),
+					$message,
+					'error'
+				);
+			}
+			// if file is an image, but is too small, throw it back
+			elseif ( $width <= $large ) {
+				$message   = __( 'Sorry, your image is too small. The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
+				$new_value = $this->displaysetting['default'];
+
+				add_settings_error(
+					$this->displaysetting['default'],
+					esc_attr( 'weetiny' ),
+					$message,
+					'error'
+				);
+			}
+
+		}
+
+		return $new_value;
+	}
+
+	/**
+	 * returns file extension
+	 * @since  1.2.2
+	 */
+	protected function get_file_ext( $file ) {
+		$parsed = @parse_url( $file, PHP_URL_PATH );
+		return $parsed ? strtolower( pathinfo( $parsed, PATHINFO_EXTENSION ) ) : false;
+	}
+
+	/**
+	 * check if file type is image
+	 * @return file       check file extension against list
+	 * @since  1.2.2
+	 */
+	protected function is_valid_img_ext( $file ) {
+		$file_ext = $this->get_file_ext( $file );
+
+		$this->valid = empty( $this->valid )
+			? (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) )
+			: $this->valid;
+
+		return ( $file_ext && in_array( $file_ext, $this->valid ) );
 	}
 
 }
