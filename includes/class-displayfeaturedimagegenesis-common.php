@@ -31,10 +31,9 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
-		$post            = get_post();
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
-			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( $post->ID ) ); // needed only for the next line
+			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
 			$width = '';
 			if ( $thumb_metadata ) {
 				$width = $thumb_metadata['width'];
@@ -70,7 +69,7 @@ class Display_Featured_Image_Genesis_Common {
 		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
 		elseif ( is_singular() ) {
 			if ( ( $width > $item->medium ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
-				$image_id = get_post_thumbnail_id( $post->ID );
+				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 			elseif ( ! has_post_thumbnail() || $width <= $item->medium ) {
 				$taxonomies = get_taxonomies();
