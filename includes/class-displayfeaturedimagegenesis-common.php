@@ -73,13 +73,15 @@ class Display_Featured_Image_Genesis_Common {
 			}
 			elseif ( ! has_post_thumbnail() || $width <= $item->medium ) {
 				$taxonomies = get_taxonomies();
-				$args       = array( 'fields' => 'ids', 'orderby' => 'term_group', 'order' => 'DESC' );
+				$args       = array( 'orderby' => 'term_group', 'order' => 'ASC' );
 				$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
+				usort( $terms, array( __CLASS__, 'tax_term_compare' ) );
 
-				foreach ( $terms as $t_id ) {
+				foreach ( $terms as $term ) {
+					$t_id      = $term->term_id;
 					$term_meta = get_option( "taxonomy_$t_id" );
 					if ( $term_meta['dfig_image'] ) {
-						$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['dfig_image'] );
+						$image_id = self::get_image_id( $term_meta['dfig_image'] );
 					}
 				}
 			}
@@ -152,6 +154,20 @@ class Display_Featured_Image_Genesis_Common {
 
 		return $item;
 
+	}
+
+	/**
+	 * compare multiple taxonomies
+	 * @param  taxonomy $a each taxonomy assigned to a post
+	 * @param  name $b the slug of each taxonomy
+	 * @return list    list of terms, ordered by taxonomy, then slug
+	 * @since  x.y.z
+	 */
+	protected static function tax_term_compare( $a, $b ) {
+		if ( $a->taxonomy == $b->name ) {
+			return ( $a->taxonomy < $b->name ) ? -1 : 1;
+		}
+		return ( $a->taxonomy <  $b->name ) ? -1 : 1;
 	}
 
 
