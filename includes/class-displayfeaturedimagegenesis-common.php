@@ -60,16 +60,16 @@ class Display_Featured_Image_Genesis_Common {
 		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) {
 			$image_id = $postspage_image;
 		}
-		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
-		elseif ( is_singular() && ( $width > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
-			$image_id = get_post_thumbnail_id( $post->ID );
-		}
-
+		// taxonomy
 		elseif ( is_category() || is_tax() ) {
 			$term      = get_queried_object();
 			$t_id      = $term->term_id;
 			$term_meta = get_option( "taxonomy_$t_id" );
 			$image_id  = self::get_image_id( $term_meta['dfig_image'] );
+		}
+		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
+		elseif ( is_singular() && ( $width > $item->medium || empty( $item->fallback ) ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
+			$image_id = get_post_thumbnail_id( $post->ID );
 		}
 
 		//now actually set the backstretch image source, which includes some metadata
