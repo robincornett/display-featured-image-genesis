@@ -18,7 +18,9 @@ _Note: although this plugin requires the [Genesis Framework by StudioPress](http
 
 #### An Image for Every Page
 
-__Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
+__Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
+
+As of version x.y.z, you can now set a Featured Image for each taxonomy (categories, tags, and any taxonomy for custom post types). This image will be used on taxonomy archives, and as a fallback image for posts within that taxonomy if no featured image exists (or if the featured image is too small).
 
 #### New: Add Your Featured Image to Your RSS Feed
 
@@ -150,6 +152,10 @@ _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, a
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+### x.y.z
+* added featured images to taxonomies!
+* added new setting to not move post titles to overlay Featured Image
 
 ### 1.5.0 - 2014-12-13
 * added new setting to include Featured Image in RSS feeds
