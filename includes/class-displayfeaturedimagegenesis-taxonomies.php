@@ -54,7 +54,10 @@ class Display_Featured_Image_Genesis_Taxonomies {
 					}
 					echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" value="' . esc_url( $term_meta['dfig_image'] ) . '" style="width:200px;" />';
 					echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
-					echo '<p>' . __( 'Set Featured Image for Taxonomy', 'display-featured-image-genesis' ) . '</p>';
+					echo '<p class="description">' . sprintf(
+						__( 'Set Featured Image for %s', 'display-featured-image-genesis' ),
+						$term->name
+					) . '</p>';
 				echo '</td>';
 		echo '</tr>';
 	}
