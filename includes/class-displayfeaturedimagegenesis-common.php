@@ -24,7 +24,6 @@ class Display_Featured_Image_Genesis_Common {
 	public static function get_image_variables() {
 
 		$item = new stdClass();
-		global $post;
 
 		// variables internal to this function
 		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
@@ -32,6 +31,7 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
+		$post            = get_post();
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
 			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( $post->ID ) ); // needed only for the next line
