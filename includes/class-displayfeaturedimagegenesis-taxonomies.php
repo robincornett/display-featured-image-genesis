@@ -67,7 +67,10 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			$cat_keys  = array_keys( $_POST['term_meta'] );
 			foreach ( $cat_keys as $key ) {
 				if ( isset ( $_POST['term_meta'][$key] ) ) {
-					$term_meta[$key] = $this->validate_image( $_POST['term_meta'][$key] );
+					$term_meta[$key] = $_POST['term_meta'][$key];
+					if ( ['term_meta']['dfig_image'] === $term_meta[$key] ) {
+						$term_meta[$key] = $this->validate_image( $_POST['term_meta'][$key] );
+					}
 				}
 			}
 			//* Save the option array.
@@ -89,32 +92,14 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
+		$t_id      = $term_id;
+		$term_meta = get_option( "taxonomy_$t_id" );
 
 		// ok for field to be empty
 		if ( $new_value ) {
 
-			if ( ! $valid ) {
-				$message   = __( 'Sorry, that is an invalid file type. The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
-				$new_value = $this->displaysetting['default'];
-
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'invalid' ),
-					$message,
-					'error'
-				);
-			}
-			// if file is an image, but is too small, throw it back
-			elseif ( $width <= $large ) {
-				$message   = __( 'Sorry, your image is too small. The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
-				$new_value = $this->displaysetting['default'];
-
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'weetiny' ),
-					$message,
-					'error'
-				);
+			if ( ! $valid || $width <= $large ) {
+				$new_value = $term_meta['dfig_image'];
 			}
 
 		}
