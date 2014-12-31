@@ -105,6 +105,7 @@ class Display_Featured_Image_Genesis_Common {
 		// declare this last so that $item->backstretch is set.
 		if ( ! is_admin() && is_singular() ) {
 			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
+			$post          = get_post();
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 			// reset backstretch image source to fallback if it exists and the featured image is being used in content.
 			if ( ! empty( $item->fallback ) && false !== $item->content ) {
