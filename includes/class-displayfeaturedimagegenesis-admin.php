@@ -1,13 +1,23 @@
 <?php
 
 /**
- * admin columns
+ * Dependent class to establish/display columns for featured images
  *
  * @package DisplayFeaturedImageGenesis
+ * @author    Robin Cornett <hello@robincornett.com>
+ * @license   GPL-2.0+
+ * @link      http://robincornett.com
+ * @copyright 2014 Robin Cornett Creative, LLC
  * @since x.y.z
  */
+
 class Display_Featured_Image_Genesis_Admin {
 
+	/**
+	 * set up new column for all public taxonomies
+	 *
+	 * @since  x.y.z
+	 */
 	public function set_up_taxonomy_columns() {
 		$args       = array(
 			'public' => true
@@ -20,6 +30,11 @@ class Display_Featured_Image_Genesis_Admin {
 		}
 	}
 
+	/**
+	 * set up new column for all public post types
+	 *
+	 * @since  x.y.z
+	 */
 	public function set_up_post_type_columns() {
 		$args       = array(
 			'public'   => true,
@@ -35,6 +50,12 @@ class Display_Featured_Image_Genesis_Admin {
 		}
 	}
 
+	/**
+	 * add featured image column
+	 * @param column $columns set up new column to show featured image for taxonomies/posts/etc.
+	 *
+	 * @since x.y.z
+	 */
 	public function add_column( $columns ) {
 
 		$new_columns = $columns;
@@ -46,6 +67,15 @@ class Display_Featured_Image_Genesis_Admin {
 
 	}
 
+	/**
+	 * manage new taxonomy column
+	 * @param  blank $value   blank (because WP)
+	 * @param  column id $column  column id is featured_image
+	 * @param  term id $term_id term_id for taxonomy
+	 * @return featured image          display featured image, if it exists, for each term in a public taxonomy
+	 *
+	 * @since x.y.z
+	 */
 	public function manage_taxonomy_column( $value, $column, $term_id ) {
 
 		if ( 'featured_image' === $column ) {
@@ -59,6 +89,14 @@ class Display_Featured_Image_Genesis_Admin {
 
 	}
 
+	/**
+	 * manage new post_type column
+	 * @param  column id $column  column id is featured_image
+	 * @param  post id $post_id id of each post
+	 * @return featured image          display featured image, if it exists, for each post
+	 *
+	 * @since x.y.z
+	 */
 	public function custom_post_columns( $column, $post_id ) {
 
 		if ( 'featured_image' === $column ) {
@@ -69,6 +107,5 @@ class Display_Featured_Image_Genesis_Admin {
 		}
 
 	}
-
 
 }
