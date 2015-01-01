@@ -34,7 +34,7 @@ class Display_Featured_Image_Genesis {
 
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
-		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ), 10, 2 );
+		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
