@@ -13,10 +13,13 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		$output     = 'objects';
 		$taxonomies = get_taxonomies( $args, $output );
 		foreach ( $taxonomies as $taxonomy ) {
-			add_action( $taxonomy->name . '_add_form_fields', array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
-			add_action( $taxonomy->name . '_edit_form_fields', array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
-			add_action( 'edited_' . $taxonomy->name, array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
-			add_action( 'create_' . $taxonomy->name, array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( "{$taxonomy->name}_add_form_fields", array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
+			add_action( "{$taxonomy->name}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
+			add_action( "edited_{$taxonomy->name}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( "create_{$taxonomy->name}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
+
+			add_filter( "manage_edit-{$taxonomy->name}_columns", array( $this, 'add_column' ) );
+			add_action( "manage_{$taxonomy->name}_custom_column", array( $this, 'manage_column' ), 10, 3 );
 		}
 	}
 
@@ -132,6 +135,33 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			: $this->valid;
 
 		return ( $file_ext && in_array( $file_ext, $this->valid ) );
+	}
+
+	public function add_column( $columns ) {
+
+		$columns = array(
+			'cb'             => '<input type="checkbox" />',
+			'featured_image' => __( 'Featured Image', 'display-featured-image-genesis' ),
+			'name'           => __( 'Name', 'display-featured-image-genesis' ),
+			'description'    => __( 'Description', 'display-featured-image-genesis' ),
+			'slug'           => __( 'Slug', 'display-featured-image-genesis' ),
+			'posts'          => __( 'Count', 'display-featured-image-genesis' )
+		);
+
+		return $columns;
+
+	}
+
+	public function manage_column( $value, $column, $term_id ) {
+
+		if ( 'featured_image' === $column ) {
+			$term_meta = get_option( "taxonomy_$term_id" );
+			if ( ! empty( $term_meta['dfig_image'] ) ) {
+				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['dfig_image'] );
+				$preview = wp_get_attachment_image_src( $id, array( 75,75 ) );
+				echo '<img src="' . $preview[0] . '" width="75" />';
+			}
+		}
 	}
 
 }
