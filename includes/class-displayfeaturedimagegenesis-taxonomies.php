@@ -17,9 +17,6 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
 			add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
 			add_action( "create_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
-
-			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'add_column' ) );
-			add_action( "manage_{$taxonomy}_custom_column", array( $this, 'manage_column' ), 10, 3 );
 		}
 	}
 
@@ -103,7 +100,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	 * Returns previous value for image if not correct file type/size
 	 * @param  string $new_value New value
 	 * @return string            New or previous value, depending on allowed image size.
-	 * @since  1.2.2
+	 * @since  x.y.z
 	 */
 	protected function validate_image( $new_value ) {
 
@@ -150,53 +147,6 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			: $this->valid;
 
 		return ( $file_ext && in_array( $file_ext, $this->valid ) );
-	}
-
-	public function add_column( $columns ) {
-
-		$columns = array(
-			'cb'             => '<input type="checkbox" />',
-			'featured_image' => __( 'Featured Image', 'display-featured-image-genesis' ),
-			'name'           => __( 'Name', 'display-featured-image-genesis' ),
-			'description'    => __( 'Description', 'display-featured-image-genesis' ),
-			'slug'           => __( 'Slug', 'display-featured-image-genesis' ),
-			'posts'          => __( 'Count', 'display-featured-image-genesis' )
-		);
-
-		return $columns;
-
-	}
-
-	public function manage_column( $value, $column, $term_id ) {
-
-		if ( 'featured_image' === $column ) {
-			$term_meta = get_option( "taxonomy_$term_id" );
-			if ( ! empty( $term_meta['dfig_image'] ) ) {
-				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['dfig_image'] );
-				$preview = wp_get_attachment_image_src( $id, 'thumbnail' );
-				echo '<img src="' . $preview[0] . '" width="60" />';
-			}
-		}
-	}
-
-	public function add_post_columns( $columns ) {
-
-		$new_columns = $columns;
-		array_splice( $new_columns, 1 );
-
-		$new_columns['featured_image'] = __( 'Featured Image', 'display-featured-image-genesis' );
-
-		return array_merge( $new_columns, $columns );
-
-	}
-
-	public function custom_post_columns( $column, $post_id ) {
-		if ( 'featured_image' === $column ) {
-			$image = get_the_post_thumbnail( $post_id, array( 60,60 ) );
-			if ( $image ) {
-				echo $image;
-			}
-		}
 	}
 
 }

@@ -26,6 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 // Include classes
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-admin.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-common.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-description.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-output.php';
@@ -34,6 +35,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesi
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-taxonomies.php';
 
 // Instantiate dependent classes
+$displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
 $displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();
 $displayfeaturedimagegenesis_description = new Display_Featured_Image_Genesis_Description();
 $displayfeaturedimagegenesis_output      = new Display_Featured_Image_Genesis_Output();
@@ -42,6 +44,7 @@ $displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Se
 $displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies();
 
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
+	$displayfeaturedimagegenesis_admin,
 	$displayfeaturedimagegenesis_common,
 	$displayfeaturedimagegenesis_description,
 	$displayfeaturedimagegenesis_output,
