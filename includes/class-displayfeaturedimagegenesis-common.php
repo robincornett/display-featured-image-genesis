@@ -41,6 +41,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// sitewide variables used outside this function
+		$item->backstretch = '';
 		$item->fallback    = esc_attr( $displaysetting['default'] ); // url only
 		$item->fallback_id = self::get_image_id( $item->fallback ); // gets image id with attached metadata
 		$item->large       = absint( get_option( 'large_size_w' ) );
