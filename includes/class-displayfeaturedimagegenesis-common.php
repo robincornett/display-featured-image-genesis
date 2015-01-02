@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public static $version = '1.5.0';
+	public static $version = 'x.y.z';
 
 	/**
 	 * set and retreive variables for the featured image.
@@ -66,9 +66,9 @@ class Display_Featured_Image_Genesis_Common {
 			$term_meta = get_option( "taxonomy_$t_id" );
 			$image_id  = self::get_image_id( $term_meta['dfig_image'] );
 		}
-		// any singular post/page/CPT with either a post_thumbnail larger than medium size OR there is no $item->fallback
-		elseif ( is_singular() ) {
-			if ( ( $width > $item->medium ) && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
+		// any singular post/page/CPT or there is no $item->fallback
+		elseif ( is_singular() && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
+			if ( $width > $item->medium ) {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 			elseif ( ! has_post_thumbnail() || $width <= $item->medium ) {
