@@ -74,7 +74,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 			elseif ( ! has_post_thumbnail() || $width <= $item->medium ) {
 				$taxonomies = get_taxonomies();
-				$args       = array( 'orderby' => 'count', 'order' => 'ASC' );
+				$args       = array( 'orderby' => 'count', 'order' => 'DESC' );
 				$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
 
 				foreach ( $terms as $term ) {
@@ -82,6 +82,7 @@ class Display_Featured_Image_Genesis_Common {
 					$term_meta = get_option( "taxonomy_$t_id" );
 					if ( $term_meta['dfig_image'] ) {
 						$image_id = self::get_image_id( $term_meta['dfig_image'] );
+						break;
 					}
 				}
 			}
