@@ -85,8 +85,12 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			foreach ( $cat_keys as $key ) {
 				if ( isset ( $_POST['term_meta'][$key] ) ) {
 					$term_meta[$key] = $_POST['term_meta'][$key];
-					if ( ['term_meta']['dfig_image'] === $term_meta[$key] ) {
+					if ( $_POST['term_meta']['dfig_image'] === $term_meta[$key] ) {
 						$term_meta[$key] = $this->validate_image( $_POST['term_meta'][$key] );
+
+						// if ( empty( $term_meta[$key] ) ) {
+						// 	$term_meta[$key] = $term_meta['dfig_image'];
+						// }
 					}
 				}
 			}
@@ -110,16 +114,13 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
-		$t_id      = $term_id;
+		$term      = get_queried_object();
+		$t_id      = $term->term_id;
 		$term_meta = get_option( "taxonomy_$t_id" );
 
 		// ok for field to be empty
-		if ( $new_value ) {
-
-			if ( ! $valid || $width <= $large ) {
-				$new_value = $term_meta['dfig_image'];
-			}
-
+		if ( $new_value && ( ! $valid || $width <= $large ) ) {
+			$new_value = $term_meta['dfig_image'];
 		}
 
 		return $new_value;
