@@ -68,7 +68,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 		// any singular post/page/CPT or there is no $item->fallback
 		elseif ( is_singular() && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
-			if ( $width > $item->medium ) {
+			if ( $width > $item->medium && ! in_array( get_post_type(), self::use_tax_image() ) ) {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 			elseif ( ! has_post_thumbnail() || $width <= $item->medium ) {
@@ -241,6 +241,23 @@ class Display_Featured_Image_Genesis_Common {
 		$post_types[] = 'nav_menu_item';
 
 		return apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
+
+	}
+
+	/**
+	 * use the taxonomy image instead of the featured image
+	 * @return filter creates a new filter for themes/plugins to use the taxonomy featured image instead of the singular featured image
+	 *
+	 * @since 1.3.0
+	 */
+	public static function use_tax_image() {
+
+		$post_types   = array();
+		$post_types[] = 'attachment';
+		$post_types[] = 'revision';
+		$post_types[] = 'nav_menu_item';
+
+		return apply_filters( 'display_featured_image_genesis_use_taxonomy', $post_types );
 
 	}
 
