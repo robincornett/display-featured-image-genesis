@@ -79,19 +79,25 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	public function save_taxonomy_custom_meta( $term_id ) {
 
 		if ( isset( $_POST['term_meta'] ) ) {
-			$t_id      = $term_id;
-			$term_meta = get_option( "taxonomy_$t_id" );
-			$cat_keys  = array_keys( $_POST['term_meta'] );
+			$t_id       = $term_id;
+			$term_meta  = get_option( "taxonomy_$t_id" );
+			$cat_keys   = array_keys( $_POST['term_meta'] );
+			$is_updated = false;
 			foreach ( $cat_keys as $key ) {
 				if ( isset ( $_POST['term_meta'][$key] ) ) {
 					$term_meta[$key] = $_POST['term_meta'][$key];
 					if ( $_POST['term_meta']['dfig_image'] === $term_meta[$key] ) {
 						$term_meta[$key] = $this->validate_image( $_POST['term_meta'][$key] );
+						if ( false !== $term_meta[$key] ) {
+							$is_updated = true;
+						}
 					}
 				}
 			}
 			//* Save the option array.
-			update_option( "taxonomy_$t_id", $term_meta );
+			if ( $is_updated ) {
+				update_option( "taxonomy_$t_id", $term_meta );
+			}
 		}
 
 	}
@@ -113,7 +119,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 		// ok for field to be empty
 		if ( $new_value && ( ! $valid || $width <= $large ) ) {
-			$new_value = $term_meta['dfig_image'];
+			$new_value = false;
 		}
 
 		return $new_value;
