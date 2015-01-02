@@ -45,8 +45,10 @@ class Display_Featured_Image_Genesis_Admin {
 		$post_types['post'] = 'post';
 		$post_types['page'] = 'page';
 		foreach ( $post_types as $post_type ) {
-			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'add_column' ) );
-			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'custom_post_columns' ), 10, 2 );
+			if ( post_type_supports( $post_type, 'thumbnail' ) ) {
+				add_filter( "manage_{$post_type}_posts_columns", array( $this, 'add_column' ) );
+				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'custom_post_columns' ), 10, 2 );
+			}
 		}
 	}
 
