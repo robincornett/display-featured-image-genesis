@@ -8,8 +8,13 @@
  */
 class Display_Featured_Image_Genesis_Taxonomies {
 
-	function set_taxonomy_meta() {
-		$args       = array( 'public' => true );
+	/**
+	 * set up all actions for adding featured images to taxonomies
+	 */
+	public function set_taxonomy_meta() {
+		$args       = array(
+			'public' => true
+		);
 		$output     = 'names';
 		$taxonomies = get_taxonomies( $args, $output );
 		foreach ( $taxonomies as $taxonomy ) {
@@ -20,25 +25,11 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		}
 	}
 
-	function add_columns_post_types() {
-		$args = array(
-			'public'   => true,
-			'_builtin' => false,
-		);
-		$output = 'names';
-		$post_types = get_post_types( $args, $output );
-		$post_types['post'] = 'post';
-		$post_types['page'] = 'page';
-		foreach ( $post_types as $post_type ) {
-			add_filter( "manage_{$post_type}_posts_columns", array( $this, 'add_post_columns' ) );
-			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'custom_post_columns' ), 10, 2 );
-		}
-	}
+	/**
+	 * add featured image uploader to new taxonomy add
+	 */
+	public function add_taxonomy_meta_fields() {
 
-
-	function add_taxonomy_meta_fields() {
-
-		//* this will add the custom meta field to the add new term page
 		echo '<div class="form-field">';
 			echo '<label for="term_meta[dfig_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
 			echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" style="width:200px;" />';
@@ -48,15 +39,16 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 	}
 
-	//* Edit term page
-	function edit_taxonomy_meta_fields( $term ) {
+	/**
+	 * edit term page
+	 * @param  term $term featured image input/display for individual term page
+	 * @return preview/uploader       upload/preview featured image for term
+	 */
+	public function edit_taxonomy_meta_fields( $term ) {
 
-		//* put the term ID into a variable
-		$t_id = $term->term_id;
-
-		//* retrieve the existing value(s) for this meta field. This returns an array
+		$t_id      = $term->term_id;
 		$term_meta = get_option( "taxonomy_$t_id" );
-		//* this will add the custom meta field to the add new term page
+
 		echo '<tr class="form-field">';
 			echo '<th scope="row" valign="top"><label for="term_meta[dfig_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label></th>';
 				echo '<td>';
@@ -77,8 +69,15 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		echo '</tr>';
 	}
 
-	//* Save extra taxonomy fields callback function.
-	function save_taxonomy_custom_meta( $term_id ) {
+	/**
+	 * Save extra taxonomy fields callback function.
+	 * @param  term id $term_id the id of the term
+	 * @return updated option          updated option for term featured image
+	 *
+	 * @since x.y.z
+	 */
+	public function save_taxonomy_custom_meta( $term_id ) {
+
 		if ( isset( $_POST['term_meta'] ) ) {
 			$t_id      = $term_id;
 			$term_meta = get_option( "taxonomy_$t_id" );
@@ -94,6 +93,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			//* Save the option array.
 			update_option( "taxonomy_$t_id", $term_meta );
 		}
+
 	}
 
 	/**
