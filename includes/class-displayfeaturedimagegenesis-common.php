@@ -64,7 +64,7 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_post_type_archive() ) {
 			$object    = get_queried_object();
 			$post_type = $object->name;
-			if ( isset( $displaysetting['post_type'][$post_type] ) ) {
+			if ( $displaysetting['post_type'][$post_type] ) {
 				$image_id  = self::get_image_id( $displaysetting['post_type'][$post_type] );
 			}
 		}
