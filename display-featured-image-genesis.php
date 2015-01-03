@@ -28,6 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-admin.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-common.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-customposttypes.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-description.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-output.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-rss.php';
@@ -37,6 +38,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesi
 // Instantiate dependent classes
 $displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
 $displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();
+$displayfeaturedimagegenesis_cpt         = new Display_Featured_Image_Genesis_Custom_Post_Types();
 $displayfeaturedimagegenesis_description = new Display_Featured_Image_Genesis_Description();
 $displayfeaturedimagegenesis_output      = new Display_Featured_Image_Genesis_Output();
 $displayfeaturedimagegenesis_rss         = new Display_Featured_Image_Genesis_RSS();
@@ -46,6 +48,7 @@ $displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Ta
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_admin,
 	$displayfeaturedimagegenesis_common,
+	$displayfeaturedimagegenesis_cpt,
 	$displayfeaturedimagegenesis_description,
 	$displayfeaturedimagegenesis_output,
 	$displayfeaturedimagegenesis_rss,
