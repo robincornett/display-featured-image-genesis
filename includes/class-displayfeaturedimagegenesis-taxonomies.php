@@ -32,8 +32,8 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 		echo '<div class="form-field">';
 			echo '<label for="term_meta[dfig_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
-			echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" style="width:200px;" />';
-			echo '<input id="upload_default_image" type="button" class="upload_term_meta_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+			echo '<input type="url" class="upload_image_url" id="default_image_url" name="term_meta[dfig_image]" style="width:200px;" />';
+			echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			echo '<p>' . __( 'Set Featured Image for Taxonomy','display-featured-image-genesis' ) . '</p>';
 		echo '</div>';
 
@@ -60,7 +60,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 						echo '<img src="' . esc_url( $preview[0] ) . '" width="300" />';
 						echo '</div>';
 					}
-					echo '<input type="url" id="default_image_url" name="term_meta[dfig_image]" value="' . esc_url( $term_meta['dfig_image'] ) . '" style="width:200px;" />';
+					echo '<input type="url" class="upload_image_url" id="default_image_url" name="term_meta[dfig_image]" value="' . esc_url( $term_meta['dfig_image'] ) . '" style="width:200px;" />';
 					echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 					echo '<p class="description">' . sprintf(
 						__( 'Set Featured Image for %1$s. Must be at least %2$s pixels wide.', 'display-featured-image-genesis' ),
