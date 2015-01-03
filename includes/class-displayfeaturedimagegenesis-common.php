@@ -64,9 +64,8 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_post_type_archive() ) {
 			$object    = get_queried_object();
 			$post_type = $object->name;
-			$meta      = get_option( 'displayfeaturedimagegenesis-cpt' );
-			if ( isset( $meta[$post_type] ) ) {
-				$image_id  = self::get_image_id( $meta[$post_type] );
+			if ( isset( $displaysetting['post_type'][$post_type] ) ) {
+				$image_id  = self::get_image_id( $displaysetting['post_type'][$post_type] );
 			}
 		}
 		// taxonomy

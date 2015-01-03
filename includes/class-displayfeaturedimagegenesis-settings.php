@@ -15,6 +15,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected $displaysetting;
 
+	protected $post_types;
+
+	public $post_type;
+
 	/**
 	 * add a submenu page under Appearance
 	 * @return submenu Display Featured image settings page
@@ -132,6 +136,40 @@ class Display_Featured_Image_Genesis_Settings {
 			'display_featured_image_section'
 		);
 
+		$args = array(
+			'public'      => true,
+			'_builtin'    => false,
+			'has_archive' => true,
+		);
+		$output = 'objects';
+
+		$this->post_types = get_post_types( $args, $output );
+
+		if ( $this->post_types ) {
+			add_settings_section(
+				'display_featured_image_custom_post_types',
+				__( 'CPT Featured Images', 'display-featured-image-genesis' ),
+				array( $this, 'cpt_section_description' ),
+				'displayfeaturedimagegenesis'
+			);
+
+			// foreach ( $this->post_types as $post_type ) {
+
+				add_settings_field(
+					"displayfeaturedimagegenesis[post_types]",
+					__( ' Featured Image', 'display-featured-image-genesis' ),
+					array( $this, 'set_cpt_image' ),
+					'displayfeaturedimagegenesis',
+					'display_featured_image_custom_post_types'
+					// array( 'label for' => 'displayfeaturedimagegenesis' . $post_type->name )
+				);
+
+				// $this->post_type = $post_type->name;
+
+			// }
+
+		}
+
 	}
 
 	/**
@@ -142,6 +180,16 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function section_description() {
 		echo '<p>' . __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) . '</p>';
+	}
+
+	/**
+	 * Section description
+	 * @return section description
+	 *
+	 * @since 1.1.0
+	 */
+	public function cpt_section_description() {
+		echo '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>';
 	}
 
 	/**
@@ -175,12 +223,48 @@ class Display_Featured_Image_Genesis_Settings {
 			echo '<img src="' . esc_url( $preview[0] ) . '" />';
 			echo '</div>';
 		}
-		echo '<input type="url" id="default_image_url" name="displayfeaturedimagegenesis[default]" value="' . esc_url( $this->displaysetting['default'] ) . '" />';
+		echo '<input type="url" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[default]" value="' . esc_url( $this->displaysetting['default'] ) . '" />';
 		echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $item->large + 1 )
 		) . '</p>';
+	}
+
+	/**
+	 * Default image uploader
+	 *
+	 * @return  image
+	 *
+	 * @since  1.2.1
+	 */
+	public function set_cpt_image() {
+
+		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+
+		foreach ( $this->post_types as $post_type ) {
+			$post_type = $post_type->name;
+			if ( empty( $this->displaysetting['post_type'][$post_type] ) ) {
+				$this->displaysetting['post_type'][$post_type] = '';
+			}
+			echo '<h3>' . $post_type . '</h3>';
+			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
+				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
+				$preview = wp_get_attachment_image_src( $id, 'medium' );
+				echo '<div id="upload_logo_preview">';
+				echo '<img src="' . esc_url( $preview[0] ) . '" />';
+				echo '</div>';
+			}
+			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
+			echo '<input id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+			echo '<p class="description">' . sprintf(
+				__( 'If you would like to use a featured image for the %1$s archive, upload it here. Must be at least %2$s pixels wide.', 'display-featured-image-genesis' ),
+				$post_type,
+				absint( $item->large + 1 )
+			) . '</p>';
+
+	}
+
 	}
 
 	/**
@@ -253,6 +337,10 @@ class Display_Featured_Image_Genesis_Settings {
 		$new_value['move_excerpts'] = $this->one_zero( $new_value['move_excerpts'] );
 
 		$new_value['feed_image']    = $this->one_zero( $new_value['feed_image'] );
+
+		foreach ( $this->post_types as $post_type ) {
+			$new_value['post_type'][$post_type->name] = $this->validate_image( $new_value['post_type'][$post_type->name] );
+		}
 
 		return $new_value;
 
