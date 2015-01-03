@@ -251,7 +251,7 @@ class Display_Featured_Image_Genesis_Settings {
 				echo '</div>';
 			}
 			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
-			echo '<input id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" type="button" class="upload_default_image button" value="' . sprintf( __( 'Select Image for ', 'display-featured-image-genesis' ), $post->label ) . '" />';
+			echo '<input id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 
 		}
 
