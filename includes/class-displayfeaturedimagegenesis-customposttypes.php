@@ -2,8 +2,7 @@
 
 class Display_Featured_Image_Genesis_Custom_Post_Types {
 
-	protected $post_types;
-	protected $post_type;
+	// protected $post_type;
 
 	public function set_up_cpts() {
 		$args = array(
@@ -13,9 +12,9 @@ class Display_Featured_Image_Genesis_Custom_Post_Types {
 		);
 		$output = 'names';
 
-		$this->post_types = get_post_types( $args, $output );
+		$post_types = get_post_types( $args, $output );
 
-		foreach ( $this->post_types as $post_type ) {
+		foreach ( $post_types as $post_type ) {
 			add_submenu_page(
 				"edit.php?post_type=$post_type",
 				__( 'Featured Image', 'display-featured-image-genesis' ),
@@ -25,9 +24,7 @@ class Display_Featured_Image_Genesis_Custom_Post_Types {
 				array( $this, 'do_settings_form' )
 			);
 
-			register_setting( 'displayfeaturedimagegenesis_cpt', "displayfeaturedimagegenesis-$post_type" /*, array( $this, 'do_validation_things' )*/ );
-
-			$this->post_type = $post_type;
+			register_setting( 'displayfeaturedimagegenesis_cpt', 'displayfeaturedimagegenesis-cpt' /*, array( $this, 'do_validation_things' )*/ );
 
 		}
 
@@ -66,7 +63,7 @@ class Display_Featured_Image_Genesis_Custom_Post_Types {
 		);
 
 		add_settings_field(
-			"displayfeaturedimagegenesis-$this->post_type",
+			'displayfeaturedimagegenesis-cpt',
 			'<label for="displayfeaturedimagegenesis-cpt">' . __( 'Custom Post Type Featured Image', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'set_cpt_image' ),
 			'displayfeaturedimagegenesis_cpt',
@@ -82,7 +79,15 @@ class Display_Featured_Image_Genesis_Custom_Post_Types {
 	 * @since 1.1.0
 	 */
 	public function section_description() {
-		echo '<p>' . __( 'You may optionally set a featured image for the custom post type archive to use.', 'display-featured-image-genesis' ) . '</p>';
+
+		$screen    = get_current_screen();
+		$post_type = $screen->post_type;
+
+		echo '<p>' . sprintf(
+			__( 'You may optionally set a featured image for the %s archive to use.', 'display-featured-image-genesis' ),
+			$post_type
+		) . '</p>';
+
 	}
 
 	/**
@@ -94,21 +99,25 @@ class Display_Featured_Image_Genesis_Custom_Post_Types {
 	 */
 	public function set_cpt_image() {
 
-		$item    = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$screen  = get_current_screen();
-		$setting = get_option( "displayfeaturedimagegenesis-$this->post_type" );
+		$item      = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$screen    = get_current_screen();
+		$post_type = $screen->post_type;
+		$setting   = get_option( 'displayfeaturedimagegenesis-cpt' );
 
-		echo 'is there a ' . $setting;
-		if ( ! empty( $setting['image'] ) ) {
-			$preview = wp_get_attachment_image_src( $setting['image'], 'medium' );
+		if ( empty( $setting[$post_type] ) ) {
+			$setting[$post_type] = '';
+		}
+		if ( ! empty( $setting[$post_type] ) ) {
+			$id      = Display_Featured_Image_Genesis_Common::get_image_id( $setting[$post_type] );
+			$preview = wp_get_attachment_image_src( $id, 'medium' );
 			echo '<div id="upload_logo_preview">';
 			echo '<img src="' . esc_url( $preview[0] ) . '" />';
 			echo '</div>';
 		}
-		echo '<input type="url" id="default_image_url" name="displayfeaturedimagegenesis-$this->post_type" value="' . esc_url( $setting ) . '" />';
+		echo '<input type="url" id="default_image_url" name="displayfeaturedimagegenesis-cpt[' . $post_type . ']" value="' . esc_url( $setting[$post_type] ) . '" />';
 		echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 		echo '<p class="description">' . sprintf(
-			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
+			__( 'If you would like to use a featured image for the custom post type archive, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $item->large + 1 )
 		) . '</p>';
 
