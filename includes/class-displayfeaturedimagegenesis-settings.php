@@ -153,20 +153,14 @@ class Display_Featured_Image_Genesis_Settings {
 				'displayfeaturedimagegenesis'
 			);
 
-			// foreach ( $this->post_types as $post_type ) {
 
-				add_settings_field(
-					"displayfeaturedimagegenesis[post_types]",
-					__( ' Featured Image', 'display-featured-image-genesis' ),
-					array( $this, 'set_cpt_image' ),
-					'displayfeaturedimagegenesis',
-					'display_featured_image_custom_post_types'
-					// array( 'label for' => 'displayfeaturedimagegenesis' . $post_type->name )
-				);
-
-				// $this->post_type = $post_type->name;
-
-			// }
+			add_settings_field(
+				"displayfeaturedimagegenesis[post_types]",
+				__( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ),
+				array( $this, 'set_cpt_image' ),
+				'displayfeaturedimagegenesis',
+				'display_featured_image_custom_post_types'
+			);
 
 		}
 
@@ -242,12 +236,13 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
-		foreach ( $this->post_types as $post_type ) {
-			$post_type = $post_type->name;
+		foreach ( $this->post_types as $post ) {
+
+			$post_type = $post->name;
 			if ( empty( $this->displaysetting['post_type'][$post_type] ) ) {
 				$this->displaysetting['post_type'][$post_type] = '';
 			}
-			echo '<h3>' . $post_type . '</h3>';
+			echo '<h4>' . $post->label . '</h4>';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
 				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
 				$preview = wp_get_attachment_image_src( $id, 'medium' );
@@ -256,14 +251,9 @@ class Display_Featured_Image_Genesis_Settings {
 				echo '</div>';
 			}
 			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
-			echo '<input id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
-			echo '<p class="description">' . sprintf(
-				__( 'If you would like to use a featured image for the %1$s archive, upload it here. Must be at least %2$s pixels wide.', 'display-featured-image-genesis' ),
-				$post_type,
-				absint( $item->large + 1 )
-			) . '</p>';
+			echo '<input id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" type="button" class="upload_default_image button" value="' . sprintf( __( 'Select Image for ', 'display-featured-image-genesis' ), $post->label ) . '" />';
 
-	}
+		}
 
 	}
 
@@ -339,7 +329,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$new_value['feed_image']    = $this->one_zero( $new_value['feed_image'] );
 
 		foreach ( $this->post_types as $post_type ) {
-			$new_value['post_type'][$post_type->name] = $this->validate_image( $new_value['post_type'][$post_type->name] );
+			$new_value['post_type'][$post_type->name] = $this->validate_post_type_image( $new_value['post_type'][$post_type->name] );
 		}
 
 		return $new_value;
@@ -384,6 +374,53 @@ class Display_Featured_Image_Genesis_Settings {
 
 				add_settings_error(
 					$this->displaysetting['default'],
+					esc_attr( 'weetiny' ),
+					$message,
+					'error'
+				);
+			}
+
+		}
+
+		return $new_value;
+	}
+
+	/**
+	 * Returns empty value for image if not correct file type/size
+	 * @param  string $new_value New value
+	 * @return string            New or previous value, depending on allowed image size.
+	 * @since  x.y.z
+	 */
+	protected function validate_post_type_image( $new_value ) {
+
+		$new_value = esc_url( $new_value );
+		$valid     = $this->is_valid_img_ext( $new_value );
+		$large     = get_option( 'large_size_w' );
+		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		$metadata  = wp_get_attachment_metadata( $id );
+		$width     = $metadata['width'];
+
+		// ok for field to be empty
+		if ( $new_value ) {
+
+			if ( ! $valid ) {
+				$message   = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
+				$new_value = '';
+
+				add_settings_error(
+					$this->displaysetting['post_type'],
+					esc_attr( 'invalid' ),
+					$message,
+					'error'
+				);
+			}
+			// if file is an image, but is too small, throw it back
+			elseif ( $width <= $large ) {
+				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
+				$new_value = '';
+
+				add_settings_error(
+					$this->displaysetting['post_type'],
 					esc_attr( 'weetiny' ),
 					$message,
 					'error'
