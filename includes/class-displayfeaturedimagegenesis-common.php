@@ -60,6 +60,15 @@ class Display_Featured_Image_Genesis_Common {
 		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) {
 			$image_id = $postspage_image;
 		}
+
+		elseif ( is_post_type_archive() ) {
+			$object    = get_queried_object();
+			$post_type = $object->name;
+			$meta      = get_option( 'displayfeaturedimagegenesis-cpt' );
+			if ( isset( $meta[$post_type] ) ) {
+				$image_id  = self::get_image_id( $meta[$post_type] );
+			}
+		}
 		// taxonomy
 		elseif ( is_category() || is_tag() || is_tax() ) {
 			$term      = get_queried_object();
