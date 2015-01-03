@@ -16,10 +16,9 @@
  */
 class Display_Featured_Image_Genesis {
 
-	function __construct( $admin, $common, $cpt, $description, $output, $rss, $settings, $taxonomies ) {
+	function __construct( $admin, $common, $description, $output, $rss, $settings, $taxonomies ) {
 		$this->admin      = $admin;
 		$this->common     = $common;
-		$this->cpt        = $cpt;
 		$this->archive    = $description;
 		$this->output     = $output;
 		$this->rss        = $rss;
@@ -40,7 +39,6 @@ class Display_Featured_Image_Genesis {
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
-		add_action( 'admin_menu', array( $this->cpt, 'set_up_cpts' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
 		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
