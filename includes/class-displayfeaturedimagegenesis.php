@@ -37,8 +37,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
 		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
-		add_action( 'admin_init', array( $this->admin, 'set_up_taxonomy_columns' ) );
-		add_action( 'admin_init', array( $this->admin, 'set_up_post_type_columns' ) );
+		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_action( 'admin_menu', array( $this->cpt, 'set_up_cpts' ) );

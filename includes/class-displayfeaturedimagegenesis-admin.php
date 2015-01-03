@@ -13,6 +13,11 @@
 
 class Display_Featured_Image_Genesis_Admin {
 
+	public function set_up_columns() {
+		$this->set_up_taxonomy_columns();
+		$this->set_up_post_type_columns();
+	}
+
 	/**
 	 * set up new column for all public taxonomies
 	 *
