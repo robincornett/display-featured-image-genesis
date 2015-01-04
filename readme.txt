@@ -121,6 +121,15 @@ There's a filter for that, too. For example, adding this to your functions.php f
 
 _Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, all titles and descriptions will move to overlay the leader image.
 
+= My (large) Featured Image is above my post/page title, and I want it to show below it instead. =
+
+There is a filter for this, too. By default, the large (as opposed to backstretch) image is added before the Genesis loop, which places it above your post or page title. You can add this filter to your theme's functions.php file to move the image below your post/page title:
+
+	add_filter( 'display_featured_image_genesis_move_large_image', 'rgc_move_image' );
+	function rgc_move_image( $hook ) {
+		$hook = 'genesis_entry_header';
+		return $hook;
+	}
 
 == Screenshots ==
 1. Screenshot of a page using the Backstretch Featured Image
