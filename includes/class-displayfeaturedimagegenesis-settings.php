@@ -363,6 +363,9 @@ class Display_Featured_Image_Genesis_Settings {
 
 		foreach ( $this->post_types as $post_type ) {
 			$new_value['post_type'][$post_type->name] = $this->validate_post_type_image( $new_value['post_type'][$post_type->name] );
+			if ( false === $new_value['post_type'][$post_type->name] ) {
+				$new_value['post_type'][$post_type->name] = $this->displaysetting['post_type'][$post_type->name];
+			}
 		}
 
 		return $new_value;
@@ -384,7 +387,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
 
-		// ok for field to be empty
+		//* ok for field to be empty
 		if ( $new_value ) {
 
 			if ( ! $valid ) {
@@ -399,7 +402,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			// if file is an image, but is too small, throw it back
+			//* if file is an image, but is too small, throw it back
 			elseif ( $width <= $large ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
 				$message  .= __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
@@ -428,12 +431,12 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value = esc_url( $new_value );
 		$valid     = $this->is_valid_img_ext( $new_value );
-		$large     = get_option( 'large_size_w' );
+		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
 
-		// ok for field to be empty
+		//* ok for field to be empty
 		if ( $new_value ) {
 
 			if ( ! $valid ) {
@@ -447,10 +450,10 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			// if file is an image, but is too small, throw it back
-			elseif ( $width <= $large ) {
+			//* if file is an image, but is too small, throw it back
+			elseif ( $width <= $medium ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-				$new_value = '';
+				$new_value = false;
 
 				add_settings_error(
 					$this->displaysetting['post_type'],
@@ -475,13 +478,13 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value = esc_url( $new_value );
 		$valid     = $this->is_valid_img_ext( $new_value );
-		$large     = get_option( 'large_size_w' );
+		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
 
 		// ok for field to be empty
-		if ( $new_value && ( ! $valid || $width <= $large ) ) {
+		if ( $new_value && ( ! $valid || $width <= $medium ) ) {
 			$new_value = false;
 		}
 
