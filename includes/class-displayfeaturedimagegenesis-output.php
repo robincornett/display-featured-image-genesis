@@ -39,7 +39,7 @@ class Display_Featured_Image_Genesis_Output {
 		$item    = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		//* if there is no backstretch image set, or it is too small, die
-		if ( empty( $item->backstretch ) || $item->width <= $item->medium ) {
+		if ( empty( $item->backstretch ) || $item->width <= $item->medium || is_paged() ) {
 			return;
 		}
 		//* if the featured image is not part of the content, or we're not on a singular page, carry on
