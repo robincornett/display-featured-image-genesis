@@ -272,4 +272,17 @@ class Display_Featured_Image_Genesis_Common {
 
 	}
 
+	/**
+	 * change hooks for the large size featured image
+	 * @return hook gives users who really want it a way to move the large image back below the title
+	 * @since  x.y.z
+	 */
+	public static function change_hooks() {
+		$hook = 'genesis_before_loop';
+		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
+			$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
+		}
+		return $hook;
+	}
+
 }

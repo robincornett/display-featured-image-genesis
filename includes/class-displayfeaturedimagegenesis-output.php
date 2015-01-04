@@ -64,7 +64,8 @@ class Display_Featured_Image_Genesis_Output {
 
 			//* otherwise it's a large image.
 			elseif ( $item->width <= $item->large ) {
-				add_action( 'genesis_before_loop', array( $this, 'do_large_image' ) ); // works for both HTML5 and XHTML
+				$hook = Display_Featured_Image_Genesis_Common::change_hooks();
+				add_action( $hook, array( $this, 'do_large_image' ), 15 ); // works for both HTML5 and XHTML
 			}
 		}
 	}
@@ -95,14 +96,14 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
-	 * backstretch image title (for images which are larger than Media Settings > Large )
+	 * backstretch image title ( for images which are larger than Media Settings > Large )
 	 * @return image
 	 *
 	 * @since  1.0.0
 	 */
 	public function do_backstretch_image_title() {
 
-		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$item           = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$keep_titles    = $displaysetting['keep_titles'];
 
@@ -120,7 +121,7 @@ class Display_Featured_Image_Genesis_Output {
 		echo '<div class="big-leader">';
 		echo '<div class="wrap">';
 
-		$move_excerpts  = $displaysetting['move_excerpts'];
+		$move_excerpts = $displaysetting['move_excerpts'];
 
 		//* if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
