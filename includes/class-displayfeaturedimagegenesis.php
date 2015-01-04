@@ -35,7 +35,7 @@ class Display_Featured_Image_Genesis {
 
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
-		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
+		add_action( 'admin_init', array( $this, 'set_taxonomy_meta' ) );
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
@@ -139,6 +139,24 @@ class Display_Featured_Image_Genesis {
 	 */
 	protected function update_settings( $new = '', $setting = 'displayfeaturedimagegenesis' ) {
 		return update_option( $setting, wp_parse_args( $new, get_option( $setting ) ) );
+	}
+
+	/**
+	 * set up all actions for adding featured images to taxonomies
+	 * @since  x.y.z
+	 */
+	public function set_taxonomy_meta() {
+		$args       = array(
+			'public' => true
+		);
+		$output     = 'names';
+		$taxonomies = get_taxonomies( $args, $output );
+		foreach ( $taxonomies as $taxonomy ) {
+			add_action( "{$taxonomy}_add_form_fields", array( $this->taxonomies, 'add_taxonomy_meta_fields' ), 5, 2 );
+			add_action( "{$taxonomy}_edit_form_fields", array( $this->taxonomies, 'edit_taxonomy_meta_fields' ), 5, 2 );
+			add_action( "edited_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( "create_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
+		}
 	}
 
 	/**

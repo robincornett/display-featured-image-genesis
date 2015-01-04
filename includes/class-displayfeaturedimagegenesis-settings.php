@@ -226,38 +226,6 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
-	 * Default image uploader
-	 *
-	 * @return  image
-	 *
-	 * @since  1.2.1
-	 */
-	public function set_cpt_image() {
-
-		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
-
-		foreach ( $this->post_types as $post ) {
-
-			$post_type = $post->name;
-			if ( empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				$this->displaysetting['post_type'][$post_type] = '';
-			}
-			echo '<h4>' . $post->label . '</h4>';
-			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
-				$preview = wp_get_attachment_image_src( $id, 'medium' );
-				echo '<div id="upload_logo_preview">';
-				echo '<img src="' . esc_url( $preview[0] ) . '" />';
-				echo '</div>';
-			}
-			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
-			echo '<input id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
-
-		}
-
-	}
-
-	/**
 	 * option to exclude featured image on front page
 	 * @return 0 1 checkbox
 	 *
@@ -299,6 +267,71 @@ class Display_Featured_Image_Genesis_Settings {
 	public function add_image_to_feed() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[feed_image]" value="0" />';
 		echo '<label for="displayfeaturedimagegenesis[feed_image]"><input type="checkbox" name="displayfeaturedimagegenesis[feed_image]" id="displayfeaturedimagegenesis[feed_image]" value="1"' . checked( 1, esc_attr( $this->displaysetting['feed_image'] ), false ) . ' class="code" />' . __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ) . '</label>';
+	}
+
+	/**
+	 * Custom Post Type image uploader
+	 *
+	 * @return  image
+	 *
+	 * @since  x.y.z
+	 */
+	public function set_cpt_image() {
+
+		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+
+		foreach ( $this->post_types as $post ) {
+
+			$post_type = $post->name;
+			if ( empty( $this->displaysetting['post_type'][$post_type] ) ) {
+				$this->displaysetting['post_type'][$post_type] = '';
+			}
+			echo '<h4>' . $post->label . '</h4>';
+			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
+				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
+				$preview = wp_get_attachment_image_src( $id, 'medium' );
+				echo '<div id="upload_logo_preview">';
+				echo '<img src="' . esc_url( $preview[0] ) . '" />';
+				echo '</div>';
+			}
+			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
+			echo '<input id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+
+		}
+
+	}
+
+	/**
+	 * Save extra taxonomy fields callback function.
+	 * @param  term id $term_id the id of the term
+	 * @return updated option          updated option for term featured image
+	 *
+	 * @since x.y.z
+	 */
+	public function save_taxonomy_custom_meta( $term_id ) {
+
+		if ( isset( $_POST['term_meta'] ) ) {
+			$t_id       = $term_id;
+			$term_meta  = get_option( "taxonomy_$t_id" );
+			$cat_keys   = array_keys( $_POST['term_meta'] );
+			$is_updated = false;
+			foreach ( $cat_keys as $key ) {
+				if ( isset ( $_POST['term_meta'][$key] ) ) {
+					$term_meta[$key] = $_POST['term_meta'][$key];
+					if ( $_POST['term_meta']['dfig_image'] === $term_meta[$key] ) {
+						$term_meta[$key] = $this->validate_taxonomy_image( $_POST['term_meta'][$key] );
+						if ( false !== $term_meta[$key] ) {
+							$is_updated = true;
+						}
+					}
+				}
+			}
+			//* Save the option array.
+			if ( $is_updated ) {
+				update_option( "taxonomy_$t_id", $term_meta );
+			}
+		}
+
 	}
 
 	/**
@@ -427,6 +460,29 @@ class Display_Featured_Image_Genesis_Settings {
 				);
 			}
 
+		}
+
+		return $new_value;
+	}
+
+	/**
+	 * Returns false value for image if not correct file type/size
+	 * @param  string $new_value New value
+	 * @return string            New value or false, depending on allowed image size.
+	 * @since  x.y.z
+	 */
+	protected function validate_taxonomy_image( $new_value ) {
+
+		$new_value = esc_url( $new_value );
+		$valid     = $this->is_valid_img_ext( $new_value );
+		$large     = get_option( 'large_size_w' );
+		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		$metadata  = wp_get_attachment_metadata( $id );
+		$width     = $metadata['width'];
+
+		// ok for field to be empty
+		if ( $new_value && ( ! $valid || $width <= $large ) ) {
+			$new_value = false;
 		}
 
 		return $new_value;

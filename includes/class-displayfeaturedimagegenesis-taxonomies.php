@@ -9,23 +9,6 @@
 class Display_Featured_Image_Genesis_Taxonomies {
 
 	/**
-	 * set up all actions for adding featured images to taxonomies
-	 */
-	public function set_taxonomy_meta() {
-		$args       = array(
-			'public' => true
-		);
-		$output     = 'names';
-		$taxonomies = get_taxonomies( $args, $output );
-		foreach ( $taxonomies as $taxonomy ) {
-			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
-			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
-			add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
-			add_action( "create_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
-		}
-	}
-
-	/**
 	 * add featured image uploader to new taxonomy add
 	 */
 	public function add_taxonomy_meta_fields() {
@@ -69,86 +52,6 @@ class Display_Featured_Image_Genesis_Taxonomies {
 					) . '</p>';
 				echo '</td>';
 		echo '</tr>';
-	}
-
-	/**
-	 * Save extra taxonomy fields callback function.
-	 * @param  term id $term_id the id of the term
-	 * @return updated option          updated option for term featured image
-	 *
-	 * @since x.y.z
-	 */
-	public function save_taxonomy_custom_meta( $term_id ) {
-
-		if ( isset( $_POST['term_meta'] ) ) {
-			$t_id       = $term_id;
-			$term_meta  = get_option( "taxonomy_$t_id" );
-			$cat_keys   = array_keys( $_POST['term_meta'] );
-			$is_updated = false;
-			foreach ( $cat_keys as $key ) {
-				if ( isset ( $_POST['term_meta'][$key] ) ) {
-					$term_meta[$key] = $_POST['term_meta'][$key];
-					if ( $_POST['term_meta']['dfig_image'] === $term_meta[$key] ) {
-						$term_meta[$key] = $this->validate_image( $_POST['term_meta'][$key] );
-						if ( false !== $term_meta[$key] ) {
-							$is_updated = true;
-						}
-					}
-				}
-			}
-			//* Save the option array.
-			if ( $is_updated ) {
-				update_option( "taxonomy_$t_id", $term_meta );
-			}
-		}
-
-	}
-
-	/**
-	 * Returns previous value for image if not correct file type/size
-	 * @param  string $new_value New value
-	 * @return string            New or previous value, depending on allowed image size.
-	 * @since  x.y.z
-	 */
-	protected function validate_image( $new_value ) {
-
-		$new_value = esc_url( $new_value );
-		$valid     = $this->is_valid_img_ext( $new_value );
-		$large     = get_option( 'large_size_w' );
-		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$metadata  = wp_get_attachment_metadata( $id );
-		$width     = $metadata['width'];
-
-		// ok for field to be empty
-		if ( $new_value && ( ! $valid || $width <= $large ) ) {
-			$new_value = false;
-		}
-
-		return $new_value;
-	}
-
-	/**
-	 * returns file extension
-	 * @since  1.2.2
-	 */
-	protected function get_file_ext( $file ) {
-		$parsed = @parse_url( $file, PHP_URL_PATH );
-		return $parsed ? strtolower( pathinfo( $parsed, PATHINFO_EXTENSION ) ) : false;
-	}
-
-	/**
-	 * check if file type is image
-	 * @return file       check file extension against list
-	 * @since  1.2.2
-	 */
-	protected function is_valid_img_ext( $file ) {
-		$file_ext = $this->get_file_ext( $file );
-
-		$this->valid = empty( $this->valid )
-			? (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) )
-			: $this->valid;
-
-		return ( $file_ext && in_array( $file_ext, $this->valid ) );
 	}
 
 }
