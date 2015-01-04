@@ -56,24 +56,25 @@ class Display_Featured_Image_Genesis_Common {
 			$image_id = $item->fallback_id;
 		}
 
+		$object = get_queried_object();
 		// if it's a home page with a static front page, and there is a featured image set on the home page
 		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) {
 			$image_id = $postspage_image;
 		}
 
 		elseif ( is_post_type_archive() ) {
-			$object    = get_queried_object();
 			$post_type = $object->name;
 			if ( $displaysetting['post_type'][$post_type] ) {
-				$image_id  = self::get_image_id( $displaysetting['post_type'][$post_type] );
+				$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
 			}
 		}
 		// taxonomy
 		elseif ( is_category() || is_tag() || is_tax() ) {
-			$term      = get_queried_object();
-			$t_id      = $term->term_id;
+			$t_id      = $object->term_id;
 			$term_meta = get_option( "taxonomy_$t_id" );
-			$image_id  = self::get_image_id( $term_meta['dfig_image'] );
+			if ( $term_meta ) {
+				$image_id = self::get_image_id( $term_meta['dfig_image'] );
+			}
 		}
 		// any singular post/page/CPT or there is no $item->fallback
 		elseif ( is_singular() && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
