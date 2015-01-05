@@ -33,6 +33,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesi
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-rss.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-settings.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-taxonomies.php';
+require plugin_dir_path( __FILE__ ) . 'includes/widgets/displayfeaturedimagegenesis-widget.php';
 
 // Instantiate dependent classes
 $displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
