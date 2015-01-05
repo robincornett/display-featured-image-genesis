@@ -26,9 +26,6 @@ class Display_Featured_Image_Genesis_Common {
 	public static function get_image_variables() {
 
 		self::$post_types = array();
-		self::$post_types[] = 'attachment';
-		self::$post_types[] = 'revision';
-		self::$post_types[] = 'nav_menu_item';
 
 		$item = new stdClass();
 
@@ -58,6 +55,13 @@ class Display_Featured_Image_Genesis_Common {
 		// Set Featured Image source ID
 		$image_id = ''; // blank if nothing else
 
+		/**
+		 * create a filter to use the fallback image
+		 * @var filter
+		 * @since  x.y.z (deprecated old use_fallback_image function from 1.2.2)
+		 */
+		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
+
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $item->fallback ) ) {
 			$image_id = $item->fallback_id;
@@ -84,11 +88,16 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 		// any singular post/page/CPT or there is no $item->fallback
-		elseif ( is_singular() && ! in_array( get_post_type(), self::use_fallback_image() ) ) {
-			if ( $width > $item->medium && ! in_array( get_post_type(), self::use_tax_image() ) ) {
-				$image_id = get_post_thumbnail_id( get_the_ID() );
-			}
-			elseif ( ! has_post_thumbnail() || $width <= $item->medium ) {
+		elseif ( is_singular() && ! in_array( get_post_type(), $use_fallback ) ) {
+			/**
+			 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
+			 * @var filter
+			 */
+			$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
+
+			$image_id = get_post_thumbnail_id( get_the_ID() );
+
+			if ( ! has_post_thumbnail() || $width <= $item->medium || in_array( get_post_type(), $use_tax_image ) ) {
 				$taxonomies = get_taxonomies();
 				$args       = array( 'orderby' => 'count', 'order' => 'DESC' );
 				$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
@@ -204,73 +213,6 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		return $attachment_id;
-	}
-
-
-	/**
-	 * skip certain post types
-	 * @return filter creates a new filter for themes/plugins to use to skip certain post types
-	 *
-	 * @since 1.0.1
-	 */
-	public static function get_skipped_posttypes() {
-
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$skip           = $displaysetting['exclude_front'];
-
-		if ( $skip ) self::$post_types[] = is_front_page();
-
-		return apply_filters( 'display_featured_image_genesis_skipped_posttypes', self::$post_types );
-
-	}
-
-	/**
-	 * use fallback image as backstretch
-	 * @return filter creates a new filter for themes/plugins to use to use the fallback image even if a large featured image is in place
-	 *
-	 * @since 1.2.0
-	 */
-	public static function use_fallback_image() {
-
-		return apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
-
-	}
-
-	/**
-	 * don't show excerpts even if they exist.
-	 * @return filter creates a new filter for themes/plugins to omit the excerpt on a post type even if an excerpt exists.
-	 *
-	 * @since 1.3.0
-	 */
-	public static function omit_excerpt() {
-
-		return apply_filters( 'display_featured_image_genesis_omit_excerpt', self::$post_types );
-
-	}
-
-	/**
-	 * use the taxonomy image instead of the featured image
-	 * @return filter creates a new filter for themes/plugins to use the taxonomy featured image instead of the singular featured image
-	 *
-	 * @since 1.3.0
-	 */
-	public static function use_tax_image() {
-
-		return apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
-
-	}
-
-	/**
-	 * change hooks for the large size featured image
-	 * @return hook gives users who really want it a way to move the large image back below the title
-	 * @since  x.y.z
-	 */
-	public static function change_hooks() {
-		$hook = 'genesis_before_loop';
-		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
-			$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
-		}
-		return $hook;
 	}
 
 }

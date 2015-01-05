@@ -15,9 +15,19 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 1.1.3
 	 */
 	public function manage_output() {
+
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$fallback       = $displaysetting['default'];
-		if ( is_admin() || ( in_array( get_post_type(), Display_Featured_Image_Genesis_Common::get_skipped_posttypes() ) ) ) {
+		$skip           = $displaysetting['exclude_front'];
+
+		$post_types = array();
+		$post_types[] = 'attachment';
+		$post_types[] = 'revision';
+		$post_types[] = 'nav_menu_item';
+		if ( $skip ) $post_types[] = is_front_page();
+
+		$skipped_types = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
+
+		if ( is_admin() || ( in_array( get_post_type(), $skipped_types ) ) ) {
 			return;
 		}
 
@@ -64,8 +74,12 @@ class Display_Featured_Image_Genesis_Output {
 
 			//* otherwise it's a large image.
 			elseif ( $item->width <= $item->large ) {
-				$hook = Display_Featured_Image_Genesis_Common::change_hooks();
-				add_action( $hook, array( $this, 'do_large_image' ), 15 ); // works for both HTML5 and XHTML
+
+				$hook = 'genesis_before_loop';
+				if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
+					$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
+				}
+				add_action( $hook, array( $this, 'do_large_image' ) ); // works for both HTML5 and XHTML
 			}
 		}
 	}
@@ -122,9 +136,16 @@ class Display_Featured_Image_Genesis_Output {
 		echo '<div class="wrap">';
 
 		$move_excerpts = $displaysetting['move_excerpts'];
+		$post_types    = array();
+		/**
+		 * create a filter to not move excerpts if move excerpts is enabled
+		 * @var filter
+		 * @since  x.y.z (deprecated old function from 1.3.3)
+		 */
+		$omit_excerpt  = apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
 
 		//* if move excerpts is enabled
-		if ( $move_excerpts && ! in_array( get_post_type(), Display_Featured_Image_Genesis_Common::omit_excerpt() ) ) {
+		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
 
 			Display_Featured_Image_Genesis_Description::do_front_blog_excerpt();
 			Display_Featured_Image_Genesis_Description::do_excerpt();
