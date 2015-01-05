@@ -15,6 +15,8 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static $version = 'x.y.z';
 
+	protected static $post_types;
+
 	/**
 	 * set and retreive variables for the featured image.
 	 * @return $item
@@ -22,6 +24,11 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since  1.1.0
 	 */
 	public static function get_image_variables() {
+
+		self::$post_types = array();
+		self::$post_types[] = 'attachment';
+		self::$post_types[] = 'revision';
+		self::$post_types[] = 'nav_menu_item';
 
 		$item = new stdClass();
 
@@ -209,15 +216,11 @@ class Display_Featured_Image_Genesis_Common {
 	public static function get_skipped_posttypes() {
 
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$skip = $displaysetting['exclude_front'];
+		$skip           = $displaysetting['exclude_front'];
 
-		$post_types   = array();
-		$post_types[] = 'attachment';
-		$post_types[] = 'revision';
-		$post_types[] = 'nav_menu_item';
-		if ( $skip ) $post_types[] = is_front_page();
+		if ( $skip ) self::$post_types[] = is_front_page();
 
-		return apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
+		return apply_filters( 'display_featured_image_genesis_skipped_posttypes', self::$post_types );
 
 	}
 
@@ -229,12 +232,7 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function use_fallback_image() {
 
-		$post_types   = array();
-		$post_types[] = 'attachment';
-		$post_types[] = 'revision';
-		$post_types[] = 'nav_menu_item';
-
-		return apply_filters( 'display_featured_image_genesis_use_default', $post_types );
+		return apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
 
 	}
 
@@ -246,12 +244,7 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function omit_excerpt() {
 
-		$post_types   = array();
-		$post_types[] = 'attachment';
-		$post_types[] = 'revision';
-		$post_types[] = 'nav_menu_item';
-
-		return apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
+		return apply_filters( 'display_featured_image_genesis_omit_excerpt', self::$post_types );
 
 	}
 
@@ -263,12 +256,7 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function use_tax_image() {
 
-		$post_types   = array();
-		$post_types[] = 'attachment';
-		$post_types[] = 'revision';
-		$post_types[] = 'nav_menu_item';
-
-		return apply_filters( 'display_featured_image_genesis_use_taxonomy', $post_types );
+		return apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
 
 	}
 
