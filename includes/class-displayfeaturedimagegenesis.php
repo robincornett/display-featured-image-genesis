@@ -181,10 +181,11 @@ class Display_Featured_Image_Genesis {
 		$check   = strpos( get_current_screen()->id, 'displayfeaturedimagegenesis' );
 
 		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
-		wp_register_script( 'widget-selector', plugins_url( '/includes/js/widget-selector.js', dirname( __FILE__ ) ), array( 'jquery' ), $version );
+		wp_register_script( 'widget_selector', plugins_url( '/includes/js/widget-selector.js', dirname( __FILE__ ) ), array( 'jquery' ), $version );
 
+		$screen = get_current_screen();
 
-		if ( 'appearance_page_displayfeaturedimagegenesis' === get_current_screen()->id || ! empty( get_current_screen()->taxonomy ) ) {
+		if ( 'appearance_page_displayfeaturedimagegenesis' === $screen->id || ! empty( $screen->taxonomy ) ) {
 		// if ( false !== $check || ! empty( get_current_screen()->taxonomy ) ) {
 			wp_enqueue_media();
 			wp_enqueue_script( 'displayfeaturedimage-upload' );
@@ -193,10 +194,9 @@ class Display_Featured_Image_Genesis {
 			) );
 		}
 
-		$screen = get_current_screen()->id;
-		if ( $screen === 'widgets' || $screen === 'customize' ) {
-			wp_enqueue_script( 'widget-selector' );
-			wp_localize_script( 'widget-selector', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		if ( in_array( $screen->id, array( 'widgets', 'customize' ) ) ) {
+			wp_enqueue_script( 'widget_selector' );
+			wp_localize_script( 'widget_selector', 'displayfeaturedimagegenesis_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		}
 
 	}

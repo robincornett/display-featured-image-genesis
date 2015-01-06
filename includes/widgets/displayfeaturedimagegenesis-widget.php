@@ -275,12 +275,11 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 
 	/**
 	 * Handles the callback to populate the custom term dropdown. The
-	 * selected post type is provided in $_POST['post_type'], and the
+	 * selected post type is provided in $_POST['taxonomy'], and the
 	 * calling script expects a JSON array of term objects.
 	 */
-	function tax_term_action_callback() {
+	function term_action_callback() {
 
-		// And from there, a list of available terms in that tax
 		$args  = array(
 			'orderby'    => 'name',
 			'order'      => 'ASC',
@@ -288,9 +287,10 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		);
 		$terms = get_terms( $_POST['taxonomy'], $args );
 
+		$list = array();
 		// Build an appropriate JSON response containing this info
 		foreach ( $terms as $term ) {
-			$list[$term->slug] = $term->name;
+			$list[$term->term_id] = $term->name;
 		}
 
 		// And emit it
