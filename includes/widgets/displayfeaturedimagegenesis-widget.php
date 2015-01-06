@@ -59,6 +59,8 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 
 		parent::__construct( 'featured-taxonomy', __( 'Genesis - Featured Taxonomy', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
 
+		add_action( 'wp_ajax_tax_term_action', array( $this, 'tax_term_action_callback' ) );
+
 	}
 
 	/**
@@ -93,7 +95,7 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		$term      = get_term_by( 'id', $term_id, $instance['taxonomy'] );
 		$title     = $term->name;
 		$slug      = $term->slug;
-		$permalink = trailingslashit( get_home_url() ) . $instance['taxonomy'] . '/' . $slug;
+		$permalink = get_term_link( $term );
 
 		if ( $term_meta ) {
 			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['dfig_image'] );
@@ -184,31 +186,59 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 			<div class="genesis-widget-column-box genesis-widget-column-box-top">
 
 				<p>
-					<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Taxonomy', 'display-featured-image-genesis' ); ?>:</label>
-					<select id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" >
+					<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php _e( 'Taxonomy', 'display-featured-image-genesis' ); ?>:</label>
+					<select id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'taxonomy' ); ?>" onchange="tax_term_postback('<?php echo $this->get_field_id( 'term' ); ?>', this.value);" >
 					<?php
 					$tax_args = array(
-						'_builtin' => false
+						'public'   => true,
+						'show_ui'  => true
 					);
-					$args       = array(
-						'orderby'    => 'name',
-						'order'      => 'ASC',
-						'hide_empty' => true
-					);
-					$output     = 'objects';
 					$taxonomies = get_taxonomies( $tax_args );
-					$taxonomies['category'] = 'category';
-					$taxonomies['post_tag'] = 'post_tag';
-					$terms      = get_terms( $taxonomies, $args );
-					foreach ( $terms as $term ) {
-						echo '<option value="'. esc_attr( $term->term_id ) .'" '. selected( esc_attr( $term->term_id ), $instance['term'], false ) .'>'. esc_attr( $term->name . ' (' . $term->taxonomy . ')' ) .'</option>';
-					}
-					$instance['taxonomy'] = selected( $term->taxonomy ); ?>
+
+					foreach ( $taxonomies as $taxonomy ) {
+						echo '<option value="'. esc_attr( $taxonomy ) .'" '. selected( esc_attr( $taxonomy ), $instance['taxonomy'], false ) .'>'. esc_attr( $taxonomy ) .'</option>';
+					} ?>
+					</select>
+				</p>
+
+				<p>
+					<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Term', 'display-featured-image-genesis' ); ?>:</label>
+					<select id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" >
+						<?php
+						$args   = array(
+							'orderby'    => 'name',
+							'order'      => 'ASC',
+							'hide_empty' => false
+						);
+						$output = 'objects';
+						$terms  = get_terms( $instance['taxonomy'], $args );
+						foreach ( $terms as $term ) {
+							echo '<option value="'. esc_attr( $term->term_id ) .'" '. selected( esc_attr( $term->term_id ), $instance['term'], false ) .'>'. esc_attr( $term->name ) .'</option>';
+						} ?>
+					</select>
 				</p>
 
 			</div>
 
 			<div class="genesis-widget-column-box">
+
+				<p>
+					<input id="<?php echo $this->get_field_id( 'show_title' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
+					<label for="<?php echo $this->get_field_id( 'show_title' ); ?>"><?php _e( 'Show Taxonomy Title', 'display-featured-image-genesis' ); ?></label>
+				</p>
+
+				<p>
+					<input id="<?php echo $this->get_field_id( 'show_content' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
+					<label for="<?php echo $this->get_field_id( 'show_content' ); ?>"><?php _e( 'Show Taxonomy Intro Text', 'display-featured-image-genesis' ); ?></label>
+				</p>
+
+			</div>
+
+		</div>
+
+		<div class="genesis-widget-column genesis-widget-column-right">
+
+			<div class="genesis-widget-column-box genesis-widget-column-box-top">
 
 				<p>
 					<input id="<?php echo $this->get_field_id( 'show_image' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ); ?>" value="1" <?php checked( $instance['show_image'] ); ?>/>
@@ -239,26 +269,33 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 			</div>
 
 		</div>
-
-		<div class="genesis-widget-column genesis-widget-column-right">
-
-			<div class="genesis-widget-column-box genesis-widget-column-box-top">
-
-				<p>
-					<input id="<?php echo $this->get_field_id( 'show_title' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
-					<label for="<?php echo $this->get_field_id( 'show_title' ); ?>"><?php _e( 'Show Taxonomy Title', 'display-featured-image-genesis' ); ?></label>
-				</p>
-
-				<p>
-					<input id="<?php echo $this->get_field_id( 'show_content' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
-					<label for="<?php echo $this->get_field_id( 'show_content' ); ?>"><?php _e( 'Show Taxonomy Intro Text', 'display-featured-image-genesis' ); ?></label>
-				</p>
-
-			</div>
-
-		</div>
 		<?php
 
+	}
+
+	/**
+	 * Handles the callback to populate the custom term dropdown. The
+	 * selected post type is provided in $_POST['post_type'], and the
+	 * calling script expects a JSON array of term objects.
+	 */
+	function tax_term_action_callback() {
+
+		// And from there, a list of available terms in that tax
+		$args  = array(
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'hide_empty' => true
+		);
+		$terms = get_terms( $_POST['taxonomy'], $args );
+
+		// Build an appropriate JSON response containing this info
+		foreach ( $terms as $term ) {
+			$list[$term->slug] = $term->name;
+		}
+
+		// And emit it
+		echo json_encode( $list );
+		die();
 	}
 
 }

@@ -181,6 +181,7 @@ class Display_Featured_Image_Genesis {
 		$check   = strpos( get_current_screen()->id, 'displayfeaturedimagegenesis' );
 
 		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
+		wp_register_script( 'widget-selector', plugins_url( '/includes/js/widget-selector.js', dirname( __FILE__ ) ), array( 'jquery' ), $version );
 
 
 		if ( 'appearance_page_displayfeaturedimagegenesis' === get_current_screen()->id || ! empty( get_current_screen()->taxonomy ) ) {
@@ -190,6 +191,12 @@ class Display_Featured_Image_Genesis {
 			wp_localize_script( 'displayfeaturedimage-upload', 'objectL10n', array(
 				'text' => __( 'Select Image', 'display-featured-image-genesis' ),
 			) );
+		}
+
+		$screen = get_current_screen()->id;
+		if ( $screen === 'widgets' || $screen === 'customize' ) {
+			wp_enqueue_script( 'widget-selector' );
+			wp_localize_script( 'widget-selector', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		}
 
 	}
