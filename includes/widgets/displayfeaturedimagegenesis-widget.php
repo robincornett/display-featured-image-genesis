@@ -34,18 +34,18 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 
 		$this->defaults = array(
 			'title'                   => '',
-			'term'                    => '',
 			'taxonomy'                => 'category',
+			'term'                    => '',
 			'show_image'              => 0,
 			'image_alignment'         => '',
-			'image_size'              => '',
+			'image_size'              => 'medium',
 			'show_title'              => 0,
 			'show_content'            => 0
 		);
 
 		$widget_ops = array(
 			'classname'   => 'featured-taxonomy',
-			'description' => __( 'Displays a taxonomy with a thumbnail', 'display-featured-image-genesis' ),
+			'description' => __( 'Displays a taxonomy with its featured image', 'display-featured-image-genesis' ),
 		);
 
 		$control_ops = array(
@@ -54,9 +54,9 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 			'height'  => 350,
 		);
 
-		parent::__construct( 'featured-taxonomy', __( 'Genesis - Featured Taxonomy', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
+		parent::__construct( 'featured-taxonomy', __( 'Display Featured Taxonomy', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
 
-		add_action( 'wp_ajax_tax_term_action', array( $this, 'term_action_callback' ) );
+		add_action( 'wp_ajax_widget_selector', array( $this, 'term_action_callback' ) );
 
 	}
 
@@ -76,23 +76,32 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		//* Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		echo $args['before_widget'];
-
 		$term_id   = $instance['term'];
 		$term_meta = get_option( "taxonomy_$term_id" );
 		$term      = get_term_by( 'id', $term_id, $instance['taxonomy'] );
+		if ( ! $term ) {
+			return;
+		}
 		$title     = $term->name;
 		$slug      = $term->slug;
 		$permalink = get_term_link( $term );
 
+		echo $args['before_widget'];
+
+		if ( ! empty( $instance['title'] ) ) {
+			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
+		}
+
 		if ( $term_meta ) {
 			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['dfig_image'] );
 			$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
-			$image     = '<img src="' . $image_src[0] . '" title="' . $title . '" />';
-		}
+			if ( $image_src ) {
+				$image = '<img src="' . $image_src[0] . '" title="' . $title . '" />';
+			}
 
-		if ( $instance['show_image'] && $image ) {
-			printf( '<a href="%s" title="%s" class="%s">%s</a>', $permalink, the_title_attribute( 'echo=0' ), esc_attr( $instance['image_alignment'] ), $image );
+			if ( $instance['show_image'] && $image ) {
+				printf( '<a href="%s" title="%s" class="%s">%s</a>', $permalink, esc_html( $title ), esc_attr( $instance['image_alignment'] ), $image );
+			}
 		}
 
 		if ( $instance['show_title'] ) {
@@ -100,9 +109,9 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 			if ( ! empty( $instance['show_title'] ) ) {
 
 				if ( genesis_html5() )
-					printf( '<h2 class="term-title"><a href="%s">%s</a></h2>', $permalink, $title );
+					printf( '<h2 class="term-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
 				else
-					printf( '<h2><a href="%s">%s</a></h2>', $permalink, $title );
+					printf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
 
 			}
 
@@ -263,12 +272,12 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		$args  = array(
 			'orderby'    => 'name',
 			'order'      => 'ASC',
-			'hide_empty' => true
+			'hide_empty' => false
 		);
 		$terms = get_terms( $_POST['taxonomy'], $args );
 
-		$list = array();
 		// Build an appropriate JSON response containing this info
+		$list[0] = '--';
 		foreach ( $terms as $term ) {
 			$list[$term->term_id] = $term->name;
 		}
