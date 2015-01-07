@@ -1,10 +1,11 @@
 jQuery(document).ready(function($){
 
 	var custom_uploader;
+	var target_input;
 
 	$('.upload_default_image').click(function(e) {
 
-		var target_input = $(this).prev('.upload_image_url');
+		target_input = $(this).prev('.upload_image_url');
 
 		e.preventDefault();
 
@@ -25,8 +26,8 @@ jQuery(document).ready(function($){
 
 		//When a file is selected, grab the URL and set it as the text field's value
 		custom_uploader.on('select', function() {
+
 			attachment = custom_uploader.state().get('selection').first().toJSON();
-			// $('input[name=' + target_input + ']').val(attachment.url);
 			$(target_input).val(attachment.url);
 		});
 
