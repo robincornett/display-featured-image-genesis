@@ -82,8 +82,11 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		if ( ! $term ) {
 			return;
 		}
-		$title     = $term->name;
-		$slug      = $term->slug;
+
+		$title = $term->meta['headline'];
+		if ( ! $title ) {
+			$title = $term->name;
+		}
 		$permalink = get_term_link( $term );
 
 		echo $args['before_widget'];
@@ -117,11 +120,14 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 
 		}
 
-		if ( $instance['show_content'] && $term->meta['intro_text'] ) {
+		if ( $instance['show_content'] ) {
 
 			echo genesis_html5() ? '<div class="entry-content">' : '';
 
 			$intro_text = apply_filters( 'genesis_term_intro_text_output', $term->meta['intro_text'] );
+			if ( ! $intro_text ) {
+				$intro_text = $term->description;
+			}
 
 			echo $intro_text;
 
