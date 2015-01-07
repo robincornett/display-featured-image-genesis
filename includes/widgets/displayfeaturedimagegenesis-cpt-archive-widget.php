@@ -34,7 +34,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 
 		$this->defaults = array(
 			'title'                   => '',
-			'post_type'               => 'none',
+			'post_type'               => 'post',
 			'show_image'              => 0,
 			'image_alignment'         => '',
 			'image_size'              => 'medium',
@@ -71,32 +71,51 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 		//* Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
-		if ( 'none' === $instance['post_type'] || ! post_type_exists( $instance['post_type' ] ) ) {
-			return;
-		}
-
 		$post_type = get_post_type_object( $instance['post_type'] );
 		$option    = get_option( 'displayfeaturedimagegenesis' );
-		$title     = $post_type->label;
-		$permalink = esc_url( get_post_type_archive_link( $instance['post_type'] ) );
+
+		if ( 'post' === $instance['post_type'] ) {
+			$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
+			$postspage       = get_option( 'page_for_posts' );
+			$postspage_image = get_post_thumbnail_id( $postspage );
+			$title           = get_post( $postspage )->post_title;
+			$permalink       = esc_url( get_the_permalink( $postspage ) );
+
+			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
+				$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+				$postspage_image = $item->fallback_id;
+				$title           = get_bloginfo( 'name');
+				$permalink       = home_url();
+			}
+		}
+		else {
+			$title     = $post_type->label;
+			if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
+				$title = genesis_get_cpt_option( 'headline', $instance['post_type'] );
+			}
+			$permalink = esc_url( get_post_type_archive_link( $instance['post_type'] ) );
+		}
 
 		echo $args['before_widget'];
 
-		var_dump( $instance['post_type'] );
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
 		}
 
-		if ( $post_type ) {
-			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $option['post_type'][$post_type->name] );
-			$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
-			if ( $image_src ) {
-				$image = '<img src="' . $image_src[0] . '" title="' . $title . '" />';
-			}
+		$image = '';
+		if ( 'post' === $instance['post_type'] ) {
+			$image_id = $postspage_image;
+		}
+		else {
+			$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $option['post_type'][$post_type->name] );
+		}
+		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
+		if ( $image_src ) {
+			$image = '<img src="' . $image_src[0] . '" title="' . $title . '" />';
+		}
 
-			if ( $instance['show_image'] && $image ) {
-				printf( '<a href="%s" title="%s" class="%s">%s</a>', $permalink, esc_html( $title ), esc_attr( $instance['image_alignment'] ), $image );
-			}
+		if ( $instance['show_image'] && $image ) {
+			printf( '<a href="%s" title="%s" class="%s">%s</a>', $permalink, esc_html( $title ), esc_attr( $instance['image_alignment'] ), $image );
 		}
 
 		if ( $instance['show_title'] ) {
@@ -115,6 +134,12 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 		$intro_text = '';
 		if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
 			$intro_text = genesis_get_cpt_option( 'intro_text', $instance['post_type'] );
+		}
+		elseif ( 'post' === $instance['post_type'] ) {
+			$intro_text = get_post( $postspage )->post_excerpt;
+			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
+				$intro_text = get_bloginfo( 'description' );
+			}
 		}
 
 		if ( $instance['show_content'] && $intro_text ) {
@@ -189,7 +214,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 					$output     = 'objects';
 					$post_types = get_post_types( $args, $output );
 
-					echo '<option value="none" ' . selected( 'none', $instance['post_type'], false ) . '>' . __( '--', 'display-featured-image-genesis' ) . '</option>';
+					echo '<option value="post" ' . selected( 'post', $instance['post_type'], false ) . '>' . __( 'Posts', 'display-featured-image-genesis' ) . '</option>';
 					foreach ( $post_types as $post_type ) {
 						echo '<option value="' . esc_attr( $post_type->name ) . '" ' . selected( esc_attr( $post_type->name ), $instance['post_type'], false ) . '>' . esc_attr( $post_type->label ) . '</option>';
 					} ?>
