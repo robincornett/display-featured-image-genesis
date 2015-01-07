@@ -203,6 +203,7 @@ class Display_Featured_Image_Genesis {
 
 	function register_widget() {
 		register_widget( 'Display_Featured_Image_Genesis_Widget' );
+		register_widget( 'Display_Featured_Image_Genesis_CPT_Widget' );
 	}
 
 }
