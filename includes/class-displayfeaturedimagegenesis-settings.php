@@ -310,13 +310,13 @@ class Display_Featured_Image_Genesis_Settings {
 
 		if ( isset( $_POST['term_meta'] ) ) {
 			$t_id       = $term_id;
-			$term_meta  = get_option( "taxonomy_$t_id" );
+			$term_meta  = get_option( "displayfeaturedimagegenesis_$t_id" );
 			$cat_keys   = array_keys( $_POST['term_meta'] );
 			$is_updated = false;
 			foreach ( $cat_keys as $key ) {
 				if ( isset ( $_POST['term_meta'][$key] ) ) {
 					$term_meta[$key] = $_POST['term_meta'][$key];
-					if ( $_POST['term_meta']['dfig_image'] === $term_meta[$key] ) {
+					if ( $_POST['term_meta']['term_image'] === $term_meta[$key] ) {
 						$term_meta[$key] = $this->validate_taxonomy_image( $_POST['term_meta'][$key] );
 						if ( false !== $term_meta[$key] ) {
 							$is_updated = true;
@@ -326,7 +326,7 @@ class Display_Featured_Image_Genesis_Settings {
 			}
 			//* Save the option array.
 			if ( $is_updated ) {
-				update_option( "taxonomy_$t_id", $term_meta );
+				update_option( "displayfeaturedimagegenesis_$t_id", $term_meta );
 			}
 		}
 

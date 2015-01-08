@@ -96,7 +96,7 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		}
 
 		if ( $term_meta ) {
-			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['dfig_image'] );
+			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 			$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 			if ( $image_src ) {
 				$image = '<img src="' . $image_src[0] . '" title="' . $title . '" />';

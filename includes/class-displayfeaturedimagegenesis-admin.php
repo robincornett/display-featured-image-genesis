@@ -85,10 +85,11 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	public function manage_taxonomy_column( $value, $column, $term_id ) {
 
+		$t_id = $term_id;
 		if ( 'featured_image' === $column ) {
-			$term_meta = get_option( "taxonomy_$term_id" );
-			if ( ! empty( $term_meta['dfig_image'] ) ) {
-				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['dfig_image'] );
+			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
+			if ( ! empty( $term_meta['term_image'] ) ) {
+				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 				$preview = wp_get_attachment_image_src( $id, 'thumbnail' );
 				echo '<img src="' . $preview[0] . '" width="60" />';
 			}

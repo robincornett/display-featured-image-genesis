@@ -82,9 +82,9 @@ class Display_Featured_Image_Genesis_Common {
 		// taxonomy
 		elseif ( is_category() || is_tag() || is_tax() ) {
 			$t_id      = $object->term_id;
-			$term_meta = get_option( "taxonomy_$t_id" );
+			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 			if ( $term_meta ) {
-				$image_id = self::get_image_id( $term_meta['dfig_image'] );
+				$image_id = self::get_image_id( $term_meta['term_image'] );
 			}
 		}
 		// any singular post/page/CPT or there is no $item->fallback
@@ -104,9 +104,9 @@ class Display_Featured_Image_Genesis_Common {
 
 				foreach ( $terms as $term ) {
 					$t_id      = $term->term_id;
-					$term_meta = get_option( "taxonomy_$t_id" );
-					if ( $term_meta['dfig_image'] ) {
-						$image_id = self::get_image_id( $term_meta['dfig_image'] );
+					$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
+					if ( $term_meta['term_image'] ) {
+						$image_id = self::get_image_id( $term_meta['term_image'] );
 						break;
 					}
 				}
