@@ -35,7 +35,7 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		$this->defaults = array(
 			'title'                   => '',
 			'taxonomy'                => 'category',
-			'term'                    => '',
+			'term'                    => 'none',
 			'show_image'              => 0,
 			'image_alignment'         => '',
 			'image_size'              => 'medium',
@@ -77,7 +77,7 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
 		$term_id   = $instance['term'];
-		$term_meta = get_option( "taxonomy_$term_id" );
+		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
 		$term      = get_term_by( 'id', $term_id, $instance['taxonomy'] );
 		if ( ! $term ) {
 			return;
@@ -207,6 +207,7 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 							'hide_empty' => false
 						);
 						$terms  = get_terms( $instance['taxonomy'], $args );
+						echo '<option value="none" ' . selected( 'none', $instance['term'], false ) . '>--</option>';
 						foreach ( $terms as $term ) {
 							echo '<option value="' . esc_attr( $term->term_id ) . '" ' . selected( esc_attr( $term->term_id ), $instance['term'], false ) . '>' . esc_attr( $term->name ) . '</option>';
 						} ?>
@@ -283,10 +284,11 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 		$terms = get_terms( $_POST['taxonomy'], $args );
 
 		// Build an appropriate JSON response containing this info
-		$list[0] = '--';
+		// $list['none'] = '--';
 		foreach ( $terms as $term ) {
 			$list[$term->term_id] = $term->name;
 		}
+		$list['none'] = '--';
 
 		// And emit it
 		echo json_encode( $list );
