@@ -14,8 +14,8 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	public function add_taxonomy_meta_fields() {
 
 		echo '<div class="form-field">';
-			echo '<label for="term_meta[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
-			echo '<input type="url" class="upload_image_url" id="default_image_url" name="term_meta[term_image]" style="width:200px;" />';
+			echo '<label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
+			echo '<input type="url" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" style="width:200px;" />';
 			echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			echo '<p>' . __( 'Set Featured Image for Taxonomy','display-featured-image-genesis' ) . '</p>';
 		echo '</div>';
@@ -29,21 +29,21 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	 */
 	public function edit_taxonomy_meta_fields( $term ) {
 
-		$t_id      = $term->term_id;
-		$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
-		$large     = get_option( 'large_size_w' );
+		$t_id           = $term->term_id;
+		$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
+		$large          = get_option( 'large_size_w' );
 
 		echo '<tr class="form-field">';
-			echo '<th scope="row" valign="top"><label for="term_meta[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label></th>';
+			echo '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label></th>';
 				echo '<td>';
-					if ( ! empty( $term_meta['term_image'] ) ) {
-						$id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
+					if ( ! empty( $displaysetting['term_image'] ) ) {
+						$id      = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['term_image'] );
 						$preview = wp_get_attachment_image_src( $id, 'medium' );
 						echo '<div id="upload_logo_preview">';
 						echo '<img src="' . esc_url( $preview[0] ) . '" width="300" />';
 						echo '</div>';
 					}
-					echo '<input type="url" class="upload_image_url" id="default_image_url" name="term_meta[term_image]" value="' . esc_url( $term_meta['term_image'] ) . '" style="width:200px;" />';
+					echo '<input type="url" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" value="' . esc_url( $displaysetting['term_image'] ) . '" style="width:200px;" />';
 					echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 					echo '<p class="description">' . sprintf(
 						__( 'Set Featured Image for %1$s. Must be at least %2$s pixels wide.', 'display-featured-image-genesis' ),

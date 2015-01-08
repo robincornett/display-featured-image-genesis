@@ -308,17 +308,17 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function save_taxonomy_custom_meta( $term_id ) {
 
-		if ( isset( $_POST['term_meta'] ) ) {
+		if ( isset( $_POST['displayfeaturedimagegenesis'] ) ) {
 			$t_id       = $term_id;
-			$term_meta  = get_option( "displayfeaturedimagegenesis_$t_id" );
-			$cat_keys   = array_keys( $_POST['term_meta'] );
+			$displaysetting  = get_option( "displayfeaturedimagegenesis_$t_id" );
+			$cat_keys   = array_keys( $_POST['displayfeaturedimagegenesis'] );
 			$is_updated = false;
 			foreach ( $cat_keys as $key ) {
-				if ( isset ( $_POST['term_meta'][$key] ) ) {
-					$term_meta[$key] = $_POST['term_meta'][$key];
-					if ( $_POST['term_meta']['term_image'] === $term_meta[$key] ) {
-						$term_meta[$key] = $this->validate_taxonomy_image( $_POST['term_meta'][$key] );
-						if ( false !== $term_meta[$key] ) {
+				if ( isset ( $_POST['displayfeaturedimagegenesis'][$key] ) ) {
+					$displaysetting[$key] = $_POST['displayfeaturedimagegenesis'][$key];
+					if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[$key] ) {
+						$displaysetting[$key] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][$key] );
+						if ( false !== $displaysetting[$key] ) {
 							$is_updated = true;
 						}
 					}
@@ -326,7 +326,7 @@ class Display_Featured_Image_Genesis_Settings {
 			}
 			//* Save the option array.
 			if ( $is_updated ) {
-				update_option( "displayfeaturedimagegenesis_$t_id", $term_meta );
+				update_option( "displayfeaturedimagegenesis_$t_id", $displaysetting );
 			}
 		}
 
