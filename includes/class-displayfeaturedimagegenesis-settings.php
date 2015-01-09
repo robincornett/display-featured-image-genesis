@@ -146,7 +146,7 @@ class Display_Featured_Image_Genesis_Settings {
 		if ( $this->post_types ) {
 			add_settings_section(
 				'display_featured_image_custom_post_types',
-				__( 'CPT Featured Images', 'display-featured-image-genesis' ),
+				__( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ),
 				array( $this, 'cpt_section_description' ),
 				'displayfeaturedimagegenesis'
 			);
@@ -154,7 +154,7 @@ class Display_Featured_Image_Genesis_Settings {
 
 			add_settings_field(
 				"displayfeaturedimagegenesis[post_types]",
-				__( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ),
+				__( 'Featured Images', 'display-featured-image-genesis' ),
 				array( $this, 'set_cpt_image' ),
 				'displayfeaturedimagegenesis',
 				'display_featured_image_custom_post_types'
@@ -566,6 +566,11 @@ class Display_Featured_Image_Genesis_Settings {
 			'<p>' . __( 'This plugin does not add the Featured Image to your content, so normally you will not see your Featured Image in the feed. If you select this option, however, the Featured Image (if it is set) will be added to each entry in your RSS feed.', 'display-featured-image-genesis' ) . '</p>' .
 			'<p>' . __( 'If your RSS feed is set to Full Text, the Featured Image will be added to the entry content. If it is set to Summary, the Featured Image will be added to the excerpt instead.', 'display-featured-image-genesis' ) . '</p>';
 
+		$cpt_help =
+			'<h3>' . __( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>' .
+			'<p>' . __( 'Since your site uses Custom Post Types, you may optionally set a Featured Image for each archive.', 'display-featured-image-genesis' ) . '</p>';
+
 
 		$screen->add_help_tab( array(
 			'id'      => 'displayfeaturedimage_less_header-help',
@@ -596,6 +601,14 @@ class Display_Featured_Image_Genesis_Settings {
 			'title'   => __( 'RSS Feed', 'display-featured-image-genesis' ),
 			'content' => $feed_help,
 		) );
+
+		if ( $this->post_types ) {
+			$screen->add_help_tab( array(
+				'id'      => 'displayfeaturedimage_cpt-help',
+				'title'   => __( 'Custom Post Types', 'display-featured-image-genesis' ),
+				'content' => $cpt_help,
+			) );
+		}
 
 	}
 
