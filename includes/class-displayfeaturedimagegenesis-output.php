@@ -75,11 +75,14 @@ class Display_Featured_Image_Genesis_Output {
 			//* otherwise it's a large image.
 			elseif ( $item->width <= $item->large ) {
 
+				remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+				add_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description', 15 );
+
 				$hook = 'genesis_before_loop';
 				if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
 					$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
 				}
-				add_action( $hook, array( $this, 'do_large_image' ) ); // works for both HTML5 and XHTML
+				add_action( $hook, array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
 			}
 		}
 	}

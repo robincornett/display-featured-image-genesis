@@ -429,7 +429,7 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value = esc_url( $new_value );
 		$valid     = $this->is_valid_img_ext( $new_value );
-		$large     = get_option( 'large_size_w' );
+		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
@@ -449,7 +449,7 @@ class Display_Featured_Image_Genesis_Settings {
 				);
 			}
 			//* if file is an image, but is too small, throw it back
-			elseif ( $width <= $large ) {
+			elseif ( $width <= $medium ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
 				$new_value = false;
 
@@ -476,13 +476,13 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value = esc_url( $new_value );
 		$valid     = $this->is_valid_img_ext( $new_value );
-		$large     = get_option( 'large_size_w' );
+		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
 
 		// ok for field to be empty
-		if ( $new_value && ( ! $valid || $width <= $large ) ) {
+		if ( $new_value && ( ! $valid || $width <= $medium ) ) {
 			$new_value = false;
 		}
 
@@ -569,7 +569,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$cpt_help =
 			'<h3>' . __( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>' .
-			'<p>' . __( 'Since your site uses Custom Post Types, you may optionally set a Featured Image for each archive.', 'display-featured-image-genesis' ) . '</p>';
+			'<p>' . __( 'Since your site uses Custom Post Types, you may optionally set a Featured Image for each archive.', 'display-featured-image-genesis' ) . '</p>' .
+			'<p>' . __( 'Featured Images for archives can be smaller than the Default Featured Image, but still need to be larger than your site\'s "medium" image size.', 'display-featured-image-genesis' ) . '</p>';
 
 
 		$screen->add_help_tab( array(
