@@ -16,7 +16,7 @@
  * @since x.y.z
  *
  */
-class Display_Featured_Image_Genesis_Widget extends WP_Widget {
+class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
@@ -54,7 +54,7 @@ class Display_Featured_Image_Genesis_Widget extends WP_Widget {
 			'height'  => 350,
 		);
 
-		parent::__construct( 'featured-taxonomy', __( 'Display Featured Taxonomy', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
+		parent::__construct( 'featured-taxonomy', __( 'Display Featured Taxonomy Image', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
 
 		add_action( 'wp_ajax_widget_selector', array( $this, 'term_action_callback' ) );
 

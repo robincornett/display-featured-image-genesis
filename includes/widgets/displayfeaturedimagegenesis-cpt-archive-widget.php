@@ -53,7 +53,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 			'height'  => 350,
 		);
 
-		parent::__construct( 'featured-posttype', __( 'Display Featured Post Type Archive', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
+		parent::__construct( 'featured-posttype', __( 'Display Featured Post Type Archive Image', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
 
 	}
 

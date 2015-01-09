@@ -34,10 +34,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesi
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-settings.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-taxonomies.php';
 
-// Widget classes
-require plugin_dir_path( __FILE__ ) . 'includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php';
-require plugin_dir_path( __FILE__ ) . 'includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php';
-
 // Instantiate dependent classes
 $displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
 $displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();
