@@ -158,7 +158,7 @@ class Display_Featured_Image_Genesis_Output {
 		elseif ( ! $keep_titles ) {
 
 			if ( ! empty( $item->title ) && ! is_front_page() ) {
-				echo '<h1 class="entry-title featured-image-overlay">' . esc_attr( $item->title ) . '</h1>';
+				echo '<h1 class="entry-title featured-image-overlay">' . $item->title . '</h1>';
 			}
 
 			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
@@ -173,7 +173,7 @@ class Display_Featured_Image_Genesis_Output {
 		echo '</div>';
 
 		//* if javascript not enabled, do a fallback background image
-		$no_js  = '<noscript><div class="backstretch no-js" style="background-image: url(' . $item->backstretch[0] . '); }"></div></noscript>';
+		$no_js  = '<noscript><div class="backstretch no-js" style="background-image: url(' . esc_url( $item->backstretch[0] ) . '); }"></div></noscript>';
 		echo $no_js;
 
 		//* close big-leader
@@ -190,7 +190,7 @@ class Display_Featured_Image_Genesis_Output {
 		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$image = sprintf( '<img src="%1$s" class="aligncenter featured" alt="%2$s" title="%2$s" />',
 			esc_url( $item->backstretch[0] ),
-			esc_attr( $item->title )
+			$item->title
 		);
 
 		echo $image;
