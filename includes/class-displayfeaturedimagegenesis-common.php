@@ -99,7 +99,7 @@ class Display_Featured_Image_Genesis_Common {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 
-			elseif ( ! has_post_thumbnail() || $width <= $item->medium || in_array( get_post_type(), $use_tax_image ) ) {
+			if ( ! has_post_thumbnail() || $width <= $item->medium || in_array( get_post_type(), $use_tax_image ) ) {
 				$taxonomies = get_taxonomies();
 				$args       = array( 'orderby' => 'count', 'order' => 'DESC' );
 				$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
