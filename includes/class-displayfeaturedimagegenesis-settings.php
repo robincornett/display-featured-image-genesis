@@ -294,6 +294,13 @@ class Display_Featured_Image_Genesis_Settings {
 			}
 			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
 			echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
+				echo '<p class="description">' . sprintf(
+					__( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
+					esc_url( get_post_type_archive_link( $post_type ) ),
+					$post->label
+				) . '</p>';
+			}
 
 		}
 
@@ -309,10 +316,10 @@ class Display_Featured_Image_Genesis_Settings {
 	public function save_taxonomy_custom_meta( $term_id ) {
 
 		if ( isset( $_POST['displayfeaturedimagegenesis'] ) ) {
-			$t_id       = $term_id;
-			$displaysetting  = get_option( "displayfeaturedimagegenesis_$t_id" );
-			$cat_keys   = array_keys( $_POST['displayfeaturedimagegenesis'] );
-			$is_updated = false;
+			$t_id           = $term_id;
+			$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
+			$cat_keys       = array_keys( $_POST['displayfeaturedimagegenesis'] );
+			$is_updated     = false;
 			foreach ( $cat_keys as $key ) {
 				if ( isset ( $_POST['displayfeaturedimagegenesis'][$key] ) ) {
 					$displaysetting[$key] = $_POST['displayfeaturedimagegenesis'][$key];
