@@ -95,11 +95,11 @@ class Display_Featured_Image_Genesis_Common {
 			 */
 			$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
 
-			if ( has_post_thumbnail() ) {
+			if ( has_post_thumbnail() && $width > $item->medium ) {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 
-			if ( ! has_post_thumbnail() || $width <= $item->medium || in_array( get_post_type(), $use_tax_image ) ) {
+			elseif ( ! has_post_thumbnail() || in_array( get_post_type(), $use_tax_image ) ) {
 				$taxonomies = get_taxonomies();
 				$args       = array( 'orderby' => 'count', 'order' => 'DESC' );
 				$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );

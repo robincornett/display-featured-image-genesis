@@ -28,7 +28,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 	/**
 	 * Constructor. Set the default widget options and create widget.
 	 *
-	 * @since 0.1.8
+	 * @since x.y.z
 	 */
 	function __construct() {
 
@@ -60,7 +60,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 	/**
 	 * Echo the widget content.
 	 *
-	 * @since 0.1.8
+	 * @since x.y.z
 	 *
 	 *
 	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
@@ -90,10 +90,13 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 		}
 		else {
 			$title     = $post_type->label;
-			if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
-				$title = genesis_get_cpt_option( 'headline', $instance['post_type'] );
-			}
 			$permalink = esc_url( get_post_type_archive_link( $instance['post_type'] ) );
+			if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
+				$headline = genesis_get_cpt_option( 'headline', $instance['post_type'] );
+				if ( ! empty( $headline ) ) {
+					$title = $headline;
+				}
+			}
 		}
 
 		echo $args['before_widget'];
@@ -144,7 +147,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 
 		if ( $instance['show_content'] && $intro_text ) {
 
-			echo genesis_html5() ? '<div class="entry-content">' : '';
+			echo genesis_html5() ? '<div class="archive-description">' : '';
 
 			$intro_text = apply_filters( 'genesis_term_intro_text_output', $intro_text );
 
@@ -165,7 +168,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 	 * The newly calculated value of $instance should be returned.
 	 * If "false" is returned, the instance won't be saved/updated.
 	 *
-	 * @since 0.1.8
+	 * @since x.y.z
 	 *
 	 * @param array $new_instance New settings for this instance as input by the user via form()
 	 * @param array $old_instance Old settings for this instance
@@ -182,7 +185,7 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 	/**
 	 * Echo the settings update form.
 	 *
-	 * @since 0.1.8
+	 * @since x.y.z
 	 *
 	 * @param array $instance Current settings
 	 */
@@ -193,8 +196,8 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'display-featured-image-genesis' ); ?>:</label>
-			<input type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'display-featured-image-genesis' ); ?>:</label>
+			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 
 		<div class="genesis-widget-column">
@@ -202,8 +205,8 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 			<div class="genesis-widget-column-box genesis-widget-column-box-top">
 
 				<p>
-					<label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post Type', 'display-featured-image-genesis' ); ?>:</label>
-					<select id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>" >
+					<label for="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>"><?php _e( 'Post Type', 'display-featured-image-genesis' ); ?>:</label>
+					<select id="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>" >
 					<?php
 					//* Fetch a list of possible post types
 					$args = array(
@@ -226,13 +229,13 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 			<div class="genesis-widget-column-box">
 
 				<p>
-					<input id="<?php echo $this->get_field_id( 'show_title' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
-					<label for="<?php echo $this->get_field_id( 'show_title' ); ?>"><?php _e( 'Show Archive Title', 'display-featured-image-genesis' ); ?></label>
+					<input id="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>"><?php _e( 'Show Archive Title', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 				<p>
-					<input id="<?php echo $this->get_field_id( 'show_content' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
-					<label for="<?php echo $this->get_field_id( 'show_content' ); ?>"><?php _e( 'Show Archive Intro Text', 'display-featured-image-genesis' ); ?></label>
+					<input id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php _e( 'Show Archive Intro Text', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 			</div>
@@ -244,24 +247,24 @@ class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
 			<div class="genesis-widget-column-box genesis-widget-column-box-top">
 
 				<p>
-					<input id="<?php echo $this->get_field_id( 'show_image' ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ); ?>" value="1" <?php checked( $instance['show_image'] ); ?>/>
-					<label for="<?php echo $this->get_field_id( 'show_image' ); ?>"><?php _e( 'Show Featured Image', 'display-featured-image-genesis' ); ?></label>
+					<input id="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_image' ); ?>" value="1" <?php checked( $instance['show_image'] ); ?>/>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>"><?php _e( 'Show Featured Image', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 				<p>
-					<label for="<?php echo $this->get_field_id( 'image_size' ); ?>"><?php _e( 'Image Size', 'display-featured-image-genesis' ); ?>:</label>
-					<select id="<?php echo $this->get_field_id( 'image_size' ); ?>" class="genesis-image-size-selector" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
+					<label for="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>"><?php _e( 'Image Size', 'display-featured-image-genesis' ); ?>:</label>
+					<select id="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>" class="genesis-image-size-selector" name="<?php echo $this->get_field_name( 'image_size' ); ?>">
 						<?php
 						$sizes = genesis_get_image_sizes();
-						foreach( (array) $sizes as $name => $size )
-							echo '<option value="'.esc_attr( $name ).'" '.selected( $name, $instance['image_size'], FALSE ).'>'.esc_html( $name ).' ( '.$size['width'].'x'.$size['height'].' )</option>';
-						?>
+						foreach( (array) $sizes as $name => $size ) {
+							echo '<option value="' . esc_attr( $name ) . '" ' . selected( $name, $instance['image_size'], FALSE ) . '>' . esc_html( $name ) . ' ( ' . absint( $size['width'] ) . 'x' . absint( $size['height'] ) . ' )</option>';
+						} ?>
 					</select>
 				</p>
 
 				<p>
-					<label for="<?php echo $this->get_field_id( 'image_alignment' ); ?>"><?php _e( 'Image Alignment', 'display-featured-image-genesis' ); ?>:</label>
-					<select id="<?php echo $this->get_field_id( 'image_alignment' ); ?>" name="<?php echo $this->get_field_name( 'image_alignment' ); ?>">
+					<label for="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>"><?php _e( 'Image Alignment', 'display-featured-image-genesis' ); ?>:</label>
+					<select id="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>" name="<?php echo $this->get_field_name( 'image_alignment' ); ?>">
 						<option value="alignnone">- <?php _e( 'None', 'display-featured-image-genesis' ); ?> -</option>
 						<option value="alignleft" <?php selected( 'alignleft', $instance['image_alignment'] ); ?>><?php _e( 'Left', 'display-featured-image-genesis' ); ?></option>
 						<option value="alignright" <?php selected( 'alignright', $instance['image_alignment'] ); ?>><?php _e( 'Right', 'display-featured-image-genesis' ); ?></option>
