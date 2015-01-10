@@ -8,7 +8,7 @@
  * @license   GPL-2.0+
  * @link      http://robincornett.com
  * @copyright 2014 Robin Cornett Creative, LLC
- * @since x.y.z
+ * @since 2.0.0
  */
 
 class Display_Featured_Image_Genesis_Admin {
@@ -21,7 +21,7 @@ class Display_Featured_Image_Genesis_Admin {
 	/**
 	 * set up new column for all public taxonomies
 	 *
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	public function set_up_taxonomy_columns() {
 		$args       = array(
@@ -38,7 +38,7 @@ class Display_Featured_Image_Genesis_Admin {
 	/**
 	 * set up new column for all public post types
 	 *
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	public function set_up_post_type_columns() {
 		$args       = array(
@@ -61,7 +61,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 * add featured image column
 	 * @param column $columns set up new column to show featured image for taxonomies/posts/etc.
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 */
 	public function add_column( $columns ) {
 
@@ -81,7 +81,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 * @param  term id $term_id term_id for taxonomy
 	 * @return featured image          display featured image, if it exists, for each term in a public taxonomy
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 */
 	public function manage_taxonomy_column( $value, $column, $term_id ) {
 
@@ -103,7 +103,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 * @param  post id $post_id id of each post
 	 * @return featured image          display featured image, if it exists, for each post
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 */
 	public function custom_post_columns( $column, $post_id ) {
 

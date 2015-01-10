@@ -143,7 +143,7 @@ class Display_Featured_Image_Genesis_Output {
 		/**
 		 * create a filter to not move excerpts if move excerpts is enabled
 		 * @var filter
-		 * @since  x.y.z (deprecated old function from 1.3.3)
+		 * @since  2.0.0 (deprecated old function from 1.3.3)
 		 */
 		$omit_excerpt  = apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
 

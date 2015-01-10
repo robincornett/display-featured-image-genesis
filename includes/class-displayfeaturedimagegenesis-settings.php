@@ -238,7 +238,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * option to not move titles
 	 * @return 0 1 checkbox
 	 *
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	public function keep_titles() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[keep_titles]" value="0" />';
@@ -272,7 +272,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 *
 	 * @return  image
 	 *
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	public function set_cpt_image() {
 
@@ -311,7 +311,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @param  term id $term_id the id of the term
 	 * @return updated option          updated option for term featured image
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 */
 	public function save_taxonomy_custom_meta( $term_id ) {
 
@@ -430,7 +430,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * Returns empty value for image if not correct file type/size
 	 * @param  string $new_value New value
 	 * @return string            New or previous value, depending on allowed image size.
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	protected function validate_post_type_image( $new_value ) {
 
@@ -477,7 +477,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * Returns false value for image if not correct file type/size
 	 * @param  string $new_value New value
 	 * @return string            New value or false, depending on allowed image size.
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	protected function validate_taxonomy_image( $new_value ) {
 

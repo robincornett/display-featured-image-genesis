@@ -121,7 +121,7 @@ class Display_Featured_Image_Genesis {
 			) );
 		}
 
-		//* new setting for titles added in x.y.z
+		//* new setting for titles added in 2.0.0
 		if ( empty( $displaysetting['keep_titles'] ) ) {
 			$this->update_settings( array(
 				'keep_titles' => 0
@@ -144,7 +144,7 @@ class Display_Featured_Image_Genesis {
 
 	/**
 	 * set up all actions for adding featured images to taxonomies
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	public function set_taxonomy_meta() {
 		$args       = array(

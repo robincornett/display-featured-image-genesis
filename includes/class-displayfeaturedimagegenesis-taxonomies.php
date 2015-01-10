@@ -5,7 +5,7 @@
  *
  * @package DisplayFeaturedImageGenesis
  *
- * @since x.y.z
+ * @since 2.0.0
  */
 class Display_Featured_Image_Genesis_Taxonomies {
 
@@ -29,7 +29,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	 *
 	 * @return preview/uploader       upload/preview featured image for term
 	 *
-	 * @since  x.y.z
+	 * @since  2.0.0
 	 */
 	public function edit_taxonomy_meta_fields( $term ) {
 
@@ -61,7 +61,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	 * Help tab for media screen
 	 * @return help tab with verbose information for plugin
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 */
 	public function help() {
 		$screen = get_current_screen();

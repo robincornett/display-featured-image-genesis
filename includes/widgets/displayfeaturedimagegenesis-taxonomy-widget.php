@@ -7,13 +7,13 @@
  * @license   GPL-2.0+
  * @link      http://robincornett.com
  * @copyright 2014 Robin Cornett Creative, LLC
- * @since x.y.z
+ * @since 2.0.0
  */
 
 /**
  * Genesis Featured Taxonomy widget class.
  *
- * @since x.y.z
+ * @since 2.0.0
  *
  */
 class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
@@ -28,7 +28,7 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 	/**
 	 * Constructor. Set the default widget options and create widget.
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 */
 	function __construct() {
 
@@ -63,7 +63,7 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 	/**
 	 * Echo the widget content.
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 *
 	 *
 	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
@@ -146,7 +146,7 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 	 * The newly calculated value of $instance should be returned.
 	 * If "false" is returned, the instance won't be saved/updated.
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 *
 	 * @param array $new_instance New settings for this instance as input by the user via form()
 	 * @param array $old_instance Old settings for this instance
@@ -162,7 +162,7 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 	/**
 	 * Echo the settings update form.
 	 *
-	 * @since x.y.z
+	 * @since 2.0.0
 	 *
 	 * @param array $instance Current settings
 	 */

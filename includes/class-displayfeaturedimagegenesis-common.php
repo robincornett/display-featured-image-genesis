@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public static $version = 'x.y.z';
+	public static $version = '2.0.0';
 
 	protected static $post_types;
 
@@ -58,7 +58,7 @@ class Display_Featured_Image_Genesis_Common {
 		/**
 		 * create a filter to use the fallback image
 		 * @var filter
-		 * @since  x.y.z (deprecated old use_fallback_image function from 1.2.2)
+		 * @since  2.0.0 (deprecated old use_fallback_image function from 1.2.2)
 		 */
 		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
 
