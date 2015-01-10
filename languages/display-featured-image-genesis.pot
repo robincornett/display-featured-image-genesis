@@ -359,11 +359,11 @@ msgid "Center"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:48
-msgid "Displays a taxonomy with its featured image"
+msgid "Displays a term with its featured image"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:57
-msgid "Display Featured Taxonomy Image"
+msgid "Display Featured Term Image"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:185
@@ -375,9 +375,9 @@ msgid "Term"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:223
-msgid "Show Taxonomy Title"
+msgid "Show Term Title"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:228
-msgid "Show Taxonomy Intro Text"
+msgid "Show Term Intro Text"
 msgstr ""
