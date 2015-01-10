@@ -4,12 +4,13 @@
  * settings for taxonomy pages
  *
  * @package DisplayFeaturedImageGenesis
+ *
  * @since x.y.z
  */
 class Display_Featured_Image_Genesis_Taxonomies {
 
 	/**
-	 * add featured image uploader to new taxonomy add
+	 * add featured image uploader to new term add
 	 */
 	public function add_taxonomy_meta_fields() {
 
@@ -25,13 +26,16 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	/**
 	 * edit term page
 	 * @param  term $term featured image input/display for individual term page
+	 *
 	 * @return preview/uploader       upload/preview featured image for term
+	 *
+	 * @since  x.y.z
 	 */
 	public function edit_taxonomy_meta_fields( $term ) {
 
 		$t_id           = $term->term_id;
 		$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
-		$large          = get_option( 'large_size_w' );
+		$medium         = get_option( 'medium_size_w' );
 
 		echo '<tr class="form-field">';
 			echo '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label></th>';
@@ -46,12 +50,32 @@ class Display_Featured_Image_Genesis_Taxonomies {
 					echo '<input type="url" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" value="' . esc_url( $displaysetting['term_image'] ) . '" style="width:200px;" />';
 					echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 					echo '<p class="description">' . sprintf(
-						__( 'Set Featured Image for %1$s. Must be at least %2$s pixels wide.', 'display-featured-image-genesis' ),
-						esc_html( $term->name ),
-						absint( $large + 1 )
+						__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
+						esc_html( $term->name )
 					) . '</p>';
 				echo '</td>';
 		echo '</tr>';
+	}
+
+	/**
+	 * Help tab for media screen
+	 * @return help tab with verbose information for plugin
+	 *
+	 * @since x.y.z
+	 */
+	public function help() {
+		$screen = get_current_screen();
+
+		$term_help =
+			'<h3>' . __( 'Set a Featured Image', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'You may set a featured image for your terms. This image will be used on the term archive page, and as a fallback image on a single post page if it does not have a featured image of its own.', 'display-featured-image-genesis' ) . '</p>';
+
+		$screen->add_help_tab( array(
+			'id'      => 'displayfeaturedimage_term-help',
+			'title'   => __( 'Featured Image', 'display-featured-image-genesis' ),
+			'content' => $term_help,
+		) );
+
 	}
 
 }

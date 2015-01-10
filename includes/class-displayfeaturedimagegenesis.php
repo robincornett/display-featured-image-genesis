@@ -157,6 +157,7 @@ class Display_Featured_Image_Genesis {
 			add_action( "{$taxonomy}_edit_form_fields", array( $this->taxonomies, 'edit_taxonomy_meta_fields' ), 5, 2 );
 			add_action( "edited_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
 			add_action( "create_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( 'load-edit-tags.php', array( $this->taxonomies, 'help' ) );
 		}
 	}
 
