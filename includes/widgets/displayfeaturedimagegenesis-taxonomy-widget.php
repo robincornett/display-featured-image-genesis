@@ -45,7 +45,7 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 
 		$widget_ops = array(
 			'classname'   => 'featured-taxonomy',
-			'description' => __( 'Displays a taxonomy with its featured image', 'display-featured-image-genesis' ),
+			'description' => __( 'Displays a term with its featured image', 'display-featured-image-genesis' ),
 		);
 
 		$control_ops = array(
@@ -54,7 +54,7 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 			'height'  => 350,
 		);
 
-		parent::__construct( 'featured-taxonomy', __( 'Display Featured Taxonomy Image', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
+		parent::__construct( 'featured-taxonomy', __( 'Display Featured Term Image', 'display-featured-image-genesis' ), $widget_ops, $control_ops );
 
 		add_action( 'wp_ajax_widget_selector', array( $this, 'term_action_callback' ) );
 
@@ -220,12 +220,12 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 
 				<p>
 					<input id="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_title' ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>"><?php _e( 'Show Taxonomy Title', 'display-featured-image-genesis' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>"><?php _e( 'Show Term Title', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 				<p>
 					<input id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>" type="checkbox" name="<?php echo $this->get_field_name( 'show_content' ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php _e( 'Show Taxonomy Intro Text', 'display-featured-image-genesis' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php _e( 'Show Term Intro Text', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 			</div>
