@@ -115,19 +115,28 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
-		//now actually set the backstretch image source, which includes some metadata
-		$metadata = wp_get_attachment_metadata( $image_id );
-
 		// turn Photon off so we can get the correct image
 		$photon_removed = '';
 		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
 			$photon_removed = remove_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ) );
 		}
 
-		$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
+		/**
+		 * create a filter for user to optionally force post types to use the large image instead of backstretch
+		 * @var filter
+		 *
+		 * @since  2.0.0
+		 */
+		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', self::$post_types );
+		$image_size      = 'displayfeaturedimage_backstretch';
+		if ( in_array( get_post_type(), $use_large_image ) ) {
+			$image_size = 'large';
+		}
+		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
+
 		$item->width = '';
 		if ( ! empty( $item->backstretch ) ) {
-			$item->width = $metadata['width'];
+			$item->width = $item->backstretch[1];
 		}
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
@@ -139,7 +148,7 @@ class Display_Featured_Image_Genesis_Common {
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 			// reset backstretch image source to fallback if it exists and the featured image is being used in content.
 			if ( ! empty( $item->fallback ) && false !== $item->content ) {
-				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, 'displayfeaturedimage_backstretch' );
+				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, $image_size );
 				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
 			}
 		}
