@@ -92,9 +92,19 @@ Display Featured Image for Genesis has its own settings page, under the main App
 
 Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
 
-### How do I stop the featured image action from showing on my custom post types?
+### How can I change how the plugin works?
 
-You'll want to add a filter to your theme (functions.php file). Here's an example:
+There are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a latter one.
+
+Available filters are:
+
+* `display_featured_image_genesis_skipped_posttypes`: select post type(s) which will not have the featured image effect applied
+* `display_featured_image_genesis_use_default`: force post type(s) to use your sitewide default image (set on the main plugin settings page) for the featured image effect, regardless of what is set as the individual post's featured image
+* `display_featured_image_genesis_use_taxonomy`: force post type(s) to use a taxonomy term's image for the featured image effect, regardless of what is set as the individual post's featured image
+* `display_featured_image_genesis_use_large_image`: force post type(s) to output the featured image as a large image above the post content, and to not use the backstretch effect at all
+* `display_featured_image_genesis_omit_excerpt`: force post type(s) to not move the excerpt to overlay the featured image, even if the "Move Excerpts/Archive Descriptions" setting is selected
+
+These filters all work the same way, so using any one in your theme will all follow the same pattern. For example, to prevent the featured image effect on the `listing` or `staff` post types, you would add the following to your theme's functions.php file:
 
 ```php
 add_filter( 'display_featured_image_genesis_skipped_posttypes', 'rgc_skip_post_types' );
@@ -106,11 +116,7 @@ function rgc_skip_post_types( $post_types ) {
 }
 ```
 
-It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_front_page();` to stop the featured image from displaying. This is most helpful if you have set a default featured image on the plugin's settings page.
-
-### Can I force my site to use the default image on a post type even if it has its own Featured Image?
-
-Yes! You'll want to add a filter to your theme (functions.php file). Here's an example:
+To force a post type to use the sitewide Featured Image, use this filter instead:
 
 ```php
 add_filter( 'display_featured_image_genesis_use_default', 'rgc_force_default_image' );
@@ -121,7 +127,7 @@ function rgc_force_default_image( $post_types ) {
 }
 ```
 
-Alternatively, you can also set a specific post type to use the taxonomy featured image, if one exists, even if the post type has its own Featured Image. The filter is very similar:
+Alternatively, you can also set a specific post type to use the taxonomy featured image, if one exists, even if the post type has its own Featured Image:
 
 ```php
 add_filter( 'display_featured_image_genesis_use_taxonomy', 'rgc_use_tax_image' );
@@ -132,33 +138,29 @@ function rgc_use_tax_image( $post_types ) {
 }
 ```
 
-### The backstretch image is a little too tall.
+It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_post_type_archive();`.
 
-If you do not want the height of the backstretch image to be quite the height of the user's window, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter your image will be. Feel free to experiment, as no images are harmed by changing this number.
+### The backstretch image takes up too much room on the screen.
 
-Additionally/alternatively, you could set a max-height for the backstretch image area via css:
+If you do not want the height of the backstretch image to be quite the height of the user's browser window, which is the standard, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter the window will be calculated to be. Feel free to experiment, as no images are harmed by changing this number.
+
+_Note:_ **Display Featured Image for Genesis** determines the size of your backstretch image based on the size of the user's screen. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's screen, regardless of the size of that screen.
+
+If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead.
 
 ```css
 .big-leader {
 	max-height: 700px;
 }
-```
 
-### I checked the __Move Excerpts/Archive Descriptions__ option, but don't want excerpts to show on a certain custom post type, even with the featured image.
+@media only screen and (max-width: 800px) {
 
-There's a filter for that, too. For example, adding this to your functions.php file would make sure that the excerpt does not show on single posts, or posts from the Staff post type, even if they have an excerpt.
+	.big-leader {
+		max-height: 300px;
+	}
 
-```php
-add_filter( 'display_featured_image_genesis_omit_excerpt', 'rgc_omit_excerpts' );
-function rgc_omit_excerpts( $post_types ) {
-	$post_types[] = 'staff';
-	$post_types[] = 'post';
-
-	return $post_types;
 }
 ```
-
-_Note:_ unless you check the option to __Move Excerpts/Archive Descriptions__, archive headlines will be styled similarly to the standard single post/page output. If you check this option, all titles and descriptions will move to overlay the leader image.
 
 ### My (large) Featured Image is above my post/page title, and I want it to show below it instead.
 
@@ -172,6 +174,8 @@ function rgc_move_image( $hook ) {
 }
 ```
 
+_Note:_ because the entry header applies to all posts on a page, such as a blog or archive page, this filter modifies the output only on singular posts.
+
 ## Credits
 
 * Built by [Robin Cornett](http://robincornett.com/)
@@ -183,6 +187,7 @@ function rgc_move_image( $hook ) {
 * added featured images to admin archive pages!
 * added new widgets for featured taxonomy terms and custom post type archives
 * added new setting to not move post titles to overlay Featured Image
+* added filters to force plugin to use taxonomy term images, or output only large images
 
 ### 1.5.0 - 2014-12-13
 * added new setting to include Featured Image in RSS feeds
