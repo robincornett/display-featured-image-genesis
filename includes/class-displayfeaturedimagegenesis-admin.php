@@ -16,6 +16,8 @@ class Display_Featured_Image_Genesis_Admin {
 	public function set_up_columns() {
 		$this->set_up_taxonomy_columns();
 		$this->set_up_post_type_columns();
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'featured_image_column_width' ) );
 	}
 
 	/**
@@ -108,12 +110,26 @@ class Display_Featured_Image_Genesis_Admin {
 	public function custom_post_columns( $column, $post_id ) {
 
 		if ( 'featured_image' === $column ) {
-			$image = get_the_post_thumbnail( $post_id, array( 60,60 ) );
+			$image = get_the_post_thumbnail( $post_id, array( 65,65 ) );
 			if ( $image ) {
 				echo $image;
 			}
 		}
 
+	}
+
+	/**
+	 * sets a width for the featured image column
+	 * @return stylesheet inline stylesheet to set featured image column width
+	 */
+	public function featured_image_column_width() {
+		$screen = get_current_screen();
+		if ( in_array( $screen->base, array( 'edit', 'edit-tags' ) ) ) { ?>
+			<style type="text/css">
+				.column-featured_image { width:105px; }
+				.column-featured_image img { margin: 0 auto; display: block; }
+			</style> <?php
+		}
 	}
 
 }

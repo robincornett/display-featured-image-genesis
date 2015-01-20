@@ -187,7 +187,6 @@ class Display_Featured_Image_Genesis {
 		$screen = get_current_screen();
 
 		if ( 'appearance_page_displayfeaturedimagegenesis' === $screen->id || ! empty( $screen->taxonomy ) ) {
-		// if ( false !== $check || ! empty( get_current_screen()->taxonomy ) ) {
 			wp_enqueue_media();
 			wp_enqueue_script( 'displayfeaturedimage-upload' );
 			wp_localize_script( 'displayfeaturedimage-upload', 'objectL10n', array(
