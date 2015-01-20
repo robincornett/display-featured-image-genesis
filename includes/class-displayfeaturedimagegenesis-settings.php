@@ -242,7 +242,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function keep_titles() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[keep_titles]" value="0" />';
-		echo '<label for="displayfeaturedimagegenesis[keep_titles]"><input type="checkbox" name="displayfeaturedimagegenesis[keep_titles]" id="displayfeaturedimagegenesis[keep_titles]" value="1"' . checked( 1, esc_attr( $this->displaysetting['keep_titles'] ), false ) . ' class="code" />' . __( 'Do not move the titles to overlay the Featured Image.', 'display-featured-image-genesis' ) . '</label>';
+		echo '<label for="displayfeaturedimagegenesis[keep_titles]"><input type="checkbox" name="displayfeaturedimagegenesis[keep_titles]" id="displayfeaturedimagegenesis[keep_titles]" value="1"' . checked( 1, esc_attr( $this->displaysetting['keep_titles'] ), false ) . ' class="code" />' . __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ) . '</label>';
 	}
 
 	/**
@@ -564,6 +564,10 @@ class Display_Featured_Image_Genesis_Settings {
 				esc_url( 'https://github.com/robincornett/display-featured-image-genesis#how-do-i-stop-the-featured-image-action-from-showing-on-my-custom-post-types' )
 			) . '</p>';
 
+		$keeptitles_help =
+			'<h3>' . __( 'Do Not Move Titles', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'This setting applies to the backstretch Featured Image only. It allows you to keep the post/page titles in their original location, instead of overlaying the new image.', 'display-featured-image-genesis' ) . '</p>';
+
 		$excerpts_help =
 			'<h3>' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'By default, archive descriptions (set on the Genesis Archive Settings pages) show below the Default Featured Image, while the archive title displays on top of the image. If you check this box, all headlines, descriptions, and optional excerpts will display in a box overlaying the Featured Image.', 'display-featured-image-genesis' ) . '</p>';
@@ -596,6 +600,12 @@ class Display_Featured_Image_Genesis_Settings {
 			'id'      => 'displayfeaturedimage_exclude_front-help',
 			'title'   => __( 'Show on Front Page', 'display-featured-image-genesis' ),
 			'content' => $skipfront_help,
+		) );
+
+		$screen->add_help_tab( array(
+			'id'      => 'displayfeaturedimage_keep_titles-help',
+			'title'   => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
+			'content' => $keeptitles_help,
 		) );
 
 		$screen->add_help_tab( array(
