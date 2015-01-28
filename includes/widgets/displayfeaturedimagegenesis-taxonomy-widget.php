@@ -44,7 +44,7 @@ class Display_Featured_Image_Genesis_Taxonomy_Widget extends WP_Widget {
 		);
 
 		$widget_ops = array(
-			'classname'   => 'featured-taxonomy',
+			'classname'   => 'featured-term',
 			'description' => __( 'Displays a term with its featured image', 'display-featured-image-genesis' ),
 		);
 
