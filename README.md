@@ -187,6 +187,7 @@ _Note:_ because the entry header applies to all posts on a page, such as a blog 
 ### 2.0.0
 * added featured images to taxonomy terms!
 * added featured images to custom post type archive pages!
+* added featured image previews to the admin!
 * added new widgets for featured taxonomy terms and custom post type archives
 * added new setting to not move post titles to overlay Featured Image
 * added filters to force plugin to use taxonomy term images, or output only large images
