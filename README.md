@@ -94,7 +94,7 @@ Yes and no. Technically, it does, even older (XHTML) themes. However, depending 
 
 ### How can I change how the plugin works?
 
-There are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a latter one.
+There are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a later one.
 
 Available filters are:
 
@@ -127,7 +127,7 @@ function rgc_force_default_image( $post_types ) {
 }
 ```
 
-Alternatively, you can also set a specific post type to use the taxonomy featured image, if one exists, even if the post type has its own Featured Image:
+Alternatively, you can also set a specific post type to use the taxonomy term featured image, if one exists, even if the post type has its own Featured Image:
 
 ```php
 add_filter( 'display_featured_image_genesis_use_taxonomy', 'rgc_use_tax_image' );
@@ -138,13 +138,15 @@ function rgc_use_tax_image( $post_types ) {
 }
 ```
 
+If a post has no featured image of its own, and is assigned to multiple taxonomy terms which do have images assigned, the plugin will opt to use the featured image from the most popular term (the one with the most posts already).
+
 It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_post_type_archive();`.
 
 ### The backstretch image takes up too much room on the screen.
 
 If you do not want the height of the backstretch image to be quite the height of the user's browser window, which is the standard, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter the window will be calculated to be. Feel free to experiment, as no images are harmed by changing this number.
 
-_Note:_ **Display Featured Image for Genesis** determines the size of your backstretch image based on the size of the user's screen. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's screen, regardless of the size of that screen.
+_Note:_ **Display Featured Image for Genesis** determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window.
 
 If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead.
 
@@ -183,8 +185,8 @@ _Note:_ because the entry header applies to all posts on a page, such as a blog 
 ## Changelog
 
 ### 2.0.0
-* added featured images to taxonomies!
-* added featured images to admin archive pages!
+* added featured images to taxonomy terms!
+* added featured images to custom post type archive pages!
 * added new widgets for featured taxonomy terms and custom post type archives
 * added new setting to not move post titles to overlay Featured Image
 * added filters to force plugin to use taxonomy term images, or output only large images
