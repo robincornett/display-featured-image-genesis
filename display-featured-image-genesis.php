@@ -6,12 +6,12 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      http://robincornett.com
- * @copyright 2014 Robin Cornett Creative, LLC
+ * @copyright 2014-2015 Robin Cornett Creative, LLC
  *
  * @wordpress-plugin
  * Plugin Name:       Display Featured Image for Genesis
  * Plugin URI:        http://github.com/robincornett/display-featured-image-genesis/
- * Description:       This plugin requires the Genesis Framework. It intelligently varies the display of the post or page featured image, depending on size.
+ * Description:       This plugin works within the Genesis Framework, to display featured images in beautiful and dynamic ways.
  * Version:           2.0.0
  * Author:            Robin Cornett
  * Author URI:        http://robincornett.com

@@ -184,7 +184,7 @@ _Note:_ because the entry header applies to all posts on a page, such as a blog 
 
 ## Changelog
 
-### 2.0.0
+### 2.0.0 - 2015-02-03
 * added featured images to taxonomy terms!
 * added featured images to custom post type archive pages!
 * added featured image previews to the admin!
