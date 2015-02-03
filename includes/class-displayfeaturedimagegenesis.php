@@ -206,8 +206,8 @@ class Display_Featured_Image_Genesis {
 		require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-cpt-archive-widget.php';
 		require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-taxonomy-widget.php';
 
-		register_widget( 'Display_Featured_Image_Genesis_Taxonomy_Widget' );
-		register_widget( 'Display_Featured_Image_Genesis_CPT_Widget' );
+		register_widget( 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
+		register_widget( 'Display_Featured_Image_Genesis_Widget_CPT' );
 	}
 
 }

@@ -16,7 +16,7 @@
  * @since 2.0.0
  *
  */
-class Display_Featured_Image_Genesis_CPT_Widget extends WP_Widget {
+class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 	/**
 	 * Holds widget settings defaults, populated in constructor.
