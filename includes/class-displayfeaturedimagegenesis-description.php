@@ -31,7 +31,11 @@ class Display_Featured_Image_Genesis_Description {
 		$headline = $intro_text = '';
 
 		if ( $item->title ) {
-			$headline = sprintf( '<h1 class="entry-title">%s</h1>', $item->title );
+			$itemprop = '';
+			if ( genesis_html5() ) {
+				$itemprop = 'itemprop="headline"';
+			}
+			$headline = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $item->title );
 		}
 		if ( has_excerpt() ) {
 			$intro_text = wpautop( $item->description );
@@ -64,7 +68,11 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = wpautop( get_bloginfo( 'description' ) );
 
 		if ( is_home() && 'page' === $frontpage ) {
-			$headline = sprintf( '<h1 class="entry-title">%s</h1>', $item->title );
+			$itemprop = '';
+			if ( genesis_html5() ) {
+				$itemprop = 'itemprop="headline"';
+			}
+			$headline = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $item->title );
 			$intro_text = wpautop( $item->description );
 		}
 

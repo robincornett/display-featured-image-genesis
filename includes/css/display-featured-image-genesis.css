@@ -20,7 +20,8 @@
 	z-index: 1;
 }
 
-.big-leader .entry-title.featured-image-overlay {
+.big-leader .entry-title.featured-image-overlay,
+.big-leader .archive-title.featured-image-overlay {
 	position: relative;
 	color: #fff;
 	text-align: center;
