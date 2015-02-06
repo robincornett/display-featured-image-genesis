@@ -83,7 +83,7 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_category() || is_tag() || is_tax() ) {
 			$t_id      = $object->term_id;
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
-			if ( $term_meta ) {
+			if ( ! empty( $term_meta['term_image'] ) ) {
 				$image_id = self::get_image_id( $term_meta['term_image'] );
 			}
 		}
