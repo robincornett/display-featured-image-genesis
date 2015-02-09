@@ -20,9 +20,11 @@ class Display_Featured_Image_Genesis_RSS {
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$feed_image     = $displaysetting['feed_image'];
 		$rss_option     = get_option( 'rss_use_excerpt' );
+		$post_types     = array();
+		$skipped_types  = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
 		//* if the user isn't sending images to the feed, we're done
-		if ( ! $feed_image ) {
+		if ( ! $feed_image || ( in_array( get_post_type(), $skipped_types ) ) ) {
 			return;
 		}
 
