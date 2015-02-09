@@ -83,6 +83,15 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_category() || is_tag() || is_tax() ) {
 			$t_id      = $object->term_id;
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
+			// if there is a post type image, set that first, as a fallback
+			if ( $object->taxonomy ) {
+				$tax_object = get_taxonomy( $object->taxonomy );
+				$post_type  = $tax_object->object_type[0];
+				if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
+					$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
+				}
+			}
+			// if there is a term image, use that instead
 			if ( ! empty( $term_meta['term_image'] ) ) {
 				$image_id = self::get_image_id( $term_meta['term_image'] );
 			}
