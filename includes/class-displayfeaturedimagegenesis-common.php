@@ -116,7 +116,7 @@ class Display_Featured_Image_Genesis_Common {
 				foreach ( $terms as $term ) {
 					$t_id      = $term->term_id;
 					$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
-					if ( $term_meta['term_image'] ) {
+					if ( ! empty( $term_meta['term_image'] ) ) {
 						$image_id = self::get_image_id( $term_meta['term_image'] );
 						break;
 					}
