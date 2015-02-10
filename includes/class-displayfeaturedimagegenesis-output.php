@@ -63,7 +63,8 @@ class Display_Featured_Image_Genesis_Output {
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
-				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image_title' ) );
+				$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
+				add_action( $hook, array( $this, 'do_backstretch_image_title' ) );
 
 			}
 
