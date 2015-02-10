@@ -207,7 +207,7 @@ class Display_Featured_Image_Genesis_Output {
 			$item->title
 		);
 
-		echo $image;
+		echo apply_filters( 'display_featured_image_genesis_large_image_output', $image );
 	}
 
 	/**
