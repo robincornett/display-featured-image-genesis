@@ -55,7 +55,8 @@ class Display_Featured_Image_Genesis_Output {
 		//* if the featured image is not part of the content, or we're not on a singular page, carry on
 		if ( false === $item->content || ! is_singular() ) {
 
-			wp_enqueue_style( 'displayfeaturedimage-style', plugins_url( 'includes/css/display-featured-image-genesis.css', dirname( __FILE__ ) ), array(), $version );
+			$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
+			wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $version );
 
 			//* check if the image is large enough for backstretch
 			if ( $item->width > $item->large ) {
