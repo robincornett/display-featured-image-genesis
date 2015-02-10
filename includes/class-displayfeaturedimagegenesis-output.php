@@ -63,11 +63,6 @@ class Display_Featured_Image_Genesis_Output {
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
-				wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array(
-					'src'    => esc_url( $item->backstretch[0] ),
-					'height' => esc_attr( $item->reduce )
-				) );
-
 				add_action( 'genesis_after_header', array( $this, 'do_backstretch_image_title' ) );
 
 			}
@@ -123,6 +118,11 @@ class Display_Featured_Image_Genesis_Output {
 		$item           = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$keep_titles    = $displaysetting['keep_titles'];
+
+		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array(
+			'src'    => esc_url( $item->backstretch[0] ),
+			'height' => esc_attr( $item->reduce ),
+		) );
 
 		if ( ! $keep_titles ) {
 			if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
