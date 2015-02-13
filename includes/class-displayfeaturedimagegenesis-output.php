@@ -106,7 +106,7 @@ class Display_Featured_Image_Genesis_Output {
 				$classes[] = 'large-featured';
 			}
 		}
-		return $classes;
+		return apply_filters( 'display_featured_image_genesis_classes', $classes );
 	}
 
 	/**
