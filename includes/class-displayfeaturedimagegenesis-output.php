@@ -121,10 +121,22 @@ class Display_Featured_Image_Genesis_Output {
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$keep_titles    = $displaysetting['keep_titles'];
 
-		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array(
+		// backstretch settings from plugin/featured image settings
+		$backstretch_settings = array(
 			'src'    => esc_url( $item->backstretch[0] ),
 			'height' => esc_attr( $item->reduce ),
-		) );
+		);
+		// backstretch settings which can be filtered
+		$backstretch_variables = array(
+			'centeredX' => true,
+			'centeredY' => true,
+			'fade'      => 750,
+		);
+
+		$backstretch_variables = apply_filters( 'display_featured_image_genesis_backstretch_variables', $backstretch_variables );
+		$output = array_merge( $backstretch_settings, $backstretch_variables );
+
+		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
 
 		if ( ! $keep_titles ) {
 			if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
