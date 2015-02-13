@@ -138,6 +138,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
 
+		// if titles will be moved to overlay backstretch image
 		if ( ! $keep_titles ) {
 			if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
 				remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
@@ -172,6 +173,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		}
 
+		// if titles are not being moved to overlay the image
 		elseif ( ! $keep_titles ) {
 
 			if ( ! empty( $item->title ) && ! is_front_page() ) {

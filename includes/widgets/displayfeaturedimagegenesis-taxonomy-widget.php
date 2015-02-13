@@ -33,14 +33,14 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	function __construct() {
 
 		$this->defaults = array(
-			'title'                   => '',
-			'taxonomy'                => 'category',
-			'term'                    => 'none',
-			'show_image'              => 0,
-			'image_alignment'         => '',
-			'image_size'              => 'medium',
-			'show_title'              => 0,
-			'show_content'            => 0
+			'title'           => '',
+			'taxonomy'        => 'category',
+			'term'            => 'none',
+			'show_image'      => 0,
+			'image_alignment' => '',
+			'image_size'      => 'medium',
+			'show_title'      => 0,
+			'show_content'    => 0
 		);
 
 		$widget_ops = array(
@@ -99,11 +99,11 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 			$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 			if ( $image_src ) {
-				$image = '<img src="' . $image_src[0] . '" title="' . $title . '" />';
+				$image = '<img src="' . esc_url( $image_src[0] ) . '" title="' . $title . '" />';
 			}
 
 			if ( $instance['show_image'] && $image ) {
-				printf( '<a href="%s" title="%s" class="%s">%s</a>', $permalink, esc_html( $title ), esc_attr( $instance['image_alignment'] ), $image );
+				printf( '<a href="%s" title="%s" class="%s">%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), $image );
 			}
 		}
 
@@ -112,9 +112,9 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			if ( ! empty( $instance['show_title'] ) ) {
 
 				if ( genesis_html5() )
-					printf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+					printf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
 				else
-					printf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+					printf( '<h2><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
 
 			}
 
