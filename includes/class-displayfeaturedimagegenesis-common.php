@@ -168,35 +168,28 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// Set Post/Page Title
-		$item->title = $item->description = '';
+		$title = '';
 
 		if ( is_singular() ) {
-			$item->title = get_the_title();
-			if ( has_excerpt() ) {
-				$item->description = get_the_excerpt();
-			}
+			$title = get_the_title();
 		}
 		elseif ( is_home() && 'page' === $frontpage ) {
-			$item->title       = get_post( $postspage )->post_title;
-			$item->description = get_post( $postspage )->post_excerpt;
+			$title = get_post( $postspage )->post_title;
 		}
 		elseif ( is_category() || is_tag() || is_tax() ) {
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
 			if ( ! $term || ! isset( $term->meta ) ) {
 				return;
 			}
-			$item->title       = $term->meta['headline'];
-			$item->description = $term->meta['intro_text'];
-
+			$title = $term->meta['headline'];
 		}
 		elseif ( is_author() ) {
-			$item->title       = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-			$item->description = get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) );
+			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
 		}
 		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() && ! empty( $item->fallback ) ) {
-			$item->title       = genesis_get_cpt_option( 'headline' );
-			$item->description = genesis_get_cpt_option( 'intro_text' );
+			$title = genesis_get_cpt_option( 'headline' );
 		}
+		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
 
 		return $item;
 
