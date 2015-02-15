@@ -60,7 +60,7 @@ class Display_Featured_Image_Genesis_Description {
 		}
 
 		$frontpage  = get_option( 'show_on_front' );
-		$postspage  = get_option( 'page_for_posts' );
+		$postspage  = get_post( get_option( 'page_for_posts' ) );
 		$headline   = '';
 		$intro_text = get_bloginfo( 'description' );
 
@@ -69,8 +69,8 @@ class Display_Featured_Image_Genesis_Description {
 			if ( genesis_html5() ) {
 				$itemprop = 'itemprop="headline"';
 			}
-			$headline   = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', get_post( $postspage )->post_title );
-			$intro_text = get_post( $postspage )->post_excerpt;
+			$headline   = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $postspage->post_title );
+			$intro_text = $postspage->post_excerpt;
 		}
 
 		$intro_text = wpautop( apply_filters( 'display_featured_image_genesis_front_blog_description', $intro_text ) );
@@ -100,16 +100,19 @@ class Display_Featured_Image_Genesis_Description {
 
 		global $wp_query;
 
-		if ( ! is_category() && ! is_tag() && ! is_tax() )
+		if ( ! is_category() && ! is_tag() && ! is_tax() ) {
 			return;
+		}
 
-		if ( get_query_var( 'paged' ) >= 2 )
+		if ( get_query_var( 'paged' ) >= 2 ) {
 			return;
+		}
 
 		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
 
-		if ( ! $term || ! isset( $term->meta ) )
+		if ( ! $term || ! isset( $term->meta ) ) {
 			return;
+		}
 
 		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $$term->meta['intro_text'] );
 
