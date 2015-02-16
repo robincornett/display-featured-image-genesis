@@ -149,7 +149,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 			echo genesis_html5() ? '<div class="archive-description">' : '';
 
-			$intro_text = apply_filters( 'genesis_term_intro_text_output', $intro_text );
+			$intro_text = apply_filters( 'display_featured_image_genesis_cpt_description', $intro_text );
 
 			echo $intro_text;
 

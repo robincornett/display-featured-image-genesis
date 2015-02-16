@@ -99,7 +99,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 			$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 			if ( $image_src ) {
-				$image = '<img src="' . esc_url( $image_src[0] ) . '" title="' . $title . '" />';
+				$image = '<img src="' . esc_url( $image_src[0] ) . '" title="' . esc_html( $title ) . '" />';
 			}
 
 			if ( $instance['show_image'] && $image ) {
@@ -124,7 +124,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 			echo genesis_html5() ? '<div class="term-description">' : '';
 
-			$intro_text = apply_filters( 'genesis_term_intro_text_output', $term->meta['intro_text'] );
+			$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $term->meta['intro_text'] );
 			if ( ! $intro_text ) {
 				$intro_text = $term->description;
 			}
@@ -286,7 +286,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		// Build an appropriate JSON response containing this info
 		$list['none'] = '--';
 		foreach ( $terms as $term ) {
-			$list[$term->term_id] = $term->name;
+			$list[$term->term_id] = esc_attr( $term->name );
 		}
 
 		// And emit it
