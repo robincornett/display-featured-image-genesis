@@ -24,15 +24,23 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Include classes
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-admin.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-common.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-description.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-output.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-rss.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-settings.php';
-require plugin_dir_path( __FILE__ ) . 'includes/class-displayfeaturedimagegenesis-taxonomies.php';
+function display_featured_image_genesis_require() {
+	$files = array(
+		'class-displayfeaturedimagegenesis',
+		'class-displayfeaturedimagegenesis-admin',
+		'class-displayfeaturedimagegenesis-common',
+		'class-displayfeaturedimagegenesis-description',
+		'class-displayfeaturedimagegenesis-output',
+		'class-displayfeaturedimagegenesis-rss',
+		'class-displayfeaturedimagegenesis-settings',
+		'class-displayfeaturedimagegenesis-taxonomies',
+	);
+
+	foreach ( $files as $file ) {
+		require plugin_dir_path( __FILE__ ) . 'includes/' . $file . '.php';
+	}
+}
+display_featured_image_genesis_require();
 
 // Instantiate dependent classes
 $displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
