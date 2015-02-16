@@ -33,6 +33,8 @@ class Display_Featured_Image_Genesis {
 			return;
 		}
 
+		require plugin_dir_path( __FILE__ ) . 'helper-functions.php';
+
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
 		add_action( 'admin_init', array( $this, 'set_taxonomy_meta' ) );

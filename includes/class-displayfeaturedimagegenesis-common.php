@@ -110,17 +110,9 @@ class Display_Featured_Image_Genesis_Common {
 			}
 
 			elseif ( ! has_post_thumbnail() || in_array( get_post_type(), $use_tax_image ) ) {
-				$taxonomies = get_taxonomies();
-				$args       = array( 'orderby' => 'count', 'order' => 'DESC' );
-				$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
-
-				foreach ( $terms as $term ) {
-					$t_id      = $term->term_id;
-					$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
-					if ( ! empty( $term_meta['term_image'] ) ) {
-						$image_id = self::get_image_id( $term_meta['term_image'] );
-						break;
-					}
+				$term_image = display_featured_image_genesis_get_term_image();
+				if ( ! empty( $term_image ) ) {
+					$image_id = $term_image;
 				}
 			}
 		}
@@ -156,10 +148,19 @@ class Display_Featured_Image_Genesis_Common {
 			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
 			$post          = get_post();
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
-			// reset backstretch image source to fallback if it exists and the featured image is being used in content.
-			if ( ! empty( $item->fallback ) && false !== $item->content ) {
-				$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, $image_size );
-				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
+
+			if ( false !== $item->content ) {
+				$term_image = display_featured_image_genesis_get_term_image();
+				// reset backstretch image source to term image if it exists and the featured image is being used in content.
+				if ( ! empty( $term_image ) ) {
+					$item->backstretch = wp_get_attachment_image_src( $term_image, $image_size );
+					$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
+				}
+				// else, reset backstretch image source to fallback.
+				elseif ( ! empty( $item->fallback ) ) {
+					$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, $image_size );
+					$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
+				}
 			}
 		}
 
