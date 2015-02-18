@@ -188,7 +188,7 @@ class Display_Featured_Image_Genesis_Common {
 		elseif ( is_author() ) {
 			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
 		}
-		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() && ! empty( $item->fallback ) ) {
+		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
 			$title = genesis_get_cpt_option( 'headline' );
 		}
 		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
