@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 3.8
 Tested up to: 4.1
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -150,6 +150,12 @@ _Note:_ because the entry header applies to all posts on a page, such as a blog 
 New feature! Add featured images to taxonomy terms and custom post type archives!
 
 == Changelog ==
+
+= 2.1.0 =
+* added HTML5 headline support
+* added lots of filters: for large image output, descriptions, titles, body clases, backstretch image settings
+* fixed image assignment process to correctly handle term, post type featured images as intermediate fallback images
+* bugfix: corrected output if term image has been deleted
 
 = 2.0.0 =
 * added featured images to taxonomy terms!

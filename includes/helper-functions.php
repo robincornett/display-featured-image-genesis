@@ -12,6 +12,8 @@
 /**
  * gets the term image ID
  * @return image_id reusable function to get a post's term image, if it exists
+ *
+ * @since  2.1.0
  */
 function display_featured_image_genesis_get_term_image() {
 	$taxonomies = get_taxonomies();

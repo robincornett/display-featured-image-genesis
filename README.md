@@ -184,6 +184,12 @@ _Note:_ because the entry header applies to all posts on a page, such as a blog 
 
 ## Changelog
 
+### 2.1.0
+* added HTML5 headline support
+* added lots of filters: for large image output, descriptions, titles, body clases, backstretch image settings
+* fixed image assignment process to correctly handle term, post type featured images as intermediate fallback images
+* bugfix: corrected output if term image has been deleted
+
 ### 2.0.0 - 2015-02-03
 * added featured images to taxonomy terms!
 * added featured images to custom post type archive pages!
