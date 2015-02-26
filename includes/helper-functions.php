@@ -44,7 +44,6 @@ function display_featured_image_genesis_get_term_image_id() {
 function display_featured_image_genesis_get_term_image_url( $size='displayfeaturedimage_backstretch' ) {
 
 	$image_id  = display_featured_image_genesis_get_term_image_id();
-
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
 	return $image_url[0];
@@ -59,6 +58,7 @@ function display_featured_image_genesis_get_term_image_url( $size='displayfeatur
  */
 function display_featured_image_genesis_get_default_image_id() {
 
+	$image_id = '';
 	$item     = Display_Featured_Image_Genesis_Common::get_image_variables();
 	$image_id = $item->fallback_id;
 
@@ -76,7 +76,61 @@ function display_featured_image_genesis_get_default_image_id() {
 function display_featured_image_genesis_get_default_image_url( $size='displayfeaturedimage_backstretch' ) {
 
 	$image_id  = display_featured_image_genesis_get_default_image_id();
+	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
+	return $image_url[0];
+
+}
+
+/**
+ * Get custom post type featured image ID.
+ * @return ID Gets the ID of the image assigned as the custom post type featured image.
+ *
+ * @since  2.1.0
+ */
+function display_featured_image_genesis_get_cpt_image_id() {
+
+	$no_show = array(
+		is_author(),
+		is_search(),
+		is_page(),
+		'post' === get_post_type(),
+	);
+
+	if ( in_array( true, $no_show ) ) {
+		return;
+	}
+
+	$image_id       = '';
+	$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+	$object         = get_queried_object();
+	if ( $object->name ) { // results in post type on cpt archive
+		$post_type = $object->name;
+	}
+	elseif ( $object->taxonomy ) { // on a tax/term/category
+		$tax_object = get_taxonomy( $object->taxonomy );
+		$post_type  = $tax_object->object_type[0];
+	}
+	elseif ( $object->post_type ) { // on singular
+		$post_type = $object->post_type;
+	}
+	if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
+		$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['post_type'][$post_type] );
+	}
+
+	return $image_id;
+}
+
+/**
+ * Get the custom post type featured image URL.
+ * @param  string $size image size
+ * @return URL       returns the image URL for the custom post type featured image
+ *
+ * @since  2.1.0
+ */
+function display_featured_image_genesis_get_cpt_image_url( $size='displayfeaturedimage_backstretch' ) {
+
+	$image_id  = display_featured_image_genesis_get_cpt_image_id();
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
 	return $image_url[0];
@@ -109,7 +163,10 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 	$size      = genesis_get_option( 'image_size' );
 	$image_url = display_featured_image_genesis_get_term_image_url( $size );
 	if ( empty( $image_url ) ) {
-		$image_url = display_featured_image_genesis_get_default_image_url( $size );
+		$image_url = display_featured_image_genesis_get_cpt_image_url( $size );
+		if ( empty( $image_url ) ) {
+			$image_url = display_featured_image_genesis_get_default_image_url( $size );
+		}
 	}
 
 	if ( empty( $image_url ) ) {
