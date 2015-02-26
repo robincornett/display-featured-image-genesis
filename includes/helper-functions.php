@@ -91,7 +91,14 @@ function display_featured_image_genesis_get_default_image_url( $size='displayfea
  */
 function display_featured_image_genesis_add_archive_thumbnails() {
 
-	if ( ! is_home() && ! is_archive() && ! is_page_template( 'page_blog.php' ) ) {
+	$show_on = apply_filters( 'display_featured_image_genesis_archive_thumbnails', array(
+		is_home(),
+		is_archive(),
+		is_page_template( 'page_blog.php' ),
+		is_search(),
+	) );
+
+	if ( ! in_array( true, $show_on ) ) {
 		return;
 	}
 
