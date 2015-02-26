@@ -178,6 +178,18 @@ function rgc_move_image( $hook ) {
 
 _Note:_ because the entry header applies to all posts on a page, such as a blog or archive page, this filter modifies the output only on singular posts.
 
+### If a post does not have a featured image of its own, can the term, post type, or default featured image show in the archives?
+
+Yes! A helper function exists for this, but only runs if you add it. You can easily do this by adding the following to your theme's functions.php file:
+
+```php
+if ( class_exists( 'Display_Featured_Image_Genesis' ) ) {
+	add_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 );
+}
+```
+
+This will follow the settings you choose in the Genesis Theme Settings.
+
 ## Credits
 
 * Built by [Robin Cornett](http://robincornett.com/)
