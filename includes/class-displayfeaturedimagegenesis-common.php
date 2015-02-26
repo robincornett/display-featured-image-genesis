@@ -35,6 +35,7 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
+		$fallback        = esc_attr( $displaysetting['default'] ); // url only
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
 			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
@@ -46,8 +47,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		// sitewide variables used outside this function
 		$item->backstretch = '';
-		$item->fallback    = esc_attr( $displaysetting['default'] ); // url only
-		$item->fallback_id = self::get_image_id( $item->fallback ); // gets image id with attached metadata
+		$item->fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
 		$item->large       = absint( get_option( 'large_size_w' ) );
 		$item->medium      = absint( get_option( 'medium_size_w' ) );
 		$item->reduce      = absint( $displaysetting['less_header'] );
@@ -63,7 +63,7 @@ class Display_Featured_Image_Genesis_Common {
 		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
 
 		// set here with fallback preemptively, if it exists
-		if ( ! empty( $item->fallback ) ) {
+		if ( ! empty( $fallback ) ) {
 			$image_id = $item->fallback_id;
 		}
 
@@ -73,7 +73,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		$object = get_queried_object();
-		if ( ! is_author() && ! is_admin() ) {
+		if ( is_main_query() && ( ! is_author() && ! is_admin() && ! is_search() ) ) {
 			if ( $object->name ) { // results in post type on cpt archive
 				$post_type = $object->name;
 			}
@@ -97,7 +97,7 @@ class Display_Featured_Image_Genesis_Common {
 				$image_id = self::get_image_id( $term_meta['term_image'] );
 			}
 		}
-		// any singular post/page/CPT or there is no $item->fallback
+		// any singular post/page/CPT or there is no $fallback
 		elseif ( is_singular() && ! in_array( get_post_type(), $use_fallback ) ) {
 			/**
 			 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
@@ -110,9 +110,9 @@ class Display_Featured_Image_Genesis_Common {
 			}
 
 			elseif ( ! has_post_thumbnail() || in_array( get_post_type(), $use_tax_image ) ) {
-				$term_image = display_featured_image_genesis_get_term_image();
-				if ( ! empty( $term_image ) ) {
-					$image_id = $term_image;
+				$term_image_id = display_featured_image_genesis_get_term_image_id();
+				if ( ! empty( $term_image_id ) ) {
+					$image_id = $term_image_id;
 				}
 			}
 		}

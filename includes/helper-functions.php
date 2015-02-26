@@ -60,8 +60,7 @@ function display_featured_image_genesis_get_term_image_url( $size='displayfeatur
 function display_featured_image_genesis_get_default_image_id() {
 
 	$item     = Display_Featured_Image_Genesis_Common::get_image_variables();
-
-	$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $item->fallback );
+	$image_id = $item->fallback_id;
 
 	return $image_id;
 
