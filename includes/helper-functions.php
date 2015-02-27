@@ -91,9 +91,10 @@ function display_featured_image_genesis_get_default_image_url( $size='displayfea
 function display_featured_image_genesis_get_cpt_image_id() {
 
 	$no_show = array(
+		is_admin(),
 		is_author(),
-		is_search(),
 		is_page(),
+		is_search(),
 		'post' === get_post_type(),
 	);
 
