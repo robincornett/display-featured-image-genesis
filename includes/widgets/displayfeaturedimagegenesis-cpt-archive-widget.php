@@ -114,7 +114,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		}
 		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 		if ( $image_src ) {
-			$image = '<img src="' . $image_src[0] . '" title="' . $title . '" />';
+			$image = '<img src="' . $image_src[0] . '" alt="' . $title . '" />';
 		}
 
 		if ( $instance['show_image'] && $image ) {

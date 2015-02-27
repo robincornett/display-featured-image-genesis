@@ -99,7 +99,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			$image_id  = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 			$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 			if ( $image_src ) {
-				$image = '<img src="' . esc_url( $image_src[0] ) . '" title="' . esc_html( $title ) . '" />';
+				$image = '<img src="' . esc_url( $image_src[0] ) . '" alt="' . esc_html( $title ) . '" />';
 			}
 
 			if ( $instance['show_image'] && $image ) {
