@@ -144,7 +144,7 @@ class Display_Featured_Image_Genesis_Common {
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 
 			if ( false !== $item->content ) {
-				$term_image = display_featured_image_genesis_get_term_image();
+				$term_image = display_featured_image_genesis_get_term_image_id();
 				// reset backstretch image source to term image if it exists and the featured image is being used in content.
 				if ( ! empty( $term_image ) ) {
 					$item->backstretch = wp_get_attachment_image_src( $term_image, $image_size );
