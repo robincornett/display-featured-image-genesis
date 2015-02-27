@@ -36,6 +36,7 @@ class Display_Featured_Image_Genesis_Common {
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
 		$fallback        = esc_attr( $displaysetting['default'] ); // url only
+		$medium          = absint( get_option( 'medium_size_w' ) );
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
 			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
@@ -48,9 +49,6 @@ class Display_Featured_Image_Genesis_Common {
 		// sitewide variables used outside this function
 		$item->backstretch = '';
 		$item->fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
-		$item->large       = absint( get_option( 'large_size_w' ) );
-		$item->medium      = absint( get_option( 'medium_size_w' ) );
-		$item->reduce      = absint( $displaysetting['less_header'] );
 
 		// Set Featured Image source ID
 		$image_id = ''; // blank if nothing else
@@ -73,6 +71,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		$object = get_queried_object();
+		// cpt
 		if ( is_main_query() && ( ! is_author() && ! is_admin() && ! is_search() ) ) {
 			if ( $object->name ) { // results in post type on cpt archive
 				$post_type = $object->name;
@@ -105,7 +104,7 @@ class Display_Featured_Image_Genesis_Common {
 			 */
 			$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
 
-			if ( has_post_thumbnail() && $width > $item->medium ) {
+			if ( has_post_thumbnail() && $width > $medium ) {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 
@@ -135,11 +134,6 @@ class Display_Featured_Image_Genesis_Common {
 			$image_size = 'large';
 		}
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
-
-		$item->width = '';
-		if ( ! empty( $item->backstretch ) ) {
-			$item->width = $item->backstretch[1];
-		}
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
 		$item->content = '';
@@ -196,7 +190,6 @@ class Display_Featured_Image_Genesis_Common {
 		return $item;
 
 	}
-
 
 	/**
 	 * Get the ID of each image dynamically.

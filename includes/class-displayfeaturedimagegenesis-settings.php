@@ -207,7 +207,8 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function set_default_image() {
 
-		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$large = absint( get_option( 'large_size_w' ) );
 
 		if ( ! empty( $this->displaysetting['default'] ) ) {
 			$preview = wp_get_attachment_image_src( $item->fallback_id, 'medium' );
@@ -219,7 +220,7 @@ class Display_Featured_Image_Genesis_Settings {
 		echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
-			absint( $item->large + 1 )
+			absint( $large + 1 )
 		) . '</p>';
 	}
 
