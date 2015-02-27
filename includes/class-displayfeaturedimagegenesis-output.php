@@ -49,7 +49,7 @@ class Display_Featured_Image_Genesis_Output {
 		$item    = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$large   = absint( get_option( 'large_size_w' ) );
 		$medium  = absint( get_option( 'medium_size_w' ) );
-		$width   = $item->backstretch[1];
+		$width   = absint( $item->backstretch[1] );
 
 		//* if there is no backstretch image set, or it is too small, die
 		if ( empty( $item->backstretch ) || $width <= $medium || is_paged() ) {
@@ -98,7 +98,7 @@ class Display_Featured_Image_Genesis_Output {
 		$item   = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$large  = absint( get_option( 'large_size_w' ) );
 		$medium = absint( get_option( 'medium_size_w' ) );
-		$width  = $item->backstretch[1];
+		$width  = absint( $item->backstretch[1] );
 
 		if ( empty( $item->backstretch ) || $width <= $medium ) {
 			return $classes;
