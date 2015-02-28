@@ -91,8 +91,8 @@ class Display_Featured_Image_Genesis_Admin {
 		if ( 'featured_image' === $column ) {
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 			if ( ! empty( $term_meta['term_image'] ) ) {
-				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
-				$preview = wp_get_attachment_image_src( $id, 'thumbnail' );
+                $id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
+                $preview = apply_filters( 'display_featured_image_genesis_admin_term_thumbnail', wp_get_attachment_image_src( $id, 'thumbnail' ), $id );
 				echo '<img src="' . $preview[0] . '" width="60" />';
 			}
 		}
@@ -110,9 +110,10 @@ class Display_Featured_Image_Genesis_Admin {
 	public function custom_post_columns( $column, $post_id ) {
 
 		if ( 'featured_image' === $column ) {
-			$image = get_the_post_thumbnail( $post_id, array( 65,65 ) );
-			if ( $image ) {
-				echo $image;
+			$id      = get_post_thumbnail_id( $post_id );
+			$preview = apply_filters( 'display_featured_image_genesis_admin_post_thumbnail', wp_get_attachment_image_src( $id, array( 60, 60 ) ), $id );
+			if ( $id ) {
+				echo '<img src="' . $preview[0] . '" width="60" />';
 			}
 		}
 
