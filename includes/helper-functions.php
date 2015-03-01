@@ -146,14 +146,11 @@ function display_featured_image_genesis_get_cpt_image_url( $size='displayfeature
  */
 function display_featured_image_genesis_add_archive_thumbnails() {
 
-	$show_on = apply_filters( 'display_featured_image_genesis_archive_thumbnails', array(
-		is_home(),
-		is_archive(),
-		is_page_template( 'page_blog.php' ),
-		is_search(),
+	$no_show = apply_filters( 'display_featured_image_genesis_archive_thumbnails', array(
+		$no_show[] = is_singular(),
 	) );
 
-	if ( ! in_array( true, $show_on ) ) {
+	if ( in_array( true, $no_show ) ) {
 		return;
 	}
 
