@@ -146,11 +146,7 @@ function display_featured_image_genesis_get_cpt_image_url( $size='displayfeature
  */
 function display_featured_image_genesis_add_archive_thumbnails() {
 
-	$no_show = apply_filters( 'display_featured_image_genesis_archive_thumbnails', array(
-		$no_show[] = is_singular(),
-	) );
-
-	if ( in_array( true, $no_show ) ) {
+	if ( is_singular() ) {
 		return;
 	}
 
@@ -173,7 +169,11 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 
 	$permalink = get_the_permalink();
 	$alignment = genesis_get_option( 'image_alignment' );
-	$image     = '<a href="' . esc_url( $permalink ) . '"><img src="' . esc_url( $image_url ) . '" class="' . $alignment . '" /></a>';
+	$image     = sprintf( '<a href="%s"><img src="%s" class="%s" /></a>',
+		esc_url( $permalink ),
+		esc_url( $image_url ),
+		esc_attr( $alignment )
+	);
 	echo $image;
 
 }
