@@ -146,7 +146,7 @@ function display_featured_image_genesis_get_cpt_image_url( $size='displayfeature
  */
 function display_featured_image_genesis_add_archive_thumbnails() {
 
-	if ( is_singular() ) {
+	if ( is_singular() || is_admin() ) {
 		return;
 	}
 
