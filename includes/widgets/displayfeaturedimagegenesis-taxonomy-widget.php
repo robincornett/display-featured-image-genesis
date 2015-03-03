@@ -89,6 +89,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		}
 		$permalink = get_term_link( $term );
 
+		$args['before_widget'] = str_replace( 'class="widget ', 'class="widget ' . $term->slug . ' ', $args['before_widget'] );
 		echo $args['before_widget'];
 
 		if ( ! empty( $instance['title'] ) ) {
