@@ -91,6 +91,7 @@ function display_featured_image_genesis_get_default_image_url( $size='displayfea
 function display_featured_image_genesis_get_cpt_image_id() {
 
 	$no_show = array(
+		$no_show[] = is_404(),
 		$no_show[] = is_admin(),
 		$no_show[] = is_author(),
 		$no_show[] = is_page(),
@@ -146,7 +147,7 @@ function display_featured_image_genesis_get_cpt_image_url( $size='displayfeature
  */
 function display_featured_image_genesis_add_archive_thumbnails() {
 
-	if ( is_singular() || is_admin() ) {
+	if ( is_singular() || is_admin() || is_404() ) {
 		return;
 	}
 
