@@ -72,7 +72,8 @@ class Display_Featured_Image_Genesis_Common {
 
 		$object = get_queried_object();
 		// cpt
-		if ( is_main_query() && ( ! is_author() && ! is_admin() && ! is_search() && ! is_404() ) ) {
+		if ( $object && is_main_query() && ! is_admin() ) {
+			$post_type = '';
 			if ( $object->name ) { // results in post type on cpt archive
 				$post_type = $object->name;
 			}
