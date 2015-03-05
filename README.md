@@ -82,6 +82,9 @@ _Screenshot of a page using the Backstretch Featured Image._
 ![Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
 _Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page._
 
+![Quickly see which posts and terms have been assigned a Featured Image.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-3.png)  
+_Quickly see which posts and terms have been assigned a Featured Image._
+
 ## Frequently Asked Questions
 
 ### Where do I set a Default Featured Image?
@@ -96,7 +99,7 @@ Yes and no. Technically, it does, even older (XHTML) themes. However, depending 
 
 There are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a later one.
 
-Available filters are:
+Available filters include, but are not limited to:
 
 * `display_featured_image_genesis_skipped_posttypes`: select post type(s) which will not have the featured image effect applied
 * `display_featured_image_genesis_use_default`: force post type(s) to use your sitewide default image (set on the main plugin settings page) for the featured image effect, regardless of what is set as the individual post's featured image
@@ -196,9 +199,10 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 ## Changelog
 
-### 2.1.0
+### 2.1.0 - 2015-03-05
+* added helper functions for term/custom post type images
 * added HTML5 headline support
-* added lots of filters: for large image output, descriptions, titles, body clases, backstretch image settings
+* added lots of filters: for large image output, descriptions, titles, body classes, backstretch image settings
 * fixed image assignment process to correctly handle term, post type featured images as intermediate fallback images
 * bugfix: corrected output if term image has been deleted
 

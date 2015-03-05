@@ -154,16 +154,18 @@ This will follow the settings you choose in the Genesis Theme Settings.
 == Screenshots ==
 1. Screenshot of a page using the Backstretch Featured Image
 2. Set a Default Featured Image on the Appearance > Display Featured Image Settings page.
+3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.0.0 =
-New feature! Add featured images to taxonomy terms and custom post type archives!
+= 2.1.0 =
+Improvements to term/custom post type images. Also added some nice helper functions.
 
 == Changelog ==
 
 = 2.1.0 =
+* added helper functions for term/custom post type images
 * added HTML5 headline support
-* added lots of filters: for large image output, descriptions, titles, body clases, backstretch image settings
+* added lots of filters: for large image output, descriptions, titles, body classes, backstretch image settings
 * fixed image assignment process to correctly handle term, post type featured images as intermediate fallback images
 * bugfix: corrected output if term image has been deleted
 
