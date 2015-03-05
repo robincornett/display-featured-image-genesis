@@ -90,22 +90,12 @@ function display_featured_image_genesis_get_default_image_url( $size='displayfea
  */
 function display_featured_image_genesis_get_cpt_image_id() {
 
-	$no_show = array(
-		$no_show[] = is_404(),
-		$no_show[] = is_admin(),
-		$no_show[] = is_author(),
-		$no_show[] = is_page(),
-		$no_show[] = is_search(),
-		$no_show[] = 'post' === get_post_type(),
-	);
-
-	if ( in_array( true, $no_show ) ) {
-		return;
-	}
-
-	$image_id       = '';
+	$image_id = $post_type = '';
 	$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 	$object         = get_queried_object();
+	if ( ! $object || is_admin() ) {
+		return;
+	}
 	if ( $object->name ) { // results in post type on cpt archive
 		$post_type = $object->name;
 	}
