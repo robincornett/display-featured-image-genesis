@@ -291,7 +291,12 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		}
 
 		// And emit it
-		echo json_encode( $list );
+		if ( function_exists( 'wp_json_encode' ) ) {
+			echo wp_json_encode( $list );
+		}
+		else {
+			echo json_encode( $list );
+		}
 		die();
 	}
 
