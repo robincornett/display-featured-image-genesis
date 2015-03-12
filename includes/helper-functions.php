@@ -160,10 +160,13 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 
 	$permalink = get_the_permalink();
 	$alignment = genesis_get_option( 'image_alignment' );
-	$image     = sprintf( '<a href="%s"><img src="%s" class="%s" /></a>',
+	$itemprop  = 'itemprop="image"';
+	$image     = sprintf( '<a href="%s" aria-hidden="true"><img src="%s" class="%s" alt="%s" %s /></a>',
 		esc_url( $permalink ),
 		esc_url( $image_url ),
-		esc_attr( $alignment )
+		esc_attr( $alignment ) . ' post-image entry-image',
+		esc_html( the_title_attribute( 'echo=0' ) ),
+		esc_attr( $itemprop )
 	);
 	echo $image;
 
