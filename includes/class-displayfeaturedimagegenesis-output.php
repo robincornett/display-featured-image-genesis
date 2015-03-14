@@ -61,8 +61,10 @@ class Display_Featured_Image_Genesis_Output {
 			$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
 			wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $version );
 
+			$post_types = array();
+			$force_backstretch = apply_filters( 'display_featured_image_genesis_force_backstretch', $post_types );
 			//* check if the image is large enough for backstretch
-			if ( $width > $large ) {
+			if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
 
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
