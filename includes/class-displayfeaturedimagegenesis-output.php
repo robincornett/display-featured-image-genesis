@@ -195,7 +195,10 @@ class Display_Featured_Image_Genesis_Output {
 				if ( genesis_html5() ) {
 					$itemprop = 'itemprop="headline"';
 				}
-				echo '<h1 class="' . $class . ' featured-image-overlay" ' . $itemprop . '>' . $item->title . '</h1>';
+				$title = $item->title;
+				$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
+
+				echo apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, $class, $itemprop, $title );
 
 			}
 
