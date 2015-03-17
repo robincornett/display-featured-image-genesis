@@ -137,7 +137,9 @@ function display_featured_image_genesis_get_cpt_image_url( $size='displayfeature
  */
 function display_featured_image_genesis_add_archive_thumbnails() {
 
-	if ( is_singular() || is_admin() || is_404() ) {
+	$show_thumbs = genesis_get_option( 'content_archive_thumbnail' );
+
+	if ( is_singular() || is_admin() || is_404() || ! $show_thumbs ) {
 		return;
 	}
 
