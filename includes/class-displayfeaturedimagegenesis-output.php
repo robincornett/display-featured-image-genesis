@@ -102,7 +102,7 @@ class Display_Featured_Image_Genesis_Output {
 		$medium = absint( get_option( 'medium_size_w' ) );
 		$width  = absint( $item->backstretch[1] );
 
-		if ( empty( $item->backstretch ) || $width <= $medium ) {
+		if ( empty( $item->backstretch ) || $width <= $medium || is_paged() ) {
 			return $classes;
 		}
 
