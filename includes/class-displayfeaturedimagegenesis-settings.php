@@ -392,13 +392,13 @@ class Display_Featured_Image_Genesis_Settings {
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
+		$reset     = __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
 
 		//* ok for field to be empty
 		if ( $new_value ) {
 
 			if ( ! $valid ) {
-				$message   = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-				$message  .= __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
+				$message   = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' ) . $reset;
 				$new_value = $this->displaysetting['default'];
 
 				add_settings_error(
@@ -408,10 +408,21 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			//* if file is an image, but is too small, throw it back
+			// if the image is external to the WP site, we cannot use it.
+			elseif ( false === $id ) {
+				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' ) . $reset;
+				$new_value = $this->displaysetting['default'];
+
+				add_settings_error(
+					$this->displaysetting['default'],
+					esc_attr( 'external' ),
+					$message,
+					'error'
+				);
+			}
+			// if file is an image, but is too small, throw it back
 			elseif ( $width <= $large ) {
-				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-				$message  .= __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
+				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' ) . $reset;
 				$new_value = $this->displaysetting['default'];
 
 				add_settings_error(
@@ -442,7 +453,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$metadata  = wp_get_attachment_metadata( $id );
 		$width     = $metadata['width'];
 
-		//* ok for field to be empty
+		// ok for field to be empty
 		if ( $new_value ) {
 
 			if ( ! $valid ) {
@@ -456,7 +467,19 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			//* if file is an image, but is too small, throw it back
+			// if the image is external to the WP site, we cannot use it.
+			elseif ( false === $id ) {
+				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' );
+				$new_value = false;
+
+				add_settings_error(
+					$this->displaysetting['default'],
+					esc_attr( 'external' ),
+					$message,
+					'error'
+				);
+			}
+			// if file is an image, but is too small, throw it back
 			elseif ( $width <= $medium ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
 				$new_value = false;
