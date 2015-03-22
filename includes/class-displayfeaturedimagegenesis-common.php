@@ -224,4 +224,18 @@ class Display_Featured_Image_Genesis_Common {
 		return $attachment_id;
 	}
 
+	/**
+	 * add a filter to change the minimum width required for backstretch image
+	 * @return integer sets the minimum width for backstretch effect
+	 *
+	 * @since 2.2.0
+	 */
+	public static function minimum_backstretch_width() {
+		$large = apply_filters( 'display_featured_image_genesis_set_minimum_backstretch_width', get_option( 'large_size_w' ) );
+		if ( ! is_numeric( $large ) ) {
+			$large = get_option( 'large_size_w' );
+		}
+		return absint( intval( $large ) );
+	}
+
 }

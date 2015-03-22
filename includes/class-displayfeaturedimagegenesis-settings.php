@@ -208,7 +208,7 @@ class Display_Featured_Image_Genesis_Settings {
 	public function set_default_image() {
 
 		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$large = absint( get_option( 'large_size_w' ) );
+		$large = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 
 		if ( ! empty( $this->displaysetting['default'] ) ) {
 			$preview = wp_get_attachment_image_src( $item->fallback_id, 'medium' );
@@ -388,13 +388,13 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value = esc_url( $new_value );
 		$valid     = $this->is_valid_img_ext( $new_value );
-		$large     = get_option( 'large_size_w' );
+		$large     = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		$source    = wp_get_attachment_image_src( $id, 'displayfeaturedimage_backstretch' );
 		$width     = $source[1];
 		$reset     = __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
 
-		//* ok for field to be empty
+		// ok for field to be empty
 		if ( $new_value ) {
 
 			if ( ! $valid ) {
@@ -566,7 +566,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function help() {
 		$screen = get_current_screen();
-		$large  = get_option( 'large_size_w' );
+		$large  = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 
 		$height_help =
 			'<h3>' . __( 'Height', 'display-featured-image-genesis' ) . '</h3>' .

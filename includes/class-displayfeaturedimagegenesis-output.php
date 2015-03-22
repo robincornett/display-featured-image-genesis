@@ -47,7 +47,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		$version = Display_Featured_Image_Genesis_Common::$version;
 		$item    = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$large   = absint( get_option( 'large_size_w' ) );
+		$large   = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 		$medium  = absint( get_option( 'medium_size_w' ) );
 		$width   = absint( $item->backstretch[1] );
 
@@ -98,7 +98,7 @@ class Display_Featured_Image_Genesis_Output {
 	public function add_body_class( $classes ) {
 
 		$item   = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$large  = absint( get_option( 'large_size_w' ) );
+		$large  = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 		$medium = absint( get_option( 'medium_size_w' ) );
 		$width  = absint( $item->backstretch[1] );
 
