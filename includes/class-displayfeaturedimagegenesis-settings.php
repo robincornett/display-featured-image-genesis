@@ -390,8 +390,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$valid     = $this->is_valid_img_ext( $new_value );
 		$large     = get_option( 'large_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$metadata  = wp_get_attachment_metadata( $id );
-		$width     = $metadata['width'];
+		$source    = wp_get_attachment_image_src( $id, 'displayfeaturedimage_backstretch' );
+		$width     = $source[1];
 		$reset     = __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
 
 		//* ok for field to be empty
