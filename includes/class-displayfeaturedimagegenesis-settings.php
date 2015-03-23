@@ -390,7 +390,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$valid     = $this->is_valid_img_ext( $new_value );
 		$large     = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'displayfeaturedimage_backstretch' );
+		$source    = wp_get_attachment_image_src( $id, 'full' );
 		$width     = $source[1];
 		$reset     = __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
 
@@ -409,7 +409,7 @@ class Display_Featured_Image_Genesis_Settings {
 				);
 			}
 			// if the image is external to the WP site, we cannot use it.
-			elseif ( false === $id ) {
+			elseif ( ! $source ) {
 				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' ) . $reset;
 				$new_value = $this->displaysetting['default'];
 
@@ -450,7 +450,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$valid     = $this->is_valid_img_ext( $new_value );
 		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'displayfeaturedimage_backstretch' );
+		$source    = wp_get_attachment_image_src( $id, 'full' );
 		$width     = $source[1];
 
 		// ok for field to be empty
@@ -468,7 +468,7 @@ class Display_Featured_Image_Genesis_Settings {
 				);
 			}
 			// if the image is external to the WP site, we cannot use it.
-			elseif ( false === $id ) {
+			elseif ( ! $source ) {
 				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' );
 				$new_value = false;
 
@@ -509,7 +509,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$valid     = $this->is_valid_img_ext( $new_value );
 		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'displayfeaturedimage_backstretch' );
+		$source    = wp_get_attachment_image_src( $id, 'full' );
 		$width     = $source[1];
 
 		// ok for field to be empty
