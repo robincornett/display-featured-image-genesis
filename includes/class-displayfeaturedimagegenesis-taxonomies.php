@@ -50,8 +50,11 @@ class Display_Featured_Image_Genesis_Taxonomies {
 						echo '<img src="' . esc_url( $preview[0] ) . '" width="300" />';
 						echo '</div>';
 					}
-					echo '<input type="text" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" value="' . esc_url( $displaysetting['term_image'] ) . '" style="width:200px;" />';
+					echo '<input type="hidden" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" value="' . esc_url( $displaysetting['term_image'] ) . '" style="width:200px;" />';
 					echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+					if ( ! empty( $displaysetting['term_image'] ) ) {
+						echo '<input type="button" class="delete_image button" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
+					}
 					echo '<p class="description">' . sprintf(
 						__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
 						esc_html( $term->name )

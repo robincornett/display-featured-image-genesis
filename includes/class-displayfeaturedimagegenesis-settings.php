@@ -219,8 +219,11 @@ class Display_Featured_Image_Genesis_Settings {
 			echo '<img src="' . esc_url( $preview[0] ) . '" />';
 			echo '</div>';
 		}
-		echo '<input type="text" class="upload_image_url" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $this->displaysetting['default'] ) . '" />';
+		echo '<input type="hidden" class="upload_image_url" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $this->displaysetting['default'] ) . '" />';
 		echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+		if ( ! empty( $this->displaysetting['default'] ) ) {
+			echo '<input type="button" class="delete_image button" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
+		}
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $large + 1 )
@@ -288,6 +291,7 @@ class Display_Featured_Image_Genesis_Settings {
 			if ( empty( $this->displaysetting['post_type'][$post_type] ) ) {
 				$this->displaysetting['post_type'][$post_type] = '';
 			}
+			echo '<div>';
 			echo '<h4>' . $post->label . '</h4>';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
 				$id = $this->displaysetting['post_type'][$post_type];
@@ -299,15 +303,17 @@ class Display_Featured_Image_Genesis_Settings {
 				echo '<img src="' . esc_url( $preview[0] ) . '" />';
 				echo '</div>';
 			}
-			echo '<input type="text" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . absint( $this->displaysetting['post_type'][$post_type] ) . '" />';
+			echo '<input type="hidden" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . absint( $this->displaysetting['post_type'][$post_type] ) . '" />';
 			echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
+				echo '<input type="button" class="delete_image button" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
 				echo '<p class="description">' . sprintf(
 					__( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
 					esc_url( get_post_type_archive_link( $post_type ) ),
 					$post->label
 				) . '</p>';
 			}
+			echo '</div>';
 
 		}
 
