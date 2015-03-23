@@ -207,16 +207,19 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function set_default_image() {
 
-		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$large = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 
 		if ( ! empty( $this->displaysetting['default'] ) ) {
-			$preview = wp_get_attachment_image_src( $item->fallback_id, 'medium' );
+			$id = $this->displaysetting['default'];
+			if ( ! is_numeric( $this->displaysetting['default'] ) ) {
+				$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['default'] );
+			}
+			$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 			echo '<div id="upload_logo_preview">';
 			echo '<img src="' . esc_url( $preview[0] ) . '" />';
 			echo '</div>';
 		}
-		echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . esc_url( $this->displaysetting['default'] ) . '" />';
+		echo '<input type="text" class="upload_image_url" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $this->displaysetting['default'] ) . '" />';
 		echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
@@ -287,13 +290,16 @@ class Display_Featured_Image_Genesis_Settings {
 			}
 			echo '<h4>' . $post->label . '</h4>';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
-				$preview = wp_get_attachment_image_src( $id, 'medium' );
+				$id = $this->displaysetting['post_type'][$post_type];
+				if ( ! is_numeric( $this->displaysetting['post_type'][$post_type] ) ) {
+					$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
+				}
+				$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 				echo '<div id="upload_logo_preview">';
 				echo '<img src="' . esc_url( $preview[0] ) . '" />';
 				echo '</div>';
 			}
-			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
+			echo '<input type="text" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . absint( $this->displaysetting['post_type'][$post_type] ) . '" />';
 			echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
 				echo '<p class="description">' . sprintf(
@@ -386,11 +392,13 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_image( $new_value ) {
 
-		$new_value = esc_url( $new_value );
-		$valid     = $this->is_valid_img_ext( $new_value );
+		if ( ! is_numeric( $new_value ) ) {
+			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		}
+		$new_value = absint( $new_value );
 		$large     = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
-		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'full' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 		$reset     = __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
 
@@ -446,11 +454,13 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_post_type_image( $new_value ) {
 
-		$new_value = esc_url( $new_value );
-		$valid     = $this->is_valid_img_ext( $new_value );
+		if ( ! is_numeric( $new_value ) ) {
+			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		}
+		$new_value = absint( $new_value );
 		$medium    = get_option( 'medium_size_w' );
-		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'full' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 
 		// ok for field to be empty
@@ -505,11 +515,13 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_taxonomy_image( $new_value ) {
 
-		$new_value = esc_url( $new_value );
-		$valid     = $this->is_valid_img_ext( $new_value );
+		if ( ! is_numeric( $new_value ) ) {
+			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		}
+		$new_value = absint( $new_value );
 		$medium    = get_option( 'medium_size_w' );
-		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'full' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 
 		// ok for field to be empty

@@ -16,7 +16,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 		echo '<div class="form-field">';
 			echo '<label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
-			echo '<input type="url" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" style="width:200px;" />';
+			echo '<input type="text" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" style="width:200px;" />';
 			echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			echo '<p>' . __( 'Set Featured Image for Taxonomy','display-featured-image-genesis' ) . '</p>';
 		echo '</div>';
@@ -41,13 +41,16 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			echo '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label></th>';
 				echo '<td>';
 					if ( ! empty( $displaysetting['term_image'] ) ) {
-						$id      = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['term_image'] );
-						$preview = wp_get_attachment_image_src( $id, 'medium' );
+						$id = $displaysetting['term_image'];
+						if ( ! is_integer( $displaysetting['term_image'] ) ) {
+							$id = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['term_image'] );
+						}
+						$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 						echo '<div id="upload_logo_preview">';
 						echo '<img src="' . esc_url( $preview[0] ) . '" width="300" />';
 						echo '</div>';
 					}
-					echo '<input type="url" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" value="' . esc_url( $displaysetting['term_image'] ) . '" style="width:200px;" />';
+					echo '<input type="text" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" value="' . esc_url( $displaysetting['term_image'] ) . '" style="width:200px;" />';
 					echo '<input id="upload_default_image" type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 					echo '<p class="description">' . sprintf(
 						__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),

@@ -28,7 +28,7 @@ jQuery(document).ready(function($){
 		custom_uploader.on('select', function() {
 
 			attachment = custom_uploader.state().get('selection').first().toJSON();
-			$(target_input).val(attachment.url);
+			$(target_input).val(attachment.id);
 		});
 
 		//Open the uploader dialog

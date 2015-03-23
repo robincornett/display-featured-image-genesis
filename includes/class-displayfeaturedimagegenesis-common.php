@@ -35,7 +35,7 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
-		$fallback        = esc_attr( $displaysetting['default'] ); // url only
+		$fallback        = $displaysetting['default']; // url only
 		$medium          = absint( get_option( 'medium_size_w' ) );
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
@@ -48,7 +48,11 @@ class Display_Featured_Image_Genesis_Common {
 
 		// sitewide variables used outside this function
 		$item->backstretch = '';
-		$item->fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+		$fallback_id = $fallback;
+		if ( ! is_integer( $fallback ) ) {
+			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+		}
+		$item->fallback_id = absint( $fallback_id );
 
 		// Set Featured Image source ID
 		$image_id = ''; // blank if nothing else
@@ -85,7 +89,10 @@ class Display_Featured_Image_Genesis_Common {
 				$post_type = $object->post_type;
 			}
 			if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
-				$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
+				$image_id = $displaysetting['post_type'][$post_type];
+				if ( ! is_integer( $$displaysetting['post_type'][$post_type] ) ) {
+					$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
+				}
 			}
 		}
 		// taxonomy
@@ -94,7 +101,10 @@ class Display_Featured_Image_Genesis_Common {
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 			// if there is a term image
 			if ( ! empty( $term_meta['term_image'] ) ) {
-				$image_id = self::get_image_id( $term_meta['term_image'] );
+				$image_id = $term_meta['term_image'];
+				if ( ! is_integer( $term_meta['term_image'] ) ) {
+					$image_id = self::get_image_id( $term_meta['term_image'] );
+				}
 			}
 		}
 		// any singular post/page/CPT or there is no $fallback
