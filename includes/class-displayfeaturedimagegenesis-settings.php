@@ -450,8 +450,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$valid     = $this->is_valid_img_ext( $new_value );
 		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$metadata  = wp_get_attachment_metadata( $id );
-		$width     = $metadata['width'];
+		$source    = wp_get_attachment_image_src( $id, 'displayfeaturedimage_backstretch' );
+		$width     = $source[1];
 
 		// ok for field to be empty
 		if ( $new_value ) {
@@ -509,8 +509,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$valid     = $this->is_valid_img_ext( $new_value );
 		$medium    = get_option( 'medium_size_w' );
 		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$metadata  = wp_get_attachment_metadata( $id );
-		$width     = $metadata['width'];
+		$source    = wp_get_attachment_image_src( $id, 'displayfeaturedimage_backstretch' );
+		$width     = $source[1];
 
 		// ok for field to be empty
 		if ( $new_value && ( ! $valid || $width <= $medium ) ) {
