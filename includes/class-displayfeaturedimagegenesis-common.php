@@ -49,7 +49,7 @@ class Display_Featured_Image_Genesis_Common {
 		// sitewide variables used outside this function
 		$item->backstretch = '';
 		$fallback_id = $fallback;
-		if ( ! is_integer( $fallback ) ) {
+		if ( ! is_numeric( $fallback ) ) {
 			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
 		}
 		$item->fallback_id = absint( $fallback_id );
@@ -90,7 +90,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 			if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
 				$image_id = $displaysetting['post_type'][$post_type];
-				if ( ! is_integer( $$displaysetting['post_type'][$post_type] ) ) {
+				if ( ! is_numeric( $displaysetting['post_type'][$post_type] ) ) {
 					$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
 				}
 			}
@@ -102,7 +102,7 @@ class Display_Featured_Image_Genesis_Common {
 			// if there is a term image
 			if ( ! empty( $term_meta['term_image'] ) ) {
 				$image_id = $term_meta['term_image'];
-				if ( ! is_integer( $term_meta['term_image'] ) ) {
+				if ( ! is_numeric( $term_meta['term_image'] ) ) {
 					$image_id = self::get_image_id( $term_meta['term_image'] );
 				}
 			}

@@ -42,7 +42,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				echo '<td>';
 					if ( ! empty( $displaysetting['term_image'] ) ) {
 						$id = $displaysetting['term_image'];
-						if ( ! is_integer( $displaysetting['term_image'] ) ) {
+						if ( ! is_numeric( $displaysetting['term_image'] ) ) {
 							$id = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['term_image'] );
 						}
 						$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
