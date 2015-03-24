@@ -220,9 +220,9 @@ class Display_Featured_Image_Genesis_Settings {
 			echo '</div>';
 		}
 		echo '<input type="hidden" class="upload_image_url" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $this->displaysetting['default'] ) . '" />';
-		echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+		echo '<input type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 		if ( ! empty( $this->displaysetting['default'] ) ) {
-			echo '<input type="button" class="delete_image button" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
+			echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
 		}
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
@@ -304,9 +304,9 @@ class Display_Featured_Image_Genesis_Settings {
 				echo '</div>';
 			}
 			echo '<input type="hidden" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . absint( $this->displaysetting['post_type'][$post_type] ) . '" />';
-			echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+			echo '<input type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				echo '<input type="button" class="delete_image button" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
+				echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
 				echo '<p class="description">' . sprintf(
 					__( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
 					esc_url( get_post_type_archive_link( $post_type ) ),
