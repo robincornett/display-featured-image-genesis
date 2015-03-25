@@ -38,7 +38,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
 		$medium         = get_option( 'medium_size_w' );
 
-		echo '<tr class="form-field">';
+		echo '<tr class="form-field term-image-wrap">';
 			echo '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label></th>';
 				echo '<td>';
 					if ( ! empty( $displaysetting['term_image'] ) ) {
