@@ -229,7 +229,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_large_image() {
 		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$image = sprintf( '<img src="%1$s" class="aligncenter featured" alt="%2$s" title="%2$s" />',
+		$image = sprintf( '<img src="%1$s" class="aligncenter featured" alt="%2$s" />',
 			esc_url( $item->backstretch[0] ),
 			$item->title
 		);
