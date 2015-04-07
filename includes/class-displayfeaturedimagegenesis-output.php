@@ -23,11 +23,10 @@ class Display_Featured_Image_Genesis_Output {
 		$post_types[] = 'attachment';
 		$post_types[] = 'revision';
 		$post_types[] = 'nav_menu_item';
-		if ( $skip ) $post_types[] = is_front_page();
 
 		$skipped_types = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
-		if ( is_admin() || ( in_array( get_post_type(), $skipped_types ) ) ) {
+		if ( is_admin() || ( in_array( get_post_type(), $skipped_types ) ) || ( $skip && is_front_page() ) ) {
 			return;
 		}
 
