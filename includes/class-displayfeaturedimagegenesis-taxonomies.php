@@ -14,12 +14,14 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	 */
 	public function add_taxonomy_meta_fields() {
 
+		$tax = get_current_screen()->taxonomy;
+
 		echo '<div class="form-field term-image-wrap">';
 			echo '<label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
 			echo '<input type="hidden" class="upload_image_url" id="default_image_url" name="displayfeaturedimagegenesis[term_image]" />';
 			echo '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
-			echo '<p class="description">' . __( 'Set Featured Image for Taxonomy','display-featured-image-genesis' ) . '</p>';
+			echo '<p class="description">' . sprintf( __( 'Set Featured Image for new %s','display-featured-image-genesis' ), $tax ) . '</p>';
 		echo '</div>';
 
 	}

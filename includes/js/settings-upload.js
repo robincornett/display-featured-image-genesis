@@ -26,12 +26,12 @@ jQuery(document).ready(function($){
 		});
 
 		//When a file is selected, grab the URL and set it as the text field's value
-		custom_uploader.on('select', function() {
+		custom_uploader.on( 'select', function() {
 
-			attachment   = custom_uploader.state().get('selection').first().toJSON();
+			attachment   = custom_uploader.state().get( 'selection' ).first().toJSON();
 			preview      = $( target_input ).prevAll( '#upload_logo_preview' );
 			previewImage = $( '<div id="upload_logo_preview"><img width="300" src="' + attachment.url + '" /></div>' );
-			$( target_input ).val(attachment.id);
+			$( target_input ).val( attachment.id );
 			if ( $( preview ).length ) {
 				$( preview ).remove();
 			}
