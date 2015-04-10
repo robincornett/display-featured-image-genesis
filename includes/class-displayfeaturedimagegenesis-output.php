@@ -50,11 +50,15 @@ class Display_Featured_Image_Genesis_Output {
 		$medium  = absint( get_option( 'medium_size_w' ) );
 		$width   = absint( $item->backstretch[1] );
 
-		//* if there is no backstretch image set, or it is too small, die
-		if ( empty( $item->backstretch ) || $width <= $medium || is_paged() ) {
+		// check if they have enabled display on subsequent pages
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$is_paged       = $displaysetting['is_paged'];
+
+		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
+		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
 			return;
 		}
-		//* if the featured image is not part of the content, or we're not on a singular page, carry on
+		// if the featured image is not part of the content, or we're not on a singular page, carry on
 		if ( false === $item->content || ! is_singular() ) {
 
 			$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
@@ -62,7 +66,7 @@ class Display_Featured_Image_Genesis_Output {
 
 			$post_types = array();
 			$force_backstretch = apply_filters( 'display_featured_image_genesis_force_backstretch', $post_types );
-			//* check if the image is large enough for backstretch
+			// check if the image is large enough for backstretch
 			if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
 
 				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
@@ -73,7 +77,7 @@ class Display_Featured_Image_Genesis_Output {
 
 			}
 
-			//* otherwise it's a large image.
+			// otherwise it's a large image.
 			elseif ( $width <= $large ) {
 
 				remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
@@ -101,7 +105,12 @@ class Display_Featured_Image_Genesis_Output {
 		$medium = absint( get_option( 'medium_size_w' ) );
 		$width  = absint( $item->backstretch[1] );
 
-		if ( empty( $item->backstretch ) || $width <= $medium || is_paged() ) {
+		// check if they have enabled display on subsequent pages
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$is_paged       = $displaysetting['is_paged'];
+
+		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
+		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
 			return $classes;
 		}
 

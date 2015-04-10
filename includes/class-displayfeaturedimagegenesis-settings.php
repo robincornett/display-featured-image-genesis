@@ -74,7 +74,8 @@ class Display_Featured_Image_Genesis_Settings {
 			'exclude_front' => 0,
 			'keep_titles'   => 0,
 			'move_excerpts' => 0,
-			'feed_image'    => 0
+			'is_paged'      => 0,
+			'feed_image'    => 0,
 		);
 
 		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', $defaults );
@@ -122,6 +123,14 @@ class Display_Featured_Image_Genesis_Settings {
 			'displayfeaturedimagegenesis[move_excerpts]',
 			'<label for="displayfeaturedimagegenesis[move_excerpts]">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'move_excerpts' ),
+			'displayfeaturedimagegenesis',
+			'display_featured_image_section'
+		);
+
+		add_settings_field(
+			'displayfeaturedimagegenesis[is_paged]',
+			'<label for="displayfeaturedimagegenesis[is_paged]">' . __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ) . '</label>',
+			array( $this, 'check_is_paged' ),
 			'displayfeaturedimagegenesis',
 			'display_featured_image_section'
 		);
@@ -264,6 +273,17 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
+	 * option to show featured image on page 2+ of blog/archives
+	 * @return 0 1 checkbox
+	 *
+	 * @since  2.2.0
+	 */
+	public function check_is_paged() {
+		echo '<input type="hidden" name="displayfeaturedimagegenesis[is_paged]" value="0" />';
+		echo '<label for="displayfeaturedimagegenesis[is_paged]"><input type="checkbox" name="displayfeaturedimagegenesis[is_paged]" id="displayfeaturedimagegenesis[is_paged]" value="1"' . checked( 1, esc_attr( $this->displaysetting['is_paged'] ), false ) . ' class="code" />' . __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ) . '</label>';
+	}
+
+	/**
 	 * option to add images to feed
 	 * @return 0 1 checkbox
 	 *
@@ -376,6 +396,8 @@ class Display_Featured_Image_Genesis_Settings {
 		$new_value['keep_titles']   = $this->one_zero( $new_value['keep_titles'] );
 
 		$new_value['move_excerpts'] = $this->one_zero( $new_value['move_excerpts'] );
+
+		$new_value['is_paged']      = $this->one_zero( $new_value['is_paged'] );
 
 		$new_value['feed_image']    = $this->one_zero( $new_value['feed_image'] );
 
