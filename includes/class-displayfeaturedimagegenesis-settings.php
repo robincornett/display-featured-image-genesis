@@ -445,18 +445,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			// if the image is external to the WP site, we cannot use it.
-			elseif ( ! $source ) {
-				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' ) . $reset;
-				$new_value = $this->displaysetting['default'];
 
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'external' ),
-					$message,
-					'error'
-				);
-			}
 			// if file is an image, but is too small, throw it back
 			elseif ( $width <= $large ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' ) . $reset;
@@ -507,18 +496,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			// if the image is external to the WP site, we cannot use it.
-			elseif ( ! $source ) {
-				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' );
-				$new_value = false;
 
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'external' ),
-					$message,
-					'error'
-				);
-			}
 			// if file is an image, but is too small, throw it back
 			elseif ( $width <= $medium ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
