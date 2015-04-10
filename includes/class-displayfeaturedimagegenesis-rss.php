@@ -28,14 +28,15 @@ class Display_Featured_Image_Genesis_RSS {
 			return;
 		}
 
-		//* if the feed is full text, filter the content
+		// if the feed is summary, filter the excerpt
+		$which_filter = 'the_excerpt_rss';
+		$priority     = 1000;
+		// if the feed is full text, filter the content
 		if ( '0' === $rss_option ) {
-			add_filter( 'the_content_feed', array( $this, 'add_image_to_feed' ), 15 );
+			$which_filter = 'the_content_feed';
+			$priority     = 15;
 		}
-		//* if the feed is summaries, filter the excerpt, not the content
-		else {
-			add_filter( 'the_excerpt_rss', array( $this, 'add_image_to_feed' ), 1000, 1 );
-		}
+		add_filter( $which_filter, array( $this, 'add_image_to_feed' ), $priority );
 
 	}
 
