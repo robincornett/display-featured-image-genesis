@@ -398,6 +398,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_image( $new_value ) {
 
+		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
 			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		}
@@ -460,6 +461,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_post_type_image( $new_value ) {
 
+		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
 			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		}
@@ -521,6 +523,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_taxonomy_image( $new_value ) {
 
+		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
 			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		}

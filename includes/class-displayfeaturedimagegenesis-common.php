@@ -90,6 +90,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 			if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
 				$image_id = $displaysetting['post_type'][$post_type];
+				// if $image_id is using the old URL
 				if ( ! is_numeric( $displaysetting['post_type'][$post_type] ) ) {
 					$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
 				}
@@ -102,6 +103,7 @@ class Display_Featured_Image_Genesis_Common {
 			// if there is a term image
 			if ( ! empty( $term_meta['term_image'] ) ) {
 				$image_id = $term_meta['term_image'];
+				// if $image_id is using the old URL
 				if ( ! is_numeric( $term_meta['term_image'] ) ) {
 					$image_id = self::get_image_id( $term_meta['term_image'] );
 				}
@@ -127,6 +129,9 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
+		// make sure the image id is an integer
+		$image_id = absint( $image_id );
+
 		// turn Photon off so we can get the correct image
 		$photon_removed = '';
 		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
@@ -144,6 +149,7 @@ class Display_Featured_Image_Genesis_Common {
 		if ( in_array( get_post_type(), $use_large_image ) ) {
 			$image_size = 'large';
 		}
+
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
