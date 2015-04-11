@@ -220,6 +220,11 @@ class Display_Featured_Image_Genesis_Common {
 		global $wpdb;
 		$attachment_id = false;
 
+		// as of 2.2.0, if a (new) image id is passed to the function, return it as is.
+		if ( is_int( $attachment_url ) ) {
+			return $attachment_url;
+		}
+
 		// If there is no url, return.
 		if ( '' == $attachment_url ) {
 			return;
