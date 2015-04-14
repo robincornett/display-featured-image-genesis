@@ -6,7 +6,7 @@ jQuery(document).ready(function($){
 
 	$( '.upload_default_image' ).click(function(e) {
 
-		target_input = $(this).prev( '.upload_image_url' );
+		target_input = $(this).prev( '.upload_image_id' );
 
 		e.preventDefault();
 
@@ -45,7 +45,7 @@ jQuery(document).ready(function($){
 
 	$( '.delete_image' ).click( function(e) {
 
-		target_input = $(this).prevAll( '.upload_image_url' );
+		target_input = $(this).prevAll( '.upload_image_id' );
 		previewView  = $(this).prevAll( '#upload_logo_preview' );
 
 		e.preventDefault();
