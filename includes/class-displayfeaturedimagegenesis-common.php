@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public static $version = '2.1.0';
+	public static $version = '2.2.0';
 
 	protected static $post_types;
 
@@ -35,7 +35,7 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
-		$fallback        = esc_attr( $displaysetting['default'] ); // url only
+		$fallback        = $displaysetting['default']; // url only
 		$medium          = absint( get_option( 'medium_size_w' ) );
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
@@ -48,7 +48,11 @@ class Display_Featured_Image_Genesis_Common {
 
 		// sitewide variables used outside this function
 		$item->backstretch = '';
-		$item->fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+		$fallback_id = $fallback;
+		if ( ! is_numeric( $fallback ) ) {
+			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+		}
+		$item->fallback_id = absint( $fallback_id );
 
 		// Set Featured Image source ID
 		$image_id = ''; // blank if nothing else
@@ -85,7 +89,11 @@ class Display_Featured_Image_Genesis_Common {
 				$post_type = $object->post_type;
 			}
 			if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
-				$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
+				$image_id = $displaysetting['post_type'][$post_type];
+				// if $image_id is using the old URL
+				if ( ! is_numeric( $displaysetting['post_type'][$post_type] ) ) {
+					$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
+				}
 			}
 		}
 		// taxonomy
@@ -94,7 +102,11 @@ class Display_Featured_Image_Genesis_Common {
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 			// if there is a term image
 			if ( ! empty( $term_meta['term_image'] ) ) {
-				$image_id = self::get_image_id( $term_meta['term_image'] );
+				$image_id = $term_meta['term_image'];
+				// if $image_id is using the old URL
+				if ( ! is_numeric( $term_meta['term_image'] ) ) {
+					$image_id = self::get_image_id( $term_meta['term_image'] );
+				}
 			}
 		}
 		// any singular post/page/CPT or there is no $fallback
@@ -117,6 +129,9 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
+		// make sure the image id is an integer
+		$image_id = absint( $image_id );
+
 		// turn Photon off so we can get the correct image
 		$photon_removed = '';
 		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
@@ -134,6 +149,7 @@ class Display_Featured_Image_Genesis_Common {
 		if ( in_array( get_post_type(), $use_large_image ) ) {
 			$image_size = 'large';
 		}
+
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
@@ -203,6 +219,11 @@ class Display_Featured_Image_Genesis_Common {
 	public static function get_image_id( $attachment_url = '' ) {
 		global $wpdb;
 		$attachment_id = false;
+
+		// as of 2.2.0, if a (new) image id is passed to the function, return it as is.
+		if ( is_int( $attachment_url ) ) {
+			return $attachment_url;
+		}
 
 		// If there is no url, return.
 		if ( '' == $attachment_url ) {

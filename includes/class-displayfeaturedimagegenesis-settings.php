@@ -74,7 +74,8 @@ class Display_Featured_Image_Genesis_Settings {
 			'exclude_front' => 0,
 			'keep_titles'   => 0,
 			'move_excerpts' => 0,
-			'feed_image'    => 0
+			'is_paged'      => 0,
+			'feed_image'    => 0,
 		);
 
 		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', $defaults );
@@ -122,6 +123,14 @@ class Display_Featured_Image_Genesis_Settings {
 			'displayfeaturedimagegenesis[move_excerpts]',
 			'<label for="displayfeaturedimagegenesis[move_excerpts]">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'move_excerpts' ),
+			'displayfeaturedimagegenesis',
+			'display_featured_image_section'
+		);
+
+		add_settings_field(
+			'displayfeaturedimagegenesis[is_paged]',
+			'<label for="displayfeaturedimagegenesis[is_paged]">' . __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ) . '</label>',
+			array( $this, 'check_is_paged' ),
 			'displayfeaturedimagegenesis',
 			'display_featured_image_section'
 		);
@@ -207,17 +216,24 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function set_default_image() {
 
-		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$large = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
+		$id    = '';
 
 		if ( ! empty( $this->displaysetting['default'] ) ) {
-			$preview = wp_get_attachment_image_src( $item->fallback_id, 'medium' );
+			$id = $this->displaysetting['default'];
+			if ( ! is_numeric( $this->displaysetting['default'] ) ) {
+				$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['default'] );
+			}
+			$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 			echo '<div id="upload_logo_preview">';
 			echo '<img src="' . esc_url( $preview[0] ) . '" />';
 			echo '</div>';
 		}
-		echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . esc_url( $this->displaysetting['default'] ) . '" />';
-		echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $id ) . '" />';
+		echo '<input type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+		if ( ! empty( $this->displaysetting['default'] ) ) {
+			echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
+		}
 		echo '<p class="description">' . sprintf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $large + 1 )
@@ -258,6 +274,17 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
+	 * option to show featured image on page 2+ of blog/archives
+	 * @return 0 1 checkbox
+	 *
+	 * @since  2.2.0
+	 */
+	public function check_is_paged() {
+		echo '<input type="hidden" name="displayfeaturedimagegenesis[is_paged]" value="0" />';
+		echo '<label for="displayfeaturedimagegenesis[is_paged]"><input type="checkbox" name="displayfeaturedimagegenesis[is_paged]" id="displayfeaturedimagegenesis[is_paged]" value="1"' . checked( 1, esc_attr( $this->displaysetting['is_paged'] ), false ) . ' class="code" />' . __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ) . '</label>';
+	}
+
+	/**
 	 * option to add images to feed
 	 * @return 0 1 checkbox
 	 *
@@ -283,25 +310,32 @@ class Display_Featured_Image_Genesis_Settings {
 
 			$post_type = $post->name;
 			if ( empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				$this->displaysetting['post_type'][$post_type] = '';
+				$this->displaysetting['post_type'][$post_type] = $id = '';
 			}
+			echo '<div>';
 			echo '<h4>' . $post->label . '</h4>';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				$id      = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
-				$preview = wp_get_attachment_image_src( $id, 'medium' );
+				$id = $this->displaysetting['post_type'][$post_type];
+				if ( ! is_numeric( $this->displaysetting['post_type'][$post_type] ) ) {
+					$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
+				}
+				$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 				echo '<div id="upload_logo_preview">';
 				echo '<img src="' . esc_url( $preview[0] ) . '" />';
 				echo '</div>';
 			}
-			echo '<input type="url" class="upload_image_url" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . esc_url( $this->displaysetting['post_type'][$post_type] ) . '" />';
-			echo '<input type="button" class="upload_default_image button" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+
+			echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . absint( $id ) . '" />';
+			echo '<input type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
 			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
+				echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
 				echo '<p class="description">' . sprintf(
 					__( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
 					esc_url( get_post_type_archive_link( $post_type ) ),
 					$post->label
 				) . '</p>';
 			}
+			echo '</div>';
 
 		}
 
@@ -365,6 +399,8 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value['move_excerpts'] = $this->one_zero( $new_value['move_excerpts'] );
 
+		$new_value['is_paged']      = $this->one_zero( $new_value['is_paged'] );
+
 		$new_value['feed_image']    = $this->one_zero( $new_value['feed_image'] );
 
 		foreach ( $this->post_types as $post_type ) {
@@ -386,11 +422,14 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_image( $new_value ) {
 
-		$new_value = esc_url( $new_value );
-		$valid     = $this->is_valid_img_ext( $new_value );
+		// if the image was selected using the old URL method
+		if ( ! is_numeric( $new_value ) ) {
+			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		}
+		$new_value = absint( $new_value );
 		$large     = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
-		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'full' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 		$reset     = __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
 
@@ -408,18 +447,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			// if the image is external to the WP site, we cannot use it.
-			elseif ( ! $source ) {
-				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' ) . $reset;
-				$new_value = $this->displaysetting['default'];
 
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'external' ),
-					$message,
-					'error'
-				);
-			}
 			// if file is an image, but is too small, throw it back
 			elseif ( $width <= $large ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' ) . $reset;
@@ -446,11 +474,14 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_post_type_image( $new_value ) {
 
-		$new_value = esc_url( $new_value );
-		$valid     = $this->is_valid_img_ext( $new_value );
+		// if the image was selected using the old URL method
+		if ( ! is_numeric( $new_value ) ) {
+			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		}
+		$new_value = absint( $new_value );
 		$medium    = get_option( 'medium_size_w' );
-		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'full' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 
 		// ok for field to be empty
@@ -467,18 +498,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'error'
 				);
 			}
-			// if the image is external to the WP site, we cannot use it.
-			elseif ( ! $source ) {
-				$message   = __( 'Sorry, your image must be uploaded directly to your WordPress site.', 'display-featured-image-genesis' );
-				$new_value = false;
 
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'external' ),
-					$message,
-					'error'
-				);
-			}
 			// if file is an image, but is too small, throw it back
 			elseif ( $width <= $medium ) {
 				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
@@ -505,11 +525,14 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_taxonomy_image( $new_value ) {
 
-		$new_value = esc_url( $new_value );
-		$valid     = $this->is_valid_img_ext( $new_value );
+		// if the image was selected using the old URL method
+		if ( ! is_numeric( $new_value ) ) {
+			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+		}
+		$new_value = absint( $new_value );
 		$medium    = get_option( 'medium_size_w' );
-		$id        = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$source    = wp_get_attachment_image_src( $id, 'full' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 
 		// ok for field to be empty
@@ -598,6 +621,10 @@ class Display_Featured_Image_Genesis_Settings {
 			'<h3>' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'By default, archive descriptions (set on the Genesis Archive Settings pages) show below the Default Featured Image, while the archive title displays on top of the image. If you check this box, all headlines, descriptions, and optional excerpts will display in a box overlaying the Featured Image.', 'display-featured-image-genesis' ) . '</p>';
 
+		$paged_help =
+			'<h3>' . __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ) . '</h3>' .
+			'<p>' . __( 'Featured Images do not normally show on the second (and following) page of term/blog/post archives. Check this setting to ensure that they do.', 'display-featured-image-genesis' ) . '</p>';
+
 		$feed_help =
 			'<h3>' . __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ) . '</h3>' .
 			'<p>' . __( 'This plugin does not add the Featured Image to your content, so normally you will not see your Featured Image in the feed. If you select this option, however, the Featured Image (if it is set) will be added to each entry in your RSS feed.', 'display-featured-image-genesis' ) . '</p>' .
@@ -638,6 +665,12 @@ class Display_Featured_Image_Genesis_Settings {
 			'id'      => 'displayfeaturedimage_excerpts-help',
 			'title'   => __( 'Move Excerpts', 'display-featured-image-genesis' ),
 			'content' => $excerpts_help,
+		) );
+
+		$screen->add_help_tab( array(
+			'id'      => 'displayfeaturedimage_paged-help',
+			'title'   => __( 'Subsequent Pages', 'display-featured-image-genesis' ),
+			'content' => $paged_help,
 		) );
 
 		$screen->add_help_tab( array(

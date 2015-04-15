@@ -92,7 +92,10 @@ class Display_Featured_Image_Genesis_Admin {
 			$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
 			if ( ! empty( $term_meta['term_image'] ) ) {
 				$alt_tag = get_term( $term_id, $taxonomy )->name;
-                $id      = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
+				$id = $term_meta['term_image'];
+				if ( ! is_numeric( $term_meta['term_image'] ) ) {
+	                $id = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
+				}
                 $preview = apply_filters( 'display_featured_image_genesis_admin_term_thumbnail', wp_get_attachment_image_src( $id, 'thumbnail' ), $id );
 				echo '<img src="' . $preview[0] . '" alt="' . $alt_tag . '" />';
 			}

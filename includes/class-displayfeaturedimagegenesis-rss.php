@@ -28,14 +28,15 @@ class Display_Featured_Image_Genesis_RSS {
 			return;
 		}
 
-		//* if the feed is full text, filter the content
+		// if the feed is summary, filter the excerpt
+		$which_filter = 'the_excerpt_rss';
+		$priority     = 1000;
+		// if the feed is full text, filter the content
 		if ( '0' === $rss_option ) {
-			add_filter( 'the_content_feed', array( $this, 'add_image_to_feed' ), 15 );
+			$which_filter = 'the_content_feed';
+			$priority     = 15;
 		}
-		//* if the feed is summaries, filter the excerpt, not the content
-		else {
-			add_filter( 'the_excerpt_rss', array( $this, 'add_image_to_feed' ), 1000, 1 );
-		}
+		add_filter( $which_filter, array( $this, 'add_image_to_feed' ), $priority );
 
 	}
 
@@ -48,12 +49,12 @@ class Display_Featured_Image_Genesis_RSS {
 	 */
 	public function add_image_to_feed( $content ) {
 
-		//* if the post doesn't have a thumbnail, we're done here
+		// if the post doesn't have a thumbnail, we're done here
 		if ( ! has_post_thumbnail() ) {
 			return $content;
 		}
 
-		//* first check: see if the featured image already exists in full in the content
+		// first check: see if the featured image already exists in full in the content
 		$size = 'original';
 		if ( class_exists( 'SendImagesRSS' ) ) {
 			$simplify = get_option( 'sendimagesrss_simplify_feed' );
@@ -68,28 +69,28 @@ class Display_Featured_Image_Genesis_RSS {
 		$image_content  = strpos( $content, 'src="' . $post_thumbnail[0] );
 		$rss_option     = get_option( 'rss_use_excerpt' );
 
-		//* if the featured image already exists in all its glory in the content, we're done here
+		// if the featured image already exists in all its glory in the content, we're done here
 		if ( false !== $image_content && '0' === $rss_option ) {
 			return $content;
 		}
 
-		//* reset size to large so we don't send huge files to the feed
+		// reset size to large so we don't send huge files to the feed
 		$size = 'large';
 		if ( class_exists( 'SendImagesRSS' ) ) {
 			$simplify = get_option( 'sendimagesrss_simplify_feed' );
 			$alt_feed = get_option( 'sendimagesrss_alternate_feed' );
-			//* if the user is using Send Images to RSS, send the right images to the right feeds
+			// if the user is using Send Images to RSS, send the right images to the right feeds
 			if ( ! $simplify && ( ( $alt_feed && is_feed( 'email' ) ) || ! $alt_feed ) ) {
 				$size  = 'mailchimp';
 				$class = 'rss-mailchimp';
 			}
 		}
 
-		$align      = '';
-		$style      = 'display:block;margin:10px auto;';
-		$class      = 'rss-featured-image';
+		$align = '';
+		$style = 'display:block;margin:10px auto;';
+		$class = 'rss-featured-image';
 
-		//* if the feed output is descriptions only, change image size to thumbnail with small alignment
+		// if the feed output is descriptions only, change image size to thumbnail with small alignment
 		if ( '1' === $rss_option ) {
 			$size  = 'thumbnail';
 			$align = 'left';
@@ -97,8 +98,9 @@ class Display_Featured_Image_Genesis_RSS {
 			$class = 'rss-small';
 		}
 
-		//* whew. build the image!
-		$image = get_the_post_thumbnail( get_the_ID(), $size, array( 'align' => $align, 'style' => $style, 'class' => $class ) );
+		// whew. build the image!
+		$image   = get_the_post_thumbnail( get_the_ID(), $size, array( 'align' => $align, 'style' => $style, 'class' => $class ) );
+		$image   = apply_filters( 'display_featured_image_genesis_modify_rss_image', $image );
 
 		$content = $image . $content;
 

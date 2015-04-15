@@ -123,10 +123,17 @@ class Display_Featured_Image_Genesis {
 			) );
 		}
 
-		//* new setting for titles added in 2.0.0
+		// new setting for titles added in 2.0.0
 		if ( empty( $displaysetting['keep_titles'] ) ) {
 			$this->update_settings( array(
 				'keep_titles' => 0
+			) );
+		}
+
+		// new setting for subsequent pages added in 2.2.0
+		if ( empty( $displaysetting['is_paged'] ) ) {
+			$this->update_settings( array(
+				'is_paged' => 0
 			) );
 		}
 
