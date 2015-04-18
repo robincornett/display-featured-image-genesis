@@ -154,8 +154,16 @@ class Display_Featured_Image_Genesis_Output {
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
 
+		/**
+		 * filter to maybe move titles, or not
+		 * @var filter
+		 * @since 2.2.0
+		 */
+		$post_types        = array();
+		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', $post_types );
+
 		// if titles will be moved to overlay backstretch image
-		if ( ! $keep_titles ) {
+		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
 			if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
 				remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
 				remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
@@ -176,7 +184,7 @@ class Display_Featured_Image_Genesis_Output {
 		 * @var filter
 		 * @since  2.0.0 (deprecated old function from 1.3.3)
 		 */
-		$omit_excerpt  = apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
+		$omit_excerpt = apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
 
 		//* if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
@@ -190,7 +198,7 @@ class Display_Featured_Image_Genesis_Output {
 		}
 
 		// if titles are not being moved to overlay the image
-		elseif ( ! $keep_titles ) {
+		elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
 
 			if ( ! empty( $item->title ) && ! is_front_page() ) {
 
