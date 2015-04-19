@@ -55,4 +55,16 @@ jQuery(document).ready(function($){
 
 	});
 
+	$( '#submit' ).click( function(e) {
+		submitButton = $(this).parentsUntil( '#addtag' );
+		previewView  = submitButton.siblings( '.term-image-wrap' ).children( '#upload_logo_preview' );
+
+		e.preventDefault();
+		if ( $( previewView ).length ) {
+			$( previewView ).delay( 1000 ).fadeOut( 200, function() {
+			   $(this).remove();
+			});
+		}
+	});
+
 });
