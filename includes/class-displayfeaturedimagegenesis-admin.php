@@ -3,11 +3,11 @@
 /**
  * Dependent class to establish/display columns for featured images
  *
- * @package DisplayFeaturedImageGenesis
+ * @package   DisplayFeaturedImageGenesis
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      http://robincornett.com
- * @copyright 2014 Robin Cornett Creative, LLC
+ * @copyright 2015 Robin Cornett Creative, LLC
  * @since 2.0.0
  */
 
@@ -97,7 +97,7 @@ class Display_Featured_Image_Genesis_Admin {
 	                $id = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 				}
                 $preview = apply_filters( 'display_featured_image_genesis_admin_term_thumbnail', wp_get_attachment_image_src( $id, 'thumbnail' ), $id );
-				echo '<img src="' . $preview[0] . '" alt="' . $alt_tag . '" />';
+				echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( $alt_tag ) . '" />';
 			}
 		}
 
@@ -117,7 +117,7 @@ class Display_Featured_Image_Genesis_Admin {
 			$id      = get_post_thumbnail_id( $post_id );
 			$preview = apply_filters( 'display_featured_image_genesis_admin_post_thumbnail', wp_get_attachment_image_src( $id, 'thumbnail' ), $id );
 			if ( $id ) {
-				echo '<img src="' . $preview[0] . '" alt="' . the_title_attribute( 'echo=0' ) . '" />';
+				echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( the_title_attribute( 'echo=0' ) ) . '" />';
 			}
 		}
 

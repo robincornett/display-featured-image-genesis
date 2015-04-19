@@ -33,7 +33,7 @@ function display_featured_image_genesis_get_term_image_id() {
 		}
 	}
 
-	return $image_id;
+	return absint( $image_id );
 
 }
 
@@ -44,12 +44,12 @@ function display_featured_image_genesis_get_term_image_id() {
  *
  * @since  2.1.0
  */
-function display_featured_image_genesis_get_term_image_url( $size='displayfeaturedimage_backstretch' ) {
+function display_featured_image_genesis_get_term_image_url( $size = 'displayfeaturedimage_backstretch' ) {
 
 	$image_id  = display_featured_image_genesis_get_term_image_id();
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
-	return $image_url[0];
+	return esc_url( $image_url[0] );
 
 }
 
@@ -61,11 +61,15 @@ function display_featured_image_genesis_get_term_image_url( $size='displayfeatur
  */
 function display_featured_image_genesis_get_default_image_id() {
 
-	$image_id = '';
-	$item     = Display_Featured_Image_Genesis_Common::get_image_variables();
-	$image_id = $item->fallback_id;
+	$image_id       = '';
+	$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+	$fallback       = $displaysetting['default'];
+	$image_id       = $fallback;
+		if ( ! is_numeric( $fallback ) ) {
+			$image_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+		}
 
-	return $image_id;
+	return absint( $image_id );
 
 }
 
@@ -76,12 +80,12 @@ function display_featured_image_genesis_get_default_image_id() {
  *
  * @since  2.1.0
  */
-function display_featured_image_genesis_get_default_image_url( $size='displayfeaturedimage_backstretch' ) {
+function display_featured_image_genesis_get_default_image_url( $size = 'displayfeaturedimage_backstretch' ) {
 
 	$image_id  = display_featured_image_genesis_get_default_image_id();
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
-	return $image_url[0];
+	return esc_url( $image_url[0] );
 
 }
 
@@ -116,7 +120,7 @@ function display_featured_image_genesis_get_cpt_image_id() {
 		}
 	}
 
-	return $image_id;
+	return absint( $image_id );
 }
 
 /**
@@ -126,12 +130,12 @@ function display_featured_image_genesis_get_cpt_image_id() {
  *
  * @since  2.1.0
  */
-function display_featured_image_genesis_get_cpt_image_url( $size='displayfeaturedimage_backstretch' ) {
+function display_featured_image_genesis_get_cpt_image_url( $size = 'displayfeaturedimage_backstretch' ) {
 
 	$image_id  = display_featured_image_genesis_get_cpt_image_id();
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
-	return $image_url[0];
+	return esc_url( $image_url[0] );
 
 }
 
