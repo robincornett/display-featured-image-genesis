@@ -93,7 +93,7 @@ Display Featured Image for Genesis has its own settings page, under the main App
 
 ### Does this work with any Genesis child theme?
 
-Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
+Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout, the output may be unexpected, and require some tweaking. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
 
 ### How can I change how the plugin works?
 
@@ -198,6 +198,11 @@ This will follow the settings you choose in the Genesis Theme Settings.
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+### 2.2.0 - 2015-04-20
+* default, term, and custom post type featured images are now stored in the database by ID, rather than URL.
+* added filters for backstretch image output, RSS excerpt image output
+* added setting for page 2+ of archives (fixed output)
 
 ### 2.1.0 - 2015-03-05
 * added helper functions for term/custom post type images

@@ -4,8 +4,8 @@ Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 3.8
-Tested up to: 4.1
-Stable tag: 2.1.0
+Tested up to: 4.2
+Stable tag: 2.2.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -63,13 +63,13 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 
 = Does this work with any Genesis child theme? =
 
-Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
+Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout, the output may be unexpected, and require some tweaking. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
 
 = How can I change how the plugin works? =
 
 There are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a later one.
 
-Available filters are:
+Available filters include, but are not limited to:
 
 * `display_featured_image_genesis_skipped_posttypes`: select post type(s) which will not have the featured image effect applied
 * `display_featured_image_genesis_use_default`: force post type(s) to use your sitewide default image (set on the main plugin settings page) for the featured image effect, regardless of what is set as the individual post's featured image
@@ -113,7 +113,7 @@ It seems that you can also include [conditional tags](http://codex.wordpress.org
 
 If you do not want the height of the backstretch image to be quite the height of the user's browser window, which is the standard, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter the window will be calculated to be. Feel free to experiment, as no images are harmed by changing this number.
 
-_Note:_ **Display Featured Image for Genesis** determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window.
+_Note:_ **Display Featured Image for Genesis** determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window, which is partly why you cannot set this to more than 400.
 
 If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead.
 
@@ -157,10 +157,15 @@ This will follow the settings you choose in the Genesis Theme Settings.
 3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.1.0 =
-Improvements to term/custom post type images. Also added some nice helper functions.
+= 2.2.0 =
+Changed how default, term, and post type featured images are stored in the database.
 
 == Changelog ==
+
+= 2.2.0 =
+* default, term, and custom post type featured images are now stored in the database by ID, rather than URL.
+* added filters for backstretch image output, RSS excerpt image output
+* added setting for page 2+ of archives (fixed output)
 
 = 2.1.0 =
 * added helper functions for term/custom post type images
