@@ -102,9 +102,7 @@ class Display_Featured_Image_Genesis_RSS {
 		$image   = get_the_post_thumbnail( get_the_ID(), $size, array( 'align' => $align, 'style' => $style, 'class' => $class ) );
 		$image   = apply_filters( 'display_featured_image_genesis_modify_rss_image', $image );
 
-		$content = $image . $content;
-
-		return $content;
+		return $image . $content;
 
 	}
 
