@@ -52,10 +52,11 @@ class Display_Featured_Image_Genesis_Admin {
 		$post_types['post'] = 'post';
 		$post_types['page'] = 'page';
 		foreach ( $post_types as $post_type ) {
-			if ( post_type_supports( $post_type, 'thumbnail' ) ) {
-				add_filter( "manage_edit-{$post_type}_columns", array( $this, 'add_column' ) );
-				add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'custom_post_columns' ), 10, 2 );
+			if ( ! post_type_supports( $post_type, 'thumbnail' ) ) {
+				return;
 			}
+			add_filter( "manage_edit-{$post_type}_columns", array( $this, 'add_column' ) );
+			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'custom_post_columns' ), 10, 2 );
 		}
 	}
 
@@ -126,13 +127,21 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	public function custom_post_columns( $column, $post_id ) {
 
-		if ( 'featured_image' === $column ) {
-			$id      = get_post_thumbnail_id( $post_id );
-			$preview = apply_filters( 'display_featured_image_genesis_admin_post_thumbnail', wp_get_attachment_image_src( $id, 'thumbnail' ), $id );
-			if ( $id ) {
-				echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( the_title_attribute( 'echo=0' ) ) . '" />';
-			}
+		if ( 'featured_image' !== $column ) {
+			return;
 		}
+
+		$id = get_post_thumbnail_id( $post_id );
+		if ( ! $id ) {
+			return;
+		}
+
+		$preview = apply_filters(
+			'display_featured_image_genesis_admin_post_thumbnail',
+			wp_get_attachment_image_src( $id, 'thumbnail' ),
+			$id
+		);
+		echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( the_title_attribute( 'echo=0' ) ) . '" />';
 
 	}
 
