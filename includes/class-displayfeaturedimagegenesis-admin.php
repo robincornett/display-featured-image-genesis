@@ -87,19 +87,32 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	public function manage_taxonomy_column( $value, $column, $term_id ) {
 
-		$taxonomy = ( isset( $_POST['taxonomy'] ) ) ? $_POST['taxonomy'] : get_current_screen()->taxonomy;
-		if ( 'featured_image' === $column ) {
-			$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
-			if ( ! empty( $term_meta['term_image'] ) ) {
-				$alt_tag = get_term( $term_id, $taxonomy )->name;
-				$id = $term_meta['term_image'];
-				if ( ! is_numeric( $term_meta['term_image'] ) ) {
-					$id = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
-				}
-				$preview = apply_filters( 'display_featured_image_genesis_admin_term_thumbnail', wp_get_attachment_image_src( $id, 'thumbnail' ), $id );
-				echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( $alt_tag ) . '" />';
-			}
+		if ( 'featured_image' !== $column ) {
+			return;
 		}
+
+		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
+
+		if ( empty( $term_meta['term_image'] ) ) {
+			return;
+		}
+
+		$taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
+		$taxonomy = ! is_null( $taxonomy ) ? $taxonomy : get_current_screen()->taxonomy;
+		$alt      = get_term( $term_id, $taxonomy )->name;
+		$id       = $term_meta['term_image'];
+
+		if ( ! is_numeric( $term_meta['term_image'] ) ) {
+			$id = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
+		}
+
+		$preview = apply_filters(
+			'display_featured_image_genesis_admin_term_thumbnail',
+			wp_get_attachment_image_src( $id, 'thumbnail' ),
+			$id
+		);
+
+		echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( $alt ) . '" />';
 
 	}
 
