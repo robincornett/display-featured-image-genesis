@@ -80,8 +80,11 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', $defaults );
 
+		$page    = 'displayfeaturedimagegenesis';
+		$section = 'display_featured_image_section';
+
 		add_settings_section(
-			'display_featured_image_section',
+			$section,
 			__( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
 			array( $this, 'section_description'),
 			'displayfeaturedimagegenesis'
@@ -91,56 +94,56 @@ class Display_Featured_Image_Genesis_Settings {
 			'displayfeaturedimagegenesis[less_header]',
 			'<label for="displayfeaturedimagegenesis[less_header]">' . __( 'Height' , 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'header_size' ),
-			'displayfeaturedimagegenesis',
-			'display_featured_image_section'
+			$page,
+			$section
 		);
 
 		add_settings_field(
 			'displayfeaturedimagegenesis[default]',
 			'<label for="displayfeaturedimagegenesis[default]">' . __( 'Default Featured Image', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'set_default_image' ),
-			'displayfeaturedimagegenesis',
-			'display_featured_image_section'
+			$page,
+			$section
 		);
 
 		add_settings_field(
 			'displayfeaturedimagegenesis[exclude_front]',
 			'<label for="displayfeaturedimagegenesis[exclude_front]">' . __( 'Skip Front Page', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'exclude_front' ),
-			'displayfeaturedimagegenesis',
-			'display_featured_image_section'
+			$page,
+			$section
 		);
 
 		add_settings_field(
 			'displayfeaturedimagegenesis[keep_titles]',
 			'<label for="displayfeaturedimagegenesis[keep_titles]">' . __( 'Do Not Move Titles', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'keep_titles' ),
-			'displayfeaturedimagegenesis',
-			'display_featured_image_section'
+			$page,
+			$section
 		);
 
 		add_settings_field(
 			'displayfeaturedimagegenesis[move_excerpts]',
 			'<label for="displayfeaturedimagegenesis[move_excerpts]">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'move_excerpts' ),
-			'displayfeaturedimagegenesis',
-			'display_featured_image_section'
+			$page,
+			$section
 		);
 
 		add_settings_field(
 			'displayfeaturedimagegenesis[is_paged]',
 			'<label for="displayfeaturedimagegenesis[is_paged]">' . __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'check_is_paged' ),
-			'displayfeaturedimagegenesis',
-			'display_featured_image_section'
+			$page,
+			$section
 		);
 
 		add_settings_field(
 			'displayfeaturedimagegenesis[feed_image]',
 			'<label for="displayfeaturedimagegenesis[feed_image]">' . __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ) . '</label>',
 			array( $this, 'add_image_to_feed' ),
-			'displayfeaturedimagegenesis',
-			'display_featured_image_section'
+			$page,
+			$section
 		);
 
 		$args = array(
@@ -157,7 +160,7 @@ class Display_Featured_Image_Genesis_Settings {
 				'display_featured_image_custom_post_types',
 				__( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ),
 				array( $this, 'cpt_section_description' ),
-				'displayfeaturedimagegenesis'
+				$page
 			);
 
 
@@ -165,7 +168,7 @@ class Display_Featured_Image_Genesis_Settings {
 				"displayfeaturedimagegenesis[post_types]",
 				__( 'Featured Images', 'display-featured-image-genesis' ),
 				array( $this, 'set_cpt_image' ),
-				'displayfeaturedimagegenesis',
+				$page,
 				'display_featured_image_custom_post_types'
 			);
 
@@ -356,7 +359,7 @@ class Display_Featured_Image_Genesis_Settings {
 			$cat_keys       = array_keys( $_POST['displayfeaturedimagegenesis'] );
 			$is_updated     = false;
 			foreach ( $cat_keys as $key ) {
-				if ( isset ( $_POST['displayfeaturedimagegenesis'][$key] ) ) {
+				if ( isset( $_POST['displayfeaturedimagegenesis'][$key] ) ) {
 					$displaysetting[$key] = $_POST['displayfeaturedimagegenesis'][$key];
 					if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[$key] ) {
 						$displaysetting[$key] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][$key] );
