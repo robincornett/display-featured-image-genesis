@@ -140,7 +140,7 @@ class Display_Featured_Image_Genesis_Output {
 		// backstretch settings from plugin/featured image settings
 		$backstretch_settings = array(
 			'src'    => esc_url( $item->backstretch[0] ),
-			'height' => esc_attr( $displaysetting['less_header'] ),
+			'height' => absint( $displaysetting['less_header'] ),
 		);
 		// backstretch settings which can be filtered
 		$backstretch_variables = array(
@@ -247,7 +247,7 @@ class Display_Featured_Image_Genesis_Output {
 		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$image = sprintf( '<img src="%1$s" class="aligncenter featured" alt="%2$s" />',
 			esc_url( $item->backstretch[0] ),
-			$item->title
+			esc_attr( $item->title )
 		);
 
 		echo apply_filters( 'display_featured_image_genesis_large_image_output', $image );
