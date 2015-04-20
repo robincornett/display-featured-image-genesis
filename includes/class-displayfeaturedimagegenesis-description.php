@@ -117,7 +117,7 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $term->meta['intro_text'] );
 
 		if ( $intro_text ) {
-			printf( '<div class="archive-description taxonomy-description">%s</div>', $intro_text );
+			printf( '<div class="archive-description taxonomy-description">%s</div>', wpautop( $intro_text ) );
 		}
 
 	}
