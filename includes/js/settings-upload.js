@@ -43,25 +43,22 @@ jQuery(document).ready(function($){
 
 	});
 
-	$( '.delete_image' ).click( function(e) {
+	$( '.delete_image' ).click( function() {
 
 		target_input = $(this).prevAll( '.upload_image_id' );
 		previewView  = $(this).prevAll( '#upload_logo_preview' );
-
-		e.preventDefault();
 
 		$( target_input ).val( '' );
 		$( previewView ).remove();
 
 	});
 
-	$( '#submit' ).click( function(e) {
+	$( '#submit' ).click( function() {
 		submitButton = $(this).parentsUntil( '#addtag' );
 		previewView  = submitButton.siblings( '.term-image-wrap' ).children( '#upload_logo_preview' );
 		clearInput   = submitButton.siblings( '.term-image-wrap' ).children( '.upload_image_id' );
 
-		e.preventDefault();
-		if ( $( previewView ).length ) {
+		if ( $( previewView ).length && $( submitButton ).length ) {
 			$( previewView ).delay( 1000 ).fadeOut( 200, function() {
 			   $(this).remove();
 			   $( clearInput ).val( '' );
