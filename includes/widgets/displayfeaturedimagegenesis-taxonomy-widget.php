@@ -107,7 +107,8 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			}
 
 			if ( $instance['show_image'] && $image ) {
-				printf( '<a href="%s" title="%s" class="%s">%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), $image );
+				$role = empty( $instance['show_title'] ) ? '' : 'aria-hidden="true"';
+				printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), $role, $image );
 			}
 		}
 
@@ -257,7 +258,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 				</p>
 
 				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>"><?php _e( 'Image Alignment:', 'display-featured-image-genesis' ); ?>:</label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>"><?php _e( 'Image Alignment:', 'display-featured-image-genesis' ); ?></label>
 					<select id="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image_alignment' ) ); ?>">
 						<option value="alignnone">- <?php _e( 'None', 'display-featured-image-genesis' ); ?> -</option>
 						<option value="alignleft" <?php selected( 'alignleft', $instance['image_alignment'] ); ?>><?php _e( 'Left', 'display-featured-image-genesis' ); ?></option>
