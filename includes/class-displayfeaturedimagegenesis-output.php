@@ -52,7 +52,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		// check if they have enabled display on subsequent pages
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$is_paged       = $displaysetting['is_paged'];
+		$is_paged       = ! empty( $displaysetting['is_paged'] ) ? $displaysetting['is_paged'] : 0;
 
 		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
 		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
@@ -107,7 +107,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		// check if they have enabled display on subsequent pages
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$is_paged       = $displaysetting['is_paged'];
+		$is_paged       = ! empty( $displaysetting['is_paged'] ) ? $displaysetting['is_paged'] : 0;
 
 		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
 		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
