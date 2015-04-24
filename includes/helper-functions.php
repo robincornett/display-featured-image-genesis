@@ -65,9 +65,9 @@ function display_featured_image_genesis_get_default_image_id() {
 	$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 	$fallback       = $displaysetting['default'];
 	$image_id       = $fallback;
-		if ( ! is_numeric( $fallback ) ) {
-			$image_id = self::get_image_id( $fallback ); // gets image id with attached metadata
-		}
+	if ( ! is_numeric( $fallback ) ) {
+		$image_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+	}
 
 	return absint( $image_id );
 
@@ -113,10 +113,10 @@ function display_featured_image_genesis_get_cpt_image_id() {
 	elseif ( $object->post_type ) { // on singular
 		$post_type = $object->post_type;
 	}
-	if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
-		$image_id = $displaysetting['post_type'][$post_type];
-		if ( ! is_numeric( $displaysetting['post_type'][$post_type] ) ) {
-			$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['post_type'][$post_type] );
+	if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
+		$image_id = $displaysetting['post_type'][ $post_type ];
+		if ( ! is_numeric( $displaysetting['post_type'][ $post_type ] ) ) {
+			$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['post_type'][ $post_type ] );
 		}
 	}
 
@@ -172,14 +172,11 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 
 	$permalink = get_the_permalink();
 	$alignment = genesis_get_option( 'image_alignment' );
-	$itemprop  = 'itemprop="image"';
-	$image     = sprintf( '<a href="%s" aria-hidden="true"><img src="%s" class="%s" alt="%s" %s /></a>',
+	$image     = printf( '<a href="%1$s" aria-hidden="true"><img src="%2$s" class="%3$s" alt="%4$s" itemprop="image" /></a>',
 		esc_url( $permalink ),
 		esc_url( $image_url ),
 		esc_attr( $alignment ) . ' post-image entry-image',
-		esc_html( the_title_attribute( 'echo=0' ) ),
-		esc_attr( $itemprop )
+		esc_html( the_title_attribute( 'echo=0' ) )
 	);
-	echo $image;
 
 }

@@ -47,7 +47,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$page_title = get_admin_page_title();
 
 		echo '<div class="wrap">';
-			echo '<h2>' . $page_title . '</h2>';
+			echo '<h2>' . esc_attr( $page_title ) . '</h2>';
 			echo '<form action="options.php" method="post">';
 				settings_fields( 'displayfeaturedimagegenesis' );
 				do_settings_sections( 'displayfeaturedimagegenesis' );
@@ -86,7 +86,7 @@ class Display_Featured_Image_Genesis_Settings {
 		add_settings_section(
 			$section,
 			__( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
-			array( $this, 'section_description'),
+			array( $this, 'section_description' ),
 			'displayfeaturedimagegenesis'
 		);
 
@@ -163,9 +163,8 @@ class Display_Featured_Image_Genesis_Settings {
 				$page
 			);
 
-
 			add_settings_field(
-				"displayfeaturedimagegenesis[post_types]",
+				'displayfeaturedimagegenesis[post_types]',
 				__( 'Featured Images', 'display-featured-image-genesis' ),
 				array( $this, 'set_cpt_image' ),
 				$page,
@@ -183,7 +182,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function section_description() {
-		echo '<p>' . __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) . '</p>';
+		printf( '<p>' . __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) . '</p>' );
 	}
 
 	/**
@@ -193,7 +192,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function cpt_section_description() {
-		echo '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>';
+		printf( '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>' );
 	}
 
 	/**
@@ -204,9 +203,13 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function header_size() {
 
-		echo '<label for="displayfeaturedimagegenesis[less_header]">' . __( 'Pixels to remove ', 'display-featured-image-genesis' ) . '</label>';
+		printf( '<label for="displayfeaturedimagegenesis[less_header]">%s</label>',
+			__( 'Pixels to remove ', 'display-featured-image-genesis' )
+		);
 		echo '<input type="number" step="1" min="0" max="400" id="displayfeaturedimagegenesis[less_header]" name="displayfeaturedimagegenesis[less_header]" value="' . esc_attr( $this->displaysetting['less_header'] ) . '" class="small-text" />';
-		echo '<p class="description">' . __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' ) . '</p>';
+		printf( '<p class="description">%s</p>',
+			__( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' )
+		);
 
 	}
 
@@ -233,14 +236,20 @@ class Display_Featured_Image_Genesis_Settings {
 			echo '</div>';
 		}
 		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $id ) . '" />';
-		echo '<input type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+		printf( '<input type="button" class="upload_default_image button-secondary" value="%s" />',
+			__( 'Select Image', 'display-featured-image-genesis' )
+		);
 		if ( ! empty( $this->displaysetting['default'] ) ) {
-			echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
+			printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
+				__( 'Delete Image', 'display-featured-image-genesis' )
+			);
 		}
-		echo '<p class="description">' . sprintf(
+		echo '<p class="description">';
+		printf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $large + 1 )
-		) . '</p>';
+		);
+		echo '</p>';
 	}
 
 	/**
@@ -251,7 +260,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function exclude_front() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[exclude_front]" value="0" />';
-		echo '<label for="displayfeaturedimagegenesis[exclude_front]"><input type="checkbox" name="displayfeaturedimagegenesis[exclude_front]" id="displayfeaturedimagegenesis[exclude_front]" value="1"' . checked( 1, esc_attr( $this->displaysetting['exclude_front'] ), false ) . ' class="code" />' . __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) . '</label>';
+		printf( '<label for="displayfeaturedimagegenesis[exclude_front]"><input type="checkbox" name="displayfeaturedimagegenesis[exclude_front]" id="displayfeaturedimagegenesis[exclude_front]" value="1" %1$s class="code" />%2$s</label>',
+			checked( 1, esc_attr( $this->displaysetting['exclude_front'] ), false ),
+			__( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' )
+		);
 	}
 
 	/**
@@ -262,7 +274,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function keep_titles() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[keep_titles]" value="0" />';
-		echo '<label for="displayfeaturedimagegenesis[keep_titles]"><input type="checkbox" name="displayfeaturedimagegenesis[keep_titles]" id="displayfeaturedimagegenesis[keep_titles]" value="1"' . checked( 1, esc_attr( $this->displaysetting['keep_titles'] ), false ) . ' class="code" />' . __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ) . '</label>';
+		printf( '<label for="displayfeaturedimagegenesis[keep_titles]"><input type="checkbox" name="displayfeaturedimagegenesis[keep_titles]" id="displayfeaturedimagegenesis[keep_titles]" value="1" %1$s class="code" />%2$s</label>',
+			checked( 1, esc_attr( $this->displaysetting['keep_titles'] ), false ),
+			__( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' )
+		);
 	}
 
 	/**
@@ -273,7 +288,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function move_excerpts() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[move_excerpts]" value="0" />';
-		echo '<label for="displayfeaturedimagegenesis[move_excerpts]"><input type="checkbox" name="displayfeaturedimagegenesis[move_excerpts]" id="displayfeaturedimagegenesis[move_excerpts]" value="1"' . checked( 1, esc_attr( $this->displaysetting['move_excerpts'] ), false ) . ' class="code" />' . __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) . '</label>';
+		printf( '<label for="displayfeaturedimagegenesis[move_excerpts]"><input type="checkbox" name="displayfeaturedimagegenesis[move_excerpts]" id="displayfeaturedimagegenesis[move_excerpts]" value="1" %1$s class="code" />%2$s</label>',
+			checked( 1, esc_attr( $this->displaysetting['move_excerpts'] ), false ),
+			__( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' )
+		);
 	}
 
 	/**
@@ -284,7 +302,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function check_is_paged() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[is_paged]" value="0" />';
-		echo '<label for="displayfeaturedimagegenesis[is_paged]"><input type="checkbox" name="displayfeaturedimagegenesis[is_paged]" id="displayfeaturedimagegenesis[is_paged]" value="1"' . checked( 1, esc_attr( $this->displaysetting['is_paged'] ), false ) . ' class="code" />' . __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ) . '</label>';
+		printf( '<label for="displayfeaturedimagegenesis[is_paged]"><input type="checkbox" name="displayfeaturedimagegenesis[is_paged]" id="displayfeaturedimagegenesis[is_paged]" value="1" %1$s class="code" />%2$s</label>',
+			checked( 1, esc_attr( $this->displaysetting['is_paged'] ), false ),
+			__( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' )
+		);
 	}
 
 	/**
@@ -295,7 +316,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function add_image_to_feed() {
 		echo '<input type="hidden" name="displayfeaturedimagegenesis[feed_image]" value="0" />';
-		echo '<label for="displayfeaturedimagegenesis[feed_image]"><input type="checkbox" name="displayfeaturedimagegenesis[feed_image]" id="displayfeaturedimagegenesis[feed_image]" value="1"' . checked( 1, esc_attr( $this->displaysetting['feed_image'] ), false ) . ' class="code" />' . __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ) . '</label>';
+		printf( '<label for="displayfeaturedimagegenesis[feed_image]"><input type="checkbox" name="displayfeaturedimagegenesis[feed_image]" id="displayfeaturedimagegenesis[feed_image]" value="1" %1$s class="code" />%2$s</label>',
+			checked( 1, esc_attr( $this->displaysetting['feed_image'] ), false ),
+			__( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' )
+		);
 	}
 
 	/**
@@ -312,15 +336,15 @@ class Display_Featured_Image_Genesis_Settings {
 		foreach ( $this->post_types as $post ) {
 
 			$post_type = $post->name;
-			if ( empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				$this->displaysetting['post_type'][$post_type] = $id = '';
+			if ( empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
+				$this->displaysetting['post_type'][ $post_type ] = $id = '';
 			}
 			echo '<div>';
-			echo '<h4>' . $post->label . '</h4>';
-			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				$id = $this->displaysetting['post_type'][$post_type];
-				if ( ! is_numeric( $this->displaysetting['post_type'][$post_type] ) ) {
-					$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][$post_type] );
+			echo '<h4>' . esc_attr( $post->label ) . '</h4>';
+			if ( ! empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
+				$id = $this->displaysetting['post_type'][ $post_type ];
+				if ( ! is_numeric( $this->displaysetting['post_type'][ $post_type ] ) ) {
+					$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][ $post_type ] );
 				}
 				$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 				echo '<div id="upload_logo_preview">';
@@ -328,15 +352,20 @@ class Display_Featured_Image_Genesis_Settings {
 				echo '</div>';
 			}
 
-			echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[post_type][' . $post_type . ']" name="displayfeaturedimagegenesis[post_type][' . $post_type . ']" value="' . absint( $id ) . '" />';
-			echo '<input type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
-			if ( ! empty( $this->displaysetting['post_type'][$post_type] ) ) {
-				echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
-				echo '<p class="description">' . sprintf(
-					__( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
+			echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" name="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" value="' . absint( $id ) . '" />';
+			printf( '<input type="button" class="upload_default_image button-secondary" value="%s" />',
+				__( 'Select Image', 'display-featured-image-genesis' )
+			);
+			if ( ! empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
+				printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
+					__( 'Delete Image', 'display-featured-image-genesis' )
+				);
+				echo '<p class="description">';
+				printf( __( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
 					esc_url( get_post_type_archive_link( $post_type ) ),
-					$post->label
-				) . '</p>';
+					esc_attr( $post->label )
+				);
+				echo '</p>';
 			}
 			echo '</div>';
 
@@ -359,11 +388,11 @@ class Display_Featured_Image_Genesis_Settings {
 			$cat_keys       = array_keys( $_POST['displayfeaturedimagegenesis'] );
 			$is_updated     = false;
 			foreach ( $cat_keys as $key ) {
-				if ( isset( $_POST['displayfeaturedimagegenesis'][$key] ) ) {
-					$displaysetting[$key] = $_POST['displayfeaturedimagegenesis'][$key];
-					if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[$key] ) {
-						$displaysetting[$key] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][$key] );
-						if ( false !== $displaysetting[$key] ) {
+				if ( isset( $_POST['displayfeaturedimagegenesis'][ $key ] ) ) {
+					$displaysetting[ $key ] = $_POST['displayfeaturedimagegenesis'][ $key ];
+					if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[ $key ] ) {
+						$displaysetting[ $key ] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][ $key ] );
+						if ( false !== $displaysetting[ $key ] ) {
 							$is_updated = true;
 						}
 					}
@@ -407,9 +436,9 @@ class Display_Featured_Image_Genesis_Settings {
 		$new_value['feed_image']    = $this->one_zero( $new_value['feed_image'] );
 
 		foreach ( $this->post_types as $post_type ) {
-			$new_value['post_type'][$post_type->name] = $this->validate_post_type_image( $new_value['post_type'][$post_type->name] );
-			if ( false === $new_value['post_type'][$post_type->name] ) {
-				$new_value['post_type'][$post_type->name] = $this->displaysetting['post_type'][$post_type->name];
+			$new_value['post_type'][ $post_type->name ] = $this->validate_post_type_image( $new_value['post_type'][ $post_type->name ] );
+			if ( false === $new_value['post_type'] [ $post_type->name ] ) {
+				$new_value['post_type'][ $post_type->name ] = $this->displaysetting['post_type'][ $post_type->name ];
 			}
 		}
 
@@ -440,30 +469,29 @@ class Display_Featured_Image_Genesis_Settings {
 		if ( $new_value ) {
 
 			if ( ! $valid ) {
-				$message   = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' ) . $reset;
+				$message   = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
 				$new_value = $this->displaysetting['default'];
 
 				add_settings_error(
 					$this->displaysetting['default'],
 					esc_attr( 'invalid' ),
-					$message,
+					esc_attr( $message . $reset ),
 					'error'
 				);
 			}
 
 			// if file is an image, but is too small, throw it back
 			elseif ( $width <= $large ) {
-				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' ) . $reset;
+				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
 				$new_value = $this->displaysetting['default'];
 
 				add_settings_error(
 					$this->displaysetting['default'],
 					esc_attr( 'weetiny' ),
-					$message,
+					esc_attr( $message . $reset ),
 					'error'
 				);
 			}
-
 		}
 
 		return $new_value;
@@ -497,7 +525,7 @@ class Display_Featured_Image_Genesis_Settings {
 				add_settings_error(
 					$this->displaysetting['post_type'],
 					esc_attr( 'invalid' ),
-					$message,
+					esc_attr( $message ),
 					'error'
 				);
 			}
@@ -510,11 +538,10 @@ class Display_Featured_Image_Genesis_Settings {
 				add_settings_error(
 					$this->displaysetting['post_type'],
 					esc_attr( 'weetiny' ),
-					$message,
+					esc_attr( $message ),
 					'error'
 				);
 			}
-
 		}
 
 		return $new_value;
@@ -638,7 +665,6 @@ class Display_Featured_Image_Genesis_Settings {
 			'<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>' .
 			'<p>' . __( 'Since your site uses Custom Post Types, you may optionally set a Featured Image for each archive.', 'display-featured-image-genesis' ) . '</p>' .
 			'<p>' . __( 'Featured Images for archives can be smaller than the Default Featured Image, but still need to be larger than your site\'s "medium" image size.', 'display-featured-image-genesis' ) . '</p>';
-
 
 		$screen->add_help_tab( array(
 			'id'      => 'displayfeaturedimage_less_header-help',

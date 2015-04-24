@@ -88,11 +88,11 @@ class Display_Featured_Image_Genesis_Common {
 			elseif ( $object->post_type ) { // on singular
 				$post_type = $object->post_type;
 			}
-			if ( ! empty( $displaysetting['post_type'][$post_type] ) ) {
-				$image_id = $displaysetting['post_type'][$post_type];
+			if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
+				$image_id = $displaysetting['post_type'][ $post_type ];
 				// if $image_id is using the old URL
-				if ( ! is_numeric( $displaysetting['post_type'][$post_type] ) ) {
-					$image_id = self::get_image_id( $displaysetting['post_type'][$post_type] );
+				if ( ! is_numeric( $displaysetting['post_type'][ $post_type ] ) ) {
+					$image_id = self::get_image_id( $displaysetting['post_type'][ $post_type ] );
 				}
 			}
 		}

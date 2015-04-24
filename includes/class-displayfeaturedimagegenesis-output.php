@@ -214,7 +214,7 @@ class Display_Featured_Image_Genesis_Output {
 				$title = $item->title;
 				$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
 
-				echo apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, $class, $itemprop, $title );
+				echo apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
 
 			}
 
@@ -231,7 +231,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		//* if javascript not enabled, do a fallback background image
 		$no_js  = '<noscript><div class="backstretch no-js" style="background-image: url(' . esc_url( $item->backstretch[0] ) . '); }"></div></noscript>';
-		echo $no_js;
+		printf( $no_js );
 
 		//* close big-leader
 		echo '</div>';

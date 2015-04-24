@@ -15,11 +15,19 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	public function add_taxonomy_meta_fields() {
 
 		echo '<div class="form-field term-image-wrap">';
-			echo '<label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label>';
+			printf( '<label for="displayfeaturedimagegenesis[term_image]">%s</label>',
+				__( 'Featured Image', 'display-featured-image-genesis' )
+			);
 			echo '<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />';
-			echo '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
-			echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
-			echo '<p class="description">' . sprintf( __( 'Set Featured Image for new term.','display-featured-image-genesis' ) ) . '</p>';
+			printf( '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="%s" />',
+				__( 'Select Image', 'display-featured-image-genesis' )
+			);
+			printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
+				__( 'Delete Image', 'display-featured-image-genesis' )
+			);
+			echo '<p class="description">';
+			printf( __( 'Set Featured Image for new term.','display-featured-image-genesis' ) );
+			echo '</p>';
 		echo '</div>';
 
 	}
@@ -40,7 +48,9 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		$id             = '';
 
 		echo '<tr class="form-field term-image-wrap">';
-			echo '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">' . __( 'Featured Image', 'display-featured-image-genesis' ) . '</label></th>';
+			printf( '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">%s</label></th>',
+				__( 'Featured Image', 'display-featured-image-genesis' )
+			);
 			echo '<td>';
 				if ( ! empty( $displaysetting['term_image'] ) ) {
 					$id = $displaysetting['term_image'];
@@ -53,14 +63,20 @@ class Display_Featured_Image_Genesis_Taxonomies {
 					echo '</div>';
 				}
 				echo '<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" value="' . absint( $id ) . '" />';
-				echo '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="' . __( 'Select Image', 'display-featured-image-genesis' ) . '" />';
+				printf( '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="%s" />',
+					__( 'Select Image', 'display-featured-image-genesis' )
+				);
 				if ( ! empty( $displaysetting['term_image'] ) ) {
-					echo '<input type="button" class="delete_image button-secondary" value="' . __( 'Delete Image', 'display-featured-image-genesis' ) . '" />';
+					printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
+						__( 'Delete Image', 'display-featured-image-genesis' )
+					);
 				}
-				echo '<p class="description">' . sprintf(
+				echo '<p class="description">';
+				printf(
 					__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
-					esc_html( $term->name )
-				) . '</p>';
+					esc_attr( $term->name )
+				);
+				echo '</p>';
 			echo '</td>';
 		echo '</tr>';
 	}

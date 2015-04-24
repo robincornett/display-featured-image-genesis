@@ -70,8 +70,7 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function error_message() {
 
-		$error = sprintf(
-			__( 'Sorry, Display Featured Image for Genesis works only with the Genesis Framework. It has been deactivated.', 'display-featured-image-genesis' ) );
+		$error = sprintf( __( 'Sorry, Display Featured Image for Genesis works only with the Genesis Framework. It has been deactivated.', 'display-featured-image-genesis' ) );
 
 		if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
 			$error = $error . sprintf(
@@ -80,7 +79,7 @@ class Display_Featured_Image_Genesis {
 			);
 		}
 
-		echo '<div class="error"><p>' . $error . '</p></div>';
+		echo '<div class="error"><p>' . esc_attr( $error ) . '</p></div>';
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );

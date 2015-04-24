@@ -27,7 +27,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	public function set_up_taxonomy_columns() {
 		$args       = array(
-			'public' => true
+			'public' => true,
 		);
 		$output     = 'names';
 		$taxonomies = get_taxonomies( $args, $output );
