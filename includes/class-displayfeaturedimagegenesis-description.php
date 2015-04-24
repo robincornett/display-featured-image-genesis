@@ -35,10 +35,10 @@ class Display_Featured_Image_Genesis_Description {
 		$headline = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', get_the_title() );
 
 		if ( has_excerpt() ) {
-			$intro_text = wpautop( apply_filters( 'display_featured_image_genesis_singular_description', get_the_excerpt() ) );
+			$intro_text = apply_filters( 'display_featured_image_genesis_singular_description', get_the_excerpt() );
 		}
 		if ( $headline || $intro_text ) {
-			printf( '<div class="excerpt">%s</div>', $headline . $intro_text );
+			printf( '<div class="excerpt">%s</div>', $headline . wpautop( $intro_text ) );
 		}
 	}
 
@@ -73,10 +73,10 @@ class Display_Featured_Image_Genesis_Description {
 			$intro_text = $postspage->post_excerpt;
 		}
 
-		$intro_text = wpautop( apply_filters( 'display_featured_image_genesis_front_blog_description', $intro_text ) );
+		$intro_text = apply_filters( 'display_featured_image_genesis_front_blog_description', $intro_text );
 
 		if ( $headline || $intro_text ) {
-			printf( '<div class="excerpt">%s</div>', $headline . $intro_text );
+			printf( '<div class="excerpt">%s</div>', $headline . wpautop( $intro_text ) );
 		}
 
 	}
@@ -147,7 +147,6 @@ class Display_Featured_Image_Genesis_Description {
 		if ( $intro_text ) {
 			printf( '<div class="archive-description author-description">%s</div>', wpautop( $intro_text ) );
 		}
-
 
 	}
 
