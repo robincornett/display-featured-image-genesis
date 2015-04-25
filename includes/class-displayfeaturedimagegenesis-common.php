@@ -129,8 +129,15 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
+		/**
+		 * filter to use a different image id
+		 * @var $image_id
+		 *
+		 * @since 2.2.0
+		 */
+		$image_id = apply_filters( 'display_featured_image_genesis_image_id', $image_id );
 		// make sure the image id is an integer
-		$image_id = absint( $image_id );
+		$image_id = is_numeric( $image_id ) ? absint( $image_id ) : 0;
 
 		// turn Photon off so we can get the correct image
 		$photon_removed = '';
