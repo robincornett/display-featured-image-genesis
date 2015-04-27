@@ -153,7 +153,16 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 		return;
 	}
 
-	if ( has_post_thumbnail() ) {
+	$args = array(
+		'order'          => 'ASC',
+		'orderby'        => 'menu_order',
+		'post_mime_type' => 'image',
+		'post_parent'    => $post_id ? $post_id : get_the_ID(),
+		'post_type'      => 'attachment',
+	);
+	$attached_images = get_children( $args );
+
+	if ( has_post_thumbnail() || $attached_images ) {
 		return;
 	}
 
