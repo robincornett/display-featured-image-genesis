@@ -224,11 +224,11 @@ class Display_Featured_Image_Genesis_Common {
 	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
 	 */
 	public static function get_image_id( $attachment_url = '' ) {
-		global $wpdb;
+
 		$attachment_id = false;
 
 		// as of 2.2.0, if a (new) image id is passed to the function, return it as is.
-		if ( is_int( $attachment_url ) ) {
+		if ( is_numeric( $attachment_url ) ) {
 			return $attachment_url;
 		}
 
@@ -243,18 +243,46 @@ class Display_Featured_Image_Genesis_Common {
 		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
 		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
 
-			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
-			$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
-
 			// Remove the upload path base directory from the attachment URL
-			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
+			$attachment_url = str_replace( trailingslashit( $upload_dir_paths['baseurl'] ), '', $attachment_url );
+
+			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
+			$url_stripped   = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
 
 			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
-			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
+			$attachment_id  = self::fetch_image_id_query( $url_stripped, $attachment_url );
 
 		}
 
 		return $attachment_id;
+	}
+
+	/**
+	 * Fetch image ID from database
+	 * @param  var $url_stripped   image url without WP resize string (eg 150x150)
+	 * @param  var $attachment_url image url
+	 * @return int (image id)                 image ID, or false
+	 *
+	 * @since 2.2.0
+	 *
+	 * @author hellofromtonya
+	 */
+	protected static function fetch_image_id_query( $url_stripped, $attachment_url ) {
+
+		global $wpdb;
+
+		$query_sql = $wpdb->prepare(
+			"
+				SELECT wposts.ID
+				FROM {$wpdb->posts} wposts, {$wpdb->postmeta} wpostmeta
+				WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value IN ( %s, %s ) AND wposts.post_type = 'attachment'
+			",
+			$url_stripped, $attachment_url
+		);
+
+		$result = $wpdb->get_col( $query_sql );
+
+		return empty( $result ) || ! is_numeric( $result[0] ) ? false : intval( $result[0] );
 	}
 
 	/**
