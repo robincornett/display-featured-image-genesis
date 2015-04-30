@@ -145,8 +145,12 @@ _Note:_ because the entry header applies to all posts on a page, such as a blog 
 
 Yes! A helper function exists for this, but only runs if you add it. You can easily do this by adding the following to your theme's functions.php file:
 
-	if ( class_exists( 'Display_Featured_Image_Genesis' ) ) {
-		add_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 );
+	add_action( 'genesis_before_entry', 'rgc_add_archive_thumbnails' );
+	function rgc_add_archive_thumbnails() {
+		if ( class_exists( 'Display_Featured_Image_Genesis' ) ) {
+			add_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 ); // HTML5 themes
+			add_action( 'genesis_post_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 ); // XHTML themes
+		}
 	}
 
 This will follow the settings you choose in the Genesis Theme Settings.
@@ -158,7 +162,7 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 == Upgrade Notice ==
 = 2.2.0 =
-Changed how default, term, and post type featured images are stored in the database.
+Changed how default, term, and post type featured images are stored in the database (better!).
 
 == Changelog ==
 
