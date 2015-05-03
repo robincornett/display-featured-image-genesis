@@ -140,7 +140,8 @@ function display_featured_image_genesis_get_cpt_image_url( $size = 'displayfeatu
 }
 
 /**
- * Add term/default image to blog/archive pages.
+ * Add term/default image to blog/archive pages. Use:
+ * add_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 );
  * @return image If a post doesn't have its own thumbnail, you can use this function to add one to archive pages.
  *
  * @since  2.1.0
@@ -154,8 +155,6 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 	}
 
 	$args = array(
-		'order'          => 'ASC',
-		'orderby'        => 'menu_order',
 		'post_mime_type' => 'image',
 		'post_parent'    => get_the_ID(),
 		'post_type'      => 'attachment',
@@ -166,26 +165,34 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 		return;
 	}
 
-	$size      = genesis_get_option( 'image_size' );
-	$image_url = display_featured_image_genesis_get_term_image_url( $size );
-	if ( empty( $image_url ) ) {
-		$image_url = display_featured_image_genesis_get_cpt_image_url( $size );
-		if ( empty( $image_url ) ) {
-			$image_url = display_featured_image_genesis_get_default_image_url( $size );
+	$image_id = display_featured_image_genesis_get_term_image_id();
+	if ( empty( $image_id ) ) {
+		$image_id = display_featured_image_genesis_get_cpt_image_id();
+		if ( empty( $image_id ) ) {
+			$image_id = display_featured_image_genesis_get_default_image_id();
 		}
 	}
 
-	if ( empty( $image_url ) ) {
+	if ( empty( $image_id ) ) {
 		return;
 	}
 
-	$permalink = get_the_permalink();
-	$alignment = genesis_get_option( 'image_alignment' );
-	$image     = printf( '<a href="%1$s" aria-hidden="true"><img src="%2$s" class="%3$s" alt="%4$s" itemprop="image" /></a>',
+	$image = genesis_get_image( array(
+		/**
+		 * Filter the fallback image ID
+		 *
+		 * @since 2.2.0
+		 */
+		'fallback' => apply_filters( 'display_featured_image_genesis_fallback_archive_thumbnail', $image_id ),
+		'size'     => genesis_get_option( 'image_size' ),
+		'attr'     => genesis_parse_attr( 'entry-image', array( 'alt' => get_the_title() ) ),
+		'context'  => 'archive',
+	) );
+
+	$permalink = get_permalink();
+	printf( '<a href="%1$s" aria-hidden="true">%2$s</a>',
 		esc_url( $permalink ),
-		esc_url( $image_url ),
-		esc_attr( $alignment ) . ' post-image entry-image',
-		esc_html( the_title_attribute( 'echo=0' ) )
+		$image
 	);
 
 }
