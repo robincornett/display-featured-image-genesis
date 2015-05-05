@@ -82,9 +82,8 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			$permalink       = esc_url( get_the_permalink( $postspage ) );
 
 			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
-				$item = Display_Featured_Image_Genesis_Common::get_image_variables();
-				$postspage_image = $item->fallback_id;
-				$title           = get_bloginfo( 'name');
+				$postspage_image = display_featured_image_genesis_get_default_image_id();
+				$title           = get_bloginfo( 'name' );
 				$permalink       = home_url();
 			}
 		}
