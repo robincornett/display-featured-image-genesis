@@ -57,13 +57,6 @@ class Display_Featured_Image_Genesis_Common {
 		// Set Featured Image source ID
 		$image_id = ''; // blank if nothing else
 
-		/**
-		 * create a filter to use the fallback image
-		 * @var filter
-		 * @since  2.0.0 (deprecated old use_fallback_image function from 1.2.2)
-		 */
-		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
-
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
 			$image_id = $item->fallback_id;
@@ -109,8 +102,8 @@ class Display_Featured_Image_Genesis_Common {
 				}
 			}
 		}
-		// any singular post/page/CPT or there is no $fallback
-		elseif ( is_singular() && ! in_array( get_post_type(), $use_fallback ) ) {
+		// any singular post/page/CPT
+		elseif ( is_singular() ) {
 			/**
 			 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
 			 * @var filter
@@ -121,12 +114,22 @@ class Display_Featured_Image_Genesis_Common {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 
-			elseif ( ! has_post_thumbnail() || in_array( get_post_type(), $use_tax_image ) ) {
+			if ( ! has_post_thumbnail() || in_array( get_post_type(), $use_tax_image ) ) {
 				$term_image_id = display_featured_image_genesis_get_term_image_id();
 				if ( ! empty( $term_image_id ) ) {
 					$image_id = $term_image_id;
 				}
 			}
+		}
+
+		/**
+		 * create a filter to use the fallback image
+		 * @var filter
+		 * @since  2.0.0 (deprecated old use_fallback_image function from 1.2.2)
+		 */
+		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
+		if ( in_array( get_post_type(), $use_fallback ) ) {
+			$image_id = $item->fallback_id;
 		}
 
 		/**
