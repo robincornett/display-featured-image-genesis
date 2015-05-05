@@ -127,9 +127,6 @@ class Display_Featured_Image_Genesis_Common {
 		}
 		$fallback_id = absint( $fallback_id );
 
-		// Set Featured Image source ID
-		$image_id = ''; // blank if nothing else
-
 		/**
 		 * create a filter to use the fallback image
 		 * @var filter
@@ -171,6 +168,16 @@ class Display_Featured_Image_Genesis_Common {
 				if ( ! is_numeric( $displaysetting['post_type'][ $post_type ] ) ) {
 					$image_id = self::get_image_id( $displaysetting['post_type'][ $post_type ] );
 				}
+
+				/**
+				 * use the custom post type featured image
+				 * @var filter
+				 * @since x.y.z
+				 */
+				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', self::$post_types );
+				if ( in_array( get_post_type(), $use_cpt ) ) {
+					return $image_id;
+				}
 			}
 		}
 		// taxonomy
@@ -184,16 +191,16 @@ class Display_Featured_Image_Genesis_Common {
 				if ( ! is_numeric( $term_meta['term_image'] ) ) {
 					$image_id = self::get_image_id( $term_meta['term_image'] );
 				}
-			}
 
-			/**
-			 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
-			 * @var filter
-			 */
-			$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
+				/**
+				 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
+				 * @var filter
+				 */
+				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
 
-			if ( in_array( get_post_type(), $use_tax_image ) ) {
-				return $image_id;
+				if ( in_array( get_post_type(), $use_tax_image ) ) {
+					return $image_id;
+				}
 			}
 		}
 
