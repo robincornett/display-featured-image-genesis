@@ -91,28 +91,7 @@ class Display_Featured_Image_Genesis_Common {
 			add_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ), 10, 3 );
 		}
 
-		// Set Post/Page Title
-		$title = '';
-
-		if ( is_singular() ) {
-			$title = get_the_title();
-		}
-		elseif ( is_home() && 'page' === $frontpage ) {
-			$title = get_post( $postspage )->post_title;
-		}
-		elseif ( is_category() || is_tag() || is_tax() ) {
-			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
-			if ( ! $term || ! isset( $term->meta ) ) {
-				return;
-			}
-			$title = $term->meta['headline'];
-		}
-		elseif ( is_author() ) {
-			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-		}
-		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-			$title = genesis_get_cpt_option( 'headline' );
-		}
+		$title = self::set_item_title();
 		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
 
 		return $item;
@@ -239,6 +218,34 @@ class Display_Featured_Image_Genesis_Common {
 		$image_id = is_numeric( $image_id ) ? absint( $image_id ) : 0;
 
 		return $image_id;
+
+	}
+
+	protected static function set_item_title( $title = '' ) {
+
+		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
+		$postspage = get_option( 'page_for_posts' );
+
+		if ( is_singular() ) {
+			$title = get_the_title();
+		}
+		elseif ( is_home() && 'page' === $frontpage ) {
+			$title = get_post( $postspage )->post_title;
+		}
+		elseif ( is_category() || is_tag() || is_tax() ) {
+			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
+			if ( ! $term || ! isset( $term->meta ) ) {
+				return;
+			}
+			$title = $term->meta['headline'];
+		}
+		elseif ( is_author() ) {
+			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+		}
+		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+			$title = genesis_get_cpt_option( 'headline' );
+		}
+		return $title;
 
 	}
 
