@@ -36,6 +36,102 @@ class Display_Featured_Image_Genesis_Common {
 		$move_excerpts   = $displaysetting['move_excerpts'];
 		$postspage_image = get_post_thumbnail_id( $postspage );
 		$fallback        = $displaysetting['default']; // url only
+
+		// sitewide variables used outside this function
+		$item->backstretch = '';
+
+		// turn Photon off so we can get the correct image
+		$photon_removed = '';
+		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
+			$photon_removed = remove_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ) );
+		}
+
+		/**
+		 * create a filter for user to optionally force post types to use the large image instead of backstretch
+		 * @var filter
+		 *
+		 * @since  2.0.0
+		 */
+		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', self::$post_types );
+		$image_size      = 'displayfeaturedimage_backstretch';
+		if ( in_array( get_post_type(), $use_large_image ) ) {
+			$image_size = 'large';
+		}
+
+		$image_id = self::set_image_id();
+		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
+
+		// set a content variable so backstretch doesn't show if full size image exists in post.
+		$item->content = '';
+		// declare this last so that $item->backstretch is set.
+		if ( ! is_admin() && is_singular() ) {
+			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
+			$post          = get_post();
+			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
+
+			if ( false !== $item->content ) {
+				$source_id = '';
+				$term_image    = display_featured_image_genesis_get_term_image_id();
+				$default_image = display_featured_image_genesis_get_default_image_id();
+				// reset backstretch image source to term image if it exists and the featured image is being used in content.
+				if ( ! empty( $term_image ) ) {
+					$source_id = $term_image;
+				}
+				// else, reset backstretch image source to fallback.
+				elseif ( ! empty( $fallback ) ) {
+					$source_id = $default_image;
+				}
+				$item->backstretch = wp_get_attachment_image_src( $source_id, $image_size );
+				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
+			}
+		}
+
+		// turn Photon back on
+		if ( $photon_removed ) {
+			add_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ), 10, 3 );
+		}
+
+		// Set Post/Page Title
+		$title = '';
+
+		if ( is_singular() ) {
+			$title = get_the_title();
+		}
+		elseif ( is_home() && 'page' === $frontpage ) {
+			$title = get_post( $postspage )->post_title;
+		}
+		elseif ( is_category() || is_tag() || is_tax() ) {
+			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
+			if ( ! $term || ! isset( $term->meta ) ) {
+				return;
+			}
+			$title = $term->meta['headline'];
+		}
+		elseif ( is_author() ) {
+			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+		}
+		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+			$title = genesis_get_cpt_option( 'headline' );
+		}
+		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
+
+		return $item;
+
+	}
+
+	/**
+	 * retrieve image ID for output
+	 * @param string $image_id variable, ID of featured image
+	 *
+	 * @since x.y.z
+	 */
+	protected static function set_image_id( $image_id = '' ) {
+
+		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
+		$postspage       = get_option( 'page_for_posts' );
+		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
+		$postspage_image = get_post_thumbnail_id( $postspage );
+		$fallback        = $displaysetting['default'];
 		$medium          = absint( get_option( 'medium_size_w' ) );
 
 		if ( is_singular() ) { // just checking for handling conditional variables set by width
@@ -46,13 +142,11 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
-		// sitewide variables used outside this function
-		$item->backstretch = '';
 		$fallback_id = $fallback;
 		if ( ! is_numeric( $fallback ) ) {
 			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
 		}
-		$item->fallback_id = absint( $fallback_id );
+		$fallback_id = absint( $fallback_id );
 
 		// Set Featured Image source ID
 		$image_id = ''; // blank if nothing else
@@ -66,7 +160,11 @@ class Display_Featured_Image_Genesis_Common {
 
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
-			$image_id = $item->fallback_id;
+			$image_id = $fallback_id;
+
+			if ( in_array( get_post_type(), $use_fallback ) ) {
+				return $image_id;
+			}
 		}
 
 		// outlier: if it's a home page with a static front page, and there is a featured image set on the home page
@@ -108,25 +206,26 @@ class Display_Featured_Image_Genesis_Common {
 					$image_id = self::get_image_id( $term_meta['term_image'] );
 				}
 			}
-		}
-		// any singular post/page/CPT or there is no $fallback
-		elseif ( is_singular() && ! in_array( get_post_type(), $use_fallback ) ) {
+
 			/**
 			 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
 			 * @var filter
 			 */
 			$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
 
-			if ( has_post_thumbnail() && $width > $medium ) {
-				$image_id = get_post_thumbnail_id( get_the_ID() );
+			if ( in_array( get_post_type(), $use_tax_image ) ) {
+				return $image_id;
 			}
+		}
 
-			elseif ( ! has_post_thumbnail() || in_array( get_post_type(), $use_tax_image ) ) {
-				$term_image_id = display_featured_image_genesis_get_term_image_id();
-				if ( ! empty( $term_image_id ) ) {
-					$image_id = $term_image_id;
-				}
+		// any singular post/page/CPT
+		elseif ( is_singular() ) {
+
+			if ( ! has_post_thumbnail() || $width < $medium ) {
+				return $image_id;
 			}
+			$image_id = get_post_thumbnail_id( get_the_ID() );
+
 		}
 
 		/**
@@ -139,79 +238,7 @@ class Display_Featured_Image_Genesis_Common {
 		// make sure the image id is an integer
 		$image_id = is_numeric( $image_id ) ? absint( $image_id ) : 0;
 
-		// turn Photon off so we can get the correct image
-		$photon_removed = '';
-		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
-			$photon_removed = remove_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ) );
-		}
-
-		/**
-		 * create a filter for user to optionally force post types to use the large image instead of backstretch
-		 * @var filter
-		 *
-		 * @since  2.0.0
-		 */
-		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', self::$post_types );
-		$image_size      = 'displayfeaturedimage_backstretch';
-		if ( in_array( get_post_type(), $use_large_image ) ) {
-			$image_size = 'large';
-		}
-
-		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
-
-		// set a content variable so backstretch doesn't show if full size image exists in post.
-		$item->content = '';
-		// declare this last so that $item->backstretch is set.
-		if ( ! is_admin() && is_singular() ) {
-			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
-			$post          = get_post();
-			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
-
-			if ( false !== $item->content ) {
-				$term_image = display_featured_image_genesis_get_term_image_id();
-				// reset backstretch image source to term image if it exists and the featured image is being used in content.
-				if ( ! empty( $term_image ) ) {
-					$item->backstretch = wp_get_attachment_image_src( $term_image, $image_size );
-					$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
-				}
-				// else, reset backstretch image source to fallback.
-				elseif ( ! empty( $item->fallback ) ) {
-					$item->backstretch = wp_get_attachment_image_src( $item->fallback_id, $image_size );
-					$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
-				}
-			}
-		}
-
-		// turn Photon back on
-		if ( $photon_removed ) {
-			add_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ), 10, 3 );
-		}
-
-		// Set Post/Page Title
-		$title = '';
-
-		if ( is_singular() ) {
-			$title = get_the_title();
-		}
-		elseif ( is_home() && 'page' === $frontpage ) {
-			$title = get_post( $postspage )->post_title;
-		}
-		elseif ( is_category() || is_tag() || is_tax() ) {
-			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
-			if ( ! $term || ! isset( $term->meta ) ) {
-				return;
-			}
-			$title = $term->meta['headline'];
-		}
-		elseif ( is_author() ) {
-			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-		}
-		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
-			$title = genesis_get_cpt_option( 'headline' );
-		}
-		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
-
-		return $item;
+		return $image_id;
 
 	}
 
