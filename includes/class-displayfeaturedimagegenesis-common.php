@@ -240,7 +240,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage = get_option( 'page_for_posts' );
-		$a11ycheck = empty( $title ) && current_theme_supports( 'genesis-accessibility', array( 'headings' ) );
+		$a11ycheck = current_theme_supports( 'genesis-accessibility', array( 'headings' ) );
 
 		if ( is_singular() ) {
 			$title = get_the_title();
@@ -254,19 +254,19 @@ class Display_Featured_Image_Genesis_Common {
 				return;
 			}
 			$title = $term->meta['headline'];
-			if ( $a11ycheck ) {
+			if ( empty( $title ) && $a11ycheck ) {
 				$title = $term->name;
 			}
 		}
 		elseif ( is_author() ) {
 			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
-			if ( $a11ycheck ) {
+			if ( empty( $title ) && $a11ycheck ) {
 				$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
 			}
 		}
 		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
 			$title = genesis_get_cpt_option( 'headline' );
-			if ( $a11ycheck ) {
+			if ( empty( $title ) && $a11ycheck ) {
 				$title = post_type_archive_title( '', false );
 			}
 		}
