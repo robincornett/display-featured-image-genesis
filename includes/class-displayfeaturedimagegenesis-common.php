@@ -157,7 +157,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		$object = get_queried_object();
-		// cpt
+		// singular or archive CPT
 		if ( $object && is_main_query() && ! is_admin() ) {
 			$post_type = '';
 			if ( $object->name ) { // results in post type on cpt archive
@@ -199,21 +199,21 @@ class Display_Featured_Image_Genesis_Common {
 				if ( ! is_numeric( $term_meta['term_image'] ) ) {
 					$image_id = self::get_image_id( $term_meta['term_image'] );
 				}
-
-				/**
-				 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
-				 * @var filter
-				 */
-				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
-
-				if ( in_array( get_post_type(), $use_tax_image ) ) {
-					return $image_id;
-				}
 			}
 		}
 
 		// any singular post/page/CPT
 		if ( is_singular() ) {
+
+			/**
+			 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
+			 * @var filter
+			 */
+			$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
+
+			if ( in_array( get_post_type(), $use_tax_image ) ) {
+				return display_featured_image_genesis_get_term_image_id();
+			}
 
 			if ( ! has_post_thumbnail() || $width < $medium ) {
 				return $image_id;
