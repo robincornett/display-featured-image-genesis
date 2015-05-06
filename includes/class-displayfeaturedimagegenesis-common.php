@@ -58,7 +58,9 @@ class Display_Featured_Image_Genesis_Common {
 			$image_size = 'large';
 		}
 
+		// $image_id is set by new set_image_id function
 		$image_id = self::set_image_id();
+
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
@@ -91,7 +93,13 @@ class Display_Featured_Image_Genesis_Common {
 			add_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ), 10, 3 );
 		}
 
+		// $title is set by new title function
 		$title = self::set_item_title();
+
+		/**
+		 * Optional filter to change the title text
+		 * @since x.y.z
+		 */
 		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
 
 		return $item;
@@ -171,7 +179,7 @@ class Display_Featured_Image_Genesis_Common {
 
 				/**
 				 * use the custom post type featured image
-				 * @var filter
+				 *
 				 * @since x.y.z
 				 */
 				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', self::$post_types );
@@ -205,7 +213,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// any singular post/page/CPT
-		elseif ( is_singular() ) {
+		if ( is_singular() ) {
 
 			if ( ! has_post_thumbnail() || $width < $medium ) {
 				return $image_id;
@@ -232,6 +240,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage = get_option( 'page_for_posts' );
+		$a11ycheck = empty( $title ) && current_theme_supports( 'genesis-accessibility', array( 'headings' ) );
 
 		if ( is_singular() ) {
 			$title = get_the_title();
@@ -245,12 +254,21 @@ class Display_Featured_Image_Genesis_Common {
 				return;
 			}
 			$title = $term->meta['headline'];
+			if ( $a11ycheck ) {
+				$title = $term->name;
+			}
 		}
 		elseif ( is_author() ) {
 			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
+			if ( $a11ycheck ) {
+				$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
+			}
 		}
 		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
 			$title = genesis_get_cpt_option( 'headline' );
+			if ( $a11ycheck ) {
+				$title = post_type_archive_title( '', false );
+			}
 		}
 		return $title;
 
