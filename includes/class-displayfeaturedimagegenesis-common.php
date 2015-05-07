@@ -205,14 +205,19 @@ class Display_Featured_Image_Genesis_Common {
 		// any singular post/page/CPT
 		if ( is_singular() ) {
 
-			/**
-			 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
-			 * @var filter
-			 */
-			$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
+			$term_image = display_featured_image_genesis_get_term_image_id();
+			if ( ! empty( $term_image ) ) {
+				$image_id = $term_image;
 
-			if ( in_array( get_post_type(), $use_tax_image ) ) {
-				return display_featured_image_genesis_get_term_image_id();
+				/**
+				 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
+				 * @var filter
+				 */
+				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
+
+				if ( in_array( get_post_type(), $use_tax_image ) ) {
+					return $image_id;
+				}
 			}
 
 			if ( ! has_post_thumbnail() || $width < $medium ) {
