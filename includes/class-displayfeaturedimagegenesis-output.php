@@ -230,7 +230,7 @@ class Display_Featured_Image_Genesis_Output {
 		echo '</div>';
 
 		//* if javascript not enabled, do a fallback background image
-		$no_js  = '<noscript><div class="backstretch no-js" style="background-image: url(' . esc_url( $item->backstretch[0] ) . '); }"></div></noscript>';
+		$no_js  = sprintf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $item->backstretch[0] ) );
 		printf( $no_js );
 
 		//* close big-leader
