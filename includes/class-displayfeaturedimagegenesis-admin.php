@@ -113,7 +113,10 @@ class Display_Featured_Image_Genesis_Admin {
 			$id
 		);
 
-		echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( $alt ) . '" />';
+		printf( '<img src="%1$s" alt="%2$s" />',
+			esc_url( $preview[0] ),
+			esc_attr( $alt )
+		);
 
 	}
 
@@ -141,7 +144,10 @@ class Display_Featured_Image_Genesis_Admin {
 			wp_get_attachment_image_src( $id, 'thumbnail' ),
 			$id
 		);
-		echo '<img src="' . esc_url( $preview[0] ) . '" alt="' . esc_attr( the_title_attribute( 'echo=0' ) ) . '" />';
+		printf( '<img src="%1$s" alt="%2$s" />',
+			esc_url( $preview[0] ),
+			esc_attr( the_title_attribute( 'echo=0' ) )
+		);
 
 	}
 

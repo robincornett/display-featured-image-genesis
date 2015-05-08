@@ -250,7 +250,7 @@ class Display_Featured_Image_Genesis_Output {
 			esc_attr( $item->title )
 		);
 
-		echo apply_filters( 'display_featured_image_genesis_large_image_output', $image );
+		echo apply_filters( 'display_featured_image_genesis_large_image_output', wp_kses_post( $image ) );
 	}
 
 	/**

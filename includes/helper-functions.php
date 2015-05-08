@@ -16,10 +16,11 @@
  * @since  2.1.0
  */
 function display_featured_image_genesis_get_term_image_id() {
+
+	$image_id   = '';
 	$taxonomies = get_taxonomies();
 	$args       = array( 'orderby' => 'count', 'order' => 'DESC' );
 	$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
-	$image_id   = '';
 
 	foreach ( $terms as $term ) {
 		$t_id      = $term->term_id;
@@ -192,7 +193,7 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 	$permalink = get_permalink();
 	printf( '<a href="%1$s" aria-hidden="true">%2$s</a>',
 		esc_url( $permalink ),
-		$image
+		wp_kses_post( $image )
 	);
 
 }

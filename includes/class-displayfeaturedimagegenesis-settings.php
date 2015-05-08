@@ -232,7 +232,7 @@ class Display_Featured_Image_Genesis_Settings {
 			}
 			$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 			echo '<div id="upload_logo_preview">';
-			echo '<img src="' . esc_url( $preview[0] ) . '" />';
+			printf( '<img src="%s" />', esc_url( $preview[0] ) );
 			echo '</div>';
 		}
 		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $id ) . '" />';

@@ -26,7 +26,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				__( 'Delete Image', 'display-featured-image-genesis' )
 			);
 			echo '<p class="description">';
-			printf( __( 'Set Featured Image for new term.','display-featured-image-genesis' ) );
+			printf( __( 'Set Featured Image for new term.', 'display-featured-image-genesis' ) );
 			echo '</p>';
 		echo '</div>';
 
@@ -59,7 +59,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 					}
 					$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
 					echo '<div id="upload_logo_preview">';
-					echo '<img src="' . esc_url( $preview[0] ) . '" width="300" />';
+					printf( '<img src="%s" width="300" />', esc_url( $preview[0] ) );
 					echo '</div>';
 				}
 				echo '<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" value="' . absint( $id ) . '" />';
