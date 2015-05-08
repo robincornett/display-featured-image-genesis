@@ -73,7 +73,7 @@ class Display_Featured_Image_Genesis_Output {
 				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
 				$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
-				add_action( $hook, array( $this, 'do_backstretch_image_title' ) );
+				add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ) );
 
 			}
 
@@ -87,7 +87,7 @@ class Display_Featured_Image_Genesis_Output {
 				if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
 					$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
 				}
-				add_action( $hook, array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
+				add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
 			}
 		}
 	}
@@ -186,7 +186,7 @@ class Display_Featured_Image_Genesis_Output {
 		 */
 		$omit_excerpt = apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
 
-		//* if move excerpts is enabled
+		// if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
 
 			Display_Featured_Image_Genesis_Description::do_front_blog_excerpt();
@@ -214,7 +214,9 @@ class Display_Featured_Image_Genesis_Output {
 				$title = $item->title;
 				$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
 
-				echo apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
+				$title_output = apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
+
+				echo wp_kses_post( $title_output );
 
 			}
 
@@ -226,14 +228,13 @@ class Display_Featured_Image_Genesis_Output {
 
 		}
 
-		//* close wrap
+		// close wrap
 		echo '</div>';
 
-		//* if javascript not enabled, do a fallback background image
-		$no_js  = sprintf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $item->backstretch[0] ) );
-		printf( $no_js );
+		// if javascript not enabled, do a fallback background image
+		printf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $item->backstretch[0] ) );
 
-		//* close big-leader
+		// close big-leader
 		echo '</div>';
 	}
 
@@ -250,7 +251,9 @@ class Display_Featured_Image_Genesis_Output {
 			esc_attr( $item->title )
 		);
 
-		echo apply_filters( 'display_featured_image_genesis_large_image_output', wp_kses_post( $image ) );
+		$image = apply_filters( 'display_featured_image_genesis_large_image_output', $image );
+
+		echo wp_kses_post( $image );
 	}
 
 	/**
