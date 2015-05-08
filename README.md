@@ -203,6 +203,10 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 ## Changelog
 
+### 2.2.1
+* fixed fallback filters
+* escaped even more things
+
 ### 2.2.0 - 2015-04-20
 * default, term, and custom post type featured images are now stored in the database by ID, rather than URL.
 * added filters for backstretch image output, RSS excerpt image output

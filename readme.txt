@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 3.8
 Tested up to: 4.2
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -161,10 +161,14 @@ This will follow the settings you choose in the Genesis Theme Settings.
 3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.2.0 =
-Changed how default, term, and post type featured images are stored in the database (better!).
+= 2.2.1 =
+Bugfixes: image ID is correctly set in sequence
 
 == Changelog ==
+
+= 2.2.1 =
+* fixed fallback filters
+* escaped even more things
 
 = 2.2.0 =
 * default, term, and custom post type featured images are now stored in the database by ID, rather than URL.

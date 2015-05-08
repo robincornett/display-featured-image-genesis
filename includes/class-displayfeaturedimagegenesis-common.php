@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public static $version = '2.2.0';
+	public static $version = '2.2.1';
 
 	protected static $post_types;
 
@@ -98,7 +98,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		/**
 		 * Optional filter to change the title text
-		 * @since x.y.z
+		 * @since 2.2.0
 		 */
 		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
 
@@ -110,7 +110,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * retrieve image ID for output
 	 * @param string $image_id variable, ID of featured image
 	 *
-	 * @since x.y.z
+	 * @since 2.2.1
 	 */
 	protected static function set_image_id( $image_id = '' ) {
 
@@ -180,7 +180,7 @@ class Display_Featured_Image_Genesis_Common {
 				/**
 				 * use the custom post type featured image
 				 *
-				 * @since x.y.z
+				 * @since 2.2.1
 				 */
 				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', self::$post_types );
 				if ( in_array( get_post_type(), $use_cpt ) ) {
