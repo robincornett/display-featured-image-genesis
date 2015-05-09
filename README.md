@@ -204,6 +204,9 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 ## Changelog
 
+### 2.2.2
+* fixed default image id function error
+
 ### 2.2.1
 * fixed fallback filters
 * escaped even more things

@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public static $version = '2.2.1';
+	public static $version = '2.2.2';
 
 	protected static $post_types;
 

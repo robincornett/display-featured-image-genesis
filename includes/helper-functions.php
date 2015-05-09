@@ -67,7 +67,7 @@ function display_featured_image_genesis_get_default_image_id() {
 	$fallback       = $displaysetting['default'];
 	$image_id       = $fallback;
 	if ( ! is_numeric( $fallback ) ) {
-		$image_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+		$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $fallback ); // gets image id with attached metadata
 	}
 
 	return absint( $image_id );
