@@ -50,7 +50,7 @@ class Display_Featured_Image_Genesis_RSS {
 	public function add_image_to_feed( $content ) {
 
 		// if the post doesn't have a thumbnail, we're done here
-		if ( ! has_post_thumbnail() ) {
+		if ( ! has_post_thumbnail() && ! is_feed() ) {
 			return $content;
 		}
 
@@ -99,8 +99,8 @@ class Display_Featured_Image_Genesis_RSS {
 		}
 
 		// whew. build the image!
-		$image   = get_the_post_thumbnail( get_the_ID(), $size, array( 'align' => $align, 'style' => $style, 'class' => $class ) );
-		$image   = apply_filters( 'display_featured_image_genesis_modify_rss_image', wp_kses_post( $image ) );
+		$image = get_the_post_thumbnail( get_the_ID(), $size, array( 'align' => $align, 'style' => $style, 'class' => $class ) );
+		$image = apply_filters( 'display_featured_image_genesis_modify_rss_image', $image );
 
 		return $image . $content;
 
