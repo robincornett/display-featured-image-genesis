@@ -177,6 +177,8 @@ class Display_Featured_Image_Genesis_Output {
 		echo '<div class="big-leader">';
 		echo '<div class="wrap">';
 
+		do_action( 'display_featured_image_genesis_before_title' );
+
 		$move_excerpts = $displaysetting['move_excerpts'];
 		$post_types    = array();
 		/**
@@ -197,7 +199,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		}
 
-		// if titles are not being moved to overlay the image
+		// if titles are being moved to overlay the image
 		elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
 
 			if ( ! empty( $item->title ) && ! is_front_page() ) {
@@ -227,6 +229,8 @@ class Display_Featured_Image_Genesis_Output {
 			add_action( 'genesis_before_loop', array( $this, 'move_titles' ) );
 
 		}
+
+		do_action( 'display_featured_image_genesis_after_title' );
 
 		// close wrap
 		echo '</div>';
