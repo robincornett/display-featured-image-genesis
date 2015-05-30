@@ -13,9 +13,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * variable set for featured image option
 	 * @var option
 	 */
-	protected $displaysetting;
-
-	protected $post_types;
+	protected $page, $displaysetting, $post_types;
 
 	/**
 	 * add a submenu page under Appearance
@@ -24,11 +22,13 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function do_submenu_page() {
 
+		$this->page = 'displayfeaturedimagegenesis';
+
 		add_theme_page(
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
 			__( 'Display Featured Image Settings', 'display-featured-image-genesis' ),
 			'manage_options',
-			'displayfeaturedimagegenesis',
+			$this->page,
 			array( $this, 'do_settings_form' )
 		);
 
@@ -80,7 +80,6 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', $defaults );
 
-		$page     = 'displayfeaturedimagegenesis';
 		$sections = array(
 			'main' => array(
 				'id'       => 'display_featured_image_section',
@@ -171,20 +170,18 @@ class Display_Featured_Image_Genesis_Settings {
 				$section['id'],
 				$section['title'],
 				array( $this, $section['callback'] ),
-				$page
+				$this->page
 			);
 		}
 
 		foreach ( $fields as $field ) {
-			// need to set an empty array because most don't have $args
-			$field['args'] = ! empty( $field['args'] ) ? $field['args'] : array();
 			add_settings_field(
 				$field['id'],
 				'<label for="' . $field['id'] . '">' . $field['title'] . '</label>',
 				array( $this, $field['callback'] ),
-				$page,
+				$this->page,
 				$field['section'],
-				$field['args']
+				empty( $field['args'] ) ? array() : $field['args']
 			);
 		}
 
@@ -238,20 +235,12 @@ class Display_Featured_Image_Genesis_Settings {
 	public function set_default_image() {
 
 		$large = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
-		$id    = '';
-
-		$id = $this->displaysetting['default'];
-		echo wp_kses_post( $this->render_image_preview( $id ) );
-
-		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $id ) . '" />';
-		printf( '<input type="button" class="upload_default_image button-secondary" value="%s" />',
-			__( 'Select Image', 'display-featured-image-genesis' )
-		);
-		if ( ! empty( $this->displaysetting['default'] ) ) {
-			printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
-				__( 'Delete Image', 'display-featured-image-genesis' )
-			);
+		$id    = $this->displaysetting['default'] ? $this->displaysetting['default'] : '';
+		$name  = 'displayfeaturedimagegenesis[default]';
+		if ( ! empty( $id ) ) {
+			echo wp_kses_post( $this->render_image_preview( $id ) );
 		}
+		echo $this->render_buttons( $id, $name );
 		echo '<p class="description">';
 		printf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
@@ -346,25 +335,23 @@ class Display_Featured_Image_Genesis_Settings {
 			$this->displaysetting['post_type'][ $post_type ] = $id = '';
 		}
 
-		$id = $this->displaysetting['post_type'][ $post_type ];
-		echo wp_kses_post( $this->render_image_preview( $id ) );
-
-		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" name="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" value="' . absint( $id ) . '" />';
-		printf( '<input type="button" class="upload_default_image button-secondary" value="%s" />',
-			__( 'Select Image', 'display-featured-image-genesis' )
-		);
-		if ( ! empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
-			printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
-				__( 'Delete Image', 'display-featured-image-genesis' )
-			);
-			echo '<p class="description">';
-			printf( __( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
-				esc_url( get_post_type_archive_link( $post_type ) ),
-				esc_attr( $args['post_type']->label )
-			);
-			echo '</p>';
+		$id   = $this->displaysetting['post_type'][ $post_type ];
+		$name = 'displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']';
+		if ( $id ) {
+			echo wp_kses_post( $this->render_image_preview( $id ) );
 		}
 
+		echo $this->render_buttons( $id, $name );
+
+		if ( empty( $id ) ) {
+			return;
+		}
+		echo '<p class="description">';
+		printf( __( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
+			esc_url( get_post_type_archive_link( $post_type ) ),
+			esc_attr( $args['post_type']->label )
+		);
+		echo '</p>';
 	}
 
 	/**
@@ -378,15 +365,42 @@ class Display_Featured_Image_Genesis_Settings {
 		if ( empty( $id ) ) {
 			return;
 		}
+
 		if ( ! is_numeric( $id ) ) {
 			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
 		}
 
 		$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
-		$image   = '<div id="upload_logo_preview">';
+		$image   = '<div class="upload_logo_preview">';
 		$image  .= '<img src="' . esc_url( $preview[0] ) . '" />';
 		$image  .= '</div>';
 		return $image;
+	}
+
+	/**
+	 * show image select/delete buttons
+	 * @param  variable $id   image ID
+	 * @param  varable $name name for value/ID/class
+	 * @return $buttons       select/delete image buttons
+	 *
+	 * @since x.y.z
+	 */
+	public static function render_buttons( $id, $name ) {
+		if ( ! is_numeric( $id ) ) {
+			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
+		}
+		$id = $id ? absint( $id ) : '';
+		$buttons  = sprintf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), $id );
+		$buttons .= sprintf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
+			esc_attr( $name ),
+			__( 'Select Image', 'display-featured-image-genesis' )
+		);
+		if ( ! empty( $id ) ) {
+			$buttons .= sprintf( ' <input type="button" class="delete_image button-secondary" value="%s" />',
+				__( 'Delete Image', 'display-featured-image-genesis' )
+			);
+		}
+		return $buttons;
 	}
 
 	/**

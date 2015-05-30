@@ -52,18 +52,12 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				__( 'Featured Image', 'display-featured-image-genesis' )
 			);
 			echo '<td>';
-				$id = $displaysetting['term_image'];
-				echo wp_kses_post( Display_Featured_Image_Genesis_Settings::render_image_preview( $id ) );
-
-				echo '<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" value="' . absint( $id ) . '" />';
-				printf( '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="%s" />',
-					__( 'Select Image', 'display-featured-image-genesis' )
-				);
-				if ( ! empty( $displaysetting['term_image'] ) ) {
-					printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
-						__( 'Delete Image', 'display-featured-image-genesis' )
-					);
+				$id   = $displaysetting['term_image'];
+				$name = 'displayfeaturedimagegenesis[term_image]';
+				if ( ! empty( $id ) ) {
+					echo wp_kses_post( Display_Featured_Image_Genesis_Settings::render_image_preview( $id ) );
 				}
+				echo Display_Featured_Image_Genesis_Settings::render_buttons( $id, $name );
 				echo '<p class="description">';
 				printf(
 					__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
