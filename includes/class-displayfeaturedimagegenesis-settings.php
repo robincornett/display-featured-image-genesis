@@ -599,11 +599,9 @@ class Display_Featured_Image_Genesis_Settings {
 	protected function is_valid_img_ext( $file ) {
 		$file_ext = $this->get_file_ext( $file );
 
-		$this->valid = empty( $this->valid )
-			? (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) )
-			: $this->valid;
+		$is_valid_types = (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
 
-		return ( $file_ext && in_array( $file_ext, $this->valid ) );
+		return ( $file_ext && in_array( $file_ext, $is_valid_types ) );
 	}
 
 	/**
