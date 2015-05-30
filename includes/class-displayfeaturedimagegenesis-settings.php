@@ -90,61 +90,53 @@ class Display_Featured_Image_Genesis_Settings {
 			'displayfeaturedimagegenesis'
 		);
 
-		add_settings_field(
-			'displayfeaturedimagegenesis[less_header]',
-			'<label for="displayfeaturedimagegenesis[less_header]">' . __( 'Height' , 'display-featured-image-genesis' ) . '</label>',
-			array( $this, 'header_size' ),
-			$page,
-			$section
+		$fields = array(
+			array(
+				'id'       => 'displayfeaturedimagegenesis[less_header]',
+				'title'    => '<label for="displayfeaturedimagegenesis[less_header]">' . __( 'Height' , 'display-featured-image-genesis' ) . '</label>',
+				'callback' => array( $this, 'header_size' ),
+			),
+			array(
+				'id'       => 'displayfeaturedimagegenesis[default]',
+				'title'    => '<label for="displayfeaturedimagegenesis[default]">' . __( 'Default Featured Image', 'display-featured-image-genesis' ) . '</label>',
+				'callback' => array( $this, 'set_default_image' ),
+			),
+			array(
+				'id'       => 'displayfeaturedimagegenesis[exclude_front]',
+				'title'    => '<label for="displayfeaturedimagegenesis[exclude_front]">' . __( 'Skip Front Page', 'display-featured-image-genesis' ) . '</label>',
+				'callback' => array( $this, 'exclude_front' ),
+			),
+			array(
+				'id'       => 'displayfeaturedimagegenesis[keep_titles]',
+				'title'    => '<label for="displayfeaturedimagegenesis[keep_titles]">' . __( 'Do Not Move Titles', 'display-featured-image-genesis' ) . '</label>',
+				'callback' => array( $this, 'keep_titles' ),
+			),
+			array(
+				'id'       => 'displayfeaturedimagegenesis[move_excerpts]',
+				'title'    => '<label for="displayfeaturedimagegenesis[move_excerpts]">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
+				'callback' => array( $this, 'move_excerpts' ),
+			),
+			array(
+				'id'       => 'displayfeaturedimagegenesis[is_paged]',
+				'title'    => '<label for="displayfeaturedimagegenesis[is_paged]">' . __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ) . '</label>',
+				'callback' => array( $this, 'check_is_paged' ),
+			),
+			array(
+				'id'       => 'displayfeaturedimagegenesis[feed_image]',
+				'title'    => '<label for="displayfeaturedimagegenesis[feed_image]">' . __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ) . '</label>',
+				'callback' => array( $this, 'add_image_to_feed' ),
+			),
 		);
 
-		add_settings_field(
-			'displayfeaturedimagegenesis[default]',
-			'<label for="displayfeaturedimagegenesis[default]">' . __( 'Default Featured Image', 'display-featured-image-genesis' ) . '</label>',
-			array( $this, 'set_default_image' ),
-			$page,
-			$section
-		);
-
-		add_settings_field(
-			'displayfeaturedimagegenesis[exclude_front]',
-			'<label for="displayfeaturedimagegenesis[exclude_front]">' . __( 'Skip Front Page', 'display-featured-image-genesis' ) . '</label>',
-			array( $this, 'exclude_front' ),
-			$page,
-			$section
-		);
-
-		add_settings_field(
-			'displayfeaturedimagegenesis[keep_titles]',
-			'<label for="displayfeaturedimagegenesis[keep_titles]">' . __( 'Do Not Move Titles', 'display-featured-image-genesis' ) . '</label>',
-			array( $this, 'keep_titles' ),
-			$page,
-			$section
-		);
-
-		add_settings_field(
-			'displayfeaturedimagegenesis[move_excerpts]',
-			'<label for="displayfeaturedimagegenesis[move_excerpts]">' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</label>',
-			array( $this, 'move_excerpts' ),
-			$page,
-			$section
-		);
-
-		add_settings_field(
-			'displayfeaturedimagegenesis[is_paged]',
-			'<label for="displayfeaturedimagegenesis[is_paged]">' . __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ) . '</label>',
-			array( $this, 'check_is_paged' ),
-			$page,
-			$section
-		);
-
-		add_settings_field(
-			'displayfeaturedimagegenesis[feed_image]',
-			'<label for="displayfeaturedimagegenesis[feed_image]">' . __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ) . '</label>',
-			array( $this, 'add_image_to_feed' ),
-			$page,
-			$section
-		);
+		foreach ( $fields as $field ) {
+			add_settings_field(
+				$field['id'],
+				$field['title'],
+				$field['callback'],
+				$page,
+				$section
+			);
+		}
 
 		$args = array(
 			'public'      => true,
@@ -187,7 +179,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function section_description() {
-		printf( '<p>' . __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) . '</p>' );
+		printf( '<p>%s</p>', __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) );
 	}
 
 	/**
@@ -197,7 +189,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function cpt_section_description() {
-		printf( '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>' );
+		printf( '<p>%s</p>', __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) );
 	}
 
 	/**
