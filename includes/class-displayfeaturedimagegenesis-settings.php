@@ -665,47 +665,46 @@ class Display_Featured_Image_Genesis_Settings {
 		$cpt_help .= '<p>' . __( 'Since your site uses Custom Post Types, you may optionally set a Featured Image for each archive.', 'display-featured-image-genesis' ) . '</p>';
 		$cpt_help .= '<p>' . __( 'Featured Images for archives can be smaller than the Default Featured Image, but still need to be larger than your site\'s "medium" image size.', 'display-featured-image-genesis' ) . '</p>';
 
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_less_header-help',
-			'title'   => __( 'Height', 'display-featured-image-genesis' ),
-			'content' => $height_help,
-		) );
-
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_default-help',
-			'title'   => __( 'Default Featured Image', 'display-featured-image-genesis' ),
-			'content' => $default_help,
-		) );
-
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_exclude_front-help',
-			'title'   => __( 'Skip Front Page', 'display-featured-image-genesis' ),
-			'content' => $skipfront_help,
-		) );
-
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_keep_titles-help',
-			'title'   => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
-			'content' => $keeptitles_help,
-		) );
-
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_excerpts-help',
-			'title'   => __( 'Move Excerpts', 'display-featured-image-genesis' ),
-			'content' => $excerpts_help,
-		) );
-
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_paged-help',
-			'title'   => __( 'Subsequent Pages', 'display-featured-image-genesis' ),
-			'content' => $paged_help,
-		) );
-
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_feed-help',
-			'title'   => __( 'RSS Feed', 'display-featured-image-genesis' ),
-			'content' => $feed_help,
-		) );
+		$help_tabs = array(
+			array(
+				'id'      => 'displayfeaturedimage_less_header-help',
+				'title'   => __( 'Height', 'display-featured-image-genesis' ),
+				'content' => $height_help,
+			),
+			array(
+				'id'      => 'displayfeaturedimage_default-help',
+				'title'   => __( 'Default Featured Image', 'display-featured-image-genesis' ),
+				'content' => $default_help,
+			),
+			array(
+				'id'      => 'displayfeaturedimage_exclude_front-help',
+				'title'   => __( 'Skip Front Page', 'display-featured-image-genesis' ),
+				'content' => $skipfront_help,
+			),
+			array(
+				'id'      => 'displayfeaturedimage_keep_titles-help',
+				'title'   => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
+				'content' => $keeptitles_help,
+			),
+			array(
+				'id'      => 'displayfeaturedimage_excerpts-help',
+				'title'   => __( 'Move Excerpts', 'display-featured-image-genesis' ),
+				'content' => $excerpts_help,
+			),
+			array(
+				'id'      => 'displayfeaturedimage_paged-help',
+				'title'   => __( 'Subsequent Pages', 'display-featured-image-genesis' ),
+				'content' => $paged_help,
+			),
+			array(
+				'id'      => 'displayfeaturedimage_feed-help',
+				'title'   => __( 'RSS Feed', 'display-featured-image-genesis' ),
+				'content' => $feed_help,
+			),
+		);
+		foreach ( $help_tabs as $tab ) {
+			$screen->add_help_tab( $tab );
+		}
 
 		if ( $this->post_types ) {
 			$screen->add_help_tab( array(
