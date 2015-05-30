@@ -39,7 +39,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			'image_alignment'         => '',
 			'image_size'              => 'medium',
 			'show_title'              => 0,
-			'show_content'            => 0
+			'show_content'            => 0,
 		);
 
 		$widget_ops = array(
@@ -109,9 +109,9 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			$image_id = $postspage_image;
 		}
 		else {
-			$image_id = $option['post_type'][$post_type->name];
-			if ( ! is_numeric( $option['post_type'][$post_type->name] ) ) {
-				$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $option['post_type'][$post_type->name] );
+			$image_id = $option['post_type'][ $post_type->name ];
+			if ( ! is_numeric( $option['post_type'][ $post_type->name ] ) ) {
+				$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $option['post_type'][ $post_type->name ] );
 			}
 		}
 		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
@@ -128,13 +128,13 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 			if ( ! empty( $instance['show_title'] ) ) {
 
-				if ( genesis_html5() )
-					printf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
-				else
-					printf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+				$title_output = sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+				if ( genesis_html5() ) {
+					$title_output = sprintf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+				}
+				echo wp_kses_post( $title_output );
 
 			}
-
 		}
 
 		$intro_text = '';
@@ -211,18 +211,18 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 					<label for="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>"><?php _e( 'Post Type:', 'display-featured-image-genesis' ); ?> </label>
 					<select id="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_type' ) ); ?>" >
 					<?php
-					//* Fetch a list of possible post types
+					// Fetch a list of possible post types
 					$args = array(
 						'public'      => true,
 						'_builtin'    => false,
-						'has_archive' => true
+						'has_archive' => true,
 					);
 					$output     = 'objects';
 					$post_types = get_post_types( $args, $output );
 
-					echo '<option value="post"' . selected( 'post', $instance['post_type'], false ) . '>' . __( 'Posts', 'display-featured-image-genesis' ) . '</option>';
+					printf( '<option value="post"%s>%s</option>', selected( 'post', $instance['post_type'], false ), __( 'Posts', 'display-featured-image-genesis' ) );
 					foreach ( $post_types as $post_type ) {
-						echo '<option value="' . esc_attr( $post_type->name ) . '"' . selected( esc_attr( $post_type->name ), $instance['post_type'], false ) . '>' . esc_attr( $post_type->label ) . '</option>';
+						printf( '<option value="%s"%s>%s</option>', esc_attr( $post_type->name ), selected( esc_attr( $post_type->name ), $instance['post_type'], false ), esc_attr( $post_type->label ) );
 					} ?>
 					</select>
 				</p>
@@ -259,8 +259,8 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 					<select id="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>" class="genesis-image-size-selector" name="<?php echo esc_attr( $this->get_field_name( 'image_size' ) ); ?>">
 						<?php
 						$sizes = genesis_get_image_sizes();
-						foreach( (array) $sizes as $name => $size ) {
-							echo '<option value="' . esc_attr( $name ) . '"' . selected( $name, $instance['image_size'], FALSE ) . '>' . esc_html( $name ) . ' ( ' . absint( $size['width'] ) . 'x' . absint( $size['height'] ) . ' )</option>';
+						foreach ( (array) $sizes as $name => $size ) {
+							echo '<option value="' . esc_attr( $name ) . '"' . selected( $name, $instance['image_size'], false ) . '>' . esc_html( $name ) . ' ( ' . absint( $size['width'] ) . 'x' . absint( $size['height'] ) . ' )</option>';
 						} ?>
 					</select>
 				</p>

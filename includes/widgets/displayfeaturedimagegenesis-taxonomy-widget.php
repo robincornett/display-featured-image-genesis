@@ -40,7 +40,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			'image_alignment' => '',
 			'image_size'      => 'medium',
 			'show_title'      => 0,
-			'show_content'    => 0
+			'show_content'    => 0,
 		);
 
 		$widget_ops = array(
@@ -73,7 +73,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 		global $wp_query, $_genesis_displayed_ids;
 
-		//* Merge with defaults
+		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
 		$term_id   = $instance['term'];
@@ -116,13 +116,13 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 			if ( ! empty( $instance['show_title'] ) ) {
 
-				if ( genesis_html5() )
-					printf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
-				else
-					printf( '<h2><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
+				$title_output = sprintf( '<h2><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
+				if ( genesis_html5() ) {
+					$title_output = sprintf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
+				}
+				echo wp_kses_post( $title_output );
 
 			}
-
 		}
 
 		if ( $instance['show_content'] ) {
@@ -173,7 +173,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 */
 	function form( $instance ) {
 
-		//* Merge with defaults
+		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
 		?>
@@ -192,7 +192,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 					<?php
 					$args = array(
 						'public'   => true,
-						'show_ui'  => true
+						'show_ui'  => true,
 					);
 					$taxonomies = get_taxonomies( $args, 'objects' );
 
@@ -209,7 +209,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 						$args   = array(
 							'orderby'    => 'name',
 							'order'      => 'ASC',
-							'hide_empty' => false
+							'hide_empty' => false,
 						);
 						$terms  = get_terms( $instance['taxonomy'], $args );
 						echo '<option value="none"' . selected( 'none', $instance['term'], false ) . '>--</option>';
@@ -251,8 +251,8 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 					<select id="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>" class="genesis-image-size-selector" name="<?php echo esc_attr( $this->get_field_name( 'image_size' ) ); ?>">
 						<?php
 						$sizes = genesis_get_image_sizes();
-						foreach( (array) $sizes as $name => $size ) {
-							echo '<option value="' . esc_attr( $name ) . '"' . selected( $name, $instance['image_size'], FALSE ) . '>' . esc_html( $name ) . ' ( ' . absint( $size['width'] ) . 'x' . absint( $size['height'] ) . ' )</option>';
+						foreach ( (array) $sizes as $name => $size ) {
+							echo '<option value="' . esc_attr( $name ) . '"' . selected( $name, $instance['image_size'], false ) . '>' . esc_html( $name ) . ' ( ' . absint( $size['width'] ) . 'x' . absint( $size['height'] ) . ' )</option>';
 						} ?>
 					</select>
 				</p>
@@ -284,23 +284,22 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		$args  = array(
 			'orderby'    => 'name',
 			'order'      => 'ASC',
-			'hide_empty' => false
+			'hide_empty' => false,
 		);
 		$terms = get_terms( $_POST['taxonomy'], $args );
 
 		// Build an appropriate JSON response containing this info
 		$list['none'] = '--';
 		foreach ( $terms as $term ) {
-			$list[$term->term_id] = esc_attr( $term->name );
+			$list[ $term->term_id ] = esc_attr( $term->name );
 		}
 
 		// And emit it
+		$emit = json_encode( $list );
 		if ( function_exists( 'wp_json_encode' ) ) {
-			echo wp_json_encode( $list );
+			$emit = wp_json_encode( $list );
 		}
-		else {
-			echo json_encode( $list );
-		}
+		echo $emit;
 		die();
 	}
 
