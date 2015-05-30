@@ -235,10 +235,7 @@ class Display_Featured_Image_Genesis_Settings {
 			if ( ! is_numeric( $this->displaysetting['default'] ) ) {
 				$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['default'] );
 			}
-			$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
-			echo '<div id="upload_logo_preview">';
-			printf( '<img src="%s" />', esc_url( $preview[0] ) );
-			echo '</div>';
+			echo wp_kses_post( $this->render_image_preview( $id ) );
 		}
 		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $id ) . '" />';
 		printf( '<input type="button" class="upload_default_image button-secondary" value="%s" />',
@@ -348,10 +345,8 @@ class Display_Featured_Image_Genesis_Settings {
 			if ( ! is_numeric( $this->displaysetting['post_type'][ $post_type ] ) ) {
 				$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][ $post_type ] );
 			}
-			$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
-			echo '<div id="upload_logo_preview">';
-			echo '<img src="' . esc_url( $preview[0] ) . '" />';
-			echo '</div>';
+
+			echo wp_kses_post( $this->render_image_preview( $id ) );
 		}
 
 		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" name="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" value="' . absint( $id ) . '" />';
@@ -370,6 +365,21 @@ class Display_Featured_Image_Genesis_Settings {
 			echo '</p>';
 		}
 
+	}
+
+	/**
+	 * display image preview
+	 * @param  variable $id featured image ID
+	 * @return $image     image preview
+	 *
+	 * @since x.y.z
+	 */
+	public function render_image_preview( $id ) {
+		$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
+		$image  = '<div id="upload_logo_preview">';
+		$image .= '<img src="' . esc_url( $preview[0] ) . '" />';
+		$image .= '</div>';
+		return $image;
 	}
 
 	/**
