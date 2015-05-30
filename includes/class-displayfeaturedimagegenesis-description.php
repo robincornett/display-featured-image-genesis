@@ -21,7 +21,7 @@ class Display_Featured_Image_Genesis_Description {
 	 * @return null Return early if not a single post with an excerpt.
 	 */
 
-	public function do_excerpt() {
+	public static function do_excerpt() {
 
 		if ( ! is_singular() || is_front_page() ) {
 			return;
@@ -53,7 +53,7 @@ class Display_Featured_Image_Genesis_Description {
 	 *
 	 * @return null Return early if not blog/front page.
 	 */
-	public function do_front_blog_excerpt() {
+	public static function do_front_blog_excerpt() {
 
 		if ( ! is_front_page() && ! is_home() ) {
 			return;
@@ -96,7 +96,7 @@ class Display_Featured_Image_Genesis_Description {
 	 * @return null Return early if not the correct archive page, not page one, or no term meta is set.
 	 */
 
-	public function do_tax_description() {
+	public static function do_tax_description() {
 
 		global $wp_query;
 
@@ -136,7 +136,7 @@ class Display_Featured_Image_Genesis_Description {
 	 * @return null Return early if not author archive or not page one.
 	 */
 
-	public function do_author_description() {
+	public static function do_author_description() {
 
 		if ( ! is_author() || get_query_var( 'paged' ) >= 2 ) {
 			return;
@@ -168,7 +168,7 @@ class Display_Featured_Image_Genesis_Description {
 	 * @return null Return early if not on relevant post type archive.
 	 */
 
-	public function do_cpt_archive_description() {
+	public static function do_cpt_archive_description() {
 
 		if ( ! is_post_type_archive() || ! genesis_has_post_type_archive_support() ) {
 			return;

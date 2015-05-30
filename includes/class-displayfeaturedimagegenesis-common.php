@@ -23,7 +23,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since  1.1.0
 	 */
-	public function get_image_variables() {
+	public static function get_image_variables() {
 
 		self::$post_types = array();
 
@@ -112,7 +112,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 2.2.1
 	 */
-	protected function set_image_id( $image_id = '' ) {
+	protected static function set_image_id( $image_id = '' ) {
 
 		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage       = get_option( 'page_for_posts' );
@@ -241,7 +241,7 @@ class Display_Featured_Image_Genesis_Common {
 
 	}
 
-	protected function set_item_title( $title = '' ) {
+	protected static function set_item_title( $title = '' ) {
 
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage = get_option( 'page_for_posts' );
@@ -287,7 +287,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @author Philip Newcomer
 	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
 	 */
-	public function get_image_id( $attachment_url = '' ) {
+	public static function get_image_id( $attachment_url = '' ) {
 
 		$attachment_id = false;
 
@@ -331,7 +331,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @author hellofromtonya
 	 */
-	protected function fetch_image_id_query( $url_stripped, $attachment_url ) {
+	protected static function fetch_image_id_query( $url_stripped, $attachment_url ) {
 
 		global $wpdb;
 
@@ -355,7 +355,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 2.2.0
 	 */
-	public function minimum_backstretch_width() {
+	public static function minimum_backstretch_width() {
 		$large = apply_filters( 'display_featured_image_genesis_set_minimum_backstretch_width', get_option( 'large_size_w' ) );
 		if ( ! is_numeric( $large ) ) {
 			$large = get_option( 'large_size_w' );
