@@ -52,13 +52,9 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				__( 'Featured Image', 'display-featured-image-genesis' )
 			);
 			echo '<td>';
-				if ( ! empty( $displaysetting['term_image'] ) ) {
-					$id = $displaysetting['term_image'];
-					if ( ! is_numeric( $displaysetting['term_image'] ) ) {
-						$id = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['term_image'] );
-					}
-					echo wp_kses_post( Display_Featured_Image_Genesis_Settings::render_image_preview( $id ) );
-				}
+				$id = $displaysetting['term_image'];
+				echo wp_kses_post( Display_Featured_Image_Genesis_Settings::render_image_preview( $id ) );
+
 				echo '<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" value="' . absint( $id ) . '" />';
 				printf( '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="%s" />',
 					__( 'Select Image', 'display-featured-image-genesis' )

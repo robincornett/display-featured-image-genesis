@@ -111,28 +111,28 @@ class Display_Featured_Image_Genesis {
 
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 
-		//* return early if the option doesn't exist yet
+		// return early if the option doesn't exist yet
 		if ( empty( $displaysetting ) ) {
 			return;
 		}
 
 		if ( empty( $displaysetting['feed_image'] ) ) {
 			$this->update_settings( array(
-				'feed_image' => 0
+				'feed_image' => 0,
 			) );
 		}
 
 		// new setting for titles added in 2.0.0
 		if ( empty( $displaysetting['keep_titles'] ) ) {
 			$this->update_settings( array(
-				'keep_titles' => 0
+				'keep_titles' => 0,
 			) );
 		}
 
 		// new setting for subsequent pages added in 2.2.0
 		if ( empty( $displaysetting['is_paged'] ) ) {
 			$this->update_settings( array(
-				'is_paged' => 0
+				'is_paged' => 0,
 			) );
 		}
 
@@ -156,7 +156,7 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function set_taxonomy_meta() {
 		$args       = array(
-			'public' => true
+			'public' => true,
 		);
 		$output     = 'names';
 		$taxonomies = get_taxonomies( $args, $output );

@@ -230,13 +230,9 @@ class Display_Featured_Image_Genesis_Settings {
 		$large = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
 		$id    = '';
 
-		if ( ! empty( $this->displaysetting['default'] ) ) {
-			$id = $this->displaysetting['default'];
-			if ( ! is_numeric( $this->displaysetting['default'] ) ) {
-				$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['default'] );
-			}
-			echo wp_kses_post( $this->render_image_preview( $id ) );
-		}
+		$id = $this->displaysetting['default'];
+		echo wp_kses_post( $this->render_image_preview( $id ) );
+
 		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[default]" name="displayfeaturedimagegenesis[default]" value="' . absint( $id ) . '" />';
 		printf( '<input type="button" class="upload_default_image button-secondary" value="%s" />',
 			__( 'Select Image', 'display-featured-image-genesis' )
@@ -340,14 +336,8 @@ class Display_Featured_Image_Genesis_Settings {
 			$this->displaysetting['post_type'][ $post_type ] = $id = '';
 		}
 
-		if ( ! empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
-			$id = $this->displaysetting['post_type'][ $post_type ];
-			if ( ! is_numeric( $this->displaysetting['post_type'][ $post_type ] ) ) {
-				$id = Display_Featured_Image_Genesis_Common::get_image_id( $this->displaysetting['post_type'][ $post_type ] );
-			}
-
-			echo wp_kses_post( $this->render_image_preview( $id ) );
-		}
+		$id = $this->displaysetting['post_type'][ $post_type ];
+		echo wp_kses_post( $this->render_image_preview( $id ) );
 
 		echo '<input type="hidden" class="upload_image_id" id="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" name="displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']" value="' . absint( $id ) . '" />';
 		printf( '<input type="button" class="upload_default_image button-secondary" value="%s" />',
@@ -374,11 +364,18 @@ class Display_Featured_Image_Genesis_Settings {
 	 *
 	 * @since x.y.z
 	 */
-	public function render_image_preview( $id ) {
+	public static function render_image_preview( $id ) {
+		if ( empty( $id ) ) {
+			return;
+		}
+		if ( ! is_numeric( $id ) ) {
+			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
+		}
+
 		$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
-		$image  = '<div id="upload_logo_preview">';
-		$image .= '<img src="' . esc_url( $preview[0] ) . '" />';
-		$image .= '</div>';
+		$image   = '<div id="upload_logo_preview">';
+		$image  .= '<img src="' . esc_url( $preview[0] ) . '" />';
+		$image  .= '</div>';
 		return $image;
 	}
 
