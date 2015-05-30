@@ -168,7 +168,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'post_type' => $post,
 				);
 				add_settings_field(
-					'displayfeaturedimagegenesis[post_types]',
+					'displayfeaturedimagegenesis[post_types]' . esc_attr( $post->name ),
 					esc_attr( $post->label ),
 					array( $this, 'set_cpt_image' ),
 					$page,
