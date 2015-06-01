@@ -90,46 +90,51 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$fields = array(
 			array(
-				'id'       => 'displayfeaturedimagegenesis[less_header]',
+				'id'       => '[less_header]',
 				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
 				'callback' => 'header_size',
 				'section'  => $sections['main']['id'],
 			),
 			array(
-				'id'       => 'displayfeaturedimagegenesis[default]',
+				'id'       => '[default]',
 				'title'    => __( 'Default Featured Image', 'display-featured-image-genesis' ),
 				'callback' => 'set_default_image',
 				'section'  => $sections['main']['id'],
 			),
 			array(
-				'id'       => 'displayfeaturedimagegenesis[exclude_front]',
+				'id'       => '[exclude_front]',
 				'title'    => __( 'Skip Front Page', 'display-featured-image-genesis' ),
-				'callback' => 'exclude_front',
+				'callback' => 'do_checkbox',
 				'section'  => $sections['main']['id'],
+				'args'     => array( 'setting' => 'exclude_front', 'label' => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => 'displayfeaturedimagegenesis[keep_titles]',
+				'id'       => '[keep_titles]',
 				'title'    => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
-				'callback' => 'keep_titles',
+				'callback' => 'do_checkbox',
 				'section'  => $sections['main']['id'],
+				'args'     => array( 'setting' => 'keep_titles', 'label' => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => 'displayfeaturedimagegenesis[move_excerpts]',
+				'id'       => '[move_excerpts]',
 				'title'    => __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ),
-				'callback' => 'move_excerpts',
+				'callback' => 'do_checkbox',
 				'section'  => $sections['main']['id'],
+				'args'     => array( 'setting' => 'move_excerpts', 'label' => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => 'displayfeaturedimagegenesis[is_paged]',
+				'id'       => '[is_paged]',
 				'title'    => __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ),
-				'callback' => 'check_is_paged',
+				'callback' => 'do_checkbox',
 				'section'  => $sections['main']['id'],
+				'args'     => array( 'setting' => 'is_paged', 'label' => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => 'displayfeaturedimagegenesis[feed_image]',
+				'id'       => '[feed_image]',
 				'title'    => __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ),
-				'callback' => 'add_image_to_feed',
+				'callback' => 'do_checkbox',
 				'section'  => $sections['main']['id'],
+				'args'     => array( 'setting' => 'feed_image', 'label' => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ) ),
 			),
 		);
 
@@ -151,16 +156,12 @@ class Display_Featured_Image_Genesis_Settings {
 			);
 
 			foreach ( $this->post_types as $post ) {
-				$args = array(
-					'post_type' => $post,
-				);
-
 				$fields[] = array(
-					'id'       => 'displayfeaturedimagegenesis[post_types]' . esc_attr( $post->name ),
+					'id'       => '[post_types]' . esc_attr( $post->name ),
 					'title'    => esc_attr( $post->label ),
 					'callback' => 'set_cpt_image',
 					'section'  => $sections['cpt']['id'],
-					'args'     => $args,
+					'args'     => array( 'post_type' => $post, ),
 				);
 			}
 		}
@@ -176,7 +177,7 @@ class Display_Featured_Image_Genesis_Settings {
 
 		foreach ( $fields as $field ) {
 			add_settings_field(
-				$field['id'],
+				$this->page . $field['id'],
 				'<label for="' . $field['id'] . '">' . $field['title'] . '</label>',
 				array( $this, $field['callback'] ),
 				$this->page,
@@ -250,72 +251,17 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
-	 * option to exclude featured image on front page
+	 * generic checkbox function (for all checkbox settings)
 	 * @return 0 1 checkbox
 	 *
-	 * @since  1.4.0
+	 * @since  2.3.0
 	 */
-	public function exclude_front() {
-		echo '<input type="hidden" name="displayfeaturedimagegenesis[exclude_front]" value="0" />';
-		printf( '<label for="displayfeaturedimagegenesis[exclude_front]"><input type="checkbox" name="displayfeaturedimagegenesis[exclude_front]" id="displayfeaturedimagegenesis[exclude_front]" value="1" %1$s class="code" />%2$s</label>',
-			checked( 1, esc_attr( $this->displaysetting['exclude_front'] ), false ),
-			__( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' )
-		);
-	}
-
-	/**
-	 * option to not move titles
-	 * @return 0 1 checkbox
-	 *
-	 * @since  2.0.0
-	 */
-	public function keep_titles() {
-		echo '<input type="hidden" name="displayfeaturedimagegenesis[keep_titles]" value="0" />';
-		printf( '<label for="displayfeaturedimagegenesis[keep_titles]"><input type="checkbox" name="displayfeaturedimagegenesis[keep_titles]" id="displayfeaturedimagegenesis[keep_titles]" value="1" %1$s class="code" />%2$s</label>',
-			checked( 1, esc_attr( $this->displaysetting['keep_titles'] ), false ),
-			__( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' )
-		);
-	}
-
-	/**
-	 * option to move excerpts to leader image area
-	 * @return 0 1 checkbox
-	 *
-	 * @since  1.3.0
-	 */
-	public function move_excerpts() {
-		echo '<input type="hidden" name="displayfeaturedimagegenesis[move_excerpts]" value="0" />';
-		printf( '<label for="displayfeaturedimagegenesis[move_excerpts]"><input type="checkbox" name="displayfeaturedimagegenesis[move_excerpts]" id="displayfeaturedimagegenesis[move_excerpts]" value="1" %1$s class="code" />%2$s</label>',
-			checked( 1, esc_attr( $this->displaysetting['move_excerpts'] ), false ),
-			__( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' )
-		);
-	}
-
-	/**
-	 * option to show featured image on page 2+ of blog/archives
-	 * @return 0 1 checkbox
-	 *
-	 * @since  2.2.0
-	 */
-	public function check_is_paged() {
-		echo '<input type="hidden" name="displayfeaturedimagegenesis[is_paged]" value="0" />';
-		printf( '<label for="displayfeaturedimagegenesis[is_paged]"><input type="checkbox" name="displayfeaturedimagegenesis[is_paged]" id="displayfeaturedimagegenesis[is_paged]" value="1" %1$s class="code" />%2$s</label>',
-			checked( 1, esc_attr( $this->displaysetting['is_paged'] ), false ),
-			__( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' )
-		);
-	}
-
-	/**
-	 * option to add images to feed
-	 * @return 0 1 checkbox
-	 *
-	 * @since  1.5.0
-	 */
-	public function add_image_to_feed() {
-		echo '<input type="hidden" name="displayfeaturedimagegenesis[feed_image]" value="0" />';
-		printf( '<label for="displayfeaturedimagegenesis[feed_image]"><input type="checkbox" name="displayfeaturedimagegenesis[feed_image]" id="displayfeaturedimagegenesis[feed_image]" value="1" %1$s class="code" />%2$s</label>',
-			checked( 1, esc_attr( $this->displaysetting['feed_image'] ), false ),
-			__( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' )
+	public function do_checkbox( $args ) {
+		printf( '<input type="hidden" name="displayfeaturedimagegenesis[%s]" value="0" />', $args['setting'] );
+		printf( '<label for="displayfeaturedimagegenesis[%1$s]"><input type="checkbox" name="displayfeaturedimagegenesis[%1$s]" id="displayfeaturedimagegenesis[%1$s]" value="1" %2$s class="code" />%3$s</label>',
+			$args['setting'],
+			checked( 1, esc_attr( $this->displaysetting[ $args['setting'] ] ), false ),
+			$args['label']
 		);
 	}
 
