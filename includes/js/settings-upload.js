@@ -29,7 +29,7 @@ jQuery(document).ready(function($){
 		custom_uploader.on( 'select', function() {
 
 			attachment   = custom_uploader.state().get( 'selection' ).first().toJSON();
-			preview      = $( target_input ).prevAll( '#upload_logo_preview' );
+			preview      = $( target_input ).prevAll( '.upload_logo_preview' );
 			previewImage = $( '<div id="upload_logo_preview"><img width="300" src="' + attachment.url + '" /></div>' );
 			$( target_input ).val( attachment.id );
 			if ( $( preview ).length ) {
