@@ -241,7 +241,7 @@ class Display_Featured_Image_Genesis_Settings {
 		if ( ! empty( $id ) ) {
 			echo wp_kses_post( $this->render_image_preview( $id ) );
 		}
-		echo $this->render_buttons( $id, $name );
+		$this->render_buttons( $id, $name );
 		echo '<p class="description">';
 		printf(
 			__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
@@ -287,7 +287,7 @@ class Display_Featured_Image_Genesis_Settings {
 			echo wp_kses_post( $this->render_image_preview( $id ) );
 		}
 
-		echo $this->render_buttons( $id, $name );
+		$this->render_buttons( $id, $name );
 
 		if ( empty( $id ) ) {
 			return;
@@ -336,17 +336,16 @@ class Display_Featured_Image_Genesis_Settings {
 			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
 		}
 		$id = $id ? absint( $id ) : '';
-		$buttons  = sprintf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), $id );
-		$buttons .= sprintf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
+		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), $id );
+		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
 			esc_attr( $name ),
 			__( 'Select Image', 'display-featured-image-genesis' )
 		);
 		if ( ! empty( $id ) ) {
-			$buttons .= sprintf( ' <input type="button" class="delete_image button-secondary" value="%s" />',
+			printf( ' <input type="button" class="delete_image button-secondary" value="%s" />',
 				__( 'Delete Image', 'display-featured-image-genesis' )
 			);
 		}
-		return $buttons;
 	}
 
 	/**
