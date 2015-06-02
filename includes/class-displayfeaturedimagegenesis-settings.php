@@ -373,7 +373,7 @@ class Display_Featured_Image_Genesis_Settings {
 					}
 				}
 			}
-			//* Save the option array.
+			// Save the option array.
 			if ( $is_updated ) {
 				update_option( "displayfeaturedimagegenesis_$t_id", $displaysetting );
 			}
@@ -398,8 +398,6 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value['less_header']   = absint( $new_value['less_header'] );
 
-		$new_value['default']       = $this->validate_image( $new_value['default'] );
-
 		$new_value['exclude_front'] = $this->one_zero( $new_value['exclude_front'] );
 
 		$new_value['keep_titles']   = $this->one_zero( $new_value['keep_titles'] );
@@ -410,11 +408,23 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$new_value['feed_image']    = $this->one_zero( $new_value['feed_image'] );
 
+		// extra variables to pass through to image validation
+		$old_value     = $this->displaysetting['default'];
+		$label         = 'Default';
+		$size_to_check = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
+
+		// validate default image
+		$new_value['default'] = $this->validate_image( $new_value['default'], $old_value, $label, $size_to_check );
+
 		foreach ( $this->post_types as $post_type ) {
-			$new_value['post_type'][ $post_type->name ] = $this->validate_post_type_image( $new_value['post_type'][ $post_type->name ] );
-			if ( false === $new_value['post_type'] [ $post_type->name ] ) {
-				$new_value['post_type'][ $post_type->name ] = $this->displaysetting['post_type'][ $post_type->name ];
-			}
+
+			// extra variables to pass through to image validation
+			$old_value     = $this->displaysetting['post_type'][ $post_type->name ];
+			$label         = $post_type->label;
+			$size_to_check = get_option( 'medium_size_w' );
+
+			// sanitize
+			$new_value['post_type'][ $post_type->name ] = $this->validate_image( $new_value['post_type'][ $post_type->name ], $old_value, $label, $size_to_check );
 		}
 
 		return $new_value;
@@ -427,96 +437,45 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @return string            New or previous value, depending on allowed image size.
 	 * @since  1.2.2
 	 */
-	protected function validate_image( $new_value ) {
+	protected function validate_image( $new_value, $old_value, $label, $size_to_check ) {
 
 		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
-			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+			$new_value = (int) Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		}
-		$new_value = absint( $new_value );
-		$large     = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
-		$reset     = __( ' The Default Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' );
+		if ( ! is_numeric( $old_value ) ) {
+			$old_value = (int) Display_Featured_Image_Genesis_Common::get_image_id( $old_value );
+		}
+		$source = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid  = $this->is_valid_img_ext( $source[0] );
+		$width  = $source[1];
+		$reset  = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
 
 		// ok for field to be empty
 		if ( $new_value ) {
 
-			if ( ! $valid ) {
-				$message   = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-				$new_value = $this->displaysetting['default'];
+			if ( $valid && $width > $size_to_check ) {
+				return $new_value;
+			}
 
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'invalid' ),
-					esc_attr( $message . $reset ),
-					'error'
-				);
+			$new_value = $old_value;
+			if ( ! $valid ) {
+				$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
+				$class   = 'invalid';
 			}
 
 			// if file is an image, but is too small, throw it back
-			elseif ( $width <= $large ) {
-				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-				$new_value = $this->displaysetting['default'];
-
-				add_settings_error(
-					$this->displaysetting['default'],
-					esc_attr( 'weetiny' ),
-					esc_attr( $message . $reset ),
-					'error'
-				);
-			}
-		}
-
-		return $new_value;
-	}
-
-	/**
-	 * Returns empty value for image if not correct file type/size
-	 * @param  string $new_value New value
-	 * @return string            New or previous value, depending on allowed image size.
-	 * @since  2.0.0
-	 */
-	protected function validate_post_type_image( $new_value ) {
-
-		// if the image was selected using the old URL method
-		if ( ! is_numeric( $new_value ) ) {
-			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		}
-		$new_value = absint( $new_value );
-		$medium    = get_option( 'medium_size_w' );
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
-
-		// ok for field to be empty
-		if ( $new_value ) {
-
-			if ( ! $valid ) {
-				$message   = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-				$new_value = false;
-
-				add_settings_error(
-					$this->displaysetting['post_type'],
-					esc_attr( 'invalid' ),
-					esc_attr( $message ),
-					'error'
-				);
+			elseif ( $width <= $size_to_check ) {
+				$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
+				$class   = 'weetiny';
 			}
 
-			// if file is an image, but is too small, throw it back
-			elseif ( $width <= $medium ) {
-				$message   = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-				$new_value = false;
-
-				add_settings_error(
-					$this->displaysetting['post_type'],
-					esc_attr( 'weetiny' ),
-					esc_attr( $message ),
-					'error'
-				);
-			}
+			add_settings_error(
+				$old_value,
+				esc_attr( $class ),
+				esc_attr( $message . $reset ),
+				'error'
+			);
 		}
 
 		return $new_value;
