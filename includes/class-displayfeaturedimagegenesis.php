@@ -17,13 +17,13 @@
 class Display_Featured_Image_Genesis {
 
 	function __construct( $admin, $common, $description, $output, $rss, $settings, $taxonomies ) {
-		$this->admin      = $admin;
-		$this->common     = $common;
-		$this->archive    = $description;
-		$this->output     = $output;
-		$this->rss        = $rss;
-		$this->settings   = $settings;
-		$this->taxonomies = $taxonomies;
+		$this->admin       = $admin;
+		$this->common      = $common;
+		$this->description = $description;
+		$this->output      = $output;
+		$this->rss         = $rss;
+		$this->settings    = $settings;
+		$this->taxonomies  = $taxonomies;
 	}
 
 	public function run() {
@@ -186,7 +186,7 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function enqueue_scripts() {
 
-		$version = Display_Featured_Image_Genesis_Common::$version;
+		$version = $this->common->version;
 		$check   = strpos( get_current_screen()->id, 'displayfeaturedimagegenesis' );
 
 		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
@@ -211,8 +211,17 @@ class Display_Featured_Image_Genesis {
 
 	function register_widgets() {
 
-		require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-cpt-archive-widget.php';
-		require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-taxonomy-widget.php';
+		$files = array(
+			'cpt-archive',
+			'taxonomy',
+		);
+
+		foreach ( $files as $file ) {
+			require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
+		}
+
+		// require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-cpt-archive-widget.php';
+		// require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-taxonomy-widget.php';
 
 		register_widget( 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
 		register_widget( 'Display_Featured_Image_Genesis_Widget_CPT' );

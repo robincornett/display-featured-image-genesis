@@ -9,6 +9,12 @@
  */
 class Display_Featured_Image_Genesis_Taxonomies {
 
+	protected $settings;
+
+	public function __construct( $settings ) {
+		$this->settings = $settings;
+	}
+
 	/**
 	 * add featured image uploader to new term add
 	 */
@@ -55,9 +61,9 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				$id   = $displaysetting['term_image'];
 				$name = 'displayfeaturedimagegenesis[term_image]';
 				if ( ! empty( $id ) ) {
-					echo wp_kses_post( Display_Featured_Image_Genesis_Settings::render_image_preview( $id ) );
+					echo wp_kses_post( $this->settings->render_image_preview( $id ) );
 				}
-				echo Display_Featured_Image_Genesis_Settings::render_buttons( $id, $name );
+				$this->settings->render_buttons( $id, $name );
 				echo '<p class="description">';
 				printf(
 					__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),

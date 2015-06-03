@@ -9,6 +9,11 @@
 
 class Display_Featured_Image_Genesis_Output {
 
+	public function __construct( $common, $description ) {
+		$this->common      = $common;
+		$this->description = $description;
+	}
+
 	/**
 	 * set parameters for scripts, etc. to run.
 	 *
@@ -44,9 +49,9 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function load_scripts() {
 
-		$version = Display_Featured_Image_Genesis_Common::$version;
-		$item    = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$large   = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
+		$version = $this->common->version;
+		$item    = $this->common->get_image_variables();
+		$large   = $this->common->minimum_backstretch_width();
 		$medium  = absint( get_option( 'medium_size_w' ) );
 		$width   = absint( $item->backstretch[1] );
 
@@ -100,8 +105,8 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function add_body_class( $classes ) {
 
-		$item   = Display_Featured_Image_Genesis_Common::get_image_variables();
-		$large  = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
+		$item   = $this->common->get_image_variables();
+		$large  = $this->common->minimum_backstretch_width();
 		$medium = absint( get_option( 'medium_size_w' ) );
 		$width  = absint( $item->backstretch[1] );
 
@@ -133,7 +138,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_backstretch_image_title() {
 
-		$item           = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$item           = $this->common->get_image_variables();
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 		$keep_titles    = $displaysetting['keep_titles'];
 
@@ -191,8 +196,8 @@ class Display_Featured_Image_Genesis_Output {
 		// if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
 
-			Display_Featured_Image_Genesis_Description::do_front_blog_excerpt();
-			Display_Featured_Image_Genesis_Description::do_excerpt();
+			$this->description->do_front_blog_excerpt();
+			$this->description->do_excerpt();
 			genesis_do_taxonomy_title_description();
 			genesis_do_author_title_description();
 			genesis_do_cpt_archive_title_description();
@@ -249,7 +254,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_large_image() {
-		$item  = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$item  = $this->common->get_image_variables();
 		$image = sprintf( '<img src="%1$s" class="aligncenter featured" alt="%2$s" />',
 			esc_url( $item->backstretch[0] ),
 			esc_attr( $item->title )
@@ -271,9 +276,9 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function move_titles() {
 
-		Display_Featured_Image_Genesis_Description::do_tax_description();
-		Display_Featured_Image_Genesis_Description::do_author_description();
-		Display_Featured_Image_Genesis_Description::do_cpt_archive_description();
+		$this->description->do_tax_description();
+		$this->description->do_author_description();
+		$this->description->do_cpt_archive_description();
 
 	}
 

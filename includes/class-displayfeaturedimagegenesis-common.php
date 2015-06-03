@@ -13,9 +13,9 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public static $version = '2.2.2';
+	public $version = '2.2.2';
 
-	protected static $post_types;
+	protected $post_types;
 
 	/**
 	 * set and retreive variables for the featured image.
@@ -23,9 +23,9 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since  1.1.0
 	 */
-	public static function get_image_variables() {
+	public function get_image_variables() {
 
-		self::$post_types = array();
+		$this->post_types = array();
 
 		$item = new stdClass();
 
@@ -52,14 +52,14 @@ class Display_Featured_Image_Genesis_Common {
 		 *
 		 * @since  2.0.0
 		 */
-		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', self::$post_types );
+		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', $this->post_types );
 		$image_size      = 'displayfeaturedimage_backstretch';
 		if ( in_array( get_post_type(), $use_large_image ) ) {
 			$image_size = 'large';
 		}
 
 		// $image_id is set by new set_image_id function
-		$image_id = self::set_image_id();
+		$image_id = $this->set_image_id();
 
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
@@ -94,7 +94,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// $title is set by new title function
-		$title = self::set_item_title();
+		$title = $this->set_item_title();
 
 		/**
 		 * Optional filter to change the title text
@@ -112,7 +112,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 2.2.1
 	 */
-	protected static function set_image_id( $image_id = '' ) {
+	protected function set_image_id( $image_id = '' ) {
 
 		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage       = get_option( 'page_for_posts' );
@@ -131,7 +131,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		$fallback_id = $fallback;
 		if ( ! is_numeric( $fallback ) ) {
-			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
+			$fallback_id = $this->get_image_id( $fallback ); // gets image id with attached metadata
 		}
 		$fallback_id = absint( $fallback_id );
 
@@ -140,7 +140,7 @@ class Display_Featured_Image_Genesis_Common {
 		 * @var filter
 		 * @since  2.0.0 (deprecated old use_fallback_image function from 1.2.2)
 		 */
-		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', self::$post_types );
+		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', $this->post_types );
 
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
@@ -171,18 +171,14 @@ class Display_Featured_Image_Genesis_Common {
 				$post_type = $object->post_type;
 			}
 			if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
-				$image_id = $displaysetting['post_type'][ $post_type ];
-				// if $image_id is using the old URL
-				if ( ! is_numeric( $displaysetting['post_type'][ $post_type ] ) ) {
-					$image_id = self::get_image_id( $displaysetting['post_type'][ $post_type ] );
-				}
+				$image_id = is_numeric( $displaysetting['post_type'][ $post_type ] ) ? $displaysetting['post_type'][ $post_type ] : $this->get_image_id( $displaysetting['post_type'][ $post_type ] );
 
 				/**
 				 * use the custom post type featured image
 				 *
 				 * @since 2.2.1
 				 */
-				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', self::$post_types );
+				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', $this->post_types );
 				if ( in_array( get_post_type(), $use_cpt ) ) {
 					return $image_id;
 				}
@@ -194,11 +190,7 @@ class Display_Featured_Image_Genesis_Common {
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 			// if there is a term image
 			if ( ! empty( $term_meta['term_image'] ) ) {
-				$image_id = $term_meta['term_image'];
-				// if $image_id is using the old URL
-				if ( ! is_numeric( $term_meta['term_image'] ) ) {
-					$image_id = self::get_image_id( $term_meta['term_image'] );
-				}
+				$image_id = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : $this->get_image_id( $term_meta['term_image'] );
 			}
 		}
 
@@ -213,7 +205,7 @@ class Display_Featured_Image_Genesis_Common {
 				 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
 				 * @var filter
 				 */
-				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', self::$post_types );
+				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', $this->post_types );
 
 				if ( in_array( get_post_type(), $use_tax_image ) ) {
 					return $image_id;
@@ -241,7 +233,7 @@ class Display_Featured_Image_Genesis_Common {
 
 	}
 
-	protected static function set_item_title( $title = '' ) {
+	protected function set_item_title( $title = '' ) {
 
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage = get_option( 'page_for_posts' );
@@ -287,7 +279,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @author Philip Newcomer
 	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
 	 */
-	public static function get_image_id( $attachment_url = '' ) {
+	public function get_image_id( $attachment_url = '' ) {
 
 		$attachment_id = false;
 
@@ -314,7 +306,7 @@ class Display_Featured_Image_Genesis_Common {
 			$url_stripped   = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
 
 			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
-			$attachment_id  = self::fetch_image_id_query( $url_stripped, $attachment_url );
+			$attachment_id  = $this->fetch_image_id_query( $url_stripped, $attachment_url );
 
 		}
 
@@ -331,7 +323,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @author hellofromtonya
 	 */
-	protected static function fetch_image_id_query( $url_stripped, $attachment_url ) {
+	protected function fetch_image_id_query( $url_stripped, $attachment_url ) {
 
 		global $wpdb;
 
@@ -355,7 +347,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 2.2.0
 	 */
-	public static function minimum_backstretch_width() {
+	public function minimum_backstretch_width() {
 		$large = apply_filters( 'display_featured_image_genesis_set_minimum_backstretch_width', get_option( 'large_size_w' ) );
 		if ( ! is_numeric( $large ) ) {
 			$large = get_option( 'large_size_w' );

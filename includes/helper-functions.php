@@ -28,7 +28,8 @@ function display_featured_image_genesis_get_term_image_id() {
 		if ( ! empty( $term_meta['term_image'] ) ) {
 			$image_id = $term_meta['term_image'];
 			if ( ! is_numeric( $term_meta['term_image'] ) ) {
-				$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
+				$common   = new Display_Featured_Image_Genesis_Common();
+				$image_id = $common->get_image_id( $term_meta['term_image'] );
 			}
 			break;
 		}
@@ -67,7 +68,8 @@ function display_featured_image_genesis_get_default_image_id() {
 	$fallback       = $displaysetting['default'];
 	$image_id       = $fallback;
 	if ( ! is_numeric( $fallback ) ) {
-		$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $fallback ); // gets image id with attached metadata
+		$common   = new Display_Featured_Image_Genesis_Common();
+		$image_id = $common->get_image_id( $fallback ); // gets image id with attached metadata
 	}
 
 	return absint( $image_id );
@@ -117,7 +119,8 @@ function display_featured_image_genesis_get_cpt_image_id() {
 	if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
 		$image_id = $displaysetting['post_type'][ $post_type ];
 		if ( ! is_numeric( $displaysetting['post_type'][ $post_type ] ) ) {
-			$image_id = Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['post_type'][ $post_type ] );
+			$common   = new Display_Featured_Image_Genesis_Common();
+			$image_id = $common->get_image_id( $displaysetting['post_type'][ $post_type ] );
 		}
 	}
 

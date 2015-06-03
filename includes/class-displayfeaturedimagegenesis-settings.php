@@ -13,7 +13,11 @@ class Display_Featured_Image_Genesis_Settings {
 	 * variable set for featured image option
 	 * @var option
 	 */
-	protected $page, $displaysetting, $post_types;
+	protected $common, $page, $displaysetting, $post_types;
+
+	public function __construct( $common ) {
+		$this->common = $common;
+	}
 
 	/**
 	 * add a submenu page under Appearance
@@ -235,7 +239,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function set_default_image() {
 
-		$large = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
+		$large = $this->common->minimum_backstretch_width();
 		$id    = $this->displaysetting['default'] ? $this->displaysetting['default'] : '';
 		$name  = 'displayfeaturedimagegenesis[default]';
 		if ( ! empty( $id ) ) {
@@ -274,7 +278,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function set_cpt_image( $args ) {
 
-		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$item = $this->common->get_image_variables();
 
 		$post_type = $args['post_type']->name;
 		if ( empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
@@ -307,13 +311,13 @@ class Display_Featured_Image_Genesis_Settings {
 	 *
 	 * @since x.y.z
 	 */
-	public static function render_image_preview( $id ) {
+	public function render_image_preview( $id ) {
 		if ( empty( $id ) ) {
 			return;
 		}
 
 		if ( ! is_numeric( $id ) ) {
-			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
+			$id = $this->common->get_image_id( $id );
 		}
 
 		$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
@@ -331,11 +335,9 @@ class Display_Featured_Image_Genesis_Settings {
 	 *
 	 * @since x.y.z
 	 */
-	public static function render_buttons( $id, $name ) {
-		if ( ! is_numeric( $id ) ) {
-			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
-		}
-		$id = $id ? absint( $id ) : '';
+	public function render_buttons( $id, $name ) {
+		$id = is_numeric( $id ) ? $id : $this->common->get_image_id( $id );
+		$id = $id ? (int) $id : '';
 		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), $id );
 		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
 			esc_attr( $name ),
@@ -411,7 +413,7 @@ class Display_Featured_Image_Genesis_Settings {
 		// extra variables to pass through to image validation
 		$old_value     = $this->displaysetting['default'];
 		$label         = 'Default';
-		$size_to_check = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
+		$size_to_check = $this->common->minimum_backstretch_width();
 
 		// validate default image
 		$new_value['default'] = $this->validate_image( $new_value['default'], $old_value, $label, $size_to_check );
@@ -441,10 +443,10 @@ class Display_Featured_Image_Genesis_Settings {
 
 		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
-			$new_value = (int) Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+			$new_value = (int) $this->common->get_image_id( $new_value );
 		}
 		if ( ! is_numeric( $old_value ) ) {
-			$old_value = (int) Display_Featured_Image_Genesis_Common::get_image_id( $old_value );
+			$old_value = (int) $this->common->get_image_id( $old_value );
 		}
 		$source = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid  = $this->is_valid_img_ext( $source[0] );
@@ -452,31 +454,32 @@ class Display_Featured_Image_Genesis_Settings {
 		$reset  = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
 
 		// ok for field to be empty
-		if ( $new_value ) {
-
-			if ( $valid && $width > $size_to_check ) {
-				return $new_value;
-			}
-
-			$new_value = $old_value;
-			if ( ! $valid ) {
-				$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-				$class   = 'invalid';
-			}
-
-			// if file is an image, but is too small, throw it back
-			elseif ( $width <= $size_to_check ) {
-				$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-				$class   = 'weetiny';
-			}
-
-			add_settings_error(
-				$old_value,
-				esc_attr( $class ),
-				esc_attr( $message . $reset ),
-				'error'
-			);
+		if ( ! $new_value ) {
+			return '';
 		}
+
+		if ( $valid && $width > $size_to_check ) {
+			return $new_value;
+		}
+
+		$new_value = $old_value;
+		if ( ! $valid ) {
+			$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
+			$class   = 'invalid';
+		}
+
+		// if file is an image, but is too small, throw it back
+		elseif ( $width <= $size_to_check ) {
+			$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
+			$class   = 'weetiny';
+		}
+
+		add_settings_error(
+			$old_value,
+			esc_attr( $class ),
+			esc_attr( $message . $reset ),
+			'error'
+		);
 
 		return $new_value;
 	}
@@ -491,9 +494,9 @@ class Display_Featured_Image_Genesis_Settings {
 
 		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
-			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
+			$new_value = $this->common->get_image_id( $new_value );
 		}
-		$new_value = absint( $new_value );
+		$new_value = (int) $new_value;
 		$medium    = get_option( 'medium_size_w' );
 		$source    = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid     = $this->is_valid_img_ext( $source[0] );
@@ -551,7 +554,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function help() {
 		$screen = get_current_screen();
-		$large  = Display_Featured_Image_Genesis_Common::minimum_backstretch_width();
+		$large  = $this->common->minimum_backstretch_width();
 
 		$height_help  = '<h3>' . __( 'Height', 'display-featured-image-genesis' ) . '</h3>';
 		$height_help .= '<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your backstretch image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the backstretch image, making it shorter.', 'display-featured-image-genesis' ) . '</p>';
