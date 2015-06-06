@@ -13,7 +13,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 * variable set for featured image option
 	 * @var option
 	 */
-	protected $common, $page, $displaysetting, $post_types;
+	protected $common;
+	protected $page;
+	protected $displaysetting;
+	protected $post_types;
 
 	public function __construct( $common ) {
 		$this->common = $common;
@@ -165,7 +168,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'title'    => esc_attr( $post->label ),
 					'callback' => 'set_cpt_image',
 					'section'  => $sections['cpt']['id'],
-					'args'     => array( 'post_type' => $post, ),
+					'args'     => array( 'post_type' => $post ),
 				);
 			}
 		}

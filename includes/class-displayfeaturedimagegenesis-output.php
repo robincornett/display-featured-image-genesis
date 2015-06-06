@@ -9,9 +9,14 @@
 
 class Display_Featured_Image_Genesis_Output {
 
+	protected $common;
+	protected $description;
+	protected $displaysetting;
+
 	public function __construct( $common, $description ) {
-		$this->common      = $common;
-		$this->description = $description;
+		$this->common         = $common;
+		$this->description    = $description;
+		$this->displaysetting = get_option( 'displayfeaturedimagegenesis' );
 	}
 
 	/**
@@ -21,14 +26,8 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$skip           = $displaysetting['exclude_front'];
-
-		$post_types = array();
-		$post_types[] = 'attachment';
-		$post_types[] = 'revision';
-		$post_types[] = 'nav_menu_item';
-
+		$skip          = $this->displaysetting['exclude_front'];
+		$post_types    = array( 'attachment', 'revision', 'nav_menu_item' );
 		$skipped_types = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
 		if ( is_admin() || ( in_array( get_post_type(), $skipped_types ) ) || ( $skip && is_front_page() ) ) {
@@ -56,44 +55,36 @@ class Display_Featured_Image_Genesis_Output {
 		$width   = absint( $item->backstretch[1] );
 
 		// check if they have enabled display on subsequent pages
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$is_paged       = ! empty( $displaysetting['is_paged'] ) ? $displaysetting['is_paged'] : 0;
+		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
 
-		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
-		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
+		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
+		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $item->content ) ) {
 			return;
 		}
-		// if the featured image is not part of the content, or we're not on a singular page, carry on
-		if ( false === $item->content || ! is_singular() ) {
 
-			$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
-			wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $version );
+		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
+		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $version );
 
-			$post_types = array();
-			$force_backstretch = apply_filters( 'display_featured_image_genesis_force_backstretch', $post_types );
-			// check if the image is large enough for backstretch
-			if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
+		$force_backstretch = apply_filters( 'display_featured_image_genesis_force_backstretch', array() );
+		// check if the image is large enough for backstretch
+		if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
 
-				wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
-				wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
+			wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
+			wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
-				$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
-				add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ) );
+			$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
+			add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ) );
 
+		} elseif ( $width <= $large ) { // otherwise it's a large image.
+
+			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+			add_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description', 15 );
+
+			$hook = 'genesis_before_loop';
+			if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
+				$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
 			}
-
-			// otherwise it's a large image.
-			elseif ( $width <= $large ) {
-
-				remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
-				add_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description', 15 );
-
-				$hook = 'genesis_before_loop';
-				if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
-					$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
-				}
-				add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
-			}
+			add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
 		}
 	}
 
@@ -111,8 +102,7 @@ class Display_Featured_Image_Genesis_Output {
 		$width  = absint( $item->backstretch[1] );
 
 		// check if they have enabled display on subsequent pages
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$is_paged       = ! empty( $displaysetting['is_paged'] ) ? $displaysetting['is_paged'] : 0;
+		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
 
 		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
 		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
@@ -122,8 +112,7 @@ class Display_Featured_Image_Genesis_Output {
 		if ( false === $item->content || ! is_singular() ) {
 			if ( $width > $large ) {
 				$classes[] = 'has-leader';
-			}
-			elseif ( $width <= $large ) {
+			} elseif ( $width <= $large ) {
 				$classes[] = 'large-featured';
 			}
 		}
@@ -138,14 +127,13 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_backstretch_image_title() {
 
-		$item           = $this->common->get_image_variables();
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$keep_titles    = $displaysetting['keep_titles'];
+		$item        = $this->common->get_image_variables();
+		$keep_titles = $this->displaysetting['keep_titles'];
 
 		// backstretch settings from plugin/featured image settings
 		$backstretch_settings = array(
 			'src'    => esc_url( $item->backstretch[0] ),
-			'height' => absint( $displaysetting['less_header'] ),
+			'height' => absint( $this->displaysetting['less_header'] ),
 		);
 		// backstretch settings which can be filtered
 		$backstretch_variables = array(
@@ -164,8 +152,7 @@ class Display_Featured_Image_Genesis_Output {
 		 * @var filter
 		 * @since 2.2.0
 		 */
-		$post_types        = array();
-		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', $post_types );
+		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', array() );
 
 		// if titles will be moved to overlay backstretch image
 		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
@@ -184,14 +171,13 @@ class Display_Featured_Image_Genesis_Output {
 
 		do_action( 'display_featured_image_genesis_before_title' );
 
-		$move_excerpts = $displaysetting['move_excerpts'];
-		$post_types    = array();
+		$move_excerpts = $this->displaysetting['move_excerpts'];
 		/**
 		 * create a filter to not move excerpts if move excerpts is enabled
 		 * @var filter
 		 * @since  2.0.0 (deprecated old function from 1.3.3)
 		 */
-		$omit_excerpt = apply_filters( 'display_featured_image_genesis_omit_excerpt', $post_types );
+		$omit_excerpt = apply_filters( 'display_featured_image_genesis_omit_excerpt', array() );
 
 		// if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
@@ -202,10 +188,7 @@ class Display_Featured_Image_Genesis_Output {
 			genesis_do_author_title_description();
 			genesis_do_cpt_archive_title_description();
 
-		}
-
-		// if titles are being moved to overlay the image
-		elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
+		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
 
 			if ( ! empty( $item->title ) && ! is_front_page() ) {
 

@@ -15,8 +15,6 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public $version = '2.2.2';
 
-	protected $post_types;
-
 	/**
 	 * set and retreive variables for the featured image.
 	 * @return $item
@@ -24,8 +22,6 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since  1.1.0
 	 */
 	public function get_image_variables() {
-
-		$this->post_types = array();
 
 		$item = new stdClass();
 
@@ -52,7 +48,7 @@ class Display_Featured_Image_Genesis_Common {
 		 *
 		 * @since  2.0.0
 		 */
-		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', $this->post_types );
+		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', array() );
 		$image_size      = 'displayfeaturedimage_backstretch';
 		if ( in_array( get_post_type(), $use_large_image ) ) {
 			$image_size = 'large';
@@ -72,15 +68,14 @@ class Display_Featured_Image_Genesis_Common {
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 
 			if ( false !== $item->content ) {
-				$source_id = '';
+				$source_id     = '';
 				$term_image    = display_featured_image_genesis_get_term_image_id();
 				$default_image = display_featured_image_genesis_get_default_image_id();
 				// reset backstretch image source to term image if it exists and the featured image is being used in content.
 				if ( ! empty( $term_image ) ) {
 					$source_id = $term_image;
-				}
-				// else, reset backstretch image source to fallback.
-				elseif ( ! empty( $fallback ) ) {
+				} elseif ( ! empty( $fallback ) ) {
+					// else, reset backstretch image source to fallback.
 					$source_id = $default_image;
 				}
 				$item->backstretch = wp_get_attachment_image_src( $source_id, $image_size );
@@ -140,7 +135,7 @@ class Display_Featured_Image_Genesis_Common {
 		 * @var filter
 		 * @since  2.0.0 (deprecated old use_fallback_image function from 1.2.2)
 		 */
-		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', $this->post_types );
+		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', array() );
 
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
@@ -162,12 +157,10 @@ class Display_Featured_Image_Genesis_Common {
 			$post_type = '';
 			if ( $object->name ) { // results in post type on cpt archive
 				$post_type = $object->name;
-			}
-			elseif ( $object->taxonomy ) { // on a tax/term/category
+			} elseif ( $object->taxonomy ) { // on a tax/term/category
 				$tax_object = get_taxonomy( $object->taxonomy );
 				$post_type  = $tax_object->object_type[0];
-			}
-			elseif ( $object->post_type ) { // on singular
+			} elseif ( $object->post_type ) { // on singular
 				$post_type = $object->post_type;
 			}
 			if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
@@ -178,7 +171,7 @@ class Display_Featured_Image_Genesis_Common {
 				 *
 				 * @since 2.2.1
 				 */
-				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', $this->post_types );
+				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', array() );
 				if ( in_array( get_post_type(), $use_cpt ) ) {
 					return $image_id;
 				}
@@ -205,7 +198,7 @@ class Display_Featured_Image_Genesis_Common {
 				 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
 				 * @var filter
 				 */
-				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', $this->post_types );
+				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', array() );
 
 				if ( in_array( get_post_type(), $use_tax_image ) ) {
 					return $image_id;
@@ -241,11 +234,9 @@ class Display_Featured_Image_Genesis_Common {
 
 		if ( is_singular() ) {
 			$title = get_the_title();
-		}
-		elseif ( is_home() && 'page' === $frontpage ) {
+		} elseif ( is_home() && 'page' === $frontpage ) {
 			$title = get_post( $postspage )->post_title;
-		}
-		elseif ( is_category() || is_tag() || is_tax() ) {
+		} elseif ( is_category() || is_tag() || is_tax() ) {
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
 			if ( ! $term || ! isset( $term->meta ) ) {
 				return;
@@ -254,14 +245,12 @@ class Display_Featured_Image_Genesis_Common {
 			if ( empty( $title ) && $a11ycheck ) {
 				$title = $term->name;
 			}
-		}
-		elseif ( is_author() ) {
+		} elseif ( is_author() ) {
 			$title = get_the_author_meta( 'headline', (int) get_query_var( 'author' ) );
 			if ( empty( $title ) && $a11ycheck ) {
 				$title = get_the_author_meta( 'display_name', (int) get_query_var( 'author' ) );
 			}
-		}
-		elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
+		} elseif ( is_post_type_archive() && genesis_has_post_type_archive_support() ) {
 			$title = genesis_get_cpt_option( 'headline' );
 			if ( empty( $title ) && $a11ycheck ) {
 				$title = post_type_archive_title( '', false );
@@ -289,7 +278,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// If there is no url, return.
-		if ( '' == $attachment_url ) {
+		if ( '' === $attachment_url ) {
 			return;
 		}
 
