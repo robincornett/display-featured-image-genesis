@@ -514,6 +514,54 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
+	 * Returns old value for author image if not correct file type/size
+	 * @param  string $new_value New value
+	 * @return string            New value or old, depending on allowed image size.
+	 * @since  x.y.z
+	 */
+	public function validate_author_image( $new_value, $old_value ) {
+
+		$medium    = get_option( 'medium_size_w' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
+		$width     = $source[1];
+
+		if ( ! $new_value  || ( $new_value && $valid && $width > $medium ) ) {
+			return $new_value;
+		}
+
+		add_filter( 'user_profile_update_errors', array( $this, 'user_profile_error_message' ), 10, 3 );
+
+		return $old_value;
+
+	}
+
+	/**
+	 * User profile error message
+	 * @param  var $errors error message depending on what's wrong
+	 * @param  var $update whether or not to update
+	 * @param  var $user   user being updated
+	 * @return error message
+	 *
+	 * @since x.y.z
+	 */
+	public function user_profile_error_message( $errors, $update, $user ) {
+		$new_value = (int) $_POST['displayfeaturedimagegenesis'];
+		$medium    = get_option( 'medium_size_w' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
+		$width     = $source[1];
+		$reset     = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $user->display_name );
+
+		if ( ! $valid ) {
+			$error = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
+		} elseif ( $width <= $medium ) {
+			$error = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
+		}
+		$errors->add( 'profile_error', $error . $reset );
+	}
+
+	/**
 	 * returns file extension
 	 * @since  1.2.2
 	 */

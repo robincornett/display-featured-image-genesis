@@ -16,8 +16,9 @@
  */
 class Display_Featured_Image_Genesis {
 
-	function __construct( $admin, $common, $description, $output, $rss, $settings, $taxonomies ) {
+	function __construct( $admin, $author, $common, $description, $output, $rss, $settings, $taxonomies ) {
 		$this->admin       = $admin;
+		$this->author      = $author;
 		$this->common      = $common;
 		$this->description = $description;
 		$this->output      = $output;
@@ -38,6 +39,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
 		add_action( 'admin_init', array( $this, 'set_taxonomy_meta' ) );
+		add_action( 'admin_init', array( $this, 'set_author_meta' ) );
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
@@ -170,6 +172,20 @@ class Display_Featured_Image_Genesis {
 	}
 
 	/**
+	 * Set new profile field for authors
+	 *
+	 * @since x.y.z
+	 */
+	public function set_author_meta() {
+		// current user
+		add_action( 'profile_personal_options', array( $this->author, 'do_author_fields' ) );
+		add_action( 'personal_options_update', array( $this->author, 'save_profile_fields' ) );
+		// not current user
+		add_action( 'edit_user_profile', array( $this->author, 'do_author_fields' ) );
+		add_action( 'edit_user_profile_update', array( $this->author, 'save_profile_fields' ) );
+	}
+
+	/**
 	 * Set up text domain for translations
 	 *
 	 * @since 1.1.0
@@ -194,7 +210,7 @@ class Display_Featured_Image_Genesis {
 
 		$screen = get_current_screen();
 
-		if ( 'appearance_page_displayfeaturedimagegenesis' === $screen->id || ! empty( $screen->taxonomy ) ) {
+		if ( 'appearance_page_displayfeaturedimagegenesis' === $screen->id || ! empty( $screen->taxonomy ) || 'profile' === $screen->id ) {
 			wp_enqueue_media();
 			wp_enqueue_script( 'displayfeaturedimage-upload' );
 			wp_localize_script( 'displayfeaturedimage-upload', 'objectL10n', array(

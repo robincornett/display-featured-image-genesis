@@ -28,6 +28,7 @@ function display_featured_image_genesis_require() {
 	$files = array(
 		'class-displayfeaturedimagegenesis',
 		'class-displayfeaturedimagegenesis-admin',
+		'class-displayfeaturedimagegenesis-author',
 		'class-displayfeaturedimagegenesis-common',
 		'class-displayfeaturedimagegenesis-description',
 		'class-displayfeaturedimagegenesis-output',
@@ -58,12 +59,16 @@ $displayfeaturedimagegenesis_rss         = new Display_Featured_Image_Genesis_RS
 $displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Settings(
 	$displayfeaturedimagegenesis_common
 );
+$displayfeaturedimagegenesis_author      = new Display_Featured_Image_Genesis_Author(
+	$displayfeaturedimagegenesis_settings
+);
 $displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies(
 	$displayfeaturedimagegenesis_settings
 );
 
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_admin,
+	$displayfeaturedimagegenesis_author,
 	$displayfeaturedimagegenesis_common,
 	$displayfeaturedimagegenesis_description,
 	$displayfeaturedimagegenesis_output,
