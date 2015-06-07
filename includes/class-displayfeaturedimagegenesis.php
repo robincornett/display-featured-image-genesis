@@ -57,12 +57,8 @@ class Display_Featured_Image_Genesis {
 	 *
 	 */
 	public function deactivate() {
-		if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-			deactivate_plugins( plugin_basename( dirname( __DIR__ ) ) . '/display-featured-image-genesis.php' ); // __DIR__ is a magic constant introduced in PHP 5.3
-		}
-		else {
-			deactivate_plugins( plugin_basename( dirname( dirname( __FILE__ ) ) ) . '/display-featured-image-genesis.php' );
-		}
+		$dirname = version_compare( PHP_VERSION, '5.3', '>=' ) ? __DIR__ : dirname( __FILE__ );
+		deactivate_plugins( plugin_basename( dirname( $dirname ) ) . '/display-featured-image-genesis.php' );
 	}
 
 	/**
