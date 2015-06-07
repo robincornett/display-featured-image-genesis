@@ -12,6 +12,7 @@ class Display_Featured_Image_Genesis_Output {
 	protected $common;
 	protected $description;
 	protected $displaysetting;
+	protected $item;
 
 	public function __construct( $common, $description ) {
 		$this->common         = $common;
@@ -26,6 +27,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 
+		$this->item    = Display_Featured_Image_Genesis_Common::get_image_variables();
 		$skip          = $this->displaysetting['exclude_front'];
 		$post_types    = array( 'attachment', 'revision', 'nav_menu_item' );
 		$skipped_types = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
@@ -49,16 +51,15 @@ class Display_Featured_Image_Genesis_Output {
 	public function load_scripts() {
 
 		$version = $this->common->version;
-		$item    = $this->common->get_image_variables();
 		$large   = $this->common->minimum_backstretch_width();
 		$medium  = absint( get_option( 'medium_size_w' ) );
-		$width   = absint( $item->backstretch[1] );
+		$width   = absint( $this->item->backstretch[1] );
 
 		// check if they have enabled display on subsequent pages
 		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
 
 		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
-		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $item->content ) ) {
+		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $this->item->content ) ) {
 			return;
 		}
 
@@ -96,20 +97,19 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function add_body_class( $classes ) {
 
-		$item   = $this->common->get_image_variables();
 		$large  = $this->common->minimum_backstretch_width();
 		$medium = absint( get_option( 'medium_size_w' ) );
-		$width  = absint( $item->backstretch[1] );
+		$width  = absint( $this->item->backstretch[1] );
 
 		// check if they have enabled display on subsequent pages
 		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
 
 		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
-		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
+		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
 			return $classes;
 		}
 
-		if ( false === $item->content || ! is_singular() ) {
+		if ( false === $this->item->content || ! is_singular() ) {
 			if ( $width > $large ) {
 				$classes[] = 'has-leader';
 			} elseif ( $width <= $large ) {
@@ -127,12 +127,11 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_backstretch_image_title() {
 
-		$item        = $this->common->get_image_variables();
 		$keep_titles = $this->displaysetting['keep_titles'];
 
 		// backstretch settings from plugin/featured image settings
 		$backstretch_settings = array(
-			'src'    => esc_url( $item->backstretch[0] ),
+			'src'    => esc_url( $this->item->backstretch[0] ),
 			'height' => absint( $this->displaysetting['less_header'] ),
 		);
 		// backstretch settings which can be filtered
@@ -190,7 +189,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
 
-			if ( ! empty( $item->title ) && ! is_front_page() ) {
+			if ( ! empty( $this->item->title ) && ! is_front_page() ) {
 
 				$class = 'archive-title';
 				if ( is_singular() ) {
@@ -201,7 +200,7 @@ class Display_Featured_Image_Genesis_Output {
 				if ( genesis_html5() ) {
 					$itemprop = 'itemprop="headline"';
 				}
-				$title = $item->title;
+				$title = $this->item->title;
 				$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
 
 				$title_output = apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
@@ -224,7 +223,7 @@ class Display_Featured_Image_Genesis_Output {
 		echo '</div>';
 
 		// if javascript not enabled, do a fallback background image
-		printf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $item->backstretch[0] ) );
+		printf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $this->item->backstretch[0] ) );
 
 		// close big-leader
 		echo '</div>';
@@ -237,10 +236,9 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_large_image() {
-		$item  = $this->common->get_image_variables();
 		$image = sprintf( '<img src="%1$s" class="aligncenter featured" alt="%2$s" />',
-			esc_url( $item->backstretch[0] ),
-			esc_attr( $item->title )
+			esc_url( $this->item->backstretch[0] ),
+			esc_attr( $this->item->title )
 		);
 
 		$image = apply_filters( 'display_featured_image_genesis_large_image_output', $image );

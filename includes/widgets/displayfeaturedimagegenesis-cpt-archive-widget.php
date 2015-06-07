@@ -107,10 +107,8 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		$image = '';
 		if ( 'post' === $instance['post_type'] ) {
 			$image_id = $postspage_image;
-		}
-		else {
-			$common   = new Display_Featured_Image_Genesis_Common();
-			$image_id = is_numeric( $option['post_type'][ $post_type->name ] ) ? $option['post_type'][ $post_type->name ] : $common->get_image_id( $option['post_type'][ $post_type->name ] );
+		} else {
+			$image_id = is_numeric( $option['post_type'][ $post_type->name ] ) ? $option['post_type'][ $post_type->name ] : Display_Featured_Image_Genesis_Common::get_image_id( $option['post_type'][ $post_type->name ] );
 		}
 		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 		if ( $image_src ) {
@@ -119,7 +117,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 		if ( $instance['show_image'] && $image ) {
 			$role = empty( $instance['show_title'] ) ? '' : 'aria-hidden="true"';
-			printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', $permalink, esc_html( $title ), esc_attr( $instance['image_alignment'] ), $role, $image );
+			printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), esc_attr( $role ), $image );
 		}
 
 		if ( $instance['show_title'] ) {
@@ -138,8 +136,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		$intro_text = '';
 		if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
 			$intro_text = genesis_get_cpt_option( 'intro_text', $instance['post_type'] );
-		}
-		elseif ( 'post' === $instance['post_type'] ) {
+		} elseif ( 'post' === $instance['post_type'] ) {
 			$intro_text = get_post( $postspage )->post_excerpt;
 			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
 				$intro_text = get_bloginfo( 'description' );

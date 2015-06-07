@@ -26,11 +26,7 @@ function display_featured_image_genesis_get_term_image_id() {
 		$t_id      = $term->term_id;
 		$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 		if ( ! empty( $term_meta['term_image'] ) ) {
-			$image_id = $term_meta['term_image'];
-			if ( ! is_numeric( $term_meta['term_image'] ) ) {
-				$common   = new Display_Featured_Image_Genesis_Common();
-				$image_id = $common->get_image_id( $term_meta['term_image'] );
-			}
+			$image_id = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 			break;
 		}
 	}
@@ -66,11 +62,7 @@ function display_featured_image_genesis_get_default_image_id() {
 	$image_id       = '';
 	$displaysetting = get_option( 'displayfeaturedimagegenesis' );
 	$fallback       = $displaysetting['default'];
-	$image_id       = $fallback;
-	if ( ! is_numeric( $fallback ) ) {
-		$common   = new Display_Featured_Image_Genesis_Common();
-		$image_id = $common->get_image_id( $fallback ); // gets image id with attached metadata
-	}
+	$image_id       = is_numeric( $fallback ) ? $fallback : Display_Featured_Image_Genesis_Common::get_image_id( $fallback );
 
 	return absint( $image_id );
 
@@ -108,20 +100,14 @@ function display_featured_image_genesis_get_cpt_image_id() {
 	}
 	if ( $object->name ) { // results in post type on cpt archive
 		$post_type = $object->name;
-	}
-	elseif ( $object->taxonomy ) { // on a tax/term/category
+	} elseif ( $object->taxonomy ) { // on a tax/term/category
 		$tax_object = get_taxonomy( $object->taxonomy );
 		$post_type  = $tax_object->object_type[0];
-	}
-	elseif ( $object->post_type ) { // on singular
+	} elseif ( $object->post_type ) { // on singular
 		$post_type = $object->post_type;
 	}
 	if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
-		$image_id = $displaysetting['post_type'][ $post_type ];
-		if ( ! is_numeric( $displaysetting['post_type'][ $post_type ] ) ) {
-			$common   = new Display_Featured_Image_Genesis_Common();
-			$image_id = $common->get_image_id( $displaysetting['post_type'][ $post_type ] );
-		}
+		$image_id = is_numeric( $displaysetting['post_type'][ $post_type ] ) ? $displaysetting['post_type'][ $post_type ] : Display_Featured_Image_Genesis_Common::get_image_id( $displaysetting['post_type'][ $post_type ] );
 	}
 
 	return absint( $image_id );

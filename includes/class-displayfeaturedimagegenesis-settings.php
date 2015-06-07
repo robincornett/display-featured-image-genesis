@@ -281,7 +281,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function set_cpt_image( $args ) {
 
-		$item = $this->common->get_image_variables();
+		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		$post_type = $args['post_type']->name;
 		if ( empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
@@ -320,7 +320,7 @@ class Display_Featured_Image_Genesis_Settings {
 		}
 
 		if ( ! is_numeric( $id ) ) {
-			$id = $this->common->get_image_id( $id );
+			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
 		}
 
 		$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
@@ -339,7 +339,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since x.y.z
 	 */
 	public function render_buttons( $id, $name ) {
-		$id = is_numeric( $id ) ? $id : $this->common->get_image_id( $id );
+		$id = is_numeric( $id ) ? $id : Display_Featured_Image_Genesis_Common::get_image_id( $id );
 		$id = $id ? (int) $id : '';
 		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), $id );
 		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
@@ -446,10 +446,10 @@ class Display_Featured_Image_Genesis_Settings {
 
 		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
-			$new_value = (int) $this->common->get_image_id( $new_value );
+			$new_value = (int) Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		}
 		if ( ! is_numeric( $old_value ) ) {
-			$old_value = (int) $this->common->get_image_id( $old_value );
+			$old_value = (int) Display_Featured_Image_Genesis_Common::get_image_id( $old_value );
 		}
 		$source = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid  = $this->is_valid_img_ext( $source[0] );
@@ -497,7 +497,7 @@ class Display_Featured_Image_Genesis_Settings {
 
 		// if the image was selected using the old URL method
 		if ( ! is_numeric( $new_value ) ) {
-			$new_value = $this->common->get_image_id( $new_value );
+			$new_value = Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
 		}
 		$new_value = (int) $new_value;
 		$medium    = get_option( 'medium_size_w' );

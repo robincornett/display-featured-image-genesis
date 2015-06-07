@@ -105,7 +105,7 @@ class Display_Featured_Image_Genesis_Admin {
 		$taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
 		$taxonomy = ! is_null( $taxonomy ) ? $taxonomy : get_current_screen()->taxonomy;
 		$alt      = get_term( $term_id, $taxonomy )->name;
-		$id       = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : $this->common->get_image_id( $term_meta['term_image'] );
+		$id       = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 
 		$preview = apply_filters(
 			'display_featured_image_genesis_admin_term_thumbnail',

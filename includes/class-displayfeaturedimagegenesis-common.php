@@ -21,7 +21,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since  1.1.0
 	 */
-	public function get_image_variables() {
+	public static function get_image_variables() {
 
 		$item = new stdClass();
 
@@ -60,7 +60,7 @@ class Display_Featured_Image_Genesis_Common {
 		 *
 		 * @since 2.2.0
 		 */
-		$image_id = apply_filters( 'display_featured_image_genesis_image_id', $this->set_image_id() );
+		$image_id = apply_filters( 'display_featured_image_genesis_image_id', self::set_image_id() );
 
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
@@ -94,7 +94,7 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// $title is set by new title function
-		$title = $this->set_item_title();
+		$title = self::set_item_title();
 
 		/**
 		 * Optional filter to change the title text
@@ -112,7 +112,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 2.2.1
 	 */
-	protected function set_image_id( $image_id = '' ) {
+	protected static function set_image_id( $image_id = '' ) {
 
 		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage       = get_option( 'page_for_posts' );
@@ -131,7 +131,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		$fallback_id = $fallback;
 		if ( ! is_numeric( $fallback ) ) {
-			$fallback_id = $this->get_image_id( $fallback ); // gets image id with attached metadata
+			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
 		}
 		$fallback_id = absint( $fallback_id );
 
@@ -169,7 +169,7 @@ class Display_Featured_Image_Genesis_Common {
 				$post_type = $object->post_type;
 			}
 			if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
-				$image_id = is_numeric( $displaysetting['post_type'][ $post_type ] ) ? $displaysetting['post_type'][ $post_type ] : $this->get_image_id( $displaysetting['post_type'][ $post_type ] );
+				$image_id = is_numeric( $displaysetting['post_type'][ $post_type ] ) ? $displaysetting['post_type'][ $post_type ] : self::get_image_id( $displaysetting['post_type'][ $post_type ] );
 
 				/**
 				 * use the custom post type featured image
@@ -188,7 +188,7 @@ class Display_Featured_Image_Genesis_Common {
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 			// if there is a term image
 			if ( ! empty( $term_meta['term_image'] ) ) {
-				$image_id = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : $this->get_image_id( $term_meta['term_image'] );
+				$image_id = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : self::get_image_id( $term_meta['term_image'] );
 			}
 		}
 
@@ -222,7 +222,7 @@ class Display_Featured_Image_Genesis_Common {
 
 	}
 
-	protected function set_item_title( $title = '' ) {
+	protected static function set_item_title( $title = '' ) {
 
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage = get_option( 'page_for_posts' );
@@ -264,7 +264,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @author Philip Newcomer
 	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
 	 */
-	public function get_image_id( $attachment_url = '' ) {
+	public static function get_image_id( $attachment_url = '' ) {
 
 		$attachment_id = false;
 
