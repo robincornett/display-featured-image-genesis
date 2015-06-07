@@ -232,11 +232,12 @@ class Display_Featured_Image_Genesis {
 			require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
 		}
 
-		// require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-cpt-archive-widget.php';
-		// require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-taxonomy-widget.php';
-
+		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() && ! function_exists( 'genesis' ) ) {
+			return;
+		}
 		register_widget( 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
 		register_widget( 'Display_Featured_Image_Genesis_Widget_CPT' );
+
 	}
 
 }
