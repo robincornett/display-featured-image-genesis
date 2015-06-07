@@ -28,6 +28,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			'page'                     => '',
 			'page_link_text'           => __( 'Read More', 'display-featured-image-genesis' ) . '&#x02026;',
 			'posts_link'               => '',
+			'link_text'                => __( 'View My Blog Posts', 'display-featured-image-genesis' ),
 		);
 
 		$widget_ops = array(
@@ -95,8 +96,8 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			$display_name = get_the_author_meta( 'display_name', $instance['user'] );
 			$user_name = ( ! empty ( $display_name ) && genesis_a11y() ) ? '<span class="screen-reader-text">' . $display_name. ': </span>' : '';
 
-			if ( $instance['posts_link'] ) {
-				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', get_author_posts_url( $instance['user'] ), $user_name, __( 'View My Blog Posts', 'display-featured-image-genesis' ) );
+			if ( $instance['posts_link'] && $instance['link_text'] ) {
+				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', get_author_posts_url( $instance['user'] ), $user_name, $instance['link_text'] );
 			}
 
 		echo $args['after_widget'];
@@ -119,6 +120,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$new_instance['title']          = strip_tags( $new_instance['title'] );
 		$new_instance['bio_text']       = current_user_can( 'unfiltered_html' ) ? $new_instance['bio_text'] : genesis_formatting_kses( $new_instance['bio_text'] );
 		$new_instance['page_link_text'] = strip_tags( $new_instance['page_link_text'] );
+		$new_instance['link_text']      = esc_html( $new_instance['link_text'] );
 
 		return $new_instance;
 
@@ -225,6 +227,10 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			<p>
 				<input id="<?php echo esc_attr( $this->get_field_id( 'posts_link' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'posts_link' ) ); ?>" value="1" <?php checked( $instance['posts_link'] ); ?>/>
 				<label for="<?php echo esc_attr( $this->get_field_id( 'posts_link' ) ); ?>"><?php _e( 'Show Author Archive Link?', 'display-featured-image-genesis' ); ?></label>
+			</p>
+			<p>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>"><?php _e( 'Link Text:', 'display-featured-image-genesis' ); ?> </label>
+				<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'link_text' ) ); ?>" value="<?php echo esc_attr( $instance['link_text'] ); ?>" class="widefat" />
 			</p>
 		</div>
 	<?php
