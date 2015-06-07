@@ -224,6 +224,7 @@ class Display_Featured_Image_Genesis {
 	function register_widgets() {
 
 		$files = array(
+			'author',
 			'cpt-archive',
 			'taxonomy',
 		);
@@ -235,6 +236,7 @@ class Display_Featured_Image_Genesis {
 		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() && ! function_exists( 'genesis' ) ) {
 			return;
 		}
+		register_widget( 'Display_Featured_Image_Genesis_Author_Widget' );
 		register_widget( 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
 		register_widget( 'Display_Featured_Image_Genesis_Widget_CPT' );
 
