@@ -73,6 +73,8 @@ class Display_Featured_Image_Genesis_Output {
 			wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 			wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
+			add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
+
 			$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
 			add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ) );
 
@@ -120,15 +122,12 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
-	 * backstretch image title ( for images which are larger than Media Settings > Large )
-	 * @return image
+	 * Pass variables through to our js
+	 * @return backstretchVars variable array to send to js
 	 *
-	 * @since  1.0.0
+	 * @since x.y.z
 	 */
-	public function do_backstretch_image_title() {
-
-		$keep_titles = $this->displaysetting['keep_titles'];
-
+	public function localize_scripts() {
 		// backstretch settings from plugin/featured image settings
 		$backstretch_settings = array(
 			'src'    => esc_url( $this->item->backstretch[0] ),
@@ -145,6 +144,15 @@ class Display_Featured_Image_Genesis_Output {
 		$output = array_merge( $backstretch_settings, $backstretch_variables );
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
+	}
+
+	/**
+	 * backstretch image title ( for images which are larger than Media Settings > Large )
+	 * @return image
+	 *
+	 * @since  1.0.0
+	 */
+	public function do_backstretch_image_title() {
 
 		/**
 		 * filter to maybe move titles, or not
@@ -152,6 +160,7 @@ class Display_Featured_Image_Genesis_Output {
 		 * @since 2.2.0
 		 */
 		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', array() );
+		$keep_titles       = $this->displaysetting['keep_titles'];
 
 		// if titles will be moved to overlay backstretch image
 		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
