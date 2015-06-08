@@ -54,13 +54,7 @@ class Display_Featured_Image_Genesis_Common {
 			$image_size = 'large';
 		}
 
-		/**
-		 * filter to use a different image id
-		 * @var $image_id
-		 *
-		 * @since 2.2.0
-		 */
-		$image_id = apply_filters( 'display_featured_image_genesis_image_id', self::set_image_id() );
+		$image_id = self::set_image_id();
 
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
@@ -217,6 +211,14 @@ class Display_Featured_Image_Genesis_Common {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 		}
+
+		/**
+		 * filter to use a different image id
+		 * @var $image_id
+		 *
+		 * @since 2.2.0
+		 */
+		$image_id = apply_filters( 'display_featured_image_genesis_image_id', $image_id );
 
 		// make sure the image id is an integer
 		$image_id = is_numeric( $image_id ) ? (int) $image_id : '';
