@@ -69,7 +69,7 @@ class Display_Featured_Image_Genesis_Description {
 		 *
 		 * @since x.y.z
 		 */
-		$show_front_page_title = apply_filters( 'display_featured_image_genesis_show_front_page_title', false );
+		$show_front_page_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
 		$show_front_page_title = true === $show_front_page_title ? $show_front_page_title : false;
 
 		$title      = $show_front_page_title ? get_the_title() : '';
