@@ -297,7 +297,7 @@ class Display_Featured_Image_Genesis_Common {
 			$url_stripped   = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
 
 			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
-			$attachment_id  = $this->fetch_image_id_query( $url_stripped, $attachment_url );
+			$attachment_id  = self::fetch_image_id_query( $url_stripped, $attachment_url );
 
 		}
 
@@ -314,7 +314,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @author hellofromtonya
 	 */
-	protected function fetch_image_id_query( $url_stripped, $attachment_url ) {
+	protected static function fetch_image_id_query( $url_stripped, $attachment_url ) {
 
 		global $wpdb;
 
