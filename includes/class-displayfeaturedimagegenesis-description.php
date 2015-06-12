@@ -38,7 +38,7 @@ class Display_Featured_Image_Genesis_Description {
 			$intro_text = apply_filters( 'display_featured_image_genesis_singular_description', get_the_excerpt() );
 		}
 		if ( $headline || $intro_text ) {
-			printf( '<div class="excerpt">%s</div>', $headline . wpautop( $intro_text ) );
+			printf( '<div class="excerpt">%s</div>', wp_kses_post( $headline . wpautop( $intro_text ) ) );
 		}
 	}
 
@@ -59,24 +59,34 @@ class Display_Featured_Image_Genesis_Description {
 			return;
 		}
 
-		$frontpage  = get_option( 'show_on_front' );
-		$postspage  = get_post( get_option( 'page_for_posts' ) );
-		$headline   = '';
-		$intro_text = get_bloginfo( 'description' );
+		// set front page and posts page variables
+		$frontpage = get_option( 'show_on_front' );
+		$postspage = get_post( get_option( 'page_for_posts' ) );
+
+		/**
+		 * filter to show title on front page
+		 * @return boolean true/false
+		 *
+		 * @since x.y.z
+		 */
+		$show_front_page_title = apply_filters( 'display_featured_image_genesis_show_front_page_title', false );
+		$show_front_page_title = true === $show_front_page_title ? $show_front_page_title : false;
+
+		$title      = $show_front_page_title ? get_the_title() : '';
+		$intro_text = get_the_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' );
+		$itemprop   = genesis_html5() ? 'itemprop="headline"' : '';
 
 		if ( is_home() && 'page' === $frontpage ) {
-			$itemprop = '';
-			if ( genesis_html5() ) {
-				$itemprop = 'itemprop="headline"';
-			}
-			$headline   = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $postspage->post_title );
+			$title      = $postspage->post_title;
 			$intro_text = $postspage->post_excerpt;
 		}
 
+		$title      = apply_filters( 'display_featured_image_genesis_front_blog_title', $title );
+		$headline   = $title ? sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $title ) : '';
 		$intro_text = apply_filters( 'display_featured_image_genesis_front_blog_description', $intro_text );
 
 		if ( $headline || $intro_text ) {
-			printf( '<div class="excerpt">%s</div>', $headline . wpautop( $intro_text ) );
+			printf( '<div class="excerpt">%s</div>', wp_kses_post( $headline . wpautop( $intro_text ) ) );
 		}
 
 	}
