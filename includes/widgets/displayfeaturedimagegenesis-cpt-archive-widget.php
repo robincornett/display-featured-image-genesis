@@ -149,7 +149,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 			$intro_text = apply_filters( 'display_featured_image_genesis_cpt_description', $intro_text );
 
-			echo $intro_text;
+			echo wp_kses_post( wpautop( $intro_text ) );
 
 			echo genesis_html5() ? '</div>' : '';
 
@@ -194,7 +194,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'display-featured-image-genesis' ); ?> </label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'display-featured-image-genesis' ); ?> </label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 
@@ -203,7 +203,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			<div class="genesis-widget-column-box genesis-widget-column-box-top">
 
 				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>"><?php _e( 'Post Type:', 'display-featured-image-genesis' ); ?> </label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>"><?php esc_attr_e( 'Post Type:', 'display-featured-image-genesis' ); ?> </label>
 					<select id="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_type' ) ); ?>" >
 					<?php
 					// Fetch a list of possible post types
@@ -215,7 +215,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 					$output     = 'objects';
 					$post_types = get_post_types( $args, $output );
 
-					printf( '<option value="post"%s>%s</option>', selected( 'post', $instance['post_type'], false ), __( 'Posts', 'display-featured-image-genesis' ) );
+					printf( '<option value="post"%s>%s</option>', selected( 'post', $instance['post_type'], false ), esc_attr__( 'Posts', 'display-featured-image-genesis' ) );
 					foreach ( $post_types as $post_type ) {
 						printf( '<option value="%s"%s>%s</option>', esc_attr( $post_type->name ), selected( esc_attr( $post_type->name ), $instance['post_type'], false ), esc_attr( $post_type->label ) );
 					} ?>
@@ -228,12 +228,12 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 				<p>
 					<input id="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_title' ) ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>"><?php _e( 'Show Archive Title', 'display-featured-image-genesis' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>"><?php esc_attr_e( 'Show Archive Title', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 				<p>
 					<input id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php _e( 'Show Archive Intro Text', 'display-featured-image-genesis' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php esc_attr_e( 'Show Archive Intro Text', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 			</div>
@@ -246,11 +246,11 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 				<p>
 					<input id="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_image' ) ); ?>" value="1" <?php checked( $instance['show_image'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>"><?php _e( 'Show Featured Image', 'display-featured-image-genesis' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>"><?php esc_attr_e( 'Show Featured Image', 'display-featured-image-genesis' ); ?></label>
 				</p>
 
 				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>"><?php _e( 'Image Size:', 'display-featured-image-genesis' ); ?> </label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>"><?php esc_attr_e( 'Image Size:', 'display-featured-image-genesis' ); ?> </label>
 					<select id="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>" class="genesis-image-size-selector" name="<?php echo esc_attr( $this->get_field_name( 'image_size' ) ); ?>">
 						<?php
 						$sizes = genesis_get_image_sizes();
@@ -261,12 +261,12 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 				</p>
 
 				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>"><?php _e( 'Image Alignment:', 'display-featured-image-genesis' ); ?> </label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>"><?php esc_attr_e( 'Image Alignment:', 'display-featured-image-genesis' ); ?> </label>
 					<select id="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image_alignment' ) ); ?>">
-						<option value="alignnone">- <?php _e( 'None', 'display-featured-image-genesis' ); ?> -</option>
-						<option value="alignleft" <?php selected( 'alignleft', $instance['image_alignment'] ); ?>><?php _e( 'Left', 'display-featured-image-genesis' ); ?></option>
-						<option value="alignright" <?php selected( 'alignright', $instance['image_alignment'] ); ?>><?php _e( 'Right', 'display-featured-image-genesis' ); ?></option>
-						<option value="aligncenter" <?php selected( 'aligncenter', $instance['image_alignment'] ); ?>><?php _e( 'Center', 'display-featured-image-genesis' ); ?></option>
+						<option value="alignnone">- <?php esc_attr_e( 'None', 'display-featured-image-genesis' ); ?> -</option>
+						<option value="alignleft" <?php selected( 'alignleft', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Left', 'display-featured-image-genesis' ); ?></option>
+						<option value="alignright" <?php selected( 'alignright', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Right', 'display-featured-image-genesis' ); ?></option>
+						<option value="aligncenter" <?php selected( 'aligncenter', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Center', 'display-featured-image-genesis' ); ?></option>
 					</select>
 				</p>
 

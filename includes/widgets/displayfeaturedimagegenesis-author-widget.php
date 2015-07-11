@@ -67,7 +67,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 				$image_id  = get_the_author_meta( 'displayfeaturedimagegenesis', $instance['user'] );
 				$image_src = wp_get_attachment_image_src( $image_id, $instance['featured_image_size'] );
 				if ( $image_src ) {
-					echo '<img src="' . esc_url( $image_src[0] ) . '" alt="' . get_the_author_meta( 'display_name', $instance['user'] ) . '" class="' . $instance['featured_image_alignment'] . '" />';
+					echo '<img src="' . esc_url( $image_src[0] ) . '" alt="' . esc_html( get_the_author_meta( 'display_name', $instance['user'] ) ) . '" class="' . esc_attr( $instance['featured_image_alignment'] ) . '" />';
 				}
 			}
 
@@ -80,7 +80,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 				$text .= get_avatar( $instance['user'], $instance['size'] );
 
-				if( ! empty( $instance['gravatar_alignment'] ) ) {
+				if ( ! empty( $instance['gravatar_alignment'] ) ) {
 					$text .= '</span>';
 				}
 			}
@@ -90,14 +90,14 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			$text .= $instance['page'] ? sprintf( ' <a class="pagelink" href="%s">%s</a>', get_page_link( $instance['page'] ), $instance['page_link_text'] ) : '';
 
 			// Echo $text
-			echo wpautop( $text );
+			echo wp_kses_post( wpautop( $text ) );
 
 			// If posts link option checked, add posts link to output
 			$display_name = get_the_author_meta( 'display_name', $instance['user'] );
-			$user_name = ( ! empty ( $display_name ) && genesis_a11y() ) ? '<span class="screen-reader-text">' . $display_name. ': </span>' : '';
+			$user_name = ( ! empty ( $display_name ) && genesis_a11y() ) ? '<span class="screen-reader-text">' . $display_name . ': </span>' : '';
 
 			if ( $instance['posts_link'] && $instance['link_text'] ) {
-				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', get_author_posts_url( $instance['user'] ), $user_name, $instance['link_text'] );
+				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', esc_url( get_author_posts_url( $instance['user'] ) ), esc_attr( $user_name ), esc_attr( $instance['link_text'] ) );
 			}
 
 		echo $args['after_widget'];
@@ -138,23 +138,23 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 		?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title', 'display-featured-image-genesis' ); ?>:</label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title', 'display-featured-image-genesis' ); ?>:</label>
 			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
 		</p>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_name( 'user' ) ); ?>"><?php _e( 'Select a user. The email address for this account will be used to pull the Gravatar image.', 'display-featured-image-genesis' ); ?></label><br />
+			<label for="<?php echo esc_attr( $this->get_field_name( 'user' ) ); ?>"><?php esc_attr_e( 'Select a user. The email address for this account will be used to pull the Gravatar image.', 'display-featured-image-genesis' ); ?></label><br />
 			<?php wp_dropdown_users( array( 'who' => 'authors', 'name' => $this->get_field_name( 'user' ), 'selected' => $instance['user'] ) ); ?>
 		</p>
 
 		<div class="genesis-widget-column-box genesis-widget-column-box-top">
 			<p>
 				<input id="<?php echo esc_attr( $this->get_field_id( 'show_featured_image' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_featured_image' ) ); ?>" value="1" <?php checked( $instance['show_featured_image'] ); ?>/>
-				<label for="<?php echo esc_attr( $this->get_field_name( 'show_featured_image' ) ); ?>"><?php _e( 'Show the user\'s featured image.', 'display-featured-image-genesis' ); ?></label><br />
+				<label for="<?php echo esc_attr( $this->get_field_name( 'show_featured_image' ) ); ?>"><?php esc_attr_e( 'Show the user\'s featured image.', 'display-featured-image-genesis' ); ?></label><br />
 			</p>
 
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'featured_image_size' ) ); ?>"><?php _e( 'Image Size:', 'display-featured-image-genesis' ); ?> </label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'featured_image_size' ) ); ?>"><?php esc_attr_e( 'Image Size:', 'display-featured-image-genesis' ); ?> </label>
 				<select id="<?php echo esc_attr( $this->get_field_id( 'featured_image_size' ) ); ?>" class="genesis-image-size-selector" name="<?php echo esc_attr( $this->get_field_name( 'featured_image_size' ) ); ?>">
 					<?php
 					$sizes = genesis_get_image_sizes();
@@ -165,12 +165,12 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			</p>
 
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'featured_image_alignment' ) ); ?>"><?php _e( 'Image Alignment:', 'display-featured-image-genesis' ); ?></label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'featured_image_alignment' ) ); ?>"><?php esc_attr_e( 'Image Alignment:', 'display-featured-image-genesis' ); ?></label>
 				<select id="<?php echo esc_attr( $this->get_field_id( 'featured_image_alignment' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'featured_image_alignment' ) ); ?>">
-					<option value="alignnone">- <?php _e( 'None', 'display-featured-image-genesis' ); ?> -</option>
-					<option value="alignleft" <?php selected( 'alignleft', $instance['featured_image_alignment'] ); ?>><?php _e( 'Left', 'display-featured-image-genesis' ); ?></option>
-					<option value="alignright" <?php selected( 'alignright', $instance['featured_image_alignment'] ); ?>><?php _e( 'Right', 'display-featured-image-genesis' ); ?></option>
-					<option value="aligncenter" <?php selected( 'aligncenter', $instance['featured_image_alignment'] ); ?>><?php _e( 'Center', 'display-featured-image-genesis' ); ?></option>
+					<option value="alignnone">- <?php esc_attr_e( 'None', 'display-featured-image-genesis' ); ?> -</option>
+					<option value="alignleft" <?php selected( 'alignleft', $instance['featured_image_alignment'] ); ?>><?php esc_attr_e( 'Left', 'display-featured-image-genesis' ); ?></option>
+					<option value="alignright" <?php selected( 'alignright', $instance['featured_image_alignment'] ); ?>><?php esc_attr_e( 'Right', 'display-featured-image-genesis' ); ?></option>
+					<option value="aligncenter" <?php selected( 'aligncenter', $instance['featured_image_alignment'] ); ?>><?php esc_attr_e( 'Center', 'display-featured-image-genesis' ); ?></option>
 				</select>
 			</p>
 		</div>
@@ -178,58 +178,58 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		<div class="genesis-widget-column-box">
 			<p>
 				<input id="<?php echo esc_attr( $this->get_field_id( 'show_gravatar' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_gravatar' ) ); ?>" value="1" <?php checked( $instance['show_gravatar'] ); ?>/>
-				<label for="<?php echo esc_attr( $this->get_field_name( 'show_gravatar' ) ); ?>"><?php _e( 'Show the user\'s gravatar.', 'display-featured-image-genesis' ); ?></label><br />
+				<label for="<?php echo esc_attr( $this->get_field_name( 'show_gravatar' ) ); ?>"><?php esc_attr_e( 'Show the user\'s gravatar.', 'display-featured-image-genesis' ); ?></label><br />
 
-				<label for="<?php echo esc_attr( $this->get_field_id( 'size' ) ); ?>"><?php _e( 'Gravatar Size', 'display-featured-image-genesis' ); ?>:</label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'size' ) ); ?>"><?php esc_attr_e( 'Gravatar Size', 'display-featured-image-genesis' ); ?>:</label>
 				<select id="<?php echo esc_attr( $this->get_field_id( 'size' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'size' ) ); ?>">
 					<?php
 					$sizes = array( __( 'Small', 'display-featured-image-genesis' ) => 45, __( 'Medium', 'display-featured-image-genesis' ) => 65, __( 'Large', 'display-featured-image-genesis' ) => 85, __( 'Extra Large', 'display-featured-image-genesis' ) => 125 );
 					$sizes = apply_filters( 'genesis_gravatar_sizes', $sizes );
 					foreach ( (array) $sizes as $label => $size ) { ?>
-						<option value="<?php echo absint( $size ); ?>" <?php selected( $size, $instance['size'] ); ?>><?php printf( '%s (%spx)', $label, $size ); ?></option>
+						<option value="<?php echo absint( $size ); ?>" <?php selected( $size, $instance['size'] ); ?>><?php printf( '%s (%spx)', esc_attr( $label ), esc_attr( $size ) ); ?></option>
 					<?php } ?>
 				</select>
 			</p>
 
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'gravatar_alignment' ) ); ?>"><?php _e( 'Gravatar Alignment', 'display-featured-image-genesis' ); ?>:</label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'gravatar_alignment' ) ); ?>"><?php esc_attr_e( 'Gravatar Alignment', 'display-featured-image-genesis' ); ?>:</label>
 				<select id="<?php echo esc_attr( $this->get_field_id( 'gravatar_alignment' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'gravatar_alignment' ) ); ?>">
-					<option value="">- <?php _e( 'None', 'display-featured-image-genesis' ); ?> -</option>
-					<option value="left" <?php selected( 'left', $instance['gravatar_alignment'] ); ?>><?php _e( 'Left', 'display-featured-image-genesis' ); ?></option>
-					<option value="right" <?php selected( 'right', $instance['gravatar_alignment'] ); ?>><?php _e( 'Right', 'display-featured-image-genesis' ); ?></option>
+					<option value="">- <?php esc_attr_e( 'None', 'display-featured-image-genesis' ); ?> -</option>
+					<option value="left" <?php selected( 'left', $instance['gravatar_alignment'] ); ?>><?php esc_attr_e( 'Left', 'display-featured-image-genesis' ); ?></option>
+					<option value="right" <?php selected( 'right', $instance['gravatar_alignment'] ); ?>><?php esc_attr_e( 'Right', 'display-featured-image-genesis' ); ?></option>
 				</select>
 			</p>
 		</div>
 
 		<div class="genesis-widget-column-box">
 			<fieldset>
-				<legend><?php _e( 'Select which text you would like to use as the author description', 'display-featured-image-genesis' ); ?></legend>
+				<legend><?php esc_attr_e( 'Select which text you would like to use as the author description', 'display-featured-image-genesis' ); ?></legend>
 				<p>
 					<input type="radio" name="<?php echo esc_attr( $this->get_field_name( 'author_info' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val1" value="bio" <?php checked( $instance['author_info'], 'bio' ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val1"><?php _e( 'Author Bio', 'display-featured-image-genesis' ); ?></label><br />
+					<label for="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val1"><?php esc_attr_e( 'Author Bio', 'display-featured-image-genesis' ); ?></label><br />
 					<input type="radio" name="<?php echo esc_attr( $this->get_field_name( 'author_info' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val2" value="text" <?php checked( $instance['author_info'], 'text' ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val2"><?php _e( 'Custom Text (below)', 'display-featured-image-genesis' ); ?></label><br />
-					<label for="<?php echo esc_attr( $this->get_field_id( 'bio_text' ) ); ?>" class="screen-reader-text"><?php _e( 'Custom Text Content', 'display-featured-image-genesis' ); ?></label>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val2"><?php esc_attr_e( 'Custom Text (below)', 'display-featured-image-genesis' ); ?></label><br />
+					<label for="<?php echo esc_attr( $this->get_field_id( 'bio_text' ) ); ?>" class="screen-reader-text"><?php esc_attr_e( 'Custom Text Content', 'display-featured-image-genesis' ); ?></label>
 					<textarea id="<?php echo esc_attr( $this->get_field_id( 'bio_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'bio_text' ) ); ?>" class="widefat" rows="6" cols="4"><?php echo htmlspecialchars( $instance['bio_text'] ); ?></textarea>
 				</p>
 			</fieldset>
 
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_name( 'page' ) ); ?>"><?php _e( 'Choose your extended "About Me" page from the list below. This will be the page linked to at the end of the about me section.', 'display-featured-image-genesis' ); ?></label><br />
+				<label for="<?php echo esc_attr( $this->get_field_name( 'page' ) ); ?>"><?php esc_attr_e( 'Choose your extended "About Me" page from the list below. This will be the page linked to at the end of the about me section.', 'display-featured-image-genesis' ); ?></label><br />
 				<?php wp_dropdown_pages( array( 'name' => $this->get_field_name( 'page' ), 'show_option_none' => __( 'None', 'display-featured-image-genesis' ), 'selected' => $instance['page'] ) ); ?>
 			</p>
 
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'page_link_text' ) ); ?>"><?php _e( 'Extended page link text', 'display-featured-image-genesis' ); ?>:</label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'page_link_text' ) ); ?>"><?php esc_attr_e( 'Extended page link text', 'display-featured-image-genesis' ); ?>:</label>
 				<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'page_link_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'page_link_text' ) ); ?>" value="<?php echo esc_attr( $instance['page_link_text'] ); ?>" class="widefat" />
 			</p>
 
 			<p>
 				<input id="<?php echo esc_attr( $this->get_field_id( 'posts_link' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'posts_link' ) ); ?>" value="1" <?php checked( $instance['posts_link'] ); ?>/>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'posts_link' ) ); ?>"><?php _e( 'Show Author Archive Link?', 'display-featured-image-genesis' ); ?></label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'posts_link' ) ); ?>"><?php esc_attr_e( 'Show Author Archive Link?', 'display-featured-image-genesis' ); ?></label>
 			</p>
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>"><?php _e( 'Link Text:', 'display-featured-image-genesis' ); ?> </label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>"><?php esc_attr_e( 'Link Text:', 'display-featured-image-genesis' ); ?> </label>
 				<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'link_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'link_text' ) ); ?>" value="<?php echo esc_attr( $instance['link_text'] ); ?>" class="widefat" />
 			</p>
 		</div>
