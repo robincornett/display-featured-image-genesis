@@ -162,9 +162,18 @@ class Display_Featured_Image_Genesis_Output {
 		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', array() );
 		$keep_titles       = $this->displaysetting['keep_titles'];
 
+		/**
+		 * filter to show title on front page
+		 * @return boolean true/false
+		 *
+		 * @since x.y.z
+		 */
+		$show_front_page_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
+		$show_front_page_title = true === $show_front_page_title ? $show_front_page_title : false;
+
 		// if titles will be moved to overlay backstretch image
 		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
-			if ( is_singular() && ! is_front_page() && ! is_page_template( 'page_blog.php' ) ) {
+			if ( is_singular() || ( is_front_page() && ! $show_front_page_title ) && ! is_page_template( 'page_blog.php' ) ) {
 				remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
 				remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
 			}
@@ -198,18 +207,11 @@ class Display_Featured_Image_Genesis_Output {
 
 		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
 
-			if ( ! empty( $this->item->title ) && ! is_front_page() ) {
+			if ( ! empty( $this->item->title ) && $show_front_page_title ) {
 
-				$class = 'archive-title';
-				if ( is_singular() ) {
-					$class = 'entry-title';
-				}
-
-				$itemprop = '';
-				if ( genesis_html5() ) {
-					$itemprop = 'itemprop="headline"';
-				}
-				$title = $this->item->title;
+				$class        = is_singular() ? 'entry-title' : 'archive-title';
+				$itemprop     = genesis_html5() ? 'itemprop="headline"' : '';
+				$title        = $this->item->title;
 				$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
 
 				$title_output = apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
