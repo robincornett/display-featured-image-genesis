@@ -214,6 +214,10 @@ class Display_Featured_Image_Genesis {
 			) );
 		}
 
+		if ( is_customize_preview() && ! function_exists( 'genesis' ) ) {
+			return;
+		}
+
 		if ( in_array( $screen->id, array( 'widgets', 'customize' ) ) ) {
 			wp_enqueue_script( 'widget_selector' );
 			wp_localize_script( 'widget_selector', 'displayfeaturedimagegenesis_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
@@ -221,7 +225,13 @@ class Display_Featured_Image_Genesis {
 
 	}
 
-	function register_widgets() {
+	/**
+	 * Register widgets for plugin
+	 * @return widgets Taxonomy/term, CPT, and Author widgets
+	 *
+	 * @since 2.0.0
+	 */
+	public function register_widgets() {
 
 		$files = array(
 			'author',
