@@ -95,50 +95,50 @@ class Display_Featured_Image_Genesis_Settings {
 
 		$this->fields = array(
 			array(
-				'id'       => '[less_header]',
+				'id'       => 'less_header',
 				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
 				'callback' => 'header_size',
-				'section'  => $sections['main']['id'],
+				'section'  => 'main',
 			),
 			array(
-				'id'       => '[default]',
+				'id'       => 'default',
 				'title'    => __( 'Default Featured Image', 'display-featured-image-genesis' ),
 				'callback' => 'set_default_image',
-				'section'  => $sections['main']['id'],
+				'section'  => 'main',
 			),
 			array(
-				'id'       => '[exclude_front]',
+				'id'       => 'exclude_front',
 				'title'    => __( 'Skip Front Page', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => $sections['main']['id'],
+				'section'  => 'main',
 				'args'     => array( 'setting' => 'exclude_front', 'label' => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => '[keep_titles]',
+				'id'       => 'keep_titles',
 				'title'    => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => $sections['main']['id'],
+				'section'  => 'main',
 				'args'     => array( 'setting' => 'keep_titles', 'label' => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => '[move_excerpts]',
+				'id'       => 'move_excerpts',
 				'title'    => __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => $sections['main']['id'],
+				'section'  => 'main',
 				'args'     => array( 'setting' => 'move_excerpts', 'label' => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => '[is_paged]',
+				'id'       => 'is_paged',
 				'title'    => __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => $sections['main']['id'],
+				'section'  => 'main',
 				'args'     => array( 'setting' => 'is_paged', 'label' => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => '[feed_image]',
+				'id'       => 'feed_image',
 				'title'    => __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => $sections['main']['id'],
+				'section'  => 'main',
 				'args'     => array( 'setting' => 'feed_image', 'label' => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ) ),
 			),
 		);
@@ -165,7 +165,7 @@ class Display_Featured_Image_Genesis_Settings {
 					'id'       => '[post_types]' . esc_attr( $post->name ),
 					'title'    => esc_attr( $post->label ),
 					'callback' => 'set_cpt_image',
-					'section'  => $sections['cpt']['id'],
+					'section'  => 'cpt',
 					'args'     => array( 'post_type' => $post ),
 				);
 			}
@@ -182,11 +182,11 @@ class Display_Featured_Image_Genesis_Settings {
 
 		foreach ( $this->fields as $field ) {
 			add_settings_field(
-				$this->page . $field['id'],
-				'<label for="' . $field['id'] . '">' . $field['title'] . '</label>',
+				'[' . $field['id'] . ']',
+				sprintf( '<label for="%s">%s</label>', $field['id'], $field['title'] ),
 				array( $this, $field['callback'] ),
 				$this->page,
-				$field['section'],
+				$sections[ $field['section'] ]['id'],
 				empty( $field['args'] ) ? array() : $field['args']
 			);
 		}
@@ -268,6 +268,10 @@ class Display_Featured_Image_Genesis_Settings {
 			checked( 1, esc_attr( $this->displaysetting[ $args['setting'] ] ), false ),
 			esc_attr( $args['label'] )
 		);
+		$function = $args['setting'] . '_description';
+		if ( method_exists( $this, $function ) ) {
+			$this->$function();
+		}
 	}
 
 	/**
@@ -398,14 +402,13 @@ class Display_Featured_Image_Genesis_Settings {
 
 		check_admin_referer( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce' );
 
-		$new_value['less_header']   = absint( $new_value['less_header'] );
+		$new_value['less_header'] = absint( $new_value['less_header'] );
 
 		// validate all checkbox fields
 		foreach ( $this->fields as $field ) {
-			if ( 'do_checkbox' !== $field['callback'] ) {
-				continue;
+			if ( 'do_checkbox' === $field['callback'] ) {
+				$new_value[ $field['id'] ] = $this->one_zero( $new_value[ $field['id'] ] );
 			}
-			$new_value[ $field['id'] ] = $this->one_zero( $new_value[ $field['id'] ] );
 		}
 
 		// extra variables to pass through to image validation
