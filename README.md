@@ -204,6 +204,11 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 ## Changelog
 
+### 2.3.0
+* new: set a featured image for each author!
+* added settings page link to plugin table
+* refactored settings page
+
 ### 2.2.2
 * fixed default image id function error
 

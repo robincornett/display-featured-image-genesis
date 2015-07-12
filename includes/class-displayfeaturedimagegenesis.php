@@ -170,7 +170,7 @@ class Display_Featured_Image_Genesis {
 	/**
 	 * Set new profile field for authors
 	 *
-	 * @since x.y.z
+	 * @since 2.3.0
 	 */
 	public function set_author_meta() {
 		// current user

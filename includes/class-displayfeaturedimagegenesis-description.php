@@ -67,7 +67,7 @@ class Display_Featured_Image_Genesis_Description {
 		 * filter to show title on front page
 		 * @return boolean true/false
 		 *
-		 * @since x.y.z
+		 * @since 2.3.0
 		 */
 		$show_front_page_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
 		$show_front_page_title = true === $show_front_page_title ? $show_front_page_title : false;

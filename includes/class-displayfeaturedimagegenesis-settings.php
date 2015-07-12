@@ -300,12 +300,11 @@ class Display_Featured_Image_Genesis_Settings {
 		if ( empty( $id ) ) {
 			return;
 		}
-		echo '<p class="description">';
-		printf( __( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
+		$description = sprintf( __( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
 			esc_url( get_post_type_archive_link( $post_type ) ),
 			esc_attr( $args['post_type']->label )
 		);
-		echo '</p>';
+		printf( '<p class="description">%s</p>', wp_kses_post( $description ) );
 	}
 
 	/**
@@ -313,7 +312,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @param  variable $id featured image ID
 	 * @return $image     image preview
 	 *
-	 * @since x.y.z
+	 * @since 2.3.0
 	 */
 	public function render_image_preview( $id ) {
 		if ( empty( $id ) ) {
@@ -337,19 +336,19 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @param  varable $name name for value/ID/class
 	 * @return $buttons       select/delete image buttons
 	 *
-	 * @since x.y.z
+	 * @since 2.3.0
 	 */
 	public function render_buttons( $id, $name ) {
 		$id = is_numeric( $id ) ? $id : Display_Featured_Image_Genesis_Common::get_image_id( $id );
 		$id = $id ? (int) $id : '';
-		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), $id );
+		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
 		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
 			esc_attr( $name ),
-			__( 'Select Image', 'display-featured-image-genesis' )
+			esc_attr__( 'Select Image', 'display-featured-image-genesis' )
 		);
 		if ( ! empty( $id ) ) {
 			printf( ' <input type="button" class="delete_image button-secondary" value="%s" />',
-				__( 'Delete Image', 'display-featured-image-genesis' )
+				esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
 			);
 		}
 	}
@@ -506,7 +505,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * Returns old value for author image if not correct file type/size
 	 * @param  string $new_value New value
 	 * @return string            New value or old, depending on allowed image size.
-	 * @since  x.y.z
+	 * @since  2.3.0
 	 */
 	public function validate_author_image( $new_value, $old_value ) {
 
@@ -532,7 +531,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @param  var $user   user being updated
 	 * @return error message
 	 *
-	 * @since x.y.z
+	 * @since 2.3.0
 	 */
 	public function user_profile_error_message( $errors, $update, $user ) {
 		$new_value = (int) $_POST['displayfeaturedimagegenesis'];

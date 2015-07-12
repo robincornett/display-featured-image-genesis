@@ -125,7 +125,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * Pass variables through to our js
 	 * @return backstretchVars variable array to send to js
 	 *
-	 * @since x.y.z
+	 * @since 2.3.0
 	 */
 	public function localize_scripts() {
 		// backstretch settings from plugin/featured image settings
@@ -166,7 +166,7 @@ class Display_Featured_Image_Genesis_Output {
 		 * filter to show title on front page
 		 * @return boolean true/false
 		 *
-		 * @since x.y.z
+		 * @since 2.3.0
 		 */
 		$show_front_page_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
 		$show_front_page_title = true === $show_front_page_title ? $show_front_page_title : false;
