@@ -30,7 +30,6 @@ class Display_Featured_Image_Genesis {
 	public function run() {
 		if ( 'genesis' !== basename( get_template_directory() ) ) {
 			add_action( 'admin_init', array( $this, 'deactivate' ) );
-			add_action( 'admin_notices', array( $this, 'error_message' ) );
 			return;
 		}
 
@@ -47,6 +46,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
 		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
 
 	}
 
@@ -57,8 +57,8 @@ class Display_Featured_Image_Genesis {
 	 *
 	 */
 	public function deactivate() {
-		$dirname = version_compare( PHP_VERSION, '5.3', '>=' ) ? __DIR__ : dirname( __FILE__ );
-		deactivate_plugins( plugin_basename( dirname( $dirname ) ) . '/display-featured-image-genesis.php' );
+		deactivate_plugins( DISPLAYFEATUREDIMAGEGENESIS_BASENAME );
+		add_action( 'admin_notices', array( $this, 'error_message' ) );
 	}
 
 	/**

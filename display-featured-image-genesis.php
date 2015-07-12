@@ -24,6 +24,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if ( ! defined( 'DISPLAYFEATUREDIMAGEGENESIS_BASENAME' ) ) {
+	define( 'DISPLAYFEATUREDIMAGEGENESIS_BASENAME', plugin_basename( __FILE__ ) );
+}
+
 function display_featured_image_genesis_require() {
 	$files = array(
 		'class-displayfeaturedimagegenesis',
