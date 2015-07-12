@@ -19,10 +19,6 @@ class Display_Featured_Image_Genesis_Settings {
 	protected $post_types;
 	protected $fields;
 
-	public function __construct( $common ) {
-		$this->common = $common;
-	}
-
 	/**
 	 * add a submenu page under Appearance
 	 * @return submenu Display Featured image settings page
@@ -30,7 +26,8 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function do_submenu_page() {
 
-		$this->page = 'displayfeaturedimagegenesis';
+		$this->page   = 'displayfeaturedimagegenesis';
+		$this->common = new Display_Featured_Image_Genesis_Common();
 
 		add_theme_page(
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),

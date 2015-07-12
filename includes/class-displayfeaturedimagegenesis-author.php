@@ -5,19 +5,31 @@ class Display_Featured_Image_Genesis_Author {
 	protected $settings;
 	protected $name;
 
-	public function __construct( $settings ) {
-		$this->settings = $settings;
-		$this->name = 'displayfeaturedimagegenesis';
+	/**
+	 * Set new profile field for authors
+	 *
+	 * @since 2.3.0
+	 */
+	public function set_author_meta() {
+
+		$this->settings = new Display_Featured_Image_Genesis_Settings( $common = '' );
+		$this->name     = 'displayfeaturedimagegenesis';
+		// current user
+		add_action( 'profile_personal_options', array( $this, 'do_author_fields' ) );
+		add_action( 'personal_options_update', array( $this, 'save_profile_fields' ) );
+		// not current user
+		add_action( 'edit_user_profile', array( $this, 'do_author_fields' ) );
+		add_action( 'edit_user_profile_update', array( $this, 'save_profile_fields' ) );
 	}
 
 	function do_author_fields( $user ) {
 
-		$id   = get_the_author_meta( $this->name, $user->ID );
+		$id = get_the_author_meta( $this->name, $user->ID );
 
 		echo '<table class="form-table">';
 
 			echo '<tr class="user-featured-image-wrap">';
-				echo '<th scope="row"><label for="' . $this->name . '">Featured Image</label></th>';
+				echo '<th scope="row"><label for="' . esc_attr( $this->name ) . '">Featured Image</label></th>';
 
 				echo '<td>';
 				if ( $id ) {

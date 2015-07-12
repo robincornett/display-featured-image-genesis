@@ -48,27 +48,14 @@ function display_featured_image_genesis_require() {
 display_featured_image_genesis_require();
 
 // Instantiate dependent classes
+$displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
+$displayfeaturedimagegenesis_author      = new Display_Featured_Image_Genesis_Author();
 $displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();
 $displayfeaturedimagegenesis_description = new Display_Featured_Image_Genesis_Description();
-
-// Classes with dependencies
-$displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin(
-	$displayfeaturedimagegenesis_common
-);
-$displayfeaturedimagegenesis_output      = new Display_Featured_Image_Genesis_Output(
-	$displayfeaturedimagegenesis_common,
-	$displayfeaturedimagegenesis_description
-);
+$displayfeaturedimagegenesis_output      = new Display_Featured_Image_Genesis_Output();
 $displayfeaturedimagegenesis_rss         = new Display_Featured_Image_Genesis_RSS();
-$displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Settings(
-	$displayfeaturedimagegenesis_common
-);
-$displayfeaturedimagegenesis_author      = new Display_Featured_Image_Genesis_Author(
-	$displayfeaturedimagegenesis_settings
-);
-$displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies(
-	$displayfeaturedimagegenesis_settings
-);
+$displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Settings();
+$displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies();
 
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_admin,

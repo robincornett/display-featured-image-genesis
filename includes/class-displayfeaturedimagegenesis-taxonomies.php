@@ -11,8 +11,26 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 	protected $settings;
 
-	public function __construct( $settings ) {
-		$this->settings = $settings;
+	/**
+	 * set up all actions for adding featured images to taxonomies
+	 * @since  2.0.0
+	 */
+	public function set_taxonomy_meta() {
+
+		$this->settings = new Display_Featured_Image_Genesis_Settings();
+
+		$args       = array(
+			'public' => true,
+		);
+		$output     = 'names';
+		$taxonomies = get_taxonomies( $args, $output );
+		foreach ( $taxonomies as $taxonomy ) {
+			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
+			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
+			add_action( "edited_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( "create_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( 'load-edit-tags.php', array( $this, 'help' ) );
+		}
 	}
 
 	/**

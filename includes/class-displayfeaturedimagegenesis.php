@@ -37,8 +37,8 @@ class Display_Featured_Image_Genesis {
 
 		add_action( 'init', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
-		add_action( 'admin_init', array( $this, 'set_taxonomy_meta' ) );
-		add_action( 'admin_init', array( $this, 'set_author_meta' ) );
+		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
+		add_action( 'admin_init', array( $this->author, 'set_author_meta' ) );
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
@@ -149,39 +149,6 @@ class Display_Featured_Image_Genesis {
 	}
 
 	/**
-	 * set up all actions for adding featured images to taxonomies
-	 * @since  2.0.0
-	 */
-	public function set_taxonomy_meta() {
-		$args       = array(
-			'public' => true,
-		);
-		$output     = 'names';
-		$taxonomies = get_taxonomies( $args, $output );
-		foreach ( $taxonomies as $taxonomy ) {
-			add_action( "{$taxonomy}_add_form_fields", array( $this->taxonomies, 'add_taxonomy_meta_fields' ), 5, 2 );
-			add_action( "{$taxonomy}_edit_form_fields", array( $this->taxonomies, 'edit_taxonomy_meta_fields' ), 5, 2 );
-			add_action( "edited_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
-			add_action( "create_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
-			add_action( 'load-edit-tags.php', array( $this->taxonomies, 'help' ) );
-		}
-	}
-
-	/**
-	 * Set new profile field for authors
-	 *
-	 * @since 2.3.0
-	 */
-	public function set_author_meta() {
-		// current user
-		add_action( 'profile_personal_options', array( $this->author, 'do_author_fields' ) );
-		add_action( 'personal_options_update', array( $this->author, 'save_profile_fields' ) );
-		// not current user
-		add_action( 'edit_user_profile', array( $this->author, 'do_author_fields' ) );
-		add_action( 'edit_user_profile_update', array( $this->author, 'save_profile_fields' ) );
-	}
-
-	/**
 	 * Set up text domain for translations
 	 *
 	 * @since 1.1.0
@@ -250,6 +217,17 @@ class Display_Featured_Image_Genesis {
 		register_widget( 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
 		register_widget( 'Display_Featured_Image_Genesis_Widget_CPT' );
 
+	}
+
+	/**
+	 * Add link to plugin settings page in plugin table
+	 * @param $links link to settings page
+	 *
+	 * @since 2.3.0
+	 */
+	public function add_settings_link( $links ) {
+		$links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( 'themes.php?page=displayfeaturedimagegenesis' ) ), esc_attr__( 'Settings', 'display-featured-image-genesis' ) );
+		return $links;
 	}
 
 }

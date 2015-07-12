@@ -13,11 +13,10 @@
 
 class Display_Featured_Image_Genesis_Admin {
 
-	public function __construct( $common ) {
-		$this->common = $common;
-	}
+	protected $common;
 
 	public function set_up_columns() {
+		$this->common = new Display_Featured_Image_Genesis_Common( $common = '' );
 		$this->set_up_taxonomy_columns();
 		$this->set_up_post_type_columns();
 

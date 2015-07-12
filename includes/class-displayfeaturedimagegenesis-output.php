@@ -14,12 +14,6 @@ class Display_Featured_Image_Genesis_Output {
 	protected $displaysetting;
 	protected $item;
 
-	public function __construct( $common, $description ) {
-		$this->common         = $common;
-		$this->description    = $description;
-		$this->displaysetting = get_option( 'displayfeaturedimagegenesis' );
-	}
-
 	/**
 	 * set parameters for scripts, etc. to run.
 	 *
@@ -27,7 +21,11 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 
-		$this->item    = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$this->common         = new Display_Featured_Image_Genesis_Common();
+		$this->description    = new Display_Featured_Image_Genesis_Description();
+		$this->displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$this->item           = Display_Featured_Image_Genesis_Common::get_image_variables();
+
 		$skip          = $this->displaysetting['exclude_front'];
 		$post_types    = array( 'attachment', 'revision', 'nav_menu_item' );
 		$skipped_types = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
