@@ -104,7 +104,7 @@ class Display_Featured_Image_Genesis_RSS {
 		if ( '1' === $rss_option ) {
 			$size  = 'thumbnail';
 			$align = 'left';
-			$style = 'margin:0px 0px 20px 20px;';
+			$style = 'margin:0px 20px 20px 0px;';
 			$class = 'rss-small';
 		}
 
