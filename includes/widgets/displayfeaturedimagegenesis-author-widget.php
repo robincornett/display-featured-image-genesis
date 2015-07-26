@@ -97,7 +97,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			$user_name = ( ! empty ( $display_name ) && genesis_a11y() ) ? '<span class="screen-reader-text">' . $display_name . ': </span>' : '';
 
 			if ( $instance['posts_link'] && $instance['link_text'] ) {
-				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', esc_url( get_author_posts_url( $instance['user'] ) ), esc_attr( $user_name ), esc_attr( $instance['link_text'] ) );
+				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', esc_url( get_author_posts_url( $instance['user'] ) ), wp_kses_post( $user_name ), esc_attr( $instance['link_text'] ) );
 			}
 
 		echo $args['after_widget'];

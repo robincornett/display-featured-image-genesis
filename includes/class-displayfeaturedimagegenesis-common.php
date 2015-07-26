@@ -178,7 +178,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 		if ( is_author() ) {
-			$image_id = get_the_author_meta( 'displayfeaturedimagegenesis_author', (int) get_query_var( 'author' ) );
+			$image_id = get_the_author_meta( 'displayfeaturedimagegenesis', (int) get_query_var( 'author' ) );
 		}
 		// taxonomy
 		if ( is_category() || is_tag() || is_tax() ) {
