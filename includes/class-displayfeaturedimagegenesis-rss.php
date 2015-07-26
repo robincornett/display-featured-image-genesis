@@ -59,17 +59,18 @@ class Display_Featured_Image_Genesis_RSS {
 		// first check: see if the featured image already exists in full in the content
 		$size = 'original';
 		if ( class_exists( 'SendImagesRSS' ) ) {
-			// Original Send Images RSS Settings
-			$simplify       = get_option( 'sendimagesrss_simplify_feed', 0 );
-			$alternate_feed = get_option( 'sendimagesrss_alternate_feed', 0 );
 
-			$defaults = array(
-				'simplify_feed'  => $simplify ? $simplify : 0,
-				'alternate_feed' => $alternate_feed ? $alternate_feed : 0,
-			);
+			$rss_setting = get_option( 'sendimagesrss' );
+			$new_version = $rss_setting ? true : false;
+			if ( ! $rss_setting ) {
+				$defaults = array(
+					'simplify_feed'  => get_option( 'sendimagesrss_simplify_feed', 0 ),
+					'alternate_feed' => get_option( 'sendimagesrss_alternate_feed', 0 ),
+				);
 
-			$rss_setting = get_option( 'sendimagesrss', $defaults );
-			if ( '1' === $rss_option && $rss_setting['excerpt_length'] ) {
+				$rss_setting = get_option( 'sendimagesrss', $defaults );
+			}
+			if ( '1' === $rss_option && $new_version ) {
 				// if the newer version of Send Images to RSS is installed, bail here because it's better.
 				return $content;
 			}
