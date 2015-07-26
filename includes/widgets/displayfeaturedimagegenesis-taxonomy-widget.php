@@ -249,7 +249,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 						<?php
 						$sizes = genesis_get_image_sizes();
 						foreach ( (array) $sizes as $name => $size ) {
-							echo '<option value="' . esc_attr( $name ) . '"' . selected( $name, $instance['image_size'], false ) . '>' . esc_html( $name ) . ' ( ' . absint( $size['width'] ) . 'x' . absint( $size['height'] ) . ' )</option>';
+							printf( '<option value="%s"%s>%s ( %s x %s )</option>', esc_attr( $name ), selected( $name, $instance['image_size'], false ), esc_html( $name ), (int) $size['width'], (int) $size['height'] );
 						} ?>
 					</select>
 				</p>
