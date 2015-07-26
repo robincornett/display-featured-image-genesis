@@ -50,6 +50,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function do_settings_form() {
 		$page_title = get_admin_page_title();
+		$this->displaysetting = $this->get_display_setting();
 
 		echo '<div class="wrap">';
 			echo '<h2>' . esc_attr( $page_title ) . '</h2>';
@@ -61,6 +62,7 @@ class Display_Featured_Image_Genesis_Settings {
 				settings_errors();
 			echo '</form>';
 		echo '</div>';
+
 	}
 
 	/**
@@ -73,6 +75,17 @@ class Display_Featured_Image_Genesis_Settings {
 
 		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
 
+		$this->register_sections();
+
+	}
+
+	/**
+	 * Retrieve plugin setting.
+	 * @return array All plugin settings.
+	 *
+	 * @since 2.3.0
+	 */
+	public function get_display_setting() {
 		$defaults = array(
 			'less_header'   => 0,
 			'default'       => '',
@@ -83,15 +96,60 @@ class Display_Featured_Image_Genesis_Settings {
 			'feed_image'    => 0,
 		);
 
-		$this->displaysetting = get_option( 'displayfeaturedimagegenesis', $defaults );
+		return get_option( 'displayfeaturedimagegenesis', $defaults );
 
+	}
+
+	/**
+	 * Register plugin settings page sections
+	 *
+	 * @since 2.3.0
+	 */
+	protected function register_sections() {
 		$sections = array(
 			'main' => array(
-				'id'       => 'display_featured_image_section',
-				'title'    => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
-				'callback' => 'section_description',
+				'id'    => 'main',
+				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
 			),
 		);
+
+		$args = array(
+			'public'      => true,
+			'_builtin'    => false,
+			'has_archive' => true,
+		);
+		$output = 'objects';
+
+		$this->post_types = get_post_types( $args, $output );
+
+		if ( $this->post_types ) {
+
+			$sections['cpt'] = array(
+				'id'    => 'cpt',
+				'title' => __( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ),
+			);
+		}
+
+		foreach ( $sections as $section ) {
+			add_settings_section(
+				$section['id'],
+				$section['title'],
+				array( $this, $section['id'] . '_section_description' ),
+				$this->page
+			);
+		}
+
+		$this->register_fields( $sections );
+	}
+
+	/**
+	 * Register plugin settings fields
+	 * @param  array $sections registerd sections
+	 * @return array           all settings fields
+	 *
+	 * @since 2.3.0
+	 */
+	protected function register_fields( $sections ) {
 
 		$this->fields = array(
 			array(
@@ -143,22 +201,7 @@ class Display_Featured_Image_Genesis_Settings {
 			),
 		);
 
-		$args = array(
-			'public'      => true,
-			'_builtin'    => false,
-			'has_archive' => true,
-		);
-		$output = 'objects';
-
-		$this->post_types = get_post_types( $args, $output );
-
 		if ( $this->post_types ) {
-
-			$sections['cpt'] = array(
-				'id'       => 'display_featured_image_custom_post_types',
-				'title'    => __( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ),
-				'callback' => 'cpt_section_description',
-			);
 
 			foreach ( $this->post_types as $post ) {
 				$this->fields[] = array(
@@ -169,15 +212,6 @@ class Display_Featured_Image_Genesis_Settings {
 					'args'     => array( 'post_type' => $post ),
 				);
 			}
-		}
-
-		foreach ( $sections as $section ) {
-			add_settings_section(
-				$section['id'],
-				$section['title'],
-				array( $this, $section['callback'] ),
-				$this->page
-			);
 		}
 
 		foreach ( $this->fields as $field ) {
@@ -199,7 +233,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 *
 	 * @since 1.1.0
 	 */
-	public function section_description() {
+	public function main_section_description() {
 		printf( '<p>%s</p>', esc_html__( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) );
 	}
 
