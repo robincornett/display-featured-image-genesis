@@ -21,19 +21,18 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 
-		$this->common         = new Display_Featured_Image_Genesis_Common();
-		$this->description    = new Display_Featured_Image_Genesis_Description();
-		$this->displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$this->item           = Display_Featured_Image_Genesis_Common::get_image_variables();
-
-		$skip          = $this->displaysetting['exclude_front'];
-		$post_types    = array( 'attachment', 'revision', 'nav_menu_item' );
-		$skipped_types = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
+		$settings             = new Display_Featured_Image_Genesis_Settings();
+		$this->displaysetting = $settings->get_display_setting();
+		$skip                 = $this->displaysetting['exclude_front'];
+		$post_types           = array( 'attachment', 'revision', 'nav_menu_item' );
+		$skipped_types        = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
 		if ( is_admin() || ( in_array( get_post_type(), $skipped_types ) ) || ( $skip && is_front_page() ) ) {
 			return;
 		}
 
+		$this->common = new Display_Featured_Image_Genesis_Common();
+		$this->item   = Display_Featured_Image_Genesis_Common::get_image_variables();
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
@@ -151,6 +150,8 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_backstretch_image_title() {
+
+		$this->description = new Display_Featured_Image_Genesis_Description();
 
 		/**
 		 * filter to maybe move titles, or not
