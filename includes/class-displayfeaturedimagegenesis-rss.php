@@ -17,7 +17,8 @@ class Display_Featured_Image_Genesis_RSS {
 	 */
 	public function maybe_do_feed() {
 
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$settings       = new Display_Featured_Image_Genesis_Settings();
+		$displaysetting = $settings->get_display_setting();
 		$feed_image     = $displaysetting['feed_image'];
 		$rss_option     = get_option( 'rss_use_excerpt' );
 		$post_types     = array();

@@ -16,7 +16,7 @@ class Display_Featured_Image_Genesis_Admin {
 	protected $common;
 
 	public function set_up_columns() {
-		$this->common = new Display_Featured_Image_Genesis_Common( $common = '' );
+		$this->common = new Display_Featured_Image_Genesis_Common();
 		$this->set_up_taxonomy_columns();
 		$this->set_up_post_type_columns();
 
@@ -28,7 +28,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 *
 	 * @since  2.0.0
 	 */
-	public function set_up_taxonomy_columns() {
+	protected function set_up_taxonomy_columns() {
 		$args       = array(
 			'public' => true,
 		);
@@ -45,7 +45,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 *
 	 * @since  2.0.0
 	 */
-	public function set_up_post_type_columns() {
+	protected function set_up_post_type_columns() {
 		$args       = array(
 			'public'   => true,
 			'_builtin' => false,

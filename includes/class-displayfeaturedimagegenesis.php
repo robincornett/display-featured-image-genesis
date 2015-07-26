@@ -35,7 +35,7 @@ class Display_Featured_Image_Genesis {
 
 		require plugin_dir_path( __FILE__ ) . 'helper-functions.php';
 
-		add_action( 'init', array( $this, 'add_plugin_supports' ) );
+		add_action( 'after_setup_theme', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
 		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
 		add_action( 'admin_init', array( $this->author, 'set_author_meta' ) );
@@ -91,7 +91,7 @@ class Display_Featured_Image_Genesis {
 	 *
 	 * @since 1.3.0
 	 */
-	function add_plugin_supports() {
+	public function add_plugin_supports() {
 		add_image_size( 'displayfeaturedimage_backstretch', 2000, 2000, false );
 
 		$displaysetting = get_option( 'displayfeaturedimagegenesis' );

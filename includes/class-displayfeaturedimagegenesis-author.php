@@ -12,7 +12,7 @@ class Display_Featured_Image_Genesis_Author {
 	 */
 	public function set_author_meta() {
 
-		$this->settings = new Display_Featured_Image_Genesis_Settings( $common = '' );
+		$this->settings = new Display_Featured_Image_Genesis_Settings();
 		$this->name     = 'displayfeaturedimagegenesis';
 		// current user
 		add_action( 'profile_personal_options', array( $this, 'do_author_fields' ) );
