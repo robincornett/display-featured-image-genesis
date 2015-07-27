@@ -207,7 +207,7 @@ class Display_Featured_Image_Genesis {
 		);
 
 		foreach ( $files as $file ) {
-			require plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
+			require_once plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
 		}
 
 		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() && ! function_exists( 'genesis' ) ) {

@@ -203,19 +203,24 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 		<div class="genesis-widget-column-box">
 			<fieldset>
-				<legend><?php esc_attr_e( 'Select which text you would like to use as the author description', 'display-featured-image-genesis' ); ?></legend>
+				<legend><?php esc_attr_e( 'Text to use as the author description:', 'display-featured-image-genesis' ); ?></legend>
 				<p>
-					<input type="radio" name="<?php echo esc_attr( $this->get_field_name( 'author_info' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val1" value="bio" <?php checked( $instance['author_info'], 'bio' ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val1"><?php esc_attr_e( 'Author Bio', 'display-featured-image-genesis' ); ?></label><br />
-					<input type="radio" name="<?php echo esc_attr( $this->get_field_name( 'author_info' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val2" value="text" <?php checked( $instance['author_info'], 'text' ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'author_info' ) ); ?>_val2"><?php esc_attr_e( 'Custom Text (below)', 'display-featured-image-genesis' ); ?></label><br />
+					<select id="<?php echo esc_attr( $this->get_field_name( 'author_info' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'author_info' ) ); ?>">
+						<option value="">- <?php esc_attr_e( 'None', 'display-featured-image-genesis' ); ?> -</option>
+						<option value="bio" <?php selected( 'bio', $instance['author_info'] ); ?>><?php esc_attr_e( 'Author Bio (from profile)', 'display-featured-image-genesis' ); ?></option>
+						<option value="text" <?php selected( 'text', $instance['author_info'] ); ?>><?php esc_attr_e( 'Custom Text (below)', 'display-featured-image-genesis' ); ?></option>
+					</select>
+				</p>
+				<p>
 					<label for="<?php echo esc_attr( $this->get_field_id( 'bio_text' ) ); ?>" class="screen-reader-text"><?php esc_attr_e( 'Custom Text Content', 'display-featured-image-genesis' ); ?></label>
 					<textarea id="<?php echo esc_attr( $this->get_field_id( 'bio_text' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'bio_text' ) ); ?>" class="widefat" rows="6" cols="4"><?php echo htmlspecialchars( $instance['bio_text'] ); ?></textarea>
 				</p>
 			</fieldset>
+		</div>
 
+		<div class="genesis-widget-column-box">
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_name( 'page' ) ); ?>"><?php esc_attr_e( 'Choose your extended "About Me" page from the list below. This will be the page linked to at the end of the about me section.', 'display-featured-image-genesis' ); ?></label><br />
+				<label for="<?php echo esc_attr( $this->get_field_name( 'page' ) ); ?>"><?php esc_attr_e( 'Choose your extended "About Me" page from the list below. This will be the page linked to at the end of the author description.', 'display-featured-image-genesis' ); ?></label><br />
 				<?php wp_dropdown_pages( array( 'name' => $this->get_field_name( 'page' ), 'show_option_none' => __( 'None', 'display-featured-image-genesis' ), 'selected' => $instance['page'] ) ); ?>
 			</p>
 
