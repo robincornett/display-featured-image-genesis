@@ -115,14 +115,6 @@ class Display_Featured_Image_Genesis_Common {
 		$fallback        = $displaysetting['default'];
 		$medium          = absint( get_option( 'medium_size_w' ) );
 
-		if ( is_singular() ) { // just checking for handling conditional variables set by width
-			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
-			$width = '';
-			if ( $thumb_metadata ) {
-				$width = $thumb_metadata['width'];
-			}
-		}
-
 		$fallback_id = $fallback;
 		if ( ! is_numeric( $fallback ) ) {
 			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
@@ -148,7 +140,7 @@ class Display_Featured_Image_Genesis_Common {
 		// outlier: if it's a home page with a static front page, and there is a featured image set on the home page
 		// also provisionally sets featured image for posts, similar to CPT archives
 		if ( ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) || 'post' === get_post_type() ) {
-			$image_id = $postspage_image;
+			$image_id = $postspage_image ? $postspage_image : $image_id;
 		}
 
 		$object = get_queried_object();
@@ -208,6 +200,8 @@ class Display_Featured_Image_Genesis_Common {
 				}
 			}
 
+			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
+			$width          = $thumb_metadata ? $thumb_metadata['width'] : '';
 			if ( has_post_thumbnail() && $width >= $medium ) {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
