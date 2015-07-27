@@ -125,20 +125,25 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.0
 	 */
 	public function localize_scripts() {
-		// backstretch settings from plugin/featured image settings
-		$backstretch_settings = array(
-			'src'    => esc_url( $this->item->backstretch[0] ),
-			'height' => absint( $this->displaysetting['less_header'] ),
-		);
 		// backstretch settings which can be filtered
-		$backstretch_variables = array(
+		$backstretch_variables = apply_filters( 'display_featured_image_genesis_backstretch_variables', array(
 			'centeredX' => true,
 			'centeredY' => true,
 			'fade'      => 750,
-		);
+		) );
 
-		$backstretch_variables = apply_filters( 'display_featured_image_genesis_backstretch_variables', $backstretch_variables );
-		$output = array_merge( $backstretch_settings, $backstretch_variables );
+		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		$large = wp_get_attachment_image_src( $image_id, 'large' );
+
+		$output = array(
+			'src'       => esc_url( $this->item->backstretch[0] ),
+			'largesrc'  => esc_url( $large[0] ),
+			'width'     => $large[1],
+			'height'    => (int) $this->displaysetting['less_header'],
+			'centeredX' => (bool) $backstretch_variables['centeredX'],
+			'centeredY' => (bool) $backstretch_variables['centeredY'],
+			'fade'      => (int) $backstretch_variables['fade'],
+		);
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
 	}

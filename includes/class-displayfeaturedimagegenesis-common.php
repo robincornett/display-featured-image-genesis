@@ -106,7 +106,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 2.2.1
 	 */
-	protected static function set_image_id( $image_id = '' ) {
+	public static function set_image_id( $image_id = '' ) {
 
 		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage       = get_option( 'page_for_posts' );
