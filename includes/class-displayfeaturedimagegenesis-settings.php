@@ -53,7 +53,7 @@ class Display_Featured_Image_Genesis_Settings {
 		$this->displaysetting = $this->get_display_setting();
 
 		echo '<div class="wrap">';
-			echo '<h2>' . esc_attr( $page_title ) . '</h2>';
+			echo '<h1>' . esc_attr( $page_title ) . '</h1>';
 			echo '<form action="options.php" method="post">';
 				settings_fields( 'displayfeaturedimagegenesis' );
 				do_settings_sections( 'displayfeaturedimagegenesis' );
