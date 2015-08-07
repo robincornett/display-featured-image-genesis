@@ -430,7 +430,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function do_validation_things( $new_value ) {
 
-		if ( empty( $_POST['displayfeaturedimagegenesis_nonce'] ) ) {
+		$action = 'displayfeaturedimagegenesis_save-settings';
+		$nonce  = 'displayfeaturedimagegenesis_nonce';
+		// If the user doesn't have permission to save, then display an error message
+		if ( ! $this->user_can_save( $action, $nonce ) ) {
 			wp_die( esc_attr__( 'Something unexpected happened. Please try again.', 'display-featured-image-genesis' ) );
 		}
 
@@ -466,6 +469,29 @@ class Display_Featured_Image_Genesis_Settings {
 
 		return $new_value;
 
+	}
+
+	/**
+	 * Determines if the user has permission to save the information from the submenu
+	 * page.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 *
+	 * @param    string    $action   The name of the action specified on the submenu page
+	 * @param    string    $nonce    The nonce specified on the submenu page
+	 *
+	 * @return   bool                True if the user has permission to save; false, otherwise.
+	 * @author   Tom McFarlin (https://tommcfarlin.com/save-wordpress-submenu-page-options/)
+	 */
+	private function user_can_save( $action, $nonce ) {
+		$is_nonce_set   = isset( $_POST[ $nonce ] );
+		$is_valid_nonce = false;
+
+		if ( $is_nonce_set ) {
+			$is_valid_nonce = wp_verify_nonce( $_POST[ $nonce ], $action );
+		}
+		return ( $is_nonce_set && $is_valid_nonce );
 	}
 
 	/**
