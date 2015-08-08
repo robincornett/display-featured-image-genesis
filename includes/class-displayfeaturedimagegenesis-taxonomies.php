@@ -31,6 +31,9 @@ class Display_Featured_Image_Genesis_Taxonomies {
 			add_action( "create_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
 			add_action( 'load-edit-tags.php', array( $this, 'help' ) );
 		}
+
+		add_action( 'split_shared_term', array( $this, 'split_shared_term' ) );
+
 	}
 
 	/**
@@ -40,17 +43,17 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 		echo '<div class="form-field term-image-wrap">';
 			printf( '<label for="displayfeaturedimagegenesis[term_image]">%s</label>',
-				__( 'Featured Image', 'display-featured-image-genesis' )
+				esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
 			);
 			echo '<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />';
 			printf( '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="%s" />',
-				__( 'Select Image', 'display-featured-image-genesis' )
+				esc_attr__( 'Select Image', 'display-featured-image-genesis' )
 			);
 			printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
-				__( 'Delete Image', 'display-featured-image-genesis' )
+				esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
 			);
 			echo '<p class="description">';
-			printf( __( 'Set Featured Image for new term.', 'display-featured-image-genesis' ) );
+			printf( esc_attr__( 'Set Featured Image for new term.', 'display-featured-image-genesis' ) );
 			echo '</p>';
 		echo '</div>';
 
@@ -73,7 +76,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 		echo '<tr class="form-field term-image-wrap">';
 			printf( '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">%s</label></th>',
-				__( 'Featured Image', 'display-featured-image-genesis' )
+				esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
 			);
 			echo '<td>';
 				$id   = $displaysetting['term_image'];
@@ -84,7 +87,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				$this->settings->render_buttons( $id, $name );
 				echo '<p class="description">';
 				printf(
-					__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
+					esc_attr__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
 					esc_attr( $term->name )
 				);
 				echo '</p>';
@@ -111,5 +114,32 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		) );
 
 	}
+
+	/**
+	 * Create new term meta record for split terms.
+	 *
+	 * When WordPress splits terms, ensure that the term meta gets preserved for the newly created term.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param integer @old_term_id The ID of the term being split.
+	 * @param integer @new_term_id The ID of the newly created term.
+	 *
+	 */
+	function split_shared_term( $old_term_id, $new_term_id ) {
+
+		$old_setting = get_option( "displayfeaturedimagegenesis_$old_term_id" );
+		$new_setting = get_option( "displayfeaturedimagegenesis_$new_term_id" );
+
+		if ( ! isset( $old_setting ) ) {
+			return;
+		}
+
+		$new_setting = $old_setting;
+
+		update_option( "displayfeaturedimagegenesis_$new_term_id", $new_setting );
+
+	}
+
 
 }
