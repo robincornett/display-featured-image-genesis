@@ -155,8 +155,9 @@ class Display_Featured_Image_Genesis_Settings {
 			array(
 				'id'       => 'less_header',
 				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
-				'callback' => 'header_size',
+				'callback' => 'do_number',
 				'section'  => 'main',
+				'args'     => array( 'setting' => 'less_header', 'label' => __( 'Pixels to remove ', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 400 ),
 			),
 			array(
 				'id'       => 'default',
@@ -234,7 +235,8 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function main_section_description() {
-		printf( '<p>%s</p>', esc_html__( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' ) );
+		$description = __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' );
+		$this->print_section_description( $description );
 	}
 
 	/**
@@ -244,25 +246,48 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 1.1.0
 	 */
 	public function cpt_section_description() {
-		printf( '<p>%s</p>', esc_html__( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) );
+		$description = __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' );
+		$this->print_section_description( $description );
 	}
 
 	/**
-	 * Setting for reduction amount
-	 * @return number of pixels to remove in backstretch-set.js
+	 * Echoes out the section description.
+	 * @param  string $description text string for description
+	 * @return string              as paragraph and escaped
 	 *
-	 * @since 1.1.0
+	 * @since 2.3.0
 	 */
-	public function header_size() {
+	protected function print_section_description( $description ) {
+		echo wp_kses_post( wpautop( $description ) );
+	}
 
-		printf( '<label for="displayfeaturedimagegenesis[less_header]">%s</label>',
-			esc_html__( 'Pixels to remove ', 'display-featured-image-genesis' )
-		);
-		echo '<input type="number" step="1" min="0" max="400" id="displayfeaturedimagegenesis[less_header]" name="displayfeaturedimagegenesis[less_header]" value="' . esc_attr( $this->displaysetting['less_header'] ) . '" class="small-text" />';
-		printf( '<p class="description">%s</p>',
-			esc_html__( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' )
-		);
+	/**
+	 * Generic callback to create a number field setting.
+	 *
+	 * @since 2.3.0
+	 */
+	public function do_number( $args ) {
 
+		printf( '<label for="%s[%s]">%s</label>', esc_attr( $this->page ),esc_attr( $args['setting'] ), esc_attr( $args['label'] ) );
+		printf( '<input type="number" step="1" min="%1$s" max="%2$s" id="%5$s[%3$s]" name="%5$s[%3$s]" value="%4$s" class="small-text" />',
+			(int) $args['min'],
+			(int) $args['max'],
+			esc_attr( $args['setting'] ),
+			esc_attr( $this->displaysetting[ $args['setting'] ] ),
+			esc_attr( $this->page )
+		);
+		$this->do_description( $args['setting'] );
+
+	}
+
+	/**
+	 * Description for less_header setting.
+	 * @return string description
+	 *
+	 * @since 2.3.0
+	 */
+	protected function less_header_description() {
+		return __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' );
 	}
 
 	/**
@@ -274,19 +299,28 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function set_default_image() {
 
-		$large = $this->common->minimum_backstretch_width();
-		$id    = $this->displaysetting['default'] ? $this->displaysetting['default'] : '';
-		$name  = 'displayfeaturedimagegenesis[default]';
+		$id   = $this->displaysetting['default'] ? $this->displaysetting['default'] : '';
+		$name = 'displayfeaturedimagegenesis[default]';
 		if ( ! empty( $id ) ) {
 			echo wp_kses_post( $this->render_image_preview( $id ) );
 		}
 		$this->render_buttons( $id, $name );
-		echo '<p class="description">';
-		printf(
+		$this->do_description( 'default_image' );
+
+	}
+
+	/**
+	 * Description for default image setting
+	 * @return string
+	 *
+	 * @since 2.3.0
+	 */
+	protected function default_image_description() {
+		$large = $this->common->minimum_backstretch_width();
+		return sprintf(
 			esc_html__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $large + 1 )
 		);
-		echo '</p>';
 	}
 
 	/**
@@ -302,10 +336,7 @@ class Display_Featured_Image_Genesis_Settings {
 			checked( 1, esc_attr( $this->displaysetting[ $args['setting'] ] ), false ),
 			esc_attr( $args['label'] )
 		);
-		$function = $args['setting'] . '_description';
-		if ( method_exists( $this, $function ) ) {
-			$this->$function();
-		}
+		$this->do_description( $args['setting'] );
 	}
 
 	/**
@@ -354,14 +385,9 @@ class Display_Featured_Image_Genesis_Settings {
 			return;
 		}
 
-		if ( ! is_numeric( $id ) ) {
-			$id = Display_Featured_Image_Genesis_Common::get_image_id( $id );
-		}
-
-		$preview = wp_get_attachment_image_src( absint( $id ), 'medium' );
-		$image   = '<div class="upload_logo_preview">';
-		$image  .= '<img src="' . esc_url( $preview[0] ) . '" />';
-		$image  .= '</div>';
+		$id      = is_numeric( $id ) ? $id : Display_Featured_Image_Genesis_Common::get_image_id( $id );
+		$preview = wp_get_attachment_image_src( (int) $id, 'medium' );
+		$image   = sprintf( '<div class="upload_logo_preview"><img src="%s" /></div>', $preview[0] );
 		return $image;
 	}
 
@@ -419,6 +445,22 @@ class Display_Featured_Image_Genesis_Settings {
 			}
 		}
 
+	}
+
+	/**
+	 * Generic callback to display a field description.
+	 * @param  string $args setting name used to identify description callback
+	 * @return string       Description to explain a field.
+	 *
+	 * @since 2.3.0
+	 */
+	protected function do_description( $args ) {
+		$function = $args . '_description';
+		if ( ! method_exists( $this, $function ) ) {
+			return;
+		}
+		$description = $this->$function();
+		printf( '<p class="description">%s</p>', wp_kses_post( $description ) );
 	}
 
 	/**
@@ -569,10 +611,10 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function validate_author_image( $new_value, $old_value ) {
 
-		$medium    = get_option( 'medium_size_w' );
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
+		$medium = get_option( 'medium_size_w' );
+		$source = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid  = $this->is_valid_img_ext( $source[0] );
+		$width  = $source[1];
 
 		if ( ! $new_value  || ( $new_value && $valid && $width > $medium ) ) {
 			return $new_value;
