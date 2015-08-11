@@ -41,21 +41,15 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	 */
 	public function add_taxonomy_meta_fields() {
 
-		echo '<div class="form-field term-image-wrap">';
-			printf( '<label for="displayfeaturedimagegenesis[term_image]">%s</label>',
-				esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
-			);
-			echo '<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />';
-			printf( '<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="%s" />',
-				esc_attr__( 'Select Image', 'display-featured-image-genesis' )
-			);
-			printf( '<input type="button" class="delete_image button-secondary" value="%s" />',
-				esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
-			);
-			echo '<p class="description">';
-			printf( esc_attr__( 'Set Featured Image for new term.', 'display-featured-image-genesis' ) );
-			echo '</p>';
-		echo '</div>';
+		?>
+		<div class="form-field term-image-wrap">
+			<label for="displayfeaturedimagegenesis[term_image]"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
+			<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />
+			<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="<?php esc_attr_e( 'Select Image', 'display-featured-image-genesis' ); ?>" />
+			<input type="button" class="delete_image button-secondary" value="<?php esc_attr_e( 'Delete Image', 'display-featured-image-genesis' ); ?>" />
+			<p class="description"><?php esc_attr_e( 'Set Featured Image for new term.', 'display-featured-image-genesis' ); ?></p>
+		</div>
+	<?php
 
 	}
 
@@ -140,6 +134,5 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		update_option( "displayfeaturedimagegenesis_$new_term_id", $new_setting );
 
 	}
-
 
 }
