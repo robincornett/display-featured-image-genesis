@@ -85,7 +85,9 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 				}
 			}
 
-			$text .= 'text' === $instance['author_info'] ? $instance['bio_text'] : get_the_author_meta( 'description', $instance['user'] );
+			if ( $instance['author_info'] ) {
+				$text .= 'text' === $instance['author_info'] ? $instance['bio_text'] : get_the_author_meta( 'description', $instance['user'] );
+			}
 
 			$text .= $instance['page'] ? sprintf( ' <a class="pagelink" href="%s">%s</a>', get_page_link( $instance['page'] ), $instance['page_link_text'] ) : '';
 
