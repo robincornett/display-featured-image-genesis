@@ -62,7 +62,7 @@ class Display_Featured_Image_Genesis_Common {
 		$item->content = '';
 		// declare this last so that $item->backstretch is set.
 		if ( ! is_admin() && is_singular() ) {
-			$fullsize      = wp_get_attachment_image_src( $image_id, 'original' );
+			$fullsize      = wp_get_attachment_image_src( $image_id, 'full' );
 			$post          = get_post();
 			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 
