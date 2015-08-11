@@ -152,7 +152,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		<div class="genesis-widget-column-box genesis-widget-column-box-top">
 			<p>
 				<input id="<?php echo esc_attr( $this->get_field_id( 'show_featured_image' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_featured_image' ) ); ?>" value="1" <?php checked( $instance['show_featured_image'] ); ?>/>
-				<label for="<?php echo esc_attr( $this->get_field_name( 'show_featured_image' ) ); ?>"><?php esc_attr_e( 'Show the user\'s featured image.', 'display-featured-image-genesis' ); ?></label><br />
+				<label for="<?php echo esc_attr( $this->get_field_id( 'show_featured_image' ) ); ?>"><?php esc_attr_e( 'Show the user\'s featured image.', 'display-featured-image-genesis' ); ?></label><br />
 			</p>
 
 			<p>
@@ -180,7 +180,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		<div class="genesis-widget-column-box">
 			<p>
 				<input id="<?php echo esc_attr( $this->get_field_id( 'show_gravatar' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_gravatar' ) ); ?>" value="1" <?php checked( $instance['show_gravatar'] ); ?>/>
-				<label for="<?php echo esc_attr( $this->get_field_name( 'show_gravatar' ) ); ?>"><?php esc_attr_e( 'Show the user\'s gravatar.', 'display-featured-image-genesis' ); ?></label><br />
+				<label for="<?php echo esc_attr( $this->get_field_id( 'show_gravatar' ) ); ?>"><?php esc_attr_e( 'Show the user\'s gravatar.', 'display-featured-image-genesis' ); ?></label><br />
 
 				<label for="<?php echo esc_attr( $this->get_field_id( 'size' ) ); ?>"><?php esc_attr_e( 'Gravatar Size', 'display-featured-image-genesis' ); ?>:</label>
 				<select id="<?php echo esc_attr( $this->get_field_id( 'size' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'size' ) ); ?>">
