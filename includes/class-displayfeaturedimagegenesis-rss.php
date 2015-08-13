@@ -20,7 +20,6 @@ class Display_Featured_Image_Genesis_RSS {
 		$settings       = new Display_Featured_Image_Genesis_Settings();
 		$displaysetting = $settings->get_display_setting();
 		$feed_image     = $displaysetting['feed_image'];
-		$rss_option     = get_option( 'rss_use_excerpt' );
 		$post_types     = array();
 		$skipped_types  = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
@@ -32,6 +31,7 @@ class Display_Featured_Image_Genesis_RSS {
 		// if the feed is summary, filter the excerpt
 		$which_filter = 'the_excerpt_rss';
 		$priority     = 1000;
+		$rss_option   = get_option( 'rss_use_excerpt' );
 		// if the feed is full text, filter the content
 		if ( '0' === $rss_option ) {
 			$which_filter = 'the_content_feed';
@@ -60,8 +60,11 @@ class Display_Featured_Image_Genesis_RSS {
 		$size = 'original';
 		if ( class_exists( 'SendImagesRSS' ) ) {
 
+			if ( '1' === $rss_option && class_exists( 'SendImagesRSS_Excerpt_Fixer' ) ) {
+				// if the newer version of Send Images to RSS is installed, bail here because it's better.
+				return $content;
+			}
 			$rss_setting = get_option( 'sendimagesrss' );
-			$new_version = $rss_setting ? true : false;
 			if ( ! $rss_setting ) {
 				$defaults = array(
 					'simplify_feed'  => get_option( 'sendimagesrss_simplify_feed', 0 ),
@@ -70,11 +73,6 @@ class Display_Featured_Image_Genesis_RSS {
 
 				$rss_setting = get_option( 'sendimagesrss', $defaults );
 			}
-			if ( '1' === $rss_option && $new_version ) {
-				// if the newer version of Send Images to RSS is installed, bail here because it's better.
-				return $content;
-			}
-
 			if ( ! $rss_setting['simplify_feed'] && ( ( $rss_setting['alternate_feed'] && is_feed( 'email' ) ) || ! $rss_setting['alternate_feed'] ) ) {
 				$size = 'mailchimp';
 			}
