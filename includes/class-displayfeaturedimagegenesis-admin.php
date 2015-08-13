@@ -114,9 +114,10 @@ class Display_Featured_Image_Genesis_Admin {
 
 		$taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
 		$taxonomy = ! is_null( $taxonomy ) ? $taxonomy : get_current_screen()->taxonomy;
+		$image_id = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] );
 
 		$args = array(
-			'image_id' => is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : Display_Featured_Image_Genesis_Common::get_image_id( $term_meta['term_image'] ),
+			'image_id' => $image_id,
 			'context'  => 'term',
 			'alt'      => get_term( $term_id, $taxonomy )->name,
 		);
@@ -203,14 +204,13 @@ class Display_Featured_Image_Genesis_Admin {
 	 * @since 2.3.0
 	 */
 	protected function admin_featured_image( $args ) {
-		if ( ! $args['image_id'] ) {
+		$image_id = $args['image_id'];
+		$preview  = wp_get_attachment_image_src( $image_id, 'thumbnail' );
+		$preview  = apply_filters( "display_featured_image_genesis_admin_{$args['context']}_thumbnail", $preview, $image_id );
+		if ( ! $preview ) {
 			return;
 		}
-		apply_filters( "display_featured_image_genesis_admin_{$args['context']}_thumbnail", $args );
-
-		$preview = wp_get_attachment_image_src( $args['image_id'], 'thumbnail' );
-		return sprintf( '<img src="%1$s" alt="%2$s" />', esc_url( $preview[0] ), esc_attr( $args['alt'] ) );
-
+		return sprintf( '<img src="%1$s" alt="%2$s" />', $preview[0], $args['alt'] );
 	}
 
 }
