@@ -127,7 +127,7 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $term->meta['intro_text'] );
 
 		if ( $intro_text ) {
-			printf( '<div class="archive-description taxonomy-description">%s</div>', wpautop( $intro_text ) );
+			printf( '<div class="archive-description taxonomy-description">%s</div>', wp_kses_post( wpautop( $intro_text ) ) );
 		}
 
 	}
@@ -155,7 +155,7 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = apply_filters( 'display_featured_image_genesis_author_description', get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) ) );
 
 		if ( $intro_text ) {
-			printf( '<div class="archive-description author-description">%s</div>', wpautop( $intro_text ) );
+			printf( '<div class="archive-description author-description">%s</div>', wp_kses_post( wpautop( $intro_text ) ) );
 		}
 
 	}
@@ -191,7 +191,7 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = apply_filters( 'display_featured_image_genesis_cpt_description', genesis_get_cpt_option( 'intro_text' ) );
 
 		if ( $intro_text ) {
-			printf( '<div class="archive-description cpt-archive-description">%s</div>', wpautop( $intro_text ) );
+			printf( '<div class="archive-description cpt-archive-description">%s</div>', wp_kses_post( wpautop( $intro_text ) ) );
 		}
 
 	}
