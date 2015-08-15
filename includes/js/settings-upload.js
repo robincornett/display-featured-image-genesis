@@ -30,7 +30,7 @@ jQuery(document).ready(function($){
 
 			attachment   = custom_uploader.state().get( 'selection' ).first().toJSON();
 			preview      = $( target_input ).prevAll( '.upload_logo_preview' );
-			previewImage = $( '<div id="upload_logo_preview"><img width="300" src="' + attachment.url + '" /></div>' );
+			previewImage = $( '<div class="upload_logo_preview"><img width="300" src="' + attachment.url + '" /></div>' );
 			$( target_input ).val( attachment.id );
 			if ( $( preview ).length ) {
 				$( preview ).remove();
