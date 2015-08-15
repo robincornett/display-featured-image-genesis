@@ -26,12 +26,8 @@ class Display_Featured_Image_Genesis_Common {
 		$item = new stdClass();
 
 		// variables internal to this function
-		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
-		$postspage       = get_option( 'page_for_posts' );
-		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
-		$move_excerpts   = $displaysetting['move_excerpts'];
-		$postspage_image = get_post_thumbnail_id( $postspage );
-		$fallback        = $displaysetting['default']; // url only
+		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$fallback       = $displaysetting['default']; // url only
 
 		// sitewide variables used outside this function
 		$item->backstretch = '';
