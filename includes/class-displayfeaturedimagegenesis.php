@@ -166,7 +166,6 @@ class Display_Featured_Image_Genesis {
 	public function enqueue_scripts() {
 
 		$version = $this->common->version;
-		$check   = strpos( get_current_screen()->id, 'displayfeaturedimagegenesis' );
 
 		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
 		wp_register_script( 'widget_selector', plugins_url( '/includes/js/widget-selector.js', dirname( __FILE__ ) ), array( 'jquery' ), $version );

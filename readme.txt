@@ -41,7 +41,7 @@ Now you can add the Featured Image from each post to your RSS feed. This is an o
 
 You can check/change your feed settings on your site's Settings > Reading page.
 
-_If you are already inserting your Featured Image into your feed through another function or plugin, you'll want to remove that before activating this feature; otherwise you will have two copies of the image added to your feed!_
+_If you are already inserting your Featured Image into your feed through another function or plugin, you'll want to remove that before activating this feature; otherwise you will have two copies of the image added to your feed! If you are using Send Images to RSS, don't worry about it. I've made sure these two plugins coexist happily._
 
 = Simple Styling =
 
@@ -169,6 +169,7 @@ featured images for authors, yay!
 
 = 2.3.0 =
 * new: set a featured image for each author!
+* new: load smaller images on smaller screens!
 * added settings page link to plugin table
 * refactored settings page
 

@@ -33,7 +33,7 @@ Now you can add the Featured Image from each post to your RSS feed. This is an o
 
 You can check/change your feed settings on your site's Settings > Reading page.
 
-_If you are already inserting your Featured Image into your feed through another function or plugin, you'll want to remove that before activating this feature; otherwise you will have two copies of the image added to your feed!_
+_If you are already inserting your Featured Image into your feed through another function or plugin, you'll want to remove that before activating this feature; otherwise you will have two copies of the image added to your feed! If you are using Send Images to RSS, don't worry about it. I've made sure these two plugins coexist happily._
 
 #### Simple Styling
 
@@ -46,7 +46,7 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 * `.featured` is appended to the large image output directly above the post/page content.
 
 ## Requirements
-* WordPress 3.8, tested up to 4.1
+* WordPress 3.8, tested up to 4.3
 * the Genesis Framework
 
 ## Installation
@@ -198,6 +198,16 @@ function rgc_add_archive_thumbnails() {
 
 This will follow the settings you choose in the Genesis Theme Settings.
 
+### I'd like for the front page title to still show on top of the featured image.
+
+Sure thing, if your front page is set to be a static front page. Just add:
+
+```php
+add_filter( 'display_featured_image_genesis_excerpt_show_front_page_title', '__return_true' );
+```
+
+to a convenient location, such as your functions.php file. Otherwise, the page title will not display on the front page of your site.
+
 ## Credits
 
 * Built by [Robin Cornett](http://robincornett.com/)
@@ -206,6 +216,7 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 ### 2.3.0
 * new: set a featured image for each author!
+* new: load smaller images on smaller screens!
 * added settings page link to plugin table
 * refactored settings page
 
