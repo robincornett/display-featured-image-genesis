@@ -109,13 +109,8 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$postspage_image = get_post_thumbnail_id( $postspage );
 		$fallback        = $displaysetting['default'];
-		$medium          = absint( get_option( 'medium_size_w' ) );
-
-		$fallback_id = $fallback;
-		if ( ! is_numeric( $fallback ) ) {
-			$fallback_id = self::get_image_id( $fallback ); // gets image id with attached metadata
-		}
-		$fallback_id = absint( $fallback_id );
+		$medium          = (int) get_option( 'medium_size_w' );
+		$fallback_id     = displayfeaturedimagegenesis_check_image_id( $fallback );
 
 		/**
 		 * create a filter to use the fallback image
@@ -129,7 +124,7 @@ class Display_Featured_Image_Genesis_Common {
 			$image_id = $fallback_id;
 
 			if ( in_array( get_post_type(), $use_fallback ) ) {
-				return $image_id;
+				return (int) $image_id;
 			}
 		}
 
@@ -152,7 +147,7 @@ class Display_Featured_Image_Genesis_Common {
 				$post_type = $object->post_type;
 			}
 			if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
-				$image_id = is_numeric( $displaysetting['post_type'][ $post_type ] ) ? $displaysetting['post_type'][ $post_type ] : self::get_image_id( $displaysetting['post_type'][ $post_type ] );
+				$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
 
 				/**
 				 * use the custom post type featured image
@@ -161,7 +156,7 @@ class Display_Featured_Image_Genesis_Common {
 				 */
 				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', array() );
 				if ( in_array( get_post_type(), $use_cpt ) ) {
-					return $image_id;
+					return (int) $image_id;
 				}
 			}
 		}
@@ -174,7 +169,7 @@ class Display_Featured_Image_Genesis_Common {
 			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
 			// if there is a term image
 			if ( ! empty( $term_meta['term_image'] ) ) {
-				$image_id = is_numeric( $term_meta['term_image'] ) ? $term_meta['term_image'] : self::get_image_id( $term_meta['term_image'] );
+				$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
 			}
 		}
 
@@ -192,7 +187,7 @@ class Display_Featured_Image_Genesis_Common {
 				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', array() );
 
 				if ( in_array( get_post_type(), $use_tax_image ) ) {
-					return $image_id;
+					return (int) $image_id;
 				}
 			}
 

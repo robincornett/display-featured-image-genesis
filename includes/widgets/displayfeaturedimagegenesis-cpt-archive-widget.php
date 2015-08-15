@@ -104,12 +104,8 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
 		}
 
-		$image = '';
-		if ( 'post' === $instance['post_type'] ) {
-			$image_id = $postspage_image;
-		} else {
-			$image_id = is_numeric( $option['post_type'][ $post_type->name ] ) ? $option['post_type'][ $post_type->name ] : Display_Featured_Image_Genesis_Common::get_image_id( $option['post_type'][ $post_type->name ] );
-		}
+		$image     = '';
+		$image_id  = 'post' === $instance['post_type'] ? $postspage_image : displayfeaturedimagegenesis_check_image_id( $option['post_type'][ $post_type->name ] );
 		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 		if ( $image_src ) {
 			$image = '<img src="' . $image_src[0] . '" alt="' . $title . '" />';

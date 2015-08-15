@@ -385,7 +385,7 @@ class Display_Featured_Image_Genesis_Settings {
 			return;
 		}
 
-		$id      = is_numeric( $id ) ? $id : Display_Featured_Image_Genesis_Common::get_image_id( $id );
+		$id      = displayfeaturedimagegenesis_check_image_id( $id );
 		$preview = wp_get_attachment_image_src( (int) $id, 'medium' );
 		$image   = sprintf( '<div class="upload_logo_preview"><img src="%s" /></div>', $preview[0] );
 		return $image;
@@ -400,7 +400,7 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since 2.3.0
 	 */
 	public function render_buttons( $id, $name ) {
-		$id = is_numeric( $id ) ? $id : Display_Featured_Image_Genesis_Common::get_image_id( $id );
+		$id = displayfeaturedimagegenesis_check_image_id( $id );
 		$id = $id ? (int) $id : '';
 		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
 		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
@@ -544,8 +544,8 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	protected function validate_image( $new_value, $old_value, $label, $size_to_check ) {
 
-		$new_value = is_numeric( $new_value ) ? $new_value : (int) Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$old_value = is_numeric( $old_value ) ? $old_value : (int) Display_Featured_Image_Genesis_Common::get_image_id( $old_value );
+		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
+		$old_value = displayfeaturedimagegenesis_check_image_id( $old_value );
 		$source    = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
@@ -588,8 +588,7 @@ class Display_Featured_Image_Genesis_Settings {
 	protected function validate_taxonomy_image( $new_value ) {
 
 		// if the image was selected using the old URL method
-		$new_value = is_numeric( $new_value ) ? $new_value : Display_Featured_Image_Genesis_Common::get_image_id( $new_value );
-		$new_value = (int) $new_value;
+		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
 		$medium    = get_option( 'medium_size_w' );
 		$source    = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid     = $this->is_valid_img_ext( $source[0] );
