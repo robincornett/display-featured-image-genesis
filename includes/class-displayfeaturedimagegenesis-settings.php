@@ -50,10 +50,12 @@ class Display_Featured_Image_Genesis_Settings {
 	 */
 	public function do_settings_form() {
 		$page_title = get_admin_page_title();
+		$heading    = $GLOBALS['wp_version'] >= '4.3' ? 'h1' : 'h2';
+
 		$this->displaysetting = $this->get_display_setting();
 
 		echo '<div class="wrap">';
-			echo '<h1>' . esc_attr( $page_title ) . '</h1>';
+			printf( '<%1$s>%2$s</%1$s>', esc_attr( $heading ), esc_attr( $page_title ) );
 			echo '<form action="options.php" method="post">';
 				settings_fields( 'displayfeaturedimagegenesis' );
 				do_settings_sections( 'displayfeaturedimagegenesis' );
