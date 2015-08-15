@@ -65,7 +65,6 @@ class Display_Featured_Image_Genesis_Taxonomies {
 
 		$t_id           = $term->term_id;
 		$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
-		$medium         = get_option( 'medium_size_w' );
 		$id             = '';
 
 		echo '<tr class="form-field term-image-wrap">';
@@ -98,7 +97,7 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	public function help() {
 		$screen = get_current_screen();
 
-		$term_help  = '<h3>' . __( 'Set a Featured Image', 'display-featured-image-genesis' ) . '</h3>';
+		$term_help  = '<h3>' . __( 'Set Featured Image', 'display-featured-image-genesis' ) . '</h3>';
 		$term_help .= '<p>' . __( 'You may set a featured image for your terms. This image will be used on the term archive page, and as a fallback image on a single post page if it does not have a featured image of its own.', 'display-featured-image-genesis' ) . '</p>';
 
 		$screen->add_help_tab( array(
