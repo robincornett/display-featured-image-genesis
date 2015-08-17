@@ -180,7 +180,7 @@ class Display_Featured_Image_Genesis {
 			) );
 		}
 
-		if ( is_customize_preview() && ! function_exists( 'genesis' ) ) {
+		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() && ! function_exists( 'genesis' ) ) {
 			return;
 		}
 

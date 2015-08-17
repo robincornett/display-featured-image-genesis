@@ -214,16 +214,18 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
-### 2.3.0
+### 2.3.0 - 2015-08-17
 * new: set a featured image for each author!
 * new: load smaller images on smaller screens!
+* added hooks to title output over backstretch images
 * added settings page link to plugin table
 * refactored settings page
+* bugfix: admin column output
 
-### 2.2.2
+### 2.2.2 - 2015-05-09
 * fixed default image id function error
 
-### 2.2.1
+### 2.2.1 - 2015-05-08
 * fixed fallback filters
 * escaped even more things
 

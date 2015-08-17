@@ -212,7 +212,7 @@ class Display_Featured_Image_Genesis_Output {
 		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
 
 			$front_page_show = is_front_page() && $show_front_page_title ? true : false;
-			if ( ! empty( $this->item->title && ( ! is_front_page() || $front_page_show ) ) ) {
+			if ( ! empty( $this->item->title ) && ( ! is_front_page() || $front_page_show ) ) {
 
 				$class        = is_singular() ? 'entry-title' : 'archive-title';
 				$itemprop     = genesis_html5() ? 'itemprop="headline"' : '';

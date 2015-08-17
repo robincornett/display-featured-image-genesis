@@ -163,15 +163,17 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 == Upgrade Notice ==
 = 2.3.0 =
-featured images for authors, yay!
+New features: featured images for authors, smaller images loaded for smaller screens!
 
 == Changelog ==
 
 = 2.3.0 =
 * new: set a featured image for each author!
 * new: load smaller images on smaller screens!
+* added hooks to title output over backstretch images
 * added settings page link to plugin table
 * refactored settings page
+* bugfix: admin column output
 
 = 2.2.2 =
 * fixed default image id function error
