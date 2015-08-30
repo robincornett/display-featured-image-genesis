@@ -211,18 +211,8 @@ class Display_Featured_Image_Genesis_Output {
 
 		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
 
-			$front_page_show = is_front_page() && $show_front_page_title ? true : false;
-			if ( ! empty( $this->item->title ) && ( ! is_front_page() || $front_page_show ) ) {
-
-				$class        = is_singular() ? 'entry-title' : 'archive-title';
-				$itemprop     = genesis_html5() ? 'itemprop="headline"' : '';
-				$title        = $this->item->title;
-				$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
-
-				$title_output = apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
-
-				echo wp_kses_post( $title_output );
-
+			if ( ! empty( $this->item->title && $this->do_the_title() ) ) {
+				echo wp_kses_post( $this->do_the_title() );
 			}
 
 			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
@@ -260,6 +250,25 @@ class Display_Featured_Image_Genesis_Output {
 		$image = apply_filters( 'display_featured_image_genesis_large_image_output', $image );
 
 		echo wp_kses_post( $image );
+	}
+
+	/**
+	 * Return the title.
+	 * @return string title with markup.
+	 *
+	 * @since 2.3.1
+	 */
+	protected function do_the_title() {
+		if ( ( is_front_page() && ! $this->show_front_title ) || ( is_page_template( 'page_blog.php' ) && genesis_a11y( 'headings' ) ) ) {
+			return;
+		}
+		$class        = is_singular() ? 'entry-title' : 'archive-title';
+		$itemprop     = genesis_html5() ? 'itemprop="headline"' : '';
+		$title        = $this->item->title;
+		$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
+
+		$title_output = apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
+		return $title_output;
 	}
 
 	/**
