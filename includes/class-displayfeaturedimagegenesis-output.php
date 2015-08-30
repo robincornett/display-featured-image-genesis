@@ -97,8 +97,8 @@ class Display_Featured_Image_Genesis_Output {
 	public function add_body_class( $classes ) {
 
 		$large  = $this->common->minimum_backstretch_width();
-		$medium = absint( get_option( 'medium_size_w' ) );
-		$width  = absint( $this->item->backstretch[1] );
+		$medium = (int) get_option( 'medium_size_w' );
+		$width  = (int) $this->item->backstretch[1];
 
 		// check if they have enabled display on subsequent pages
 		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
@@ -172,19 +172,16 @@ class Display_Featured_Image_Genesis_Output {
 		 *
 		 * @since 2.3.0
 		 */
-		$show_front_page_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
-		$show_front_page_title = true === $show_front_page_title ? $show_front_page_title : false;
+		$show_front_title       = apply_filters( 'display_featured_image_genesis_excerpt_show_front_title', false );
+		$this->show_front_title = true === $show_front_title ? $show_front_title : false;
 
 		// if titles will be moved to overlay backstretch image
 		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
-			if ( is_singular() || ( is_front_page() && ! $show_front_page_title ) && ! is_page_template( 'page_blog.php' ) ) {
+			if ( ( is_singular() && ! is_page_template( 'page_blog.php' ) ) || ( is_front_page() && ! $show_front_title ) ) {
 				remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
 				remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
 			}
-
-			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
-			remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
-			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+			$this->remove_descriptions();
 		}
 
 		echo '<div class="big-leader">';
@@ -203,11 +200,7 @@ class Display_Featured_Image_Genesis_Output {
 		// if move excerpts is enabled
 		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
 
-			$this->description->do_front_blog_excerpt();
-			$this->description->do_excerpt();
-			genesis_do_taxonomy_title_description();
-			genesis_do_author_title_description();
-			genesis_do_cpt_archive_title_description();
+			$this->do_title_descriptions();
 
 		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
 
@@ -215,11 +208,8 @@ class Display_Featured_Image_Genesis_Output {
 				echo wp_kses_post( $this->do_the_title() );
 			}
 
-			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
-			remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
-			remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
-
-			add_action( 'genesis_before_loop', array( $this, 'move_titles' ) );
+			$this->remove_descriptions();
+			add_action( 'genesis_before_loop', array( $this, 'add_descriptions' ) );
 
 		}
 
@@ -280,7 +270,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.3.0
 	 *
 	 */
-	public function move_titles() {
+	public function add_descriptions() {
 
 		$this->description->do_tax_description();
 		$this->description->do_author_description();
@@ -288,4 +278,17 @@ class Display_Featured_Image_Genesis_Output {
 
 	}
 
+	protected function do_title_descriptions() {
+		$this->description->do_front_blog_excerpt();
+		$this->description->do_excerpt();
+		genesis_do_taxonomy_title_description();
+		genesis_do_author_title_description();
+		genesis_do_cpt_archive_title_description();
+	}
+
+	protected function remove_descriptions() {
+		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
+		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
+		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+	}
 }
