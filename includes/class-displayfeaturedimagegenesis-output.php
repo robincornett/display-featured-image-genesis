@@ -181,7 +181,7 @@ class Display_Featured_Image_Genesis_Output {
 				remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
 				remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
 			}
-			$this->remove_descriptions();
+			$this->remove_title_descriptions();
 		}
 
 		echo '<div class="big-leader">';
@@ -208,7 +208,7 @@ class Display_Featured_Image_Genesis_Output {
 				echo wp_kses_post( $this->do_the_title() );
 			}
 
-			$this->remove_descriptions();
+			$this->remove_title_descriptions();
 			add_action( 'genesis_before_loop', array( $this, 'add_descriptions' ) );
 
 		}
@@ -278,6 +278,12 @@ class Display_Featured_Image_Genesis_Output {
 
 	}
 
+	/**
+	 * Do title and description together (for excerpt output)
+	 * @return title/description/excerpt
+	 *
+	 * @since 2.3.1
+	 */
 	protected function do_title_descriptions() {
 		$this->description->do_front_blog_excerpt();
 		$this->description->do_excerpt();
@@ -286,7 +292,11 @@ class Display_Featured_Image_Genesis_Output {
 		genesis_do_cpt_archive_title_description();
 	}
 
-	protected function remove_descriptions() {
+	/**
+	 * Remove Genesis titles/descriptions
+	 * @since 2.3.1
+	 */
+	protected function remove_title_descriptions() {
 		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
