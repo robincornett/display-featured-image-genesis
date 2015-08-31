@@ -166,15 +166,6 @@ class Display_Featured_Image_Genesis_Output {
 		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', array() );
 		$keep_titles       = $this->displaysetting['keep_titles'];
 
-		/**
-		 * filter to show title on front page
-		 * @return boolean true/false
-		 *
-		 * @since 2.3.0
-		 */
-		$show_front_title       = apply_filters( 'display_featured_image_genesis_excerpt_show_front_title', false );
-		$this->show_front_title = true === $show_front_title ? $show_front_title : false;
-
 		// if titles will be moved to overlay backstretch image
 		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
 			$this->remove_title_descriptions();
@@ -243,7 +234,17 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.1
 	 */
 	protected function do_the_title() {
-		if ( ( is_front_page() && ! $this->show_front_title ) || ( is_page_template( 'page_blog.php' ) && genesis_a11y( 'headings' ) ) ) {
+
+		/**
+		 * filter to show title on front page
+		 * @return boolean true/false
+		 *
+		 * @since 2.3.0
+		 */
+		$show_front_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
+		$show_front_title = true === $show_front_title ? $show_front_title : false;
+
+		if ( ( is_front_page() && ! $show_front_title ) || ( is_page_template( 'page_blog.php' ) && genesis_a11y( 'headings' ) ) ) {
 			return;
 		}
 		$class        = is_singular() ? 'entry-title' : 'archive-title';
