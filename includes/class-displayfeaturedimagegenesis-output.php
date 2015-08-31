@@ -177,10 +177,6 @@ class Display_Featured_Image_Genesis_Output {
 
 		// if titles will be moved to overlay backstretch image
 		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
-			if ( ( is_singular() && ! is_page_template( 'page_blog.php' ) ) || ( is_front_page() && ! $show_front_title ) ) {
-				remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
-				remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
-			}
 			$this->remove_title_descriptions();
 		}
 
@@ -207,8 +203,6 @@ class Display_Featured_Image_Genesis_Output {
 			if ( ! empty( $this->item->title && $this->do_the_title() ) ) {
 				echo wp_kses_post( $this->do_the_title() );
 			}
-
-			$this->remove_title_descriptions();
 			add_action( 'genesis_before_loop', array( $this, 'add_descriptions' ) );
 
 		}
@@ -297,6 +291,10 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.1
 	 */
 	protected function remove_title_descriptions() {
+		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
+			remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
+			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
+		}
 		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
