@@ -244,7 +244,7 @@ class Display_Featured_Image_Genesis_Output {
 		$show_front_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
 		$show_front_title = true === $show_front_title ? $show_front_title : false;
 
-		if ( ( is_front_page() && ! $show_front_title ) || ( is_page_template( 'page_blog.php' ) && function_exists( 'genesis_a11y' ) && genesis_a11y( 'headings' ) ) ) {
+		if ( ( is_front_page() && ! $show_front_title ) || is_page_template( 'page_blog.php' ) ) {
 			return;
 		}
 		$class        = is_singular() ? 'entry-title' : 'archive-title';

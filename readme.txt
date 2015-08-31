@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -162,10 +162,17 @@ This will follow the settings you choose in the Genesis Theme Settings.
 3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
+= 2.3.1 =
+bugfix for blog page template users.
+
 = 2.3.0 =
 New features: featured images for authors, smaller images loaded for smaller screens!
 
 == Changelog ==
+
+= 2.3.1 =
+* bugfix: no longer removes titles on pages using the Genesis blog template.
+* sanity check: cleaned up code redundancies and confusions.
 
 = 2.3.0 =
 * new: set a featured image for each author!

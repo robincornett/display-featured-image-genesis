@@ -214,6 +214,10 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.3.1 - 2015-08-31
+* bugfix: no longer removes titles on pages using the Genesis blog template.
+* sanity check: cleaned up code redundancies and confusions.
+
 ### 2.3.0 - 2015-08-17
 * new: set a featured image for each author!
 * new: load smaller images on smaller screens!
