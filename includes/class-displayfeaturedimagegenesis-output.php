@@ -244,7 +244,7 @@ class Display_Featured_Image_Genesis_Output {
 		$show_front_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
 		$show_front_title = true === $show_front_title ? $show_front_title : false;
 
-		if ( ( is_front_page() && ! $show_front_title ) || is_page_template( 'page_blog.php' ) ) {
+		if ( is_front_page() && ! $show_front_title ) {
 			return;
 		}
 		$class        = is_singular() ? 'entry-title' : 'archive-title';
@@ -252,8 +252,7 @@ class Display_Featured_Image_Genesis_Output {
 		$title        = $this->item->title;
 		$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
 
-		$title_output = apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
-		return $title_output;
+		return apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
 	}
 
 	/**
@@ -299,5 +298,6 @@ class Display_Featured_Image_Genesis_Output {
 		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+		remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
 	}
 }
