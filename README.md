@@ -214,6 +214,12 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.3.2 - 2015-09-02
+* bugfix: invalid images on settings page are again set to most recent setting, rather than removed
+* bugfix: output in IE (props Ryan Townley)
+* bugfix: added title back to blog template pages due to accessbility changes in Genesis 2.2
+* bugfix: featured author widget output for pre-2.2 Genesis installs
+
 ### 2.3.1 - 2015-08-31
 * bugfix: no longer removes titles on pages using the Genesis blog template.
 * sanity check: cleaned up code redundancies and confusions.
