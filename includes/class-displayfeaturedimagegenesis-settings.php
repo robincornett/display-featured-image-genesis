@@ -40,6 +40,8 @@ class Display_Featured_Image_Genesis_Settings {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
+		$this->displaysetting = $this->get_display_setting();
+
 	}
 
 	/**
@@ -51,8 +53,6 @@ class Display_Featured_Image_Genesis_Settings {
 	public function do_settings_form() {
 		$page_title = get_admin_page_title();
 		$heading    = $GLOBALS['wp_version'] >= '4.3' ? 'h1' : 'h2';
-
-		$this->displaysetting = $this->get_display_setting();
 
 		echo '<div class="wrap">';
 			printf( '<%1$s>%2$s</%1$s>', esc_attr( $heading ), esc_attr( $page_title ) );
