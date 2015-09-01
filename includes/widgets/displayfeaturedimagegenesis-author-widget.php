@@ -96,7 +96,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 			// If posts link option checked, add posts link to output
 			$display_name = get_the_author_meta( 'display_name', $instance['user'] );
-			$user_name = ( ! empty ( $display_name ) && genesis_a11y() ) ? '<span class="screen-reader-text">' . $display_name . ': </span>' : '';
+			$user_name    = ! empty( $display_name ) && function_exists( 'genesis_a11y' ) && genesis_a11y() ? '<span class="screen-reader-text">' . $display_name . ': </span>' : '';
 
 			if ( $instance['posts_link'] && $instance['link_text'] ) {
 				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', esc_url( get_author_posts_url( $instance['user'] ) ), wp_kses_post( $user_name ), esc_attr( $instance['link_text'] ) );
