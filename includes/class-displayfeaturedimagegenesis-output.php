@@ -191,7 +191,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
 
-			if ( ! empty( $this->item->title && $this->do_the_title() ) ) {
+			if ( ! empty( $this->item->title ) && $this->do_the_title() ) {
 				echo wp_kses_post( $this->do_the_title() );
 			}
 			add_action( 'genesis_before_loop', array( $this, 'add_descriptions' ) );
