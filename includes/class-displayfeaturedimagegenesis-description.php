@@ -60,19 +60,9 @@ class Display_Featured_Image_Genesis_Description {
 		}
 
 		// set front page and posts page variables
-		$frontpage = get_option( 'show_on_front' );
-		$postspage = get_post( get_option( 'page_for_posts' ) );
-
-		/**
-		 * filter to show title on front page
-		 * @return boolean true/false
-		 *
-		 * @since 2.3.0
-		 */
-		$show_front_page_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
-		$show_front_page_title = true === $show_front_page_title ? $show_front_page_title : false;
-
-		$title      = $show_front_page_title ? get_the_title() : '';
+		$frontpage  = get_option( 'show_on_front' );
+		$postspage  = get_post( get_option( 'page_for_posts' ) );
+		$title      = $this->show_front_page_title() ? get_the_title() : '';
 		$intro_text = get_the_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' );
 		$itemprop   = genesis_html5() ? 'itemprop="headline"' : '';
 
@@ -196,4 +186,16 @@ class Display_Featured_Image_Genesis_Description {
 
 	}
 
+	/**
+	 * Filter to show title on front page.
+	 * @return boolean true/false
+	 *
+	 * @since 2.3.0
+	 */
+	public function show_front_page_title() {
+
+		$show_front_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
+		return true === $show_front_title ? true : false;
+
+	}
 }

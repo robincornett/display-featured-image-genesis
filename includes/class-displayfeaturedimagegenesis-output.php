@@ -234,17 +234,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.1
 	 */
 	protected function do_the_title() {
-
-		/**
-		 * filter to show title on front page
-		 * @return boolean true/false
-		 *
-		 * @since 2.3.0
-		 */
-		$show_front_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
-		$show_front_title = true === $show_front_title ? $show_front_title : false;
-
-		if ( is_front_page() && ! $show_front_title ) {
+		if ( is_front_page() && ! $this->description->show_front_page_title() ) {
 			return;
 		}
 		$class        = is_singular() ? 'entry-title' : 'archive-title';
