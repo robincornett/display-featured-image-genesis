@@ -60,20 +60,10 @@ class Display_Featured_Image_Genesis_Description {
 		}
 
 		// set front page and posts page variables
-		$frontpage  = get_option( 'show_on_front' );
-		$postspage  = get_post( get_option( 'page_for_posts' ) );
-		$title      = $this->show_front_page_title() ? get_the_title() : '';
-		$intro_text = get_the_excerpt() ? get_the_excerpt() : get_bloginfo( 'description' );
+		$title      = $this->get_front_blog_title();
 		$itemprop   = genesis_html5() ? 'itemprop="headline"' : '';
-
-		if ( is_home() && 'page' === $frontpage ) {
-			$title      = $postspage->post_title;
-			$intro_text = $postspage->post_excerpt;
-		}
-
-		$title      = apply_filters( 'display_featured_image_genesis_front_blog_title', $title );
-		$headline   = $title ? sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $title ) : '';
-		$intro_text = apply_filters( 'display_featured_image_genesis_front_blog_description', $intro_text );
+		$headline   = empty( $title ) ? '' : sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $title );
+		$intro_text = $this->get_front_blog_intro_text();
 
 		if ( $headline || $intro_text ) {
 			printf( '<div class="excerpt">%s</div>', wp_kses_post( $headline . wpautop( $intro_text ) ) );
@@ -197,5 +187,45 @@ class Display_Featured_Image_Genesis_Description {
 		$show_front_title = apply_filters( 'display_featured_image_genesis_excerpt_show_front_page_title', false );
 		return true === $show_front_title ? true : false;
 
+	}
+
+	/**
+	 * Get the front or posts page title.
+	 * @param  string $title front page or posts page title
+	 * @return string        Site title, or page title
+	 *
+	 * @since x.y.z
+	 */
+	protected function get_front_blog_title( $title = '' ) {
+		$frontpage = get_option( 'show_on_front' );
+		if ( $this->show_front_page_title() && is_front_page() ) {
+			$title = get_the_title();
+			if ( is_home() ) {
+				$title = get_bloginfo( 'title' );
+			}
+		} elseif ( is_home() && 'page' === $frontpage ) {
+			$postspage = get_post( get_option( 'page_for_posts' ) );
+			$title     = $postspage->post_title;
+		}
+		return apply_filters( 'display_featured_image_genesis_front_blog_title', $title );
+	}
+
+	/**
+	 * Get the front page excerpt, or site description, or posts page excerpt
+	 * @param  string $intro_text excerpt or archive-description
+	 * @return string             site description or excerpt
+	 *
+	 * @since x.y.z
+	 */
+	protected function get_front_blog_intro_text( $intro_text = '' ) {
+		$frontpage  = get_option( 'show_on_front' );
+		$intro_text = get_bloginfo( 'description' );
+		if ( is_front_page() && is_singular() && has_excerpt() ) {
+			$intro_text = get_the_excerpt();
+		} elseif ( is_home() && 'page' === $frontpage ) {
+			$postspage  = get_post( get_option( 'page_for_posts' ) );
+			$intro_text = empty( $postspage->post_excerpt ) ? '' : $postspage->post_excerpt;
+		}
+		return apply_filters( 'display_featured_image_genesis_front_blog_description', $intro_text );
 	}
 }
