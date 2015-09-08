@@ -289,5 +289,6 @@ class Display_Featured_Image_Genesis_Output {
 		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 		remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
+		remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
 	}
 }
