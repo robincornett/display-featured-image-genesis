@@ -20,7 +20,7 @@ _Note: although this plugin requires the [Genesis Framework by StudioPress](http
 
 __Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
 
-As of version 2.0.0, you can now set a Featured Image for each term within a taxonomy (categories, tags, and any taxonomy for custom post types). This image will be used on taxonomy archives, and as a fallback image for posts within that taxonomy if no featured image exists (or if the featured image is too small). If a post is assigned to multiple terms and has no featured image of its own, the most used term which has a featured image assigned will be the one used.
+You may set a Featured Image for each term within a taxonomy (categories, tags, and any taxonomy for custom post types). This image will be used on taxonomy archives, and as a fallback image for posts within that taxonomy if no featured image exists (or if the featured image is too small). If a post is assigned to multiple terms and has no featured image of its own, the most used term which has a featured image assigned will be the one used.
 
 If your site uses Custom Post Types, you can set a Featured Image for each Post Type on the main Display Featured Image for Genesis settings page. If your single post within this type does not have a featured image, the Post Type Featured Image will be used as a fallback.
 
@@ -213,6 +213,10 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+### 2.3.3 - 2015-09-08
+* bugfix: corrected logic on title/excerpt output for front/posts page
+* fix duplicate posts page title due to new function introduced in Genesis 2.2.1, for sites which support genesis-accessibility
 
 ### 2.3.2 - 2015-09-02
 * bugfix: invalid images on settings page are again set to most recent setting, rather than removed

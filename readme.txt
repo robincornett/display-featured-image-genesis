@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -28,7 +28,7 @@ _Note: although this plugin requires the [Genesis Framework by StudioPress](http
 
 __Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
 
-As of version 2.0.0, you can now set a Featured Image for each term within a taxonomy (categories, tags, and any taxonomy for custom post types). This image will be used on taxonomy archives, and as a fallback image for posts within that taxonomy if no featured image exists (or if the featured image is too small). If a post is assigned to multiple terms and has no featured image of its own, the most used term which has a featured image assigned will be the one used.
+You may set a Featured Image for each term within a taxonomy (categories, tags, and any taxonomy for custom post types). This image will be used on taxonomy archives, and as a fallback image for posts within that taxonomy if no featured image exists (or if the featured image is too small). If a post is assigned to multiple terms and has no featured image of its own, the most used term which has a featured image assigned will be the one used.
 
 If your site uses Custom Post Types, you can set a Featured Image for each Post Type on the main Display Featured Image for Genesis settings page. If your single post within this type does not have a featured image, the Post Type Featured Image will be used as a fallback.
 
@@ -162,13 +162,17 @@ This will follow the settings you choose in the Genesis Theme Settings.
 3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.3.2 =
-bugfixes related to accessibility changes in Genesis
+= 2.3.3 =
+bugfixes for excerpts and accessible headings in Genesis 2.2.1
 
 = 2.3.0 =
 New features: featured images for authors, smaller images loaded for smaller screens!
 
 == Changelog ==
+
+= 2.3.3 =
+* bugfix: corrected logic on title/excerpt output for front/posts page
+* fix duplicate posts page title due to new function introduced in Genesis 2.2.1, for sites which support genesis-accessibility
 
 = 2.3.2 =
 * bugfix: invalid images on settings page are again set to most recent setting, rather than removed

@@ -194,7 +194,7 @@ class Display_Featured_Image_Genesis_Description {
 	 * @param  string $title front page or posts page title
 	 * @return string        Site title, or page title
 	 *
-	 * @since x.y.z
+	 * @since 2.3.3
 	 */
 	protected function get_front_blog_title( $title = '' ) {
 		$frontpage = get_option( 'show_on_front' );
@@ -215,7 +215,7 @@ class Display_Featured_Image_Genesis_Description {
 	 * @param  string $intro_text excerpt or archive-description
 	 * @return string             site description or excerpt
 	 *
-	 * @since x.y.z
+	 * @since 2.3.3
 	 */
 	protected function get_front_blog_intro_text( $intro_text = '' ) {
 		$frontpage  = get_option( 'show_on_front' );
