@@ -74,8 +74,6 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
-		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' ); // re-enable photon
-
 		// $title is set by new title function
 		$title = self::set_item_title();
 
