@@ -97,6 +97,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		}
 
 		if ( $term_meta ) {
+			$image     = '';
 			$image_id  = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
 			$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
 			if ( $image_src ) {
@@ -105,7 +106,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 			if ( $instance['show_image'] && $image ) {
 				$role = empty( $instance['show_title'] ) ? '' : 'aria-hidden="true"';
-				printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), esc_attr( $role  ), wp_kses_post( $image ) );
+				printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), esc_attr( $role ), wp_kses_post( $image ) );
 			}
 		}
 
