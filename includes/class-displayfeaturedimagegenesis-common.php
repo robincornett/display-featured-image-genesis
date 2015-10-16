@@ -32,11 +32,7 @@ class Display_Featured_Image_Genesis_Common {
 		// sitewide variables used outside this function
 		$item->backstretch = '';
 
-		// turn Photon off so we can get the correct image
-		$photon_removed = '';
-		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'photon' ) ) {
-			$photon_removed = remove_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ) );
-		}
+		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
 
 		/**
 		 * create a filter for user to optionally force post types to use the large image instead of backstretch
@@ -78,10 +74,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
-		// turn Photon back on
-		if ( $photon_removed ) {
-			add_filter( 'image_downsize', array( Jetpack_Photon::instance(), 'filter_image_downsize' ), 10, 3 );
-		}
+		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' ); // re-enable photon
 
 		// $title is set by new title function
 		$title = self::set_item_title();

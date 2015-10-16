@@ -33,9 +33,9 @@ class Display_Featured_Image_Genesis_Output {
 
 		$this->common = new Display_Featured_Image_Genesis_Common();
 		$this->item   = Display_Featured_Image_Genesis_Common::get_image_variables();
+		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
-
 	}
 
 
@@ -208,6 +208,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		// close big-leader
 		echo '</div>';
+		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' );
 	}
 
 	/**
