@@ -67,7 +67,7 @@ class Display_Featured_Image_Genesis_Output {
 		// check if the image is large enough for backstretch
 		if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
 
-			wp_enqueue_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
+			wp_register_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 			wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
 
 			add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
