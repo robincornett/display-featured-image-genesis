@@ -262,12 +262,14 @@ class Display_Featured_Image_Genesis_Common {
 
 		// Get the upload directory paths
 		$upload_dir_paths = wp_upload_dir();
+		$base_url         = wp_make_link_relative( $upload_dir_paths['baseurl'] );
+		$attachment_url   = wp_make_link_relative( $attachment_url );
 
 		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
-		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
+		if ( false !== strpos( $attachment_url, $base_url ) ) {
 
 			// Remove the upload path base directory from the attachment URL
-			$attachment_url = str_replace( trailingslashit( $upload_dir_paths['baseurl'] ), '', $attachment_url );
+			$attachment_url = str_replace( $base_url . '/', '', $attachment_url );
 
 			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
 			$url_stripped   = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
