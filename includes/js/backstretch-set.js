@@ -41,4 +41,4 @@
 		}
 	});
 
-} )( this, jQuery );
+} )( document, jQuery );
