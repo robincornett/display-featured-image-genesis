@@ -218,13 +218,11 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_large_image() {
-		$image = sprintf( '<img src="%1$s" class="aligncenter featured" alt="%2$s" />',
-			esc_url( $this->item->backstretch[0] ),
-			esc_attr( $this->item->title )
-		);
-
-		$image = apply_filters( 'display_featured_image_genesis_large_image_output', $image );
-
+		$image_id      = Display_Featured_Image_Genesis_Common::set_image_id();
+		$attr['class'] = 'aligncenter featured';
+		$attr['alt']   = $this->item->title;
+		$image         = wp_get_attachment_image( $image_id, 'large', false, $attr );
+		$image         = apply_filters( 'display_featured_image_genesis_large_image_output', $image );
 		echo wp_kses_post( $image );
 	}
 
