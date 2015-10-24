@@ -559,7 +559,7 @@ class Display_Featured_Image_Genesis_Settings {
 		}
 
 		if ( $valid && $width > $size_to_check ) {
-			return $new_value;
+			return (int) $new_value;
 		}
 
 		$new_value = $old_value;
@@ -578,7 +578,7 @@ class Display_Featured_Image_Genesis_Settings {
 			'error'
 		);
 
-		return $new_value;
+		return (int) $new_value;
 	}
 
 	/**
