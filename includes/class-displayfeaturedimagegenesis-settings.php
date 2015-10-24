@@ -503,7 +503,7 @@ class Display_Featured_Image_Genesis_Settings {
 		foreach ( $this->post_types as $post_type ) {
 
 			// extra variables to pass through to image validation
-			$old_value     = $this->displaysetting['post_type'][ $post_type->name ];
+			$old_value     = isset( $this->displaysetting['post_type'][ $post_type->name ] ) ? $this->displaysetting['post_type'][ $post_type->name ] : '';
 			$label         = $post_type->label;
 			$size_to_check = get_option( 'medium_size_w' );
 
