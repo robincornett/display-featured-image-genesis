@@ -47,19 +47,9 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function load_scripts() {
 
-		$version = $this->common->version;
-		$large   = $this->common->minimum_backstretch_width();
-		$medium  = absint( get_option( 'medium_size_w' ) );
-		$width   = absint( $this->item->backstretch[1] );
-
-		// check if they have enabled display on subsequent pages
-		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
-
-		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
-		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $this->item->content ) ) {
+		if ( ! $this->can_do_things() ) {
 			return;
 		}
-
 		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
 		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $version );
 
@@ -289,5 +279,24 @@ class Display_Featured_Image_Genesis_Output {
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 		remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
 		remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
+	}
+
+	/**
+	 * Check whether plugin can output backstretch or large image
+	 * @return boolean checks featured image size. returns true if can proceed; false if cannot
+	 *
+	 * @since x.y.z
+	 */
+	protected function can_do_things() {
+		$medium = (int) get_option( 'medium_size_w' );
+		$width  = (int) $this->item->backstretch[1];
+
+		// check if they have enabled display on subsequent pages
+		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
+		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
+		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $this->item->content ) ) {
+			return false;
+		}
+		return true;
 	}
 }
