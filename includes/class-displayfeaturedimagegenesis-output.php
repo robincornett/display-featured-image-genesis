@@ -148,16 +148,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		$this->description = new Display_Featured_Image_Genesis_Description();
 
-		/**
-		 * filter to maybe move titles, or not
-		 * @var filter
-		 * @since 2.2.0
-		 */
-		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', array() );
-		$keep_titles       = $this->displaysetting['keep_titles'];
-
-		// if titles will be moved to overlay backstretch image
-		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
+		if ( $this->move_title() ) {
 			$this->remove_title_descriptions();
 		}
 
@@ -166,20 +157,11 @@ class Display_Featured_Image_Genesis_Output {
 
 		do_action( 'display_featured_image_genesis_before_title' );
 
-		$move_excerpts = $this->displaysetting['move_excerpts'];
-		/**
-		 * create a filter to not move excerpts if move excerpts is enabled
-		 * @var filter
-		 * @since  2.0.0 (deprecated old function from 1.3.3)
-		 */
-		$omit_excerpt = apply_filters( 'display_featured_image_genesis_omit_excerpt', array() );
-
-		// if move excerpts is enabled
-		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
+		if ( $this->move_excerpts() ) {
 
 			$this->do_title_descriptions();
 
-		} elseif ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) { // if titles are being moved to overlay the image
+		} elseif ( $this->move_title() ) { // if titles are being moved to overlay the image
 
 			if ( ! empty( $this->item->title ) && $this->do_the_title() ) {
 				echo wp_kses_post( $this->do_the_title() );
@@ -298,5 +280,36 @@ class Display_Featured_Image_Genesis_Output {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * create a filter to not move excerpts if move excerpts is enabled
+	 * @var filter
+	 * @since  2.0.0 (deprecated old function from 1.3.3)
+	 */
+	protected function move_excerpts() {
+		$move_excerpts = $this->displaysetting['move_excerpts'];
+		$omit_excerpt  = apply_filters( 'display_featured_image_genesis_omit_excerpt', array() );
+
+		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * filter to maybe move titles, or not
+	 * @var filter
+	 * @since 2.2.0
+	 */
+	protected function move_title() {
+		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', array() );
+		$keep_titles       = $this->displaysetting['keep_titles'];
+
+		// if titles will be moved to overlay backstretch image
+		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
+			return true;
+		}
+		return false;
 	}
 }
