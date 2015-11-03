@@ -35,9 +35,7 @@ class Display_Featured_Image_Genesis_Output {
 		$this->item   = Display_Featured_Image_Genesis_Common::get_image_variables();
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
-		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 	}
-
 
 	/**
 	 * enqueue plugin styles and scripts.
@@ -51,30 +49,17 @@ class Display_Featured_Image_Genesis_Output {
 			return;
 		}
 		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
-		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $version );
+		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $this->common->version );
+		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
+		$large             = $this->common->minimum_backstretch_width();
+		$width             = absint( $this->item->backstretch[1] );
 		$force_backstretch = apply_filters( 'display_featured_image_genesis_force_backstretch', array() );
-		// check if the image is large enough for backstretch
+
 		if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
-
-			wp_register_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
-			wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $version, true );
-
-			add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
-
-			$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
-			add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ) );
-
-		} elseif ( $width <= $large ) { // otherwise it's a large image.
-
-			remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
-			add_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description', 15 );
-
-			$hook = 'genesis_before_loop';
-			if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
-				$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
-			}
-			add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
+			$this->do_backstretch_image_things();
+		} elseif ( $width <= $large ) {
+			$this->do_large_image_things();
 		}
 	}
 
@@ -85,19 +70,11 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function add_body_class( $classes ) {
-
-		$large  = $this->common->minimum_backstretch_width();
-		$medium = (int) get_option( 'medium_size_w' );
-		$width  = (int) $this->item->backstretch[1];
-
-		// check if they have enabled display on subsequent pages
-		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
-
-		// if there is no backstretch image set, or it is too small, or it's page 2+ and they didn't change the setting, die
-		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) ) {
+		if ( ! $this->can_do_things() ) {
 			return $classes;
 		}
-
+		$large = $this->common->minimum_backstretch_width();
+		$width = (int) $this->item->backstretch[1];
 		if ( false === $this->item->content || ! is_singular() ) {
 			if ( $width > $large ) {
 				$classes[] = 'has-leader';
@@ -109,6 +86,20 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
+	 * All actions required to output the backstretch image
+	 * @since x.y.z
+	 */
+	protected function do_backstretch_image_things() {
+		wp_register_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $this->common->version, true );
+		wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $this->common->version, true );
+
+		add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
+
+		$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
+		add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ) );
+	}
+
+	/**
 	 * Pass variables through to our js
 	 * @return backstretchVars variable array to send to js
 	 *
@@ -116,23 +107,22 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function localize_scripts() {
 		// backstretch settings which can be filtered
-		$backstretch_variables = apply_filters( 'display_featured_image_genesis_backstretch_variables', array(
+		$backstretch_vars = apply_filters( 'display_featured_image_genesis_backstretch_variables', array(
 			'centeredX' => true,
 			'centeredY' => true,
 			'fade'      => 750,
 		) );
 
 		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
-		$large = wp_get_attachment_image_src( $image_id, 'large' );
-
-		$output = array(
+		$large    = wp_get_attachment_image_src( $image_id, 'large' );
+		$output   = array(
 			'src'       => esc_url( $this->item->backstretch[0] ),
 			'largesrc'  => esc_url( $large[0] ),
 			'width'     => $large[1],
 			'height'    => (int) $this->displaysetting['less_header'],
-			'centeredX' => (bool) $backstretch_variables['centeredX'],
-			'centeredY' => (bool) $backstretch_variables['centeredY'],
-			'fade'      => (int) $backstretch_variables['fade'],
+			'centeredX' => (bool) $backstretch_vars['centeredX'],
+			'centeredY' => (bool) $backstretch_vars['centeredY'],
+			'fade'      => (int) $backstretch_vars['fade'],
 		);
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
@@ -180,7 +170,23 @@ class Display_Featured_Image_Genesis_Output {
 
 		// close big-leader
 		echo '</div>';
-		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' );
+
+		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' ); // TODO remove
+	}
+
+	/**
+	 * All actions required to output the large image
+	 * @since x.y.z
+	 */
+	protected function do_large_image_things() {
+		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
+		add_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description', 15 );
+
+		$hook = 'genesis_before_loop';
+		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
+			$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
+		}
+		add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
 	}
 
 	/**
