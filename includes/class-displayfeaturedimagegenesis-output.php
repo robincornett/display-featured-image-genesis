@@ -95,8 +95,9 @@ class Display_Featured_Image_Genesis_Output {
 
 		add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
 
-		$hook = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
-		add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ) );
+		$hook     = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
+		$priority = apply_filters( 'display_featured_image_move_backstretch_image_priority', 10 );
+		add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ), $priority );
 	}
 
 	/**
@@ -186,7 +187,8 @@ class Display_Featured_Image_Genesis_Output {
 		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
 			$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
 		}
-		add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), 12 ); // works for both HTML5 and XHTML
+		$priority = apply_filters( 'display_featured_image_genesis_move_large_image_priority', 12 );
+		add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), $priority ); // works for both HTML5 and XHTML
 	}
 
 	/**
