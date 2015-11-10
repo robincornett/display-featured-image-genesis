@@ -21,14 +21,14 @@
 		}
 
 		$el.css( {
-			height: ( $(window).height() ) - ( [plugin.params.height ] ) + 'px'
+			height: ( $(window).height() ) - ( [ plugin.params.height ] ) + 'px'
 		} );
 
 		$el.backstretch(
 			[source], {
 				centeredX: plugin.params.centeredX,
 				centeredY: plugin.params.centeredY,
-				fade: plugin.params.fade
+				fade: parseInt( plugin.params.fade )
 			}
 		);
 	}
