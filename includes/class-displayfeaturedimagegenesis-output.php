@@ -121,8 +121,8 @@ class Display_Featured_Image_Genesis_Output {
 			'largesrc'  => esc_url( $large[0] ),
 			'width'     => $large[1],
 			'height'    => (int) $this->displaysetting['less_header'],
-			'centeredX' => (bool) $backstretch_vars['centeredX'],
-			'centeredY' => (bool) $backstretch_vars['centeredY'],
+			'centeredX' => (int) (bool) $backstretch_vars['centeredX'],
+			'centeredY' => (int) (bool) $backstretch_vars['centeredY'],
 			'fade'      => (int) $backstretch_vars['fade'],
 		);
 

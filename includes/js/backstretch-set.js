@@ -26,8 +26,8 @@
 
 		$el.backstretch(
 			[source], {
-				centeredX: plugin.params.centeredX,
-				centeredY: plugin.params.centeredY,
+				centeredX: '1' === plugin.params.centeredX ? true : false,
+				centeredY: '1' === plugin.params.centeredY ? true : false,
 				fade: parseInt( plugin.params.fade )
 			}
 		);
