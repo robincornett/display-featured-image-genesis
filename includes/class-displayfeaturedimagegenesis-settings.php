@@ -772,18 +772,16 @@ class Display_Featured_Image_Genesis_Settings {
 				'content' => $feed_help,
 			),
 		);
-		foreach ( $help_tabs as $tab ) {
-			$screen->add_help_tab( $tab );
-		}
-
 		if ( $this->post_types ) {
-			$screen->add_help_tab( array(
+			$help_tabs[] = array(
 				'id'      => 'displayfeaturedimage_cpt-help',
 				'title'   => __( 'Custom Post Types', 'display-featured-image-genesis' ),
 				'content' => $cpt_help,
-			) );
+			);
 		}
-
+		foreach ( $help_tabs as $tab ) {
+			$screen->add_help_tab( $tab );
+		}
 	}
 
 }
