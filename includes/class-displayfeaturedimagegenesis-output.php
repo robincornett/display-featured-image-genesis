@@ -87,7 +87,7 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * All actions required to output the backstretch image
-	 * @since x.y.z
+	 * @since 2.3.4
 	 */
 	protected function do_backstretch_image_things() {
 		wp_register_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $this->common->version, true );
@@ -177,7 +177,7 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * All actions required to output the large image
-	 * @since x.y.z
+	 * @since 2.3.4
 	 */
 	protected function do_large_image_things() {
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
@@ -275,7 +275,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * Check whether plugin can output backstretch or large image
 	 * @return boolean checks featured image size. returns true if can proceed; false if cannot
 	 *
-	 * @since x.y.z
+	 * @since 2.3.4
 	 */
 	protected function can_do_things() {
 		$medium = (int) get_option( 'medium_size_w' );

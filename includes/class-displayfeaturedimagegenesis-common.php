@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public $version = '2.3.3';
+	public $version = '2.3.4';
 
 	/**
 	 * set and retreive variables for the featured image.

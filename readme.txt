@@ -4,8 +4,8 @@ Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
-Tested up to: 4.3
-Stable tag: 2.3.3
+Tested up to: 4.4
+Stable tag: 2.3.4
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -142,6 +142,12 @@ There is a filter for this, too. By default, the large (as opposed to backstretc
 
 _Note:_ because the entry header applies to all posts on a page, such as a blog or archive page, this filter modifies the output only on singular posts.
 
+Similar hooks:
+
+* `display_featured_image_genesis_move_large_image_priority`: change the priority of the large featured image output
+* `display_featured_image_move_backstretch_image`: change the hook of the backstretch featured image output
+* `display_featured_image_move_backstretch_image_priority`: change the priority of the backstretch featured image output
+
 = If a post does not have a featured image of its own, can the term, post type, or default featured image show in the archives? =
 
 Yes! A helper function exists for this, but only runs if you add it. You can easily do this by adding the following to your theme's functions.php file:
@@ -162,13 +168,16 @@ This will follow the settings you choose in the Genesis Theme Settings.
 3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.3.3 =
-bugfixes for excerpts and accessible headings in Genesis 2.2.1
-
-= 2.3.0 =
-New features: featured images for authors, smaller images loaded for smaller screens!
+= 2.3.4 =
+mostly bugfixes, but also new filters for image output
 
 == Changelog ==
+
+= 2.3.4 =
+* added: filters to modify image priority as well as hook (due to Workstation Pro theme)
+* improved: checks for ability to output and what to output
+* bugfix: fix variables passed to javascript (centering, fade)
+* bugfix: update image ID database query (backwards compat)
 
 = 2.3.3 =
 * bugfix: corrected logic on title/excerpt output for front/posts page

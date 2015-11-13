@@ -182,6 +182,12 @@ function rgc_move_image( $hook ) {
 
 _Note:_ because the entry header applies to all posts on a page, such as a blog or archive page, this filter modifies the output only on singular posts.
 
+Similar hooks:
+
+* `display_featured_image_genesis_move_large_image_priority`: change the priority of the large featured image output
+* `display_featured_image_move_backstretch_image`: change the hook of the backstretch featured image output
+* `display_featured_image_move_backstretch_image_priority`: change the priority of the backstretch featured image output
+
 ### If a post does not have a featured image of its own, can the term, post type, or default featured image show in the archives?
 
 Yes! A helper function exists for this, but only runs if you add it. You can easily do this by adding the following to your theme's functions.php file:
@@ -213,6 +219,12 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+### 2.3.4 - 2015-11-13
+* added: filters to modify image priority as well as hook (due to Workstation Pro theme)
+* improved: checks for ability to output and what to output
+* bugfix: fix variables passed to javascript (centering, fade)
+* bugfix: update image ID database query (backwards compat)
 
 ### 2.3.3 - 2015-09-08
 * bugfix: corrected logic on title/excerpt output for front/posts page
