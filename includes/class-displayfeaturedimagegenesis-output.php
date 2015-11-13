@@ -58,7 +58,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
 			$this->do_backstretch_image_things();
-		} elseif ( $width <= $large ) {
+		} else {
 			$this->do_large_image_things();
 		}
 	}
@@ -278,7 +278,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.4
 	 */
 	protected function can_do_things() {
-		$medium = (int) get_option( 'medium_size_w' );
+		$medium = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
 		$width  = (int) $this->item->backstretch[1];
 
 		// check if they have enabled display on subsequent pages

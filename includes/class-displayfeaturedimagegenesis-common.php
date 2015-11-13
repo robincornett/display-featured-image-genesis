@@ -100,7 +100,7 @@ class Display_Featured_Image_Genesis_Common {
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$postspage_image = get_post_thumbnail_id( $postspage );
 		$fallback        = $displaysetting['default'];
-		$medium          = (int) get_option( 'medium_size_w' );
+		$medium          = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
 		$fallback_id     = displayfeaturedimagegenesis_check_image_id( $fallback );
 
 		/**
