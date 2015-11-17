@@ -104,10 +104,12 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		if ( $GLOBALS['wp_version'] >= '4.4' ) {
 			$new_image      = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis']['term_image'] );
 			$displaysetting = displayfeaturedimagegenesis_term_image( $term_id );
-			if ( $displaysetting && '' === $new_image ) {
+			if ( false === $new_image ) {
 				delete_term_meta( $term_id, 'displayfeaturedimagegenesis' );
+				delete_option( "displayfeaturedimagegenesis_$term_id" );
 			} else if ( $displaysetting !== $new_image ) {
-				update_term_meta( $term_id, 'displayfeaturedimagegenesis', $new_image );
+				update_term_meta( $term_id, 'displayfeaturedimagegenesis', (int) $new_image );
+				delete_option( "displayfeaturedimagegenesis_$term_id" );
 			}
 		} else {
 			$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id" );
@@ -147,6 +149,9 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		$width     = $source[1];
 
 		// ok for field to be empty
+		if ( ! $new_value ) {
+			return false;
+		}
 		if ( $new_value && ( ! $valid || $width <= $medium ) ) {
 			$new_value = false;
 		}
