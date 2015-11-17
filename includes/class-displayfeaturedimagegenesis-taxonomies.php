@@ -101,18 +101,18 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		if ( ! isset( $_POST['displayfeaturedimagegenesis'] ) ) {
 			return;
 		}
-		$displaysetting = displayfeaturedimagegenesis_term_image( $term_id );
 		if ( $GLOBALS['wp_version'] >= '4.4' ) {
-			$new_image = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis']['term_image'] );
-
+			$new_image      = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis']['term_image'] );
+			$displaysetting = displayfeaturedimagegenesis_term_image( $term_id );
 			if ( $displaysetting && '' === $new_image ) {
 				delete_term_meta( $term_id, 'displayfeaturedimagegenesis' );
 			} else if ( $displaysetting !== $new_image ) {
 				update_term_meta( $term_id, 'displayfeaturedimagegenesis', $new_image );
 			}
 		} else {
-			$cat_keys   = array_keys( $_POST['displayfeaturedimagegenesis'] );
-			$is_updated = false;
+			$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id" );
+			$cat_keys       = array_keys( $_POST['displayfeaturedimagegenesis'] );
+			$is_updated     = false;
 			foreach ( $cat_keys as $key ) {
 				if ( isset( $_POST['displayfeaturedimagegenesis'][ $key ] ) ) {
 					$displaysetting[ $key ] = $_POST['displayfeaturedimagegenesis'][ $key ];
