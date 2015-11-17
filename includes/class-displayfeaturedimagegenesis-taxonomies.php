@@ -126,7 +126,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 			}
 			// Save the option array.
 			if ( $is_updated ) {
-				update_option( "displayfeaturedimagegenesis_$t_id", $displaysetting );
+				update_option( "displayfeaturedimagegenesis_$term_id", $displaysetting );
 			}
 		}
 	}

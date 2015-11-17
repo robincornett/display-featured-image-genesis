@@ -33,8 +33,10 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 
 }
 
-function displayfeaturedimagegenesis_term_image( $term_id ) {
-	$image_id = get_term_meta( $term_id, 'displayfeaturedimagegenesis', true );
+function displayfeaturedimagegenesis_term_image( $term_id, $image_id = '' ) {
+	if ( function_exists( 'get_term_meta' ) ) {
+		$image_id = get_term_meta( $term_id, 'displayfeaturedimagegenesis', true );
+	}
 	if ( ! $image_id ) {
 		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
 		$image_id  = $term_meta['term_image'];

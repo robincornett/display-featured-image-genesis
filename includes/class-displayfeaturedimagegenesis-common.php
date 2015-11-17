@@ -156,8 +156,11 @@ class Display_Featured_Image_Genesis_Common {
 		}
 		// taxonomy
 		if ( is_category() || is_tag() || is_tax() ) {
-			$term_id  = $object->term_id;
-			$image_id = displayfeaturedimagegenesis_term_image( $term_id );
+			$term_id   = $object->term_id;
+			$term_meta = displayfeaturedimagegenesis_term_image( $term_id );
+			if ( $term_meta ) {
+				$image_id = $term_meta;
+			}
 		}
 
 		// any singular post/page/CPT
