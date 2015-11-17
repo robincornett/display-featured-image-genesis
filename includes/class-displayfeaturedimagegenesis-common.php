@@ -156,12 +156,8 @@ class Display_Featured_Image_Genesis_Common {
 		}
 		// taxonomy
 		if ( is_category() || is_tag() || is_tax() ) {
-			$t_id      = $object->term_id;
-			$term_meta = get_option( "displayfeaturedimagegenesis_$t_id" );
-			// if there is a term image
-			if ( ! empty( $term_meta['term_image'] ) ) {
-				$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
-			}
+			$term_id  = $object->term_id;
+			$image_id = displayfeaturedimagegenesis_term_image( $term_id );
 		}
 
 		// any singular post/page/CPT

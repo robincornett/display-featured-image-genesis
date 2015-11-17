@@ -17,6 +17,8 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 */
 	public function set_taxonomy_meta() {
 
+		register_meta( 'term', 'displayfeaturedimagegenesis', array( $this, 'validate_taxonomy_image' ) );
+
 		$args       = array(
 			'public' => true,
 		);
@@ -25,8 +27,9 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
-			add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
-			add_action( "create_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
+			add_action( "create_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
+			add_action( 'edit_{$taxonomy}', array( $this, 'save_taxonomy_custom_meta' ) );
 			add_action( 'load-edit-tags.php', array( $this, 'help' ) );
 		}
 
@@ -41,6 +44,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 		?>
 		<div class="form-field term-image-wrap">
+			<?php wp_nonce_field( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis' ); ?>
 			<label for="displayfeaturedimagegenesis[term_image]"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
 			<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />
 			<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="<?php esc_attr_e( 'Select Image', 'display-featured-image-genesis' ); ?>" />
@@ -61,21 +65,20 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 */
 	public function edit_taxonomy_meta_fields( $term ) {
 
-		$t_id           = $term->term_id;
-		$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
-		$id             = '';
+		$term_id  = $term->term_id;
+		$image_id = displayfeaturedimagegenesis_term_image( $term_id );
 
 		echo '<tr class="form-field term-image-wrap">';
+			wp_nonce_field( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis' );
 			printf( '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">%s</label></th>',
 				esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
 			);
 			echo '<td>';
-				$id   = $displaysetting['term_image'];
 				$name = 'displayfeaturedimagegenesis[term_image]';
-				if ( ! empty( $id ) ) {
-					echo wp_kses_post( $this->render_image_preview( $id ) );
+				if ( $image_id ) {
+					echo wp_kses_post( $this->render_image_preview( $image_id ) );
 				}
-				$this->render_buttons( $id, $name );
+				$this->render_buttons( $image_id, $name );
 				echo '<p class="description">';
 				printf(
 					esc_attr__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
@@ -98,24 +101,33 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		if ( ! isset( $_POST['displayfeaturedimagegenesis'] ) ) {
 			return;
 		}
-		$t_id           = $term_id;
-		$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
-		$cat_keys       = array_keys( $_POST['displayfeaturedimagegenesis'] );
-		$is_updated     = false;
-		foreach ( $cat_keys as $key ) {
-			if ( isset( $_POST['displayfeaturedimagegenesis'][ $key ] ) ) {
-				$displaysetting[ $key ] = $_POST['displayfeaturedimagegenesis'][ $key ];
-				if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[ $key ] ) {
-					$displaysetting[ $key ] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][ $key ] );
-					if ( false !== $displaysetting[ $key ] ) {
-						$is_updated = true;
+		$displaysetting = displayfeaturedimagegenesis_term_image( $term_id );
+		if ( $GLOBALS['wp_version'] >= '4.4' ) {
+			$new_image = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis']['term_image'] );
+
+			if ( $displaysetting && '' === $new_image ) {
+				delete_term_meta( $term_id, 'displayfeaturedimagegenesis' );
+			} else if ( $displaysetting !== $new_image ) {
+				update_term_meta( $term_id, 'displayfeaturedimagegenesis', $new_image );
+			}
+		} else {
+			$cat_keys   = array_keys( $_POST['displayfeaturedimagegenesis'] );
+			$is_updated = false;
+			foreach ( $cat_keys as $key ) {
+				if ( isset( $_POST['displayfeaturedimagegenesis'][ $key ] ) ) {
+					$displaysetting[ $key ] = $_POST['displayfeaturedimagegenesis'][ $key ];
+					if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[ $key ] ) {
+						$displaysetting[ $key ] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][ $key ] );
+						if ( false !== $displaysetting[ $key ] ) {
+							$is_updated = true;
+						}
 					}
 				}
 			}
-		}
-		// Save the option array.
-		if ( $is_updated ) {
-			update_option( "displayfeaturedimagegenesis_$t_id", $displaysetting );
+			// Save the option array.
+			if ( $is_updated ) {
+				update_option( "displayfeaturedimagegenesis_$t_id", $displaysetting );
+			}
 		}
 	}
 
@@ -139,7 +151,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 			$new_value = false;
 		}
 
-		return $new_value;
+		return (int) $new_value;
 	}
 
 	/**
@@ -173,7 +185,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 * @param integer @new_term_id The ID of the newly created term.
 	 *
 	 */
-	function split_shared_term( $old_term_id, $new_term_id ) {
+	public function split_shared_term( $old_term_id, $new_term_id ) {
 
 		$old_setting = get_option( "displayfeaturedimagegenesis_$old_term_id" );
 		$new_setting = get_option( "displayfeaturedimagegenesis_$new_term_id" );
@@ -187,5 +199,4 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		update_option( "displayfeaturedimagegenesis_$new_term_id", $new_setting );
 
 	}
-
 }
