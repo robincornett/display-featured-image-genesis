@@ -7,7 +7,7 @@
  *
  * @since 2.0.0
  */
-class Display_Featured_Image_Genesis_Taxonomies {
+class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_Genesis_Helper {
 
 	protected $settings;
 
@@ -17,8 +17,6 @@ class Display_Featured_Image_Genesis_Taxonomies {
 	 */
 	public function set_taxonomy_meta() {
 
-		$this->settings = new Display_Featured_Image_Genesis_Settings();
-
 		$args       = array(
 			'public' => true,
 		);
@@ -27,8 +25,8 @@ class Display_Featured_Image_Genesis_Taxonomies {
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
-			add_action( "edited_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
-			add_action( "create_{$taxonomy}", array( $this->settings, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
+			add_action( "create_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
 			add_action( 'load-edit-tags.php', array( $this, 'help' ) );
 		}
 
@@ -75,9 +73,9 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				$id   = $displaysetting['term_image'];
 				$name = 'displayfeaturedimagegenesis[term_image]';
 				if ( ! empty( $id ) ) {
-					echo wp_kses_post( $this->settings->render_image_preview( $id ) );
+					echo wp_kses_post( $this->render_image_preview( $id ) );
 				}
-				$this->settings->render_buttons( $id, $name );
+				$this->render_buttons( $id, $name );
 				echo '<p class="description">';
 				printf(
 					esc_attr__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
@@ -86,6 +84,62 @@ class Display_Featured_Image_Genesis_Taxonomies {
 				echo '</p>';
 			echo '</td>';
 		echo '</tr>';
+	}
+
+	/**
+	 * Save extra taxonomy fields callback function.
+	 * @param  term id $term_id the id of the term
+	 * @return updated option          updated option for term featured image
+	 *
+	 * @since 2.0.0
+	 */
+	public function save_taxonomy_custom_meta( $term_id ) {
+
+		if ( ! isset( $_POST['displayfeaturedimagegenesis'] ) ) {
+			return;
+		}
+		$t_id           = $term_id;
+		$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
+		$cat_keys       = array_keys( $_POST['displayfeaturedimagegenesis'] );
+		$is_updated     = false;
+		foreach ( $cat_keys as $key ) {
+			if ( isset( $_POST['displayfeaturedimagegenesis'][ $key ] ) ) {
+				$displaysetting[ $key ] = $_POST['displayfeaturedimagegenesis'][ $key ];
+				if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[ $key ] ) {
+					$displaysetting[ $key ] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][ $key ] );
+					if ( false !== $displaysetting[ $key ] ) {
+						$is_updated = true;
+					}
+				}
+			}
+		}
+		// Save the option array.
+		if ( $is_updated ) {
+			update_option( "displayfeaturedimagegenesis_$t_id", $displaysetting );
+		}
+	}
+
+	/**
+	 * Returns false value for image if not correct file type/size
+	 * @param  string $new_value New value
+	 * @return string            New value or false, depending on allowed image size.
+	 * @since  2.0.0
+	 */
+	protected function validate_taxonomy_image( $new_value ) {
+
+		// if the image was selected using the old URL method
+		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
+		$medium    = get_option( 'medium_size_w' );
+		$source    = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid     = $this->is_valid_img_ext( $source[0] );
+		$width     = $source[1];
+
+		// ok for field to be empty
+		if ( $new_value && ( ! $valid || $width <= $medium ) ) {
+			$new_value = false;
+		}
+
+		return $new_value;
 	}
 
 	/**
