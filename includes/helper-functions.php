@@ -33,13 +33,22 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 
 }
 
+/**
+ * Helper function to retrieve the term image ID, whether as term_meta or wp_options
+ * @param  int $term_id  term ID
+ * @param  string $image_id image ID
+ * @return int           image ID
+ * @since 2.4.0
+ */
 function displayfeaturedimagegenesis_term_image( $term_id, $image_id = '' ) {
 	if ( function_exists( 'get_term_meta' ) ) {
-		$image_id = (int) get_term_meta( $term_id, 'displayfeaturedimagegenesis', true );
+		$image_id = get_term_meta( $term_id, 'displayfeaturedimagegenesis', true );
 	}
 	if ( ! $image_id ) {
 		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
-		$image_id  = (int) $term_meta['term_image'];
+		if ( $term_meta ) {
+			$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
+		}
 	}
 	return $image_id;
 }
