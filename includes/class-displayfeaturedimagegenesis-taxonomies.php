@@ -98,27 +98,31 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 */
 	public function save_taxonomy_custom_meta( $term_id ) {
 
-		$nonce = $_POST['displayfeaturedimagegenesis'];
-
-		if ( ! isset( $nonce ) ) {
+		$input = $_POST['displayfeaturedimagegenesis'];
+		if ( ! isset( $input ) ) {
 			return;
 		}
 		$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id" );
-		$action         = $GLOBALS['wp_version'] >= '4.4' ? 'do_term_meta' : 'do_options_meta';
-		$this->$action( $term_id, $nonce, $displaysetting );
+		$action         = function_exists( 'get_term_meta' ) ? 'update_term_meta' : 'update_options_meta';
+		$this->$action( $term_id, $input, $displaysetting );
 	}
 
-	protected function do_term_meta( $term_id, $nonce, $displaysetting ) {
-		$new_image = $this->validate_taxonomy_image( $nonce['term_image'], $term_id );
+	/**
+	 * update/delete term meta
+	 * @param  int $term_id        term id
+	 * @param  array $displaysetting old option, if it exists
+	 * @return term_meta
+	 *
+	 * @since 2.4.0
+	 */
+	protected function update_term_meta( $term_id, $input, $displaysetting ) {
+		$new_image = $this->validate_taxonomy_image( $input['term_image'] );
 		if ( null === $new_image ) {
 			// if the new image is empty, delete term_meta and old option
 			delete_term_meta( $term_id, 'displayfeaturedimagegenesis' );
 			delete_option( "displayfeaturedimagegenesis_$term_id" );
-		} elseif ( false === $new_image ) {
-			// do nothing if the new image doesn't meet requirements
-			return;
-		} elseif ( $new_image ) {
-			// if the new image is different from the term meta
+		} elseif ( false !== $new_image ) {
+			// if the new image is different from the existing term meta
 			$current_setting = get_term_meta( $term_id, 'displayfeaturedimagegenesis' );
 			if ( $current_setting !== $new_image ) {
 				update_term_meta( $term_id, 'displayfeaturedimagegenesis', (int) $new_image );
@@ -130,19 +134,27 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		}
 	}
 
-	protected function do_options_meta( $term_id, $nonce, $displaysetting ) {
-		$cat_keys   = array_keys( $nonce );
+	/**
+	 * update term option (for sites running WP below 4.4)
+	 * @param  int $term_id        term id
+	 * @param  array $displaysetting previous option, if it exists
+	 * @return array                 updated option
+	 *
+	 * @since 2.4.0
+	 */
+	protected function update_options_meta( $term_id, $input, $displaysetting ) {
+		$cat_keys   = array_keys( $input );
 		$is_updated = false;
 		foreach ( $cat_keys as $key ) {
-			if ( isset( $nonce[ $key ] ) ) {
-				$displaysetting[ $key ] = $nonce[ $key ];
-				if ( $nonce['term_image'] !== $displaysetting[ $key ] ) {
+			if ( isset( $input[ $key ] ) ) {
+				$displaysetting[ $key ] = $input[ $key ];
+				if ( $input['term_image'] !== $displaysetting[ $key ] ) {
 					break;
 				}
-				$displaysetting[ $key ] = $this->validate_taxonomy_image( $nonce[ $key ], $term_id );
+				$displaysetting[ $key ] = $this->validate_taxonomy_image( $input[ $key ] );
 				if ( null === $displaysetting[ $key ] ) {
 					delete_option( "displayfeaturedimagegenesis_$term_id" );
-				} else {
+				} elseif ( false !== $displaysetting[ $key ] ) {
 					$is_updated = true;
 				}
 			}
@@ -159,25 +171,20 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 * @return string            New value or false, depending on allowed image size.
 	 * @since  2.0.0
 	 */
-	protected function validate_taxonomy_image( $new_value, $term_id ) {
+	protected function validate_taxonomy_image( $new_value ) {
 
-		// if the image was selected using the old URL method
-		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
-		$old_value = displayfeaturedimagegenesis_term_image( $term_id );
-		$medium    = get_option( 'medium_size_w' );
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
+		$medium = get_option( 'medium_size_w' );
+		$source = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid  = $this->is_valid_img_ext( $source[0] );
+		$width  = $source[1];
 
-		// ok for field to be empty
 		if ( ! $new_value ) {
 			return null;
-		}
-		if ( $new_value && $valid && $width > $medium ) {
+		} elseif ( $new_value && $valid && $width > $medium ) {
 			return (int) $new_value;
 		}
 
-		return (int) $old_value;
+		return false;
 	}
 
 	/**
