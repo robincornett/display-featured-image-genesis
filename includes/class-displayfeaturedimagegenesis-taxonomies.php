@@ -150,13 +150,13 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 		// ok for field to be empty
 		if ( ! $new_value ) {
-			return false;
+			return null;
 		}
-		if ( $new_value && ( ! $valid || $width <= $medium ) ) {
-			$new_value = false;
+		if ( $new_value && $valid && $width > $medium ) {
+			return (int) $new_value;
 		}
 
-		return (int) $new_value;
+		return (int) $old_value;
 	}
 
 	/**
