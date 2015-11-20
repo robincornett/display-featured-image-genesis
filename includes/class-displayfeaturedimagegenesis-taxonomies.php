@@ -69,7 +69,6 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		$image_id = displayfeaturedimagegenesis_term_image( $term_id );
 
 		echo '<tr class="form-field term-image-wrap">';
-			wp_nonce_field( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis' );
 			printf( '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">%s</label></th>',
 				esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
 			);
@@ -173,14 +172,16 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 */
 	protected function validate_taxonomy_image( $new_value ) {
 
+		if ( ! $new_value ) {
+			return null;
+		}
+
 		$medium = get_option( 'medium_size_w' );
 		$source = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid  = $this->is_valid_img_ext( $source[0] );
 		$width  = $source[1];
 
-		if ( ! $new_value ) {
-			return null;
-		} elseif ( $new_value && $valid && $width > $medium ) {
+		if ( $valid && $width > $medium ) {
 			return (int) $new_value;
 		}
 
