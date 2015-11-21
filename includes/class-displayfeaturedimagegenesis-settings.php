@@ -41,7 +41,11 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
 		$this->displaysetting = $this->get_display_setting();
-
+		$updated = get_option( 'displayfeaturedimagegenesis_updatedtermmeta', false );
+		if ( $updated ) {
+			return;
+		}
+		$this->update_delete_term_meta();
 	}
 
 	/**
@@ -56,6 +60,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 		echo '<div class="wrap">';
 			printf( '<%1$s>%2$s</%1$s>', esc_attr( $heading ), esc_attr( $page_title ) );
+			$updated = get_option( 'displayfeaturedimagegenesis_updatedtermmeta', false );
+			if ( ! $updated ) {
+				$this->term_meta_notice();
+			}
 			echo '<form action="options.php" method="post">';
 				settings_fields( 'displayfeaturedimagegenesis' );
 				do_settings_sections( 'displayfeaturedimagegenesis' );
@@ -500,4 +508,92 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		}
 	}
 
+	public function term_meta_notice() {
+		$screen = get_current_screen();
+		if ( 'appearance_page_displayfeaturedimagegenesis' !== $screen->id ) {
+			return;
+		}
+		$term_ids = $this->get_term_ids();
+		if ( empty( $term_ids ) ) {
+			return;
+		}
+		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduced term metadata for categories, tags, and other taxonomies. We\'d like to convert your existing term images to use this new awesomeness.', 'display-featured-image-genesis' ) );
+		$message .= sprintf( '<p>%s</p>', __( 'This will modify your database, so if you\'d rather do it yourself, you can. Just click the Dismiss button and I won\'t bother you again. If you let us do it, please double check your terms afterwards.', 'display-featured-image-genesis' ) );
+		echo '<div class="updated">' . wp_kses_post( $message );
+		echo '<form action="" method="post">';
+		wp_nonce_field( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce', false );
+		$buttons = array(
+			array(
+				'value' => __( 'Update My Terms', 'display-featured-image-genesis' ),
+				'name'  => 'displayfeaturedimagegenesis_termmeta',
+				'class' => 'button-primary',
+			),
+			array(
+				'value' => __( 'Dismiss (I\'ve got this!)', 'display-featured-image-genesis' ),
+				'name'  => 'displayfeaturedimagegenesis_termmetadismiss',
+				'class' => 'button-secondary',
+			),
+		);
+		echo '<p>';
+		foreach ( $buttons as $button ) {
+			printf( '<input type="submit" class="%s" name="%s" value="%s" style="margin-right:12px;" />',
+				esc_attr( $button['class'] ),
+				esc_attr( $button['name'] ),
+				esc_attr( $button['value'] )
+			);
+		}
+		echo '</p>';
+		echo '</form>';
+		echo '</div>';
+	}
+
+	protected function update_delete_term_meta() {
+
+		if ( isset( $_POST['displayfeaturedimagegenesis_termmeta'] ) ) {
+			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
+				return;
+			}
+			$term_ids = $this->get_term_ids();
+			foreach ( $term_ids as $term_id ) {
+				$option = get_option( "displayfeaturedimagegenesis_{$term_id}" );
+				if ( false !== $option ) {
+					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
+					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
+					delete_option( "displayfeaturedimagegenesis_{$term_id}" );
+				}
+			}
+		}
+
+		if ( isset( $_POST['displayfeaturedimagegenesis_termmeta'] ) || isset( $_POST['displayfeaturedimagegenesis_termmetadismiss'] ) ) {
+			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
+				return;
+			}
+			update_option( 'displayfeaturedimagegenesis_updatedtermmeta', true );
+		}
+	}
+
+	protected function get_term_ids( $term_ids = array() ) {
+		$args = array(
+			'public'  => true,
+			'show_ui' => true,
+		);
+		$taxonomies = get_taxonomies( $args, 'objects' );
+
+		foreach ( $taxonomies as $tax ) {
+			$args   = array(
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+				'hide_empty' => false,
+			);
+			$terms  = get_terms( $tax->name, $args );
+			foreach ( $terms as $term ) {
+				$term_id = $term->term_id;
+				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}" );
+				if ( false !== $option ) {
+					$term_ids[] = $term_id;
+				}
+			}
+		}
+		return $term_ids;
+	}
 }
