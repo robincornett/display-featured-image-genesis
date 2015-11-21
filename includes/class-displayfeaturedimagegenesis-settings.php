@@ -41,7 +41,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
 		$this->displaysetting = $this->get_display_setting();
-		$updated = get_option( 'displayfeaturedimagegenesis_updatedtermmeta', false );
+		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
 		if ( $updated ) {
 			return;
 		}
@@ -60,7 +60,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 		echo '<div class="wrap">';
 			printf( '<%1$s>%2$s</%1$s>', esc_attr( $heading ), esc_attr( $page_title ) );
-			$updated = get_option( 'displayfeaturedimagegenesis_updatedtermmeta', false );
+			$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
 			if ( ! $updated ) {
 				$this->term_meta_notice();
 			}
@@ -508,7 +508,12 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		}
 	}
 
-	public function term_meta_notice() {
+	/**
+	 * For 4.4, output a notice explaining that old term options can be updated to term_meta.
+	 * Options are to update all terms or to ignore, and do by hand.
+	 * @since x.y.z
+	 */
+	protected function term_meta_notice() {
 		$screen = get_current_screen();
 		if ( 'appearance_page_displayfeaturedimagegenesis' !== $screen->id ) {
 			return;
@@ -547,6 +552,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		echo '</div>';
 	}
 
+	/**
+	 * Update and/or delete term_meta and wp_options
+	 * @since x.y.z
+	 */
 	protected function update_delete_term_meta() {
 
 		if ( isset( $_POST['displayfeaturedimagegenesis_termmeta'] ) ) {
@@ -568,10 +577,16 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
 				return;
 			}
-			update_option( 'displayfeaturedimagegenesis_updatedtermmeta', true );
+			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
 		}
 	}
 
+	/**
+	 * Get IDs of terms with featured images
+	 * @param  array  $term_ids empty array
+	 * @return array           all terms with featured images
+	 * @since x.y.z
+	 */
 	protected function get_term_ids( $term_ids = array() ) {
 		$args = array(
 			'public'  => true,
