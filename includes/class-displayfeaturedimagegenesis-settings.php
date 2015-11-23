@@ -41,14 +41,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
 		$this->displaysetting = $this->get_display_setting();
-		if ( ! function_exists( 'get_term_meta' ) ) {
-			return;
-		}
-		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
-		if ( $updated ) {
-			return;
-		}
-		$this->update_delete_term_meta();
 	}
 
 	/**
@@ -58,13 +50,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since  1.4.0
 	 */
 	public function do_settings_form() {
+		if ( $this->terms_need_updating() ) {
+			$this->update_delete_term_meta();
+		}
 		$page_title = get_admin_page_title();
 		$heading    = $GLOBALS['wp_version'] >= '4.3' ? 'h1' : 'h2';
 
 		echo '<div class="wrap">';
 			printf( '<%1$s>%2$s</%1$s>', esc_attr( $heading ), esc_attr( $page_title ) );
-			$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
-			if ( ! $updated ) {
+			if ( $this->terms_need_updating() ) {
 				$this->term_meta_notice();
 			}
 			echo '<form action="options.php" method="post">';
@@ -75,7 +69,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				settings_errors();
 			echo '</form>';
 		echo '</div>';
-
 	}
 
 	/**
@@ -296,8 +289,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since  2.0.0
 	 */
 	public function set_cpt_image( $args ) {
-
-		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		$post_type = $args['post_type']->name;
 		if ( empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
@@ -620,5 +611,19 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			}
 		}
 		return $affected_terms;
+	}
+
+	/**
+	 * Check whether terms need to be udpated
+	 * @return boolean true if on 4.4 and wp_options for terms exist; false otherwise
+	 *
+	 * @since 2.4.0
+	 */
+	protected function terms_need_updating() {
+		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
+		if ( ! $updated && function_exists( 'get_term_meta' ) ) {
+			return true;
+		}
+		return false;
 	}
 }
