@@ -514,19 +514,25 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	/**
 	 * For 4.4, output a notice explaining that old term options can be updated to term_meta.
 	 * Options are to update all terms or to ignore, and do by hand.
-	 * @since x.y.z
+	 * @since 2.4.0
 	 */
 	protected function term_meta_notice() {
 		$screen = get_current_screen();
 		if ( 'appearance_page_displayfeaturedimagegenesis' !== $screen->id ) {
 			return;
 		}
-		$term_ids = $this->get_term_ids();
-		if ( empty( $term_ids ) ) {
+		$terms = $this->get_affected_terms();
+		if ( empty( $terms ) ) {
 			return;
 		}
-		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduced term metadata for categories, tags, and other taxonomies. We\'d like to convert your existing term images to use this new awesomeness.', 'display-featured-image-genesis' ) );
-		$message .= sprintf( '<p>%s</p>', __( 'This will modify your database, so if you\'d rather do it yourself, you can. Just click the Dismiss button and I won\'t bother you again. If you let us do it, please double check your terms afterwards.', 'display-featured-image-genesis' ) );
+		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduced term metadata for categories, tags, and other taxonomies. I\'d like to automatically convert your existing term images to use this new awesomeness.', 'display-featured-image-genesis' ) );
+		$message .= sprintf( '<p>%s</p>', __( 'This will modify your database, so if you\'d rather do it yourself, you can. Here\'s a list of the affected terms:', 'display-featured-image-genesis' ) );
+		$message .= '<ul style="margin-left:40px;">';
+		foreach ( $terms as $term ) {
+			$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
+		}
+		$message .= '</ul>';
+		$message .= sprintf( '<p>%s</p>', __( 'If you update the terms by hand, this notice will disappear, or you can dismiss the notice. Or, you know, click the Update button to do it all at once. Just please double check your terms after the update process.', 'display-featured-image-genesis' ) );
 		echo '<div class="updated">' . wp_kses_post( $message );
 		echo '<form action="" method="post">';
 		wp_nonce_field( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce', false );
@@ -557,7 +563,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Update and/or delete term_meta and wp_options
-	 * @since x.y.z
+	 * @since 2.4.0
 	 */
 	protected function update_delete_term_meta() {
 
@@ -565,9 +571,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
 				return;
 			}
-			$term_ids = $this->get_term_ids();
-			foreach ( $term_ids as $term_id ) {
-				$option = get_option( "displayfeaturedimagegenesis_{$term_id}" );
+			$terms = $this->get_affected_terms();
+			foreach ( $terms as $term ) {
+				$term_id = $term->term_id;
+				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}" );
 				if ( false !== $option ) {
 					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
 					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
@@ -588,9 +595,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * Get IDs of terms with featured images
 	 * @param  array  $term_ids empty array
 	 * @return array           all terms with featured images
-	 * @since x.y.z
+	 * @since 2.4.0
 	 */
-	protected function get_term_ids( $term_ids = array() ) {
+	protected function get_affected_terms( $affected_terms = array() ) {
 		$args = array(
 			'public'  => true,
 			'show_ui' => true,
@@ -608,10 +615,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				$term_id = $term->term_id;
 				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}" );
 				if ( false !== $option ) {
-					$term_ids[] = $term_id;
+					$affected_terms[] = $term;
 				}
 			}
 		}
-		return $term_ids;
+		return $affected_terms;
 	}
 }
