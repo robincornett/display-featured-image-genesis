@@ -41,6 +41,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
 		$this->displaysetting = $this->get_display_setting();
+		if ( ! function_exists( 'get_term_meta' ) ) {
+			return;
+		}
 		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
 		if ( $updated ) {
 			return;
