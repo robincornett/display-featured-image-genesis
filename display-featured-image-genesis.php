@@ -6,7 +6,7 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      http://robincornett.com
- * @copyright 2014-2015 Robin Cornett Creative, LLC
+ * @copyright 2014-2015-2015 Robin Cornett Creative, LLC
  *
  * @wordpress-plugin
  * Plugin Name:       Display Featured Image for Genesis
@@ -31,6 +31,7 @@ if ( ! defined( 'DISPLAYFEATUREDIMAGEGENESIS_BASENAME' ) ) {
 function display_featured_image_genesis_require() {
 	$files = array(
 		'class-displayfeaturedimagegenesis',
+		'class-displayfeaturedimagegenesis-helper',
 		'class-displayfeaturedimagegenesis-admin',
 		'class-displayfeaturedimagegenesis-author',
 		'class-displayfeaturedimagegenesis-common',
@@ -48,6 +49,7 @@ function display_featured_image_genesis_require() {
 display_featured_image_genesis_require();
 
 // Instantiate dependent classes
+$displayfeaturedimagegenesis_helper      = new Display_Featured_Image_Genesis_Helper();
 $displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
 $displayfeaturedimagegenesis_author      = new Display_Featured_Image_Genesis_Author();
 $displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();

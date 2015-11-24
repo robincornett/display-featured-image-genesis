@@ -106,15 +106,14 @@ class Display_Featured_Image_Genesis_Admin {
 			return;
 		}
 
-		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
-
-		if ( empty( $term_meta['term_image'] ) ) {
+		$image_id = displayfeaturedimagegenesis_term_image( $term_id );
+		if ( ! $image_id ) {
 			return;
 		}
 
 		$taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
 		$taxonomy = ! is_null( $taxonomy ) ? $taxonomy : get_current_screen()->taxonomy;
-		$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
+		$image_id = displayfeaturedimagegenesis_check_image_id( $image_id );
 
 		$args = array(
 			'image_id' => $image_id,

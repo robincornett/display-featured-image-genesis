@@ -4,10 +4,10 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      http://robincornett.com
- * @copyright 2014 Robin Cornett Creative, LLC
+ * @copyright 2014-2015 Robin Cornett Creative, LLC
  */
 
-class Display_Featured_Image_Genesis_Settings {
+class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Genesis_Helper {
 
 	/**
 	 * variable set for featured image option
@@ -31,7 +31,7 @@ class Display_Featured_Image_Genesis_Settings {
 
 		add_theme_page(
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
-			__( 'Display Featured Image Settings', 'display-featured-image-genesis' ),
+			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
 			'manage_options',
 			$this->page,
 			array( $this, 'do_settings_form' )
@@ -41,7 +41,6 @@ class Display_Featured_Image_Genesis_Settings {
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
 		$this->displaysetting = $this->get_display_setting();
-
 	}
 
 	/**
@@ -51,11 +50,17 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since  1.4.0
 	 */
 	public function do_settings_form() {
+		if ( $this->terms_need_updating() ) {
+			$this->update_delete_term_meta();
+		}
 		$page_title = get_admin_page_title();
 		$heading    = $GLOBALS['wp_version'] >= '4.3' ? 'h1' : 'h2';
 
 		echo '<div class="wrap">';
 			printf( '<%1$s>%2$s</%1$s>', esc_attr( $heading ), esc_attr( $page_title ) );
+			if ( $this->terms_need_updating() ) {
+				$this->term_meta_notice();
+			}
 			echo '<form action="options.php" method="post">';
 				settings_fields( 'displayfeaturedimagegenesis' );
 				do_settings_sections( 'displayfeaturedimagegenesis' );
@@ -64,7 +69,6 @@ class Display_Featured_Image_Genesis_Settings {
 				settings_errors();
 			echo '</form>';
 		echo '</div>';
-
 	}
 
 	/**
@@ -132,15 +136,7 @@ class Display_Featured_Image_Genesis_Settings {
 			);
 		}
 
-		foreach ( $sections as $section ) {
-			add_settings_section(
-				$section['id'],
-				$section['title'],
-				array( $this, $section['id'] . '_section_description' ),
-				$this->page
-			);
-		}
-
+		$this->add_sections( $sections );
 		$this->register_fields( $sections );
 	}
 
@@ -217,17 +213,7 @@ class Display_Featured_Image_Genesis_Settings {
 			}
 		}
 
-		foreach ( $this->fields as $field ) {
-			add_settings_field(
-				'[' . $field['id'] . ']',
-				sprintf( '<label for="%s">%s</label>', $field['id'], $field['title'] ),
-				array( $this, $field['callback'] ),
-				$this->page,
-				$sections[ $field['section'] ]['id'],
-				empty( $field['args'] ) ? array() : $field['args']
-			);
-		}
-
+		$this->add_fields( $this->fields, $sections );
 	}
 
 	/**
@@ -250,36 +236,6 @@ class Display_Featured_Image_Genesis_Settings {
 	public function cpt_section_description() {
 		$description = __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' );
 		$this->print_section_description( $description );
-	}
-
-	/**
-	 * Echoes out the section description.
-	 * @param  string $description text string for description
-	 * @return string              as paragraph and escaped
-	 *
-	 * @since 2.3.0
-	 */
-	protected function print_section_description( $description ) {
-		echo wp_kses_post( wpautop( $description ) );
-	}
-
-	/**
-	 * Generic callback to create a number field setting.
-	 *
-	 * @since 2.3.0
-	 */
-	public function do_number( $args ) {
-
-		printf( '<label for="%s[%s]">%s</label>', esc_attr( $this->page ),esc_attr( $args['setting'] ), esc_attr( $args['label'] ) );
-		printf( '<input type="number" step="1" min="%1$s" max="%2$s" id="%5$s[%3$s]" name="%5$s[%3$s]" value="%4$s" class="small-text" />',
-			(int) $args['min'],
-			(int) $args['max'],
-			esc_attr( $args['setting'] ),
-			esc_attr( $this->displaysetting[ $args['setting'] ] ),
-			esc_attr( $this->page )
-		);
-		$this->do_description( $args['setting'] );
-
 	}
 
 	/**
@@ -326,22 +282,6 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
-	 * generic checkbox function (for all checkbox settings)
-	 * @return 0 1 checkbox
-	 *
-	 * @since  2.3.0
-	 */
-	public function do_checkbox( $args ) {
-		printf( '<input type="hidden" name="displayfeaturedimagegenesis[%s]" value="0" />', esc_attr( $args['setting'] ) );
-		printf( '<label for="displayfeaturedimagegenesis[%1$s]"><input type="checkbox" name="displayfeaturedimagegenesis[%1$s]" id="displayfeaturedimagegenesis[%1$s]" value="1" %2$s class="code" />%3$s</label>',
-			esc_attr( $args['setting'] ),
-			checked( 1, esc_attr( $this->displaysetting[ $args['setting'] ] ), false ),
-			esc_attr( $args['label'] )
-		);
-		$this->do_description( $args['setting'] );
-	}
-
-	/**
 	 * Custom Post Type image uploader
 	 *
 	 * @return  image
@@ -349,8 +289,6 @@ class Display_Featured_Image_Genesis_Settings {
 	 * @since  2.0.0
 	 */
 	public function set_cpt_image( $args ) {
-
-		$item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		$post_type = $args['post_type']->name;
 		if ( empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
@@ -372,96 +310,6 @@ class Display_Featured_Image_Genesis_Settings {
 			esc_url( get_post_type_archive_link( $post_type ) ),
 			esc_attr( $args['post_type']->label )
 		);
-		printf( '<p class="description">%s</p>', wp_kses_post( $description ) );
-	}
-
-	/**
-	 * display image preview
-	 * @param  variable $id featured image ID
-	 * @return $image     image preview
-	 *
-	 * @since 2.3.0
-	 */
-	public function render_image_preview( $id ) {
-		if ( empty( $id ) ) {
-			return;
-		}
-
-		$id      = displayfeaturedimagegenesis_check_image_id( $id );
-		$preview = wp_get_attachment_image_src( (int) $id, 'medium' );
-		$image   = sprintf( '<div class="upload_logo_preview"><img src="%s" /></div>', $preview[0] );
-		return $image;
-	}
-
-	/**
-	 * show image select/delete buttons
-	 * @param  variable $id   image ID
-	 * @param  varable $name name for value/ID/class
-	 * @return $buttons       select/delete image buttons
-	 *
-	 * @since 2.3.0
-	 */
-	public function render_buttons( $id, $name ) {
-		$id = displayfeaturedimagegenesis_check_image_id( $id );
-		$id = $id ? (int) $id : '';
-		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
-		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
-			esc_attr( $name ),
-			esc_attr__( 'Select Image', 'display-featured-image-genesis' )
-		);
-		if ( ! empty( $id ) ) {
-			printf( ' <input type="button" class="delete_image button-secondary" value="%s" />',
-				esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
-			);
-		}
-	}
-
-	/**
-	 * Save extra taxonomy fields callback function.
-	 * @param  term id $term_id the id of the term
-	 * @return updated option          updated option for term featured image
-	 *
-	 * @since 2.0.0
-	 */
-	public function save_taxonomy_custom_meta( $term_id ) {
-
-		if ( isset( $_POST['displayfeaturedimagegenesis'] ) ) {
-			$t_id           = $term_id;
-			$displaysetting = get_option( "displayfeaturedimagegenesis_$t_id" );
-			$cat_keys       = array_keys( $_POST['displayfeaturedimagegenesis'] );
-			$is_updated     = false;
-			foreach ( $cat_keys as $key ) {
-				if ( isset( $_POST['displayfeaturedimagegenesis'][ $key ] ) ) {
-					$displaysetting[ $key ] = $_POST['displayfeaturedimagegenesis'][ $key ];
-					if ( $_POST['displayfeaturedimagegenesis']['term_image'] === $displaysetting[ $key ] ) {
-						$displaysetting[ $key ] = $this->validate_taxonomy_image( $_POST['displayfeaturedimagegenesis'][ $key ] );
-						if ( false !== $displaysetting[ $key ] ) {
-							$is_updated = true;
-						}
-					}
-				}
-			}
-			// Save the option array.
-			if ( $is_updated ) {
-				update_option( "displayfeaturedimagegenesis_$t_id", $displaysetting );
-			}
-		}
-
-	}
-
-	/**
-	 * Generic callback to display a field description.
-	 * @param  string $args setting name used to identify description callback
-	 * @return string       Description to explain a field.
-	 *
-	 * @since 2.3.0
-	 */
-	protected function do_description( $args ) {
-		$function = $args . '_description';
-		if ( ! method_exists( $this, $function ) ) {
-			return;
-		}
-		$description = $this->$function();
 		printf( '<p class="description">%s</p>', wp_kses_post( $description ) );
 	}
 
@@ -516,29 +364,6 @@ class Display_Featured_Image_Genesis_Settings {
 	}
 
 	/**
-	 * Determines if the user has permission to save the information from the submenu
-	 * page.
-	 *
-	 * @since    2.3.0
-	 * @access   private
-	 *
-	 * @param    string    $action   The name of the action specified on the submenu page
-	 * @param    string    $nonce    The nonce specified on the submenu page
-	 *
-	 * @return   bool                True if the user has permission to save; false, otherwise.
-	 * @author   Tom McFarlin (https://tommcfarlin.com/save-wordpress-submenu-page-options/)
-	 */
-	private function user_can_save( $action, $nonce ) {
-		$is_nonce_set   = isset( $_POST[ $nonce ] );
-		$is_valid_nonce = false;
-
-		if ( $is_nonce_set ) {
-			$is_valid_nonce = wp_verify_nonce( $_POST[ $nonce ], $action );
-		}
-		return ( $is_nonce_set && $is_valid_nonce );
-	}
-
-	/**
 	 * Returns previous value for image if not correct file type/size
 	 * @param  string $new_value New value
 	 * @return string            New or previous value, depending on allowed image size.
@@ -579,113 +404,6 @@ class Display_Featured_Image_Genesis_Settings {
 		);
 
 		return (int) $new_value;
-	}
-
-	/**
-	 * Returns false value for image if not correct file type/size
-	 * @param  string $new_value New value
-	 * @return string            New value or false, depending on allowed image size.
-	 * @since  2.0.0
-	 */
-	protected function validate_taxonomy_image( $new_value ) {
-
-		// if the image was selected using the old URL method
-		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
-		$medium    = get_option( 'medium_size_w' );
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
-
-		// ok for field to be empty
-		if ( $new_value && ( ! $valid || $width <= $medium ) ) {
-			$new_value = false;
-		}
-
-		return $new_value;
-	}
-
-	/**
-	 * Returns old value for author image if not correct file type/size
-	 * @param  string $new_value New value
-	 * @return string            New value or old, depending on allowed image size.
-	 * @since  2.3.0
-	 */
-	public function validate_author_image( $new_value, $old_value ) {
-
-		$medium = get_option( 'medium_size_w' );
-		$source = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid  = $this->is_valid_img_ext( $source[0] );
-		$width  = $source[1];
-
-		if ( ! $new_value  || ( $new_value && $valid && $width > $medium ) ) {
-			return $new_value;
-		}
-
-		add_filter( 'user_profile_update_errors', array( $this, 'user_profile_error_message' ), 10, 3 );
-
-		return $old_value;
-
-	}
-
-	/**
-	 * User profile error message
-	 * @param  var $errors error message depending on what's wrong
-	 * @param  var $update whether or not to update
-	 * @param  var $user   user being updated
-	 * @return error message
-	 *
-	 * @since 2.3.0
-	 */
-	public function user_profile_error_message( $errors, $update, $user ) {
-		$new_value = (int) $_POST['displayfeaturedimagegenesis'];
-		$medium    = get_option( 'medium_size_w' );
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
-		$reset     = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $user->display_name );
-
-		if ( ! $valid ) {
-			$error = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-		} elseif ( $width <= $medium ) {
-			$error = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-		}
-		$errors->add( 'profile_error', $error . $reset );
-	}
-
-	/**
-	 * returns file extension
-	 * @since  1.2.2
-	 */
-	protected function get_file_ext( $file ) {
-		$parsed = @parse_url( $file, PHP_URL_PATH );
-		return $parsed ? strtolower( pathinfo( $parsed, PATHINFO_EXTENSION ) ) : false;
-	}
-
-	/**
-	 * check if file type is image
-	 * @return file       check file extension against list
-	 * @since  1.2.2
-	 */
-	protected function is_valid_img_ext( $file ) {
-		$file_ext = $this->get_file_ext( $file );
-
-		$is_valid_types = (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
-
-		return ( $file_ext && in_array( $file_ext, $is_valid_types ) );
-	}
-
-	/**
-	 * Returns a 1 or 0, for all truthy / falsy values.
-	 *
-	 * Uses double casting. First, we cast to bool, then to integer.
-	 *
-	 * @since 1.3.0
-	 *
-	 * @param mixed $new_value Should ideally be a 1 or 0 integer passed in
-	 * @return integer 1 or 0.
-	 */
-	protected function one_zero( $new_value ) {
-		return (int) (bool) $new_value;
 	}
 
 	/**
@@ -784,4 +502,128 @@ class Display_Featured_Image_Genesis_Settings {
 		}
 	}
 
+	/**
+	 * For 4.4, output a notice explaining that old term options can be updated to term_meta.
+	 * Options are to update all terms or to ignore, and do by hand.
+	 * @since 2.4.0
+	 */
+	protected function term_meta_notice() {
+		$screen = get_current_screen();
+		if ( 'appearance_page_displayfeaturedimagegenesis' !== $screen->id ) {
+			return;
+		}
+		$terms = $this->get_affected_terms();
+		if ( empty( $terms ) ) {
+			return;
+		}
+		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduced term metadata for categories, tags, and other taxonomies. I\'d like to automatically convert your existing term images to use this new awesomeness.', 'display-featured-image-genesis' ) );
+		$message .= sprintf( '<p>%s</p>', __( 'This will modify your database, so if you\'d rather do it yourself, you can. Here\'s a list of the affected terms:', 'display-featured-image-genesis' ) );
+		$message .= '<ul style="margin-left:40px;">';
+		foreach ( $terms as $term ) {
+			$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
+		}
+		$message .= '</ul>';
+		$message .= sprintf( '<p>%s</p>', __( 'If you update the terms by hand, this notice will disappear, or you can dismiss the notice. Or, you know, click the Update button to do it all at once. Just please double check your terms after the update process.', 'display-featured-image-genesis' ) );
+		echo '<div class="updated">' . wp_kses_post( $message );
+		echo '<form action="" method="post">';
+		wp_nonce_field( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce', false );
+		$buttons = array(
+			array(
+				'value' => __( 'Update My Terms', 'display-featured-image-genesis' ),
+				'name'  => 'displayfeaturedimagegenesis_termmeta',
+				'class' => 'button-primary',
+			),
+			array(
+				'value' => __( 'Dismiss (I\'ve got this!)', 'display-featured-image-genesis' ),
+				'name'  => 'displayfeaturedimagegenesis_termmetadismiss',
+				'class' => 'button-secondary',
+			),
+		);
+		echo '<p>';
+		foreach ( $buttons as $button ) {
+			printf( '<input type="submit" class="%s" name="%s" value="%s" style="margin-right:12px;" />',
+				esc_attr( $button['class'] ),
+				esc_attr( $button['name'] ),
+				esc_attr( $button['value'] )
+			);
+		}
+		echo '</p>';
+		echo '</form>';
+		echo '</div>';
+	}
+
+	/**
+	 * Update and/or delete term_meta and wp_options
+	 * @since 2.4.0
+	 */
+	protected function update_delete_term_meta() {
+
+		if ( isset( $_POST['displayfeaturedimagegenesis_termmeta'] ) ) {
+			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
+				return;
+			}
+			$terms = $this->get_affected_terms();
+			foreach ( $terms as $term ) {
+				$term_id = $term->term_id;
+				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}" );
+				if ( false !== $option ) {
+					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
+					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
+					delete_option( "displayfeaturedimagegenesis_{$term_id}" );
+				}
+			}
+		}
+
+		if ( isset( $_POST['displayfeaturedimagegenesis_termmeta'] ) || isset( $_POST['displayfeaturedimagegenesis_termmetadismiss'] ) ) {
+			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
+				return;
+			}
+			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
+		}
+	}
+
+	/**
+	 * Get IDs of terms with featured images
+	 * @param  array  $term_ids empty array
+	 * @return array           all terms with featured images
+	 * @since 2.4.0
+	 */
+	protected function get_affected_terms( $affected_terms = array() ) {
+		$args = array(
+			'public'  => true,
+			'show_ui' => true,
+		);
+		$taxonomies = get_taxonomies( $args, 'objects' );
+
+		foreach ( $taxonomies as $tax ) {
+			$args   = array(
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+				'hide_empty' => false,
+			);
+			$terms  = get_terms( $tax->name, $args );
+			foreach ( $terms as $term ) {
+				$term_id = $term->term_id;
+				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}" );
+				if ( false !== $option ) {
+					$affected_terms[] = $term;
+				}
+			}
+		}
+		return $affected_terms;
+	}
+
+	/**
+	 * Check whether terms need to be udpated
+	 * @return boolean true if on 4.4 and wp_options for terms exist; false otherwise
+	 *
+	 * @since 2.4.0
+	 */
+	protected function terms_need_updating() {
+		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
+		if ( ! $updated && function_exists( 'get_term_meta' ) ) {
+			return true;
+		}
+		return false;
+	}
 }
