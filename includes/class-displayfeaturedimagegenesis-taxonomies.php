@@ -29,7 +29,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
 			add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
 			add_action( "create_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
-			add_action( 'edit_{$taxonomy}', array( $this, 'save_taxonomy_custom_meta' ) );
+			add_action( "edit_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
 			add_action( 'load-edit-tags.php', array( $this, 'help' ) );
 		}
 
@@ -101,7 +101,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		if ( ! isset( $input ) ) {
 			return;
 		}
-		$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id" );
+		$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id", false );
 		$action         = function_exists( 'get_term_meta' ) ? 'update_term_meta' : 'update_options_meta';
 		$this->$action( $term_id, $input, $displaysetting );
 	}
