@@ -182,17 +182,17 @@ class Display_Featured_Image_Genesis_Helper {
 	 */
 	protected function validate_image( $new_value, $old_value, $label, $size_to_check ) {
 
+		// ok for field to be empty
+		if ( ! $new_value ) {
+			return '';
+		}
+
 		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
 		$old_value = displayfeaturedimagegenesis_check_image_id( $old_value );
 		$source    = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 		$reset     = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
-
-		// ok for field to be empty
-		if ( ! $new_value ) {
-			return '';
-		}
 
 		if ( $valid && $width > $size_to_check ) {
 			return (int) $new_value;
