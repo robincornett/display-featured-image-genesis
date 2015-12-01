@@ -220,6 +220,10 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.4.0
+* Now supports term metadata, added in WordPress 4.4. All new featured images for terms will be added to the termmeta table instead of wp_options. Old term images can be converted from the settings page.
+* changed: generic functions have all been moved to a helper class for optimization.
+
 ### 2.3.4 - 2015-11-13
 * added: filters to modify image priority as well as hook (due to Workstation Pro theme)
 * improved: checks for ability to output and what to output

@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
 Tested up to: 4.4
-Stable tag: 2.3.4
+Stable tag: 2.4.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -168,10 +168,14 @@ This will follow the settings you choose in the Genesis Theme Settings.
 3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.3.4 =
-mostly bugfixes, but also new filters for image output
+= 2.4.0 =
+Featured images for terms now use term metadata, introduced in WP 4.4. Old images can be updated automatically or by hand.
 
 == Changelog ==
+
+= 2.4.0 =
+* Now supports term metadata, added in WordPress 4.4. All new featured images for terms will be added to the termmeta table instead of wp_options. Old term images can be converted from the settings page.
+* changed: generic functions have all been moved to a helper class for optimization.
 
 = 2.3.4 =
 * added: filters to modify image priority as well as hook (due to Workstation Pro theme)

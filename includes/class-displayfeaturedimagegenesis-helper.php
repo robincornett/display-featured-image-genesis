@@ -12,7 +12,7 @@ class Display_Featured_Image_Genesis_Helper {
 	/**
 	 * Generic function to add settings sections
 	 *
-	 * @since x.y.z
+	 * @since 2.4.0
 	 */
 	protected function add_sections( $sections ) {
 
@@ -31,7 +31,7 @@ class Display_Featured_Image_Genesis_Helper {
 	 * @param  array $sections registered sections
 	 * @return array           all settings fields
 	 *
-	 * @since x.y.z
+	 * @since 2.4.0
 	 */
 	protected function add_fields( $fields, $sections ) {
 
