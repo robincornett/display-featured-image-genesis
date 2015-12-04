@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Display Featured Image for Genesis 2.4.0\n"
-"POT-Creation-Date: 2015-12-01 10:27-0500\n"
+"POT-Creation-Date: 2015-12-04 12:12-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Robin Cornett <hello@robincornett.com>\n"
 "Language-Team: Robin Cornett <hello@robincornett.com>\n"
@@ -301,29 +301,37 @@ msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:519
 msgid ""
-"WordPress 4.4 introduced term metadata for categories, tags, and other "
-"taxonomies. I'd like to automatically convert your existing term images to "
-"use this new awesomeness."
+"WordPress 4.4 introduces term metadata for categories, tags, and other "
+"taxonomies. This is your opportunity to optionally update all impacted terms "
+"on your site to use the new metadata."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:520
 msgid ""
-"This will modify your database, so if you'd rather do it yourself, you can. "
-"Here's a list of the affected terms:"
+"This <strong>will modify</strong> your database (potentially many entries at "
+"once), so if you'd rather do it yourself, you can. Here's a list of the "
+"affected terms:"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:526
 msgid ""
-"If you update the terms by hand, this notice will disappear, or you can "
-"dismiss the notice. Or, you know, click the Update button to do it all at "
-"once. Just please double check your terms after the update process."
+"To get rid of this notice, you can 1) update your terms by hand; 2) click "
+"the update button (please check your terms afterward); or 3) click the "
+"dismiss button."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:532
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:527
+#, php-format
+msgid ""
+"For more information, please visit the plugin's <a href=\"%s\" target="
+"\"_blank\">Frequently Asked Questions</a> on WordPress.org."
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:534
 msgid "Update My Terms"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:537
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:539
 msgid "Dismiss (I've got this!)"
 msgstr ""
 

@@ -12,7 +12,7 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image is already displayed in your content (the original image, not a resized version).
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
-More words at [my site](http://robincornett.com/plugins/display-featured-image-genesis/).
+More words at [my site](http://robincornett.com/downloads/display-featured-image-genesis/).
 
 _Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress._
 
@@ -86,6 +86,14 @@ _Set a Default Featured Image on the Appearance > Display Featured Image for Gen
 _Quickly see which posts and terms have been assigned a Featured Image._
 
 ## Frequently Asked Questions
+
+### What is term metadata and why does it matter to me? ###
+
+Term metadata is a new feature introduced in WordPress 4.4, which allows us to add custom data to each term (categories, tags, etc.) on a site. Version 2.4 of __Display Featured Image for Genesis__ will use the new term metadata.
+
+If you have been using __Display Featured Image for Genesis__ and have already added featured images to your terms, when you visit the main plugin settings page, you'll be prompted to allow the plugin to update all terms with featured images, or given the information to allow you to do it yourself. This _should_ be a simple, pain-free process, but make sure your database is backed up, and please check your terms after the update.
+
+If you have not yet updated your site to WordPress 4.4, fear not: for the time being, __Display Featured Image for Genesis__ will still work just as it has in the past. A future release of the plugin will require a minimum version of WordPress to properly support term images.
 
 ### Where do I set a Default Featured Image?
 

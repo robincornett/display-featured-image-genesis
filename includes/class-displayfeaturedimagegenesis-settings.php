@@ -516,14 +516,16 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( empty( $terms ) ) {
 			return;
 		}
-		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduced term metadata for categories, tags, and other taxonomies. I\'d like to automatically convert your existing term images to use this new awesomeness.', 'display-featured-image-genesis' ) );
-		$message .= sprintf( '<p>%s</p>', __( 'This will modify your database, so if you\'d rather do it yourself, you can. Here\'s a list of the affected terms:', 'display-featured-image-genesis' ) );
-		$message .= '<ul style="margin-left:40px;">';
+		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduces term metadata for categories, tags, and other taxonomies. This is your opportunity to optionally update all impacted terms on your site to use the new metadata.', 'display-featured-image-genesis' ) );
+		$message .= sprintf( '<p>%s</p>', __( 'This <strong>will modify</strong> your database (potentially many entries at once), so if you\'d rather do it yourself, you can. Here\'s a list of the affected terms:', 'display-featured-image-genesis' ) );
+		$message .= '<ul style="margin-left:24px;">';
 		foreach ( $terms as $term ) {
 			$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
 		}
 		$message .= '</ul>';
-		$message .= sprintf( '<p>%s</p>', __( 'If you update the terms by hand, this notice will disappear, or you can dismiss the notice. Or, you know, click the Update button to do it all at once. Just please double check your terms after the update process.', 'display-featured-image-genesis' ) );
+		$message .= sprintf( '<p>%s</p>', __( 'To get rid of this notice, you can 1) update your terms by hand; 2) click the update button (please check your terms afterward); or 3) click the dismiss button.', 'display-featured-image-genesis' ) );
+		$faq      = sprintf( __( 'For more information, please visit the plugin\'s <a href="%s" target="_blank">Frequently Asked Questions</a> on WordPress.org.', 'display-featured-image-genesis' ), esc_url( 'https://wordpress.org/plugins/display-featured-image-genesis/faq/' ) );
+		$message .= sprintf( '<p>%s</p>', $faq );
 		echo '<div class="updated">' . wp_kses_post( $message );
 		echo '<form action="" method="post">';
 		wp_nonce_field( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce', false );
@@ -604,7 +606,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			$terms  = get_terms( $tax->name, $args );
 			foreach ( $terms as $term ) {
 				$term_id = $term->term_id;
-				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}" );
+				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}", false );
 				if ( false !== $option ) {
 					$affected_terms[] = $term;
 				}
