@@ -10,6 +10,26 @@
  */
 
 /**
+ * Helper function to retrieve the term image ID, whether as term_meta or wp_options
+ * @param  int $term_id  term ID
+ * @param  string $image_id image ID
+ * @return int           image ID
+ * @since 2.4.0
+ */
+function displayfeaturedimagegenesis_get_term_image( $term_id, $image_id = '' ) {
+	if ( function_exists( 'get_term_meta' ) ) {
+		$image_id = get_term_meta( $term_id, 'displayfeaturedimagegenesis', true );
+	}
+	if ( ! $image_id ) {
+		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
+		if ( $term_meta ) {
+			$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
+		}
+	}
+	return $image_id;
+}
+
+/**
  * gets the term image ID
  * @return image_id reusable function to get a post's term image, if it exists
  *
@@ -23,7 +43,7 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 
 	foreach ( $terms as $term ) {
 		$term_id  = $term->term_id;
-		$image_id = displayfeaturedimagegenesis_term_image( $term_id );
+		$image_id = displayfeaturedimagegenesis_get_term_image( $term_id );
 		if ( $image_id ) {
 			break;
 		}
@@ -31,26 +51,6 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 
 	return (int) $image_id;
 
-}
-
-/**
- * Helper function to retrieve the term image ID, whether as term_meta or wp_options
- * @param  int $term_id  term ID
- * @param  string $image_id image ID
- * @return int           image ID
- * @since 2.4.0
- */
-function displayfeaturedimagegenesis_term_image( $term_id, $image_id = '' ) {
-	if ( function_exists( 'get_term_meta' ) ) {
-		$image_id = get_term_meta( $term_id, 'displayfeaturedimagegenesis', true );
-	}
-	if ( ! $image_id ) {
-		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
-		if ( $term_meta ) {
-			$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
-		}
-	}
-	return $image_id;
 }
 
 /**

@@ -106,7 +106,7 @@ class Display_Featured_Image_Genesis_Admin {
 			return;
 		}
 
-		$image_id = displayfeaturedimagegenesis_term_image( $term_id );
+		$image_id = displayfeaturedimagegenesis_get_term_image( $term_id );
 		if ( ! $image_id ) {
 			return;
 		}

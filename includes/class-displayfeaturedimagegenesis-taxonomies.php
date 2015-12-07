@@ -66,7 +66,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	public function edit_taxonomy_meta_fields( $term ) {
 
 		$term_id  = $term->term_id;
-		$image_id = displayfeaturedimagegenesis_term_image( $term_id );
+		$image_id = displayfeaturedimagegenesis_get_term_image( $term_id );
 
 		echo '<tr class="form-field term-image-wrap">';
 			printf( '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">%s</label></th>',
