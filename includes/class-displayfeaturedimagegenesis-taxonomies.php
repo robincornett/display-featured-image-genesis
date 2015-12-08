@@ -97,10 +97,10 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 */
 	public function save_taxonomy_custom_meta( $term_id ) {
 
-		$input = $_POST['displayfeaturedimagegenesis'];
-		if ( ! isset( $input ) ) {
+		if ( ! isset( $_POST['displayfeaturedimagegenesis'] ) ) {
 			return;
 		}
+		$input          = $_POST['displayfeaturedimagegenesis'];
 		$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id", false );
 		$action         = function_exists( 'get_term_meta' ) ? 'update_term_meta' : 'update_options_meta';
 		$this->$action( $term_id, $input, $displaysetting );
