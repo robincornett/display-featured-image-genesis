@@ -13,11 +13,18 @@
 
 	function _backstretchHandler() {
 
-		var source = window.innerWidth <= plugin.params.width ? plugin.params.largesrc : plugin.params.src,
+		var source = plugin.params.source.backstretch,
 			$el = $( '.big-leader' );
 
-		if (typeof $el === 'undefined') {
+		if ( typeof $el === 'undefined' ) {
 			return false;
+		}
+
+		if ( window.innerWidth <= plugin.params.width.large ) {
+			source = plugin.params.source.large;
+		}
+		if ( window.innerWidth <= plugin.params.width.medium_large ) {
+			source = plugin.params.source.medium_large;
 		}
 
 		$el.css( {
