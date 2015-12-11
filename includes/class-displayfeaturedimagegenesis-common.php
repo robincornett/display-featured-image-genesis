@@ -121,7 +121,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		// outlier: if it's a home page with a static front page, and there is a featured image set on the home page
 		// also provisionally sets featured image for posts, similar to CPT archives
-		if ( ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) || 'post' === get_post_type() ) {
+		if ( ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) || is_singular( 'post' ) ) {
 			$image_id = $postspage_image ? $postspage_image : $image_id;
 		}
 
