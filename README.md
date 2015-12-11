@@ -228,9 +228,11 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
-### 2.4.0
+### 2.4.0 - 2015-12-11
 * Now supports term metadata, added in WordPress 4.4. All new featured images for terms will be added to the termmeta table instead of wp_options. Old term images can be converted from the settings page.
+* improved: alternate sources for backstretch image on smaller screens
 * changed: generic functions have all been moved to a helper class for optimization.
+* bugfix: home/posts page no longer uses latest post's featured image
 
 ### 2.3.4 - 2015-11-13
 * added: filters to modify image priority as well as hook (due to Workstation Pro theme)

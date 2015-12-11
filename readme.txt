@@ -183,7 +183,9 @@ Featured images for terms now use term metadata, introduced in WP 4.4. Old image
 
 = 2.4.0 =
 * Now supports term metadata, added in WordPress 4.4. All new featured images for terms will be added to the termmeta table instead of wp_options. Old term images can be converted from the settings page.
+* improved: alternate sources for backstretch image on smaller screens
 * changed: generic functions have all been moved to a helper class for optimization.
+* bugfix: home/posts page no longer uses latest post's featured image
 
 = 2.3.4 =
 * added: filters to modify image priority as well as hook (due to Workstation Pro theme)
