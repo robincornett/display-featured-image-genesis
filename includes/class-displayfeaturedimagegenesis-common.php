@@ -121,34 +121,24 @@ class Display_Featured_Image_Genesis_Common {
 
 		// outlier: if it's a home page with a static front page, and there is a featured image set on the home page
 		// also provisionally sets featured image for posts, similar to CPT archives
-		if ( ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) || is_singular( 'post' ) ) {
-			$image_id = $postspage_image ? $postspage_image : $image_id;
+		if ( is_home() && 'page' === $frontpage && ! empty( $postspage_image ) ) {
+			$image_id = $postspage_image;
 		}
 
-		$object = get_queried_object();
-		// singular or archive CPT
-		if ( $object && is_main_query() && ! is_admin() ) {
-			$post_type = '';
-			if ( $object->name ) { // results in post type on cpt archive
-				$post_type = $object->name;
-			} elseif ( $object->taxonomy ) { // on a tax/term/category
-				$tax_object = get_taxonomy( $object->taxonomy );
-				$post_type  = $tax_object->object_type[0];
-			} elseif ( $object->post_type ) { // on singular
-				$post_type = $object->post_type;
-			}
-			if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
-				$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
+		// if a post type image exists, it takes priority over the fallback. check that next.
+		$post_type = get_post_type();
+		$displaysetting['post_type']['post'] = (int) $postspage_image;
+		if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
+			$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
 
-				/**
-				 * use the custom post type featured image
-				 *
-				 * @since 2.2.1
-				 */
-				$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', array() );
-				if ( in_array( get_post_type(), $use_cpt ) ) {
-					return (int) $image_id;
-				}
+			/**
+			 * use the custom post type featured image
+			 *
+			 * @since 2.2.1
+			 */
+			$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', array() );
+			if ( in_array( get_post_type(), $use_cpt ) ) {
+				return (int) $image_id;
 			}
 		}
 		if ( is_author() ) {
