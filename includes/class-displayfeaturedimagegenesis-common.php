@@ -148,10 +148,10 @@ class Display_Featured_Image_Genesis_Common {
 		}
 		// taxonomy
 		if ( is_category() || is_tag() || is_tax() ) {
-			$term_id   = $object->term_id;
-			$term_meta = displayfeaturedimagegenesis_get_term_image( $term_id );
-			if ( $term_meta ) {
-				$image_id = $term_meta;
+			$object = get_queried_object();
+			$image  = displayfeaturedimagegenesis_get_term_image( $object->term_id );
+			if ( $image ) {
+				$image_id = $image;
 			}
 		}
 
