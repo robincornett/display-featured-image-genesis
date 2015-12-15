@@ -450,7 +450,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 		$cpt_help  = '<h3>' . __( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ) . '</h3>';
 		$cpt_help .= '<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>';
-		$cpt_help .= '<p>' . __( 'Since your site uses Custom Post Types, you may optionally set a Featured Image for each archive.', 'display-featured-image-genesis' ) . '</p>';
+		$cpt_help .= '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>';
 		$cpt_help .= '<p>' . __( 'Featured Images for archives can be smaller than the Default Featured Image, but still need to be larger than your site\'s "medium" image size.', 'display-featured-image-genesis' ) . '</p>';
 
 		$help_tabs = array(

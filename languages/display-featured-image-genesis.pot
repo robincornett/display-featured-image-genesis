@@ -5,8 +5,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Display Featured Image for Genesis 2.4.0\n"
-"POT-Creation-Date: 2015-12-04 12:12-0500\n"
+"Project-Id-Version: Display Featured Image for Genesis 2.4.1\n"
+"POT-Creation-Date: 2015-12-15 07:40-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Robin Cornett <hello@robincornett.com>\n"
 "Language-Team: Robin Cornett <hello@robincornett.com>\n"
@@ -152,6 +152,7 @@ msgid ""
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:237
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:453
 msgid ""
 "Since you have custom post types with archives, you might like to set a "
 "featured image for each of them."
@@ -269,12 +270,6 @@ msgstr ""
 msgid ""
 "Some plugins and/or developers extend the power of WordPress by using Custom "
 "Post Types to create special kinds of content."
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:453
-msgid ""
-"Since your site uses Custom Post Types, you may optionally set a Featured "
-"Image for each archive."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:454
@@ -405,13 +400,13 @@ msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:159
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:249
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:248
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:246
 msgid "Image Size:"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:170
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:260
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:259
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:257
 msgid "Image Alignment:"
 msgstr ""
 
@@ -420,27 +415,27 @@ msgstr ""
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:211
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:226
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:262
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:261
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:259
 msgid "None"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:173
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:200
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:263
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:262
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:260
 msgid "Left"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:174
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:201
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:264
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:263
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:261
 msgid "Right"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:175
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:265
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:264
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:262
 msgid "Center"
 msgstr ""
 
@@ -515,7 +510,7 @@ msgid "Display Featured Post Type Archive Image"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:193
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:179
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:177
 msgid "Title:"
 msgstr ""
 
@@ -536,7 +531,7 @@ msgid "Show Archive Intro Text"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:245
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:244
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:242
 msgid "Show Featured Image"
 msgstr ""
 
@@ -548,18 +543,18 @@ msgstr ""
 msgid "Display Featured Term Image"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:188
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:186
 msgid "Taxonomy:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:204
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:202
 msgid "Term:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:226
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:224
 msgid "Show Term Title"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:231
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:229
 msgid "Show Term Intro Text"
 msgstr ""
