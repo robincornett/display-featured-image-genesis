@@ -98,7 +98,6 @@ class Display_Featured_Image_Genesis_Common {
 		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$fallback        = $displaysetting['default'];
-		$medium          = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
 		$fallback_id     = displayfeaturedimagegenesis_check_image_id( $fallback );
 
 		/**
@@ -175,7 +174,8 @@ class Display_Featured_Image_Genesis_Common {
 
 			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
 			$width          = $thumb_metadata ? $thumb_metadata['width'] : '';
-			if ( has_post_thumbnail() && $width >= $medium ) {
+			$medium         = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
+			if ( has_post_thumbnail() && $width > $medium ) {
 				$image_id = get_post_thumbnail_id( get_the_ID() );
 			}
 		}
