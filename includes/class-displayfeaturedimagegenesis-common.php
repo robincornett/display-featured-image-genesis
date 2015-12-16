@@ -95,7 +95,6 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function set_image_id( $image_id = '' ) {
 
-		$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
 		$fallback        = $displaysetting['default'];
 		$fallback_id     = displayfeaturedimagegenesis_check_image_id( $fallback );
@@ -118,13 +117,11 @@ class Display_Featured_Image_Genesis_Common {
 
 		// outlier: if it's a home page with a static front page, and there is a featured image set on the home page
 		// also provisionally sets featured image for posts, similar to CPT archives
+		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		if ( 'page' === $frontpage ) {
 			$postspage                           = get_option( 'page_for_posts' );
 			$postspage_image                     = get_post_thumbnail_id( $postspage );
 			$displaysetting['post_type']['post'] = (int) $postspage_image;
-			if ( is_home() && $postspage_image ) {
-				$image_id = (int) $postspage_image;
-			}
 		}
 
 		// if a post type image exists, it takes priority over the fallback. check that next.
