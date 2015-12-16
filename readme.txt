@@ -176,10 +176,17 @@ This will follow the settings you choose in the Genesis Theme Settings.
 3. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
+= 2.4.1 =
+bugfixes related to blog/posts page image
+
 = 2.4.0 =
 Featured images for terms now use term metadata, introduced in WP 4.4. Old images can be updated automatically or by hand.
 
 == Changelog ==
+
+= 2.4.1 =
+* bugfix: correctly retrieves posts page image as fallback for single posts
+* bugfix: medium image size comparison consistent throughout plugin
 
 = 2.4.0 =
 * Now supports term metadata, added in WordPress 4.4. All new featured images for terms will be added to the termmeta table instead of wp_options. Old term images can be converted from the settings page.

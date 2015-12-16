@@ -228,6 +228,10 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.4.1 - 2015-12-16
+* bugfix: correctly retrieves posts page image as fallback for single posts
+* bugfix: medium image size comparison consistent throughout plugin
+
 ### 2.4.0 - 2015-12-11
 * Now supports term metadata, added in WordPress 4.4. All new featured images for terms will be added to the termmeta table instead of wp_options. Old term images can be converted from the settings page.
 * improved: alternate sources for backstretch image on smaller screens
