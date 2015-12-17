@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
 Tested up to: 4.4
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
