@@ -237,14 +237,9 @@ class Display_Featured_Image_Genesis_Common {
 
 		$attachment_id = false;
 
-		// as of 2.2.0, if a (new) image id is passed to the function, return it as is.
-		if ( is_numeric( $attachment_url ) ) {
+		// as of 2.2.0, if a (new) image id is passed to the function, or if it's empty, return it as is.
+		if ( is_numeric( $attachment_url ) || '' === $attachment_url ) {
 			return $attachment_url;
-		}
-
-		// If there is no url, return.
-		if ( '' === $attachment_url ) {
-			return;
 		}
 
 		// Get the upload directory paths
