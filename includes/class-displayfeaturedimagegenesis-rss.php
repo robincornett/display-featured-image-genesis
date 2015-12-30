@@ -87,7 +87,10 @@ class Display_Featured_Image_Genesis_RSS {
 		}
 
 		// reset size to large so we don't send huge files to the feed
-		$size = 'large';
+		$size  = 'large';
+		$align = '';
+		$style = 'display:block;margin:10px auto;';
+		$class = 'rss-featured-image';
 		if ( class_exists( 'SendImagesRSS' ) ) {
 			// if the user is using Send Images to RSS, send the right images to the right feeds
 			if ( ! $rss_setting['simplify_feed'] && ( ( $rss_setting['alternate_feed'] && is_feed( 'email' ) ) || ! $rss_setting['alternate_feed'] ) ) {
@@ -95,10 +98,6 @@ class Display_Featured_Image_Genesis_RSS {
 				$class = 'rss-mailchimp';
 			}
 		}
-
-		$align = '';
-		$style = 'display:block;margin:10px auto;';
-		$class = 'rss-featured-image';
 
 		// if the feed output is descriptions only, change image size to thumbnail with small alignment
 		if ( '1' === $rss_option ) {
@@ -118,10 +117,8 @@ class Display_Featured_Image_Genesis_RSS {
 				'class' => $class,
 			)
 		);
-		$image = apply_filters( 'display_featured_image_genesis_modify_rss_image', $image );
+		$image = apply_filters( 'display_featured_image_genesis_modify_rss_image', $image, $align, $style, $class );
 
 		return $image . $content;
-
 	}
-
 }
