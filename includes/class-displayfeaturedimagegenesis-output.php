@@ -27,7 +27,7 @@ class Display_Featured_Image_Genesis_Output {
 		$post_types           = array( 'attachment', 'revision', 'nav_menu_item' );
 		$skipped_types        = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
-		if ( is_admin() || ( in_array( get_post_type(), $skipped_types ) ) || ( $skip && is_front_page() ) ) {
+		if ( is_admin() || ( in_array( get_post_type(), $skipped_types, true ) ) || ( $skip && is_front_page() ) ) {
 			return;
 		}
 
@@ -56,7 +56,7 @@ class Display_Featured_Image_Genesis_Output {
 		$width             = absint( $this->item->backstretch[1] );
 		$force_backstretch = apply_filters( 'display_featured_image_genesis_force_backstretch', array() );
 
-		if ( $width > $large || in_array( get_post_type(), $force_backstretch ) ) {
+		if ( $width > $large || in_array( get_post_type(), $force_backstretch, true ) ) {
 			$this->do_backstretch_image_things();
 		} else {
 			$this->do_large_image_things();
@@ -307,7 +307,7 @@ class Display_Featured_Image_Genesis_Output {
 		$move_excerpts = $this->displaysetting['move_excerpts'];
 		$omit_excerpt  = apply_filters( 'display_featured_image_genesis_omit_excerpt', array() );
 
-		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt ) ) {
+		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt, true ) ) {
 			return true;
 		}
 		return false;
@@ -323,7 +323,7 @@ class Display_Featured_Image_Genesis_Output {
 		$keep_titles       = $this->displaysetting['keep_titles'];
 
 		// if titles will be moved to overlay backstretch image
-		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title ) ) {
+		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title, true ) ) {
 			return true;
 		}
 		return false;

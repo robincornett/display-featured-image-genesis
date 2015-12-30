@@ -24,7 +24,7 @@ class Display_Featured_Image_Genesis_RSS {
 		$skipped_types  = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
 		// if the user isn't sending images to the feed, we're done
-		if ( ! $feed_image || ( in_array( get_post_type(), $skipped_types ) ) ) {
+		if ( ! $feed_image || ( in_array( get_post_type(), $skipped_types, true ) ) ) {
 			return;
 		}
 

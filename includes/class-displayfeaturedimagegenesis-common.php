@@ -16,7 +16,7 @@ class Display_Featured_Image_Genesis_Common {
 	public $version = '2.4.1';
 
 	/**
-	 * set and retreive variables for the featured image.
+	 * set and retrieve variables for the featured image.
 	 * @return $item
 	 *
 	 * @since  1.1.0
@@ -36,13 +36,12 @@ class Display_Featured_Image_Genesis_Common {
 
 		/**
 		 * create a filter for user to optionally force post types to use the large image instead of backstretch
-		 * @var filter
 		 *
 		 * @since  2.0.0
 		 */
 		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', array() );
 		$image_size      = 'displayfeaturedimage_backstretch';
-		if ( in_array( get_post_type(), $use_large_image ) ) {
+		if ( in_array( get_post_type(), $use_large_image, true ) ) {
 			$image_size = 'large';
 		}
 
@@ -110,7 +109,7 @@ class Display_Featured_Image_Genesis_Common {
 		if ( ! empty( $fallback ) ) {
 			$image_id = $fallback_id;
 
-			if ( in_array( get_post_type(), $use_fallback ) ) {
+			if ( in_array( get_post_type(), $use_fallback, true ) ) {
 				return (int) $image_id;
 			}
 		}
@@ -135,7 +134,7 @@ class Display_Featured_Image_Genesis_Common {
 			 * @since 2.2.1
 			 */
 			$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', array() );
-			if ( in_array( get_post_type(), $use_cpt ) ) {
+			if ( in_array( get_post_type(), $use_cpt, true ) ) {
 				return (int) $image_id;
 			}
 		}
@@ -164,7 +163,7 @@ class Display_Featured_Image_Genesis_Common {
 				 */
 				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', array() );
 
-				if ( in_array( get_post_type(), $use_tax_image ) ) {
+				if ( in_array( get_post_type(), $use_tax_image, true ) ) {
 					return (int) $image_id;
 				}
 			}

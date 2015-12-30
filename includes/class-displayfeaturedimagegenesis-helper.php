@@ -236,7 +236,7 @@ class Display_Featured_Image_Genesis_Helper {
 
 		$is_valid_types = (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
 
-		return ( $file_ext && in_array( $file_ext, $is_valid_types ) );
+		return ( $file_ext && in_array( $file_ext, $is_valid_types, true ) );
 	}
 
 	/**
