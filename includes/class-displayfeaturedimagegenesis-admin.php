@@ -20,8 +20,8 @@ class Display_Featured_Image_Genesis_Admin {
 		$this->set_up_taxonomy_columns();
 		$this->set_up_post_type_columns();
 		$this->set_up_author_columns();
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'featured_image_column_width' ) );
+		add_action( 'pre_get_posts', array( $this, 'orderby' ) );
 	}
 
 	/**
@@ -61,6 +61,7 @@ class Display_Featured_Image_Genesis_Admin {
 			}
 			add_filter( "manage_edit-{$post_type}_columns", array( $this, 'add_column' ) );
 			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'custom_post_columns' ), 10, 2 );
+			add_filter( "manage_edit-{$post_type}_sortable_columns", array( $this, 'make_sortable' ) );
 		}
 	}
 
@@ -212,4 +213,43 @@ class Display_Featured_Image_Genesis_Admin {
 		return sprintf( '<img src="%1$s" alt="%2$s" />', $preview[0], $args['alt'] );
 	}
 
+	/**
+	 * Make the featured image column sortable.
+	 * @param $columns
+	 * @return mixed
+	 * @since x.y.z
+	 */
+	public function make_sortable( $columns ) {
+		$columns['featured_image'] = 'featured_image';
+		return $columns;
+	}
+
+	/**
+	 * Set a custom query to handle sorting by featured image
+	 * @param $query
+	 * @since x.y.z
+	 */
+	public function orderby( $query ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$orderby = $query->get( 'orderby' );
+		if ( 'featured_image' === $orderby ) {
+			$query->set(
+				'meta_query', array(
+					'relation' => 'OR',
+					array(
+						'key'     => '_thumbnail_id',
+						'compare' => 'NOT EXISTS',
+					),
+					array(
+						'key'     => '_thumbnail_id',
+						'compare' => 'EXISTS',
+					),
+				)
+			);
+			$query->set( 'orderby', 'meta_value_num date' );
+		}
+	}
 }
