@@ -249,7 +249,9 @@ class Display_Featured_Image_Genesis_Admin {
 					),
 				)
 			);
-			$query->set( 'orderby', 'meta_value_num date' );
+			$post_type       = $query->get ( 'post_type' );
+			$secondary_order = is_post_type_hierarchical( $post_type ) ? 'title' : 'date';
+			$query->set( 'orderby', "meta_value_num $secondary_order" );
 		}
 	}
 }
