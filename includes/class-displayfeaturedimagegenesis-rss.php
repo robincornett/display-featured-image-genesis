@@ -20,11 +20,9 @@ class Display_Featured_Image_Genesis_RSS {
 		$settings       = new Display_Featured_Image_Genesis_Settings();
 		$displaysetting = $settings->get_display_setting();
 		$feed_image     = $displaysetting['feed_image'];
-		$post_types     = array();
-		$skipped_types  = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
 		// if the user isn't sending images to the feed, we're done
-		if ( ! $feed_image || ( in_array( get_post_type(), $skipped_types, true ) ) ) {
+		if ( ! $feed_image || Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'skipped_posttypes' ) ) {
 			return;
 		}
 

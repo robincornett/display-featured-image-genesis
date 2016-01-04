@@ -34,14 +34,8 @@ class Display_Featured_Image_Genesis_Common {
 
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
 
-		/**
-		 * create a filter for user to optionally force post types to use the large image instead of backstretch
-		 *
-		 * @since  2.0.0
-		 */
-		$use_large_image = apply_filters( 'display_featured_image_genesis_use_large_image', array() );
-		$image_size      = 'displayfeaturedimage_backstretch';
-		if ( in_array( get_post_type(), $use_large_image, true ) ) {
+		$image_size = 'displayfeaturedimage_backstretch';
+		if ( self::displayfeaturedimage_array( 'use_large_image' ) ) {
 			$image_size = 'large';
 		}
 
@@ -98,18 +92,10 @@ class Display_Featured_Image_Genesis_Common {
 		$fallback        = $displaysetting['default'];
 		$fallback_id     = displayfeaturedimagegenesis_check_image_id( $fallback );
 
-		/**
-		 * create a filter to use the fallback image
-		 * @var filter
-		 * @since  2.0.0 (deprecated old use_fallback_image function from 1.2.2)
-		 */
-		$use_fallback = apply_filters( 'display_featured_image_genesis_use_default', array() );
-
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
 			$image_id = $fallback_id;
-
-			if ( in_array( get_post_type(), $use_fallback, true ) ) {
+			if ( self::displayfeaturedimage_array( 'use_default' ) ) {
 				return (int) $image_id;
 			}
 		}
@@ -127,14 +113,7 @@ class Display_Featured_Image_Genesis_Common {
 		$post_type = get_post_type();
 		if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
 			$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
-
-			/**
-			 * use the custom post type featured image
-			 *
-			 * @since 2.2.1
-			 */
-			$use_cpt = apply_filters( 'displayfeaturedimagegenesis_use_post_type_image', array() );
-			if ( in_array( get_post_type(), $use_cpt, true ) ) {
+			if ( self::displayfeaturedimage_array( 'use_post_type_image' ) ) {
 				return (int) $image_id;
 			}
 		}
@@ -156,14 +135,7 @@ class Display_Featured_Image_Genesis_Common {
 			$term_image = display_featured_image_genesis_get_term_image_id();
 			if ( ! empty( $term_image ) ) {
 				$image_id = $term_image;
-
-				/**
-				 * create filter to use taxonomy image if single post doesn't have a thumbnail, but one of its terms does.
-				 * @var filter
-				 */
-				$use_tax_image = apply_filters( 'display_featured_image_genesis_use_taxonomy', array() );
-
-				if ( in_array( get_post_type(), $use_tax_image, true ) ) {
+				if ( self::displayfeaturedimage_array( 'use_taxonomy' ) ) {
 					return (int) $image_id;
 				}
 			}
@@ -290,6 +262,19 @@ class Display_Featured_Image_Genesis_Common {
 		$result = $wpdb->get_col( $query_sql );
 
 		return empty( $result ) || ! is_numeric( $result[0] ) ? false : intval( $result[0] );
+	}
+
+	/**
+	 * Set up filter to check for post type rules. Variable, based on $value passed in.
+	 * @param $value string for filter name
+	 * @param array $post_types affected post types (empty array by default)
+	 * @return bool
+	 *
+	 * @since x.y.z
+	 */
+	public static function displayfeaturedimage_array( $value, $post_types = array() ) {
+		$post_types = apply_filters( "display_featured_image_genesis_$value", $post_types );
+		return in_array( get_post_type(), $post_types, true );
 	}
 
 	/**

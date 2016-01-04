@@ -25,9 +25,8 @@ class Display_Featured_Image_Genesis_Output {
 		$this->displaysetting = $settings->get_display_setting();
 		$skip                 = $this->displaysetting['exclude_front'];
 		$post_types           = array( 'attachment', 'revision', 'nav_menu_item' );
-		$skipped_types        = apply_filters( 'display_featured_image_genesis_skipped_posttypes', $post_types );
 
-		if ( is_admin() || ( in_array( get_post_type(), $skipped_types, true ) ) || ( $skip && is_front_page() ) ) {
+		if ( is_admin() || ( Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'skipped_posttypes', $post_types ) ) || ( $skip && is_front_page() ) ) {
 			return;
 		}
 
@@ -52,11 +51,10 @@ class Display_Featured_Image_Genesis_Output {
 		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $this->common->version );
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
-		$large             = $this->common->minimum_backstretch_width();
-		$width             = absint( $this->item->backstretch[1] );
-		$force_backstretch = apply_filters( 'display_featured_image_genesis_force_backstretch', array() );
+		$large = $this->common->minimum_backstretch_width();
+		$width = absint( $this->item->backstretch[1] );
 
-		if ( $width > $large || in_array( get_post_type(), $force_backstretch, true ) ) {
+		if ( $width > $large || Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'force_backstretch' ) ) {
 			$this->do_backstretch_image_things();
 		} else {
 			$this->do_large_image_things();
@@ -305,9 +303,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function move_excerpts() {
 		$move_excerpts = $this->displaysetting['move_excerpts'];
-		$omit_excerpt  = apply_filters( 'display_featured_image_genesis_omit_excerpt', array() );
-
-		if ( $move_excerpts && ! in_array( get_post_type(), $omit_excerpt, true ) ) {
+		if ( $move_excerpts && ! Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'omit_excerpt' ) ) {
 			return true;
 		}
 		return false;
@@ -319,11 +315,9 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.2.0
 	 */
 	protected function move_title() {
-		$do_not_move_title = apply_filters( 'display_featured_image_genesis_do_not_move_titles', array() );
 		$keep_titles       = $this->displaysetting['keep_titles'];
-
 		// if titles will be moved to overlay backstretch image
-		if ( ! $keep_titles && ! in_array( get_post_type(), $do_not_move_title, true ) ) {
+		if ( ! $keep_titles && ! Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'do_not_move_titles' ) ) {
 			return true;
 		}
 		return false;
