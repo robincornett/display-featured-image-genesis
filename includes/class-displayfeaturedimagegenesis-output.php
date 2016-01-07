@@ -26,7 +26,7 @@ class Display_Featured_Image_Genesis_Output {
 		$skip                 = $this->displaysetting['exclude_front'];
 		$post_types           = array( 'attachment', 'revision', 'nav_menu_item' );
 
-		if ( is_admin() || ( Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'skipped_posttypes', $post_types ) ) || ( $skip && is_front_page() ) ) {
+		if ( is_admin() || ( Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) ) || ( $skip && is_front_page() ) ) {
 			return;
 		}
 
@@ -54,7 +54,7 @@ class Display_Featured_Image_Genesis_Output {
 		$large = $this->common->minimum_backstretch_width();
 		$width = absint( $this->item->backstretch[1] );
 
-		if ( $width > $large || Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'force_backstretch' ) ) {
+		if ( $width > $large || Display_Featured_Image_Genesis_Common::is_in_array( 'force_backstretch' ) ) {
 			$this->do_backstretch_image_things();
 		} else {
 			$this->do_large_image_things();
@@ -303,7 +303,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function move_excerpts() {
 		$move_excerpts = $this->displaysetting['move_excerpts'];
-		if ( $move_excerpts && ! Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'omit_excerpt' ) ) {
+		if ( $move_excerpts && ! Display_Featured_Image_Genesis_Common::is_in_array( 'omit_excerpt' ) ) {
 			return true;
 		}
 		return false;
@@ -317,7 +317,7 @@ class Display_Featured_Image_Genesis_Output {
 	protected function move_title() {
 		$keep_titles       = $this->displaysetting['keep_titles'];
 		// if titles will be moved to overlay backstretch image
-		if ( ! $keep_titles && ! Display_Featured_Image_Genesis_Common::displayfeaturedimage_array( 'do_not_move_titles' ) ) {
+		if ( ! $keep_titles && ! Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) ) {
 			return true;
 		}
 		return false;

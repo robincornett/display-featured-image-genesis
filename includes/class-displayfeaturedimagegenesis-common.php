@@ -35,7 +35,7 @@ class Display_Featured_Image_Genesis_Common {
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
 
 		$image_size = 'displayfeaturedimage_backstretch';
-		if ( self::displayfeaturedimage_array( 'use_large_image' ) ) {
+		if ( self::is_in_array( 'use_large_image' ) ) {
 			$image_size = 'large';
 		}
 
@@ -95,7 +95,7 @@ class Display_Featured_Image_Genesis_Common {
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
 			$image_id = $fallback_id;
-			if ( self::displayfeaturedimage_array( 'use_default' ) ) {
+			if ( self::is_in_array( 'use_default' ) ) {
 				return (int) $image_id;
 			}
 		}
@@ -113,7 +113,7 @@ class Display_Featured_Image_Genesis_Common {
 		$post_type = get_post_type();
 		if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
 			$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
-			if ( self::displayfeaturedimage_array( 'use_post_type_image' ) ) {
+			if ( self::is_in_array( 'use_post_type_image' ) ) {
 				return (int) $image_id;
 			}
 		}
@@ -135,7 +135,7 @@ class Display_Featured_Image_Genesis_Common {
 			$term_image = display_featured_image_genesis_get_term_image_id();
 			if ( ! empty( $term_image ) ) {
 				$image_id = $term_image;
-				if ( self::displayfeaturedimage_array( 'use_taxonomy' ) ) {
+				if ( self::is_in_array( 'use_taxonomy' ) ) {
 					return (int) $image_id;
 				}
 			}
@@ -272,7 +272,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since x.y.z
 	 */
-	public static function displayfeaturedimage_array( $value, $post_types = array() ) {
+	public static function is_in_array( $value, $post_types = array() ) {
 		$post_types = apply_filters( "display_featured_image_genesis_$value", $post_types );
 		return in_array( get_post_type(), $post_types, true );
 	}
