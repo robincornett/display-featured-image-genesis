@@ -35,6 +35,11 @@ class Display_Featured_Image_Genesis_Common {
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
 
 		$image_size = 'displayfeaturedimage_backstretch';
+		/**
+		 * Creates display_featured_image_genesis_use_large_image filter to check
+		 * whether get_post_type array should use large image instead of backstretch.
+		 * @uses is_in_array()
+		 */
 		if ( self::is_in_array( 'use_large_image' ) ) {
 			$image_size = 'large';
 		}
@@ -94,6 +99,11 @@ class Display_Featured_Image_Genesis_Common {
 
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
+			/**
+			 * Creates display_featured_image_genesis_use_default filter to check
+			 * whether get_post_type array should use default image.
+			 * @uses is_in_array()
+			 */
 			$image_id = $fallback_id;
 			if ( self::is_in_array( 'use_default' ) ) {
 				return (int) $image_id;
@@ -112,6 +122,11 @@ class Display_Featured_Image_Genesis_Common {
 		// if a post type image exists, it takes priority over the fallback. check that next.
 		$post_type = get_post_type();
 		if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
+			/**
+			 * Creates display_featured_image_genesis_use_post_type_image filter to check
+			 * whether get_post_type array should use the post type image.
+			 * @uses is_in_array()
+			 */
 			$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
 			if ( self::is_in_array( 'use_post_type_image' ) ) {
 				return (int) $image_id;
@@ -134,6 +149,11 @@ class Display_Featured_Image_Genesis_Common {
 
 			$term_image = display_featured_image_genesis_get_term_image_id();
 			if ( ! empty( $term_image ) ) {
+				/**
+				 * Creates display_featured_image_genesis_use_taxonomy filter to check
+				 * whether get_post_type array should use the term image.
+				 * @uses is_in_array()
+				 */
 				$image_id = $term_image;
 				if ( self::is_in_array( 'use_taxonomy' ) ) {
 					return (int) $image_id;

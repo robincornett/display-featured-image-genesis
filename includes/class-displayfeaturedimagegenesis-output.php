@@ -24,8 +24,12 @@ class Display_Featured_Image_Genesis_Output {
 		$settings             = new Display_Featured_Image_Genesis_Settings();
 		$this->displaysetting = $settings->get_display_setting();
 		$skip                 = $this->displaysetting['exclude_front'];
+		/**
+		 * Creates display_featured_image_genesis_skipped_posttypes filter to check
+		 * whether get_post_type array should not run plugin on this post type.
+		 * @uses is_in_array()
+		 */
 		$post_types           = array( 'attachment', 'revision', 'nav_menu_item' );
-
 		if ( is_admin() || ( Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) ) || ( $skip && is_front_page() ) ) {
 			return;
 		}
@@ -53,7 +57,11 @@ class Display_Featured_Image_Genesis_Output {
 
 		$large = $this->common->minimum_backstretch_width();
 		$width = absint( $this->item->backstretch[1] );
-
+		/**
+		 * Creates display_featured_image_genesis_force_backstretch filter to check
+		 * whether get_post_type array should force the backstretch effect for this post type.
+		 * @uses is_in_array()
+		 */
 		if ( $width > $large || Display_Featured_Image_Genesis_Common::is_in_array( 'force_backstretch' ) ) {
 			$this->do_backstretch_image_things();
 		} else {
@@ -303,6 +311,11 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function move_excerpts() {
 		$move_excerpts = $this->displaysetting['move_excerpts'];
+		/**
+		 * Creates display_featured_image_genesis_omit_excerpt filter to check
+		 * whether get_post_type array should not move excerpts for this post type.
+		 * @uses is_in_array()
+		 */
 		if ( $move_excerpts && ! Display_Featured_Image_Genesis_Common::is_in_array( 'omit_excerpt' ) ) {
 			return true;
 		}
@@ -316,7 +329,11 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function move_title() {
 		$keep_titles       = $this->displaysetting['keep_titles'];
-		// if titles will be moved to overlay backstretch image
+		/**
+		 * Creates display_featured_image_genesis_do_not_move_titles filter to check
+		 * whether get_post_type array should not move titles to overlay the featured image.
+		 * @uses is_in_array()
+		 */
 		if ( ! $keep_titles && ! Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) ) {
 			return true;
 		}

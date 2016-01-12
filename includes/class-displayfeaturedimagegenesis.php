@@ -16,6 +16,66 @@
  */
 class Display_Featured_Image_Genesis {
 
+	/**
+	 * Admin area class: handles columns.
+	 * @var Display_Featured_Image_Genesis_Admin $admin
+	 */
+	protected $admin;
+
+	/**
+	 * Adds new author meta.
+	 * @var Display_Featured_Image_Genesis_Author $author
+	 */
+	protected $author;
+
+	/**
+	 * Common class: sets image ID, post title, handles database query
+	 * @var Display_Featured_Image_Genesis_Common $common
+	 */
+	protected $common;
+
+	/**
+	 * All archive description functions.
+	 * @var Display_Featured_Image_Genesis_Description $description
+	 */
+	protected $description;
+
+	/**
+	 * Handles all image output functionality
+	 * @var Display_Featured_Image_Genesis_Output $output
+	 */
+	protected $output;
+
+	/**
+	 * Handles RSS feed output
+	 * @var Display_Featured_Image_Genesis_RSS $rss
+	 */
+	protected $rss;
+
+	/**
+	 * Sets up settings page for the plugin.
+	 * @var Display_Featured_Image_Genesis_Settings $settings
+	 */
+	protected $settings;
+
+	/**
+	 * Handles term meta.
+	 * @var Display_Featured_Image_Genesis_Taxonomies $taxonomies
+	 */
+	protected $taxonomies;
+
+	/**
+	 * Display_Featured_Image_Genesis constructor.
+	 *
+	 * @param $admin
+	 * @param $author
+	 * @param $common
+	 * @param $description
+	 * @param $output
+	 * @param $rss
+	 * @param $settings
+	 * @param $taxonomies
+	 */
 	function __construct( $admin, $author, $common, $description, $output, $rss, $settings, $taxonomies ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
@@ -27,6 +87,9 @@ class Display_Featured_Image_Genesis {
 		$this->taxonomies  = $taxonomies;
 	}
 
+	/**
+	 * Main plugin function. Starts up all the things.
+	 */
 	public function run() {
 		if ( 'genesis' !== basename( get_template_directory() ) ) {
 			add_action( 'admin_init', array( $this, 'deactivate' ) );
