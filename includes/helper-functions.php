@@ -215,3 +215,13 @@ function displayfeaturedimagegenesis_check_image_id( $image_id = '' ) {
 	$image_id = is_numeric( $image_id ) ? $image_id : Display_Featured_Image_Genesis_Common::get_image_id( $image_id );
 	return $image_id;
 }
+
+/**
+ * helper function to evaluate whether or not the plugin can run.
+ * @return mixed|void
+ *
+ * @since 2.4.2
+ */
+function displayfeaturedimagegenesis_can_do() {
+	return apply_filters( 'displayfeaturedimagegenesis_can_do', false );
+}

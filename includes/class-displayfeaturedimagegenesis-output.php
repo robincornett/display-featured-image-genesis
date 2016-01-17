@@ -34,6 +34,7 @@ class Display_Featured_Image_Genesis_Output {
 			return;
 		}
 
+		add_filter( 'displayfeaturedimagegenesis_can_do', array( $this, 'can_do_things' ) );
 		$this->common = new Display_Featured_Image_Genesis_Common();
 		$this->item   = Display_Featured_Image_Genesis_Common::get_image_variables();
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' );
@@ -108,7 +109,7 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * Pass variables through to our js
-	 * @return backstretchVars variable array to send to js
+	 * @return $output variable array to send to js
 	 *
 	 * @since 2.3.0
 	 */
@@ -291,7 +292,7 @@ class Display_Featured_Image_Genesis_Output {
 	 *
 	 * @since 2.3.4
 	 */
-	protected function can_do_things() {
+	public function can_do_things() {
 		$medium = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
 		$width  = (int) $this->item->backstretch[1];
 
