@@ -183,6 +183,11 @@ class Display_Featured_Image_Genesis_Common {
 
 	}
 
+	/**
+	 * @param string $title
+	 *
+	 * @return mixed|void
+	 */
 	protected static function set_item_title( $title = '' ) {
 
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
@@ -213,7 +218,7 @@ class Display_Featured_Image_Genesis_Common {
 				$title = post_type_archive_title( '', false );
 			}
 		}
-		return $title;
+		return apply_filters( 'display_featured_image_genesis_title_text', $title );
 
 	}
 
