@@ -38,7 +38,9 @@ class Display_Featured_Image_Genesis_Description {
 			$intro_text = apply_filters( 'display_featured_image_genesis_singular_description', get_the_excerpt() );
 		}
 		if ( $headline || $intro_text ) {
-			printf( '<div class="excerpt">%s</div>', wp_kses_post( $headline . wpautop( $intro_text ) ) );
+			$print = $headline . wpautop( $intro_text );
+			$class = 'excerpt';
+			$this->print_description( $print, $class );
 		}
 	}
 
@@ -66,7 +68,9 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = $this->get_front_blog_intro_text();
 
 		if ( $headline || $intro_text ) {
-			printf( '<div class="excerpt">%s</div>', wp_kses_post( $headline . wpautop( $intro_text ) ) );
+			$print = $headline . wpautop( $intro_text );
+			$class = 'excerpt';
+			$this->print_description( $print, $class );
 		}
 
 	}
@@ -107,7 +111,8 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $term->meta['intro_text'] );
 
 		if ( $intro_text ) {
-			printf( '<div class="archive-description taxonomy-description">%s</div>', wp_kses_post( wpautop( $intro_text ) ) );
+			$class = 'archive-description taxonomy-description';
+			$this->print_description( $intro_text, $class );
 		}
 
 	}
@@ -135,7 +140,8 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = apply_filters( 'display_featured_image_genesis_author_description', get_the_author_meta( 'intro_text', (int) get_query_var( 'author' ) ) );
 
 		if ( $intro_text ) {
-			printf( '<div class="archive-description author-description">%s</div>', wp_kses_post( wpautop( $intro_text ) ) );
+			$class = 'archive-description author-description';
+			$this->print_description( $intro_text, $class );
 		}
 
 	}
@@ -171,7 +177,8 @@ class Display_Featured_Image_Genesis_Description {
 		$intro_text = apply_filters( 'display_featured_image_genesis_cpt_description', genesis_get_cpt_option( 'intro_text' ) );
 
 		if ( $intro_text ) {
-			printf( '<div class="archive-description cpt-archive-description">%s</div>', wp_kses_post( wpautop( $intro_text ) ) );
+			$class = 'archive-description cpt-archive-description';
+			$this->print_description( $intro_text, $class );
 		}
 
 	}
@@ -227,5 +234,20 @@ class Display_Featured_Image_Genesis_Description {
 			$intro_text = empty( $postspage->post_excerpt ) ? '' : $postspage->post_excerpt;
 		}
 		return apply_filters( 'display_featured_image_genesis_front_blog_description', $intro_text );
+	}
+
+	/**
+	 * Actually print the description for the archive page. Adds hooks for moving output.
+	 * @param $intro_text string the archive intro text.
+	 * @param string $class optional class for the div.
+	 *
+	 * @since x.y.z
+	 */
+	protected function print_description( $intro_text, $class = '' ) {
+		printf( '<div class="%s">', $class );
+		do_action( 'displayfeaturedimagegenesis_before_archive_intro' );
+		echo wp_kses_post( wpautop( $intro_text ) );
+		do_action( 'displayfeaturedimagegenesis_after_archive_intro' );
+		echo '</div>';
 	}
 }
