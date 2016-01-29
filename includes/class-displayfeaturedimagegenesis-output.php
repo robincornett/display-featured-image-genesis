@@ -9,9 +9,24 @@
 
 class Display_Featured_Image_Genesis_Output {
 
+	/**
+	 * @var Display_Featured_Image_Genesis_Common $common
+	 */
 	protected $common;
+
+	/**
+	 * @var Display_Featured_Image_Genesis_Description $description
+	 */
 	protected $description;
+
+	/**
+	 * @var
+	 */
 	protected $displaysetting;
+
+	/**
+	 * @var
+	 */
 	protected $item;
 
 	/**
