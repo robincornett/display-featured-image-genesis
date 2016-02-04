@@ -34,18 +34,8 @@ class Display_Featured_Image_Genesis_Common {
 
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
 
-		$image_size = 'displayfeaturedimage_backstretch';
-		/**
-		 * Creates display_featured_image_genesis_use_large_image filter to check
-		 * whether get_post_type array should use large image instead of backstretch.
-		 * @uses is_in_array()
-		 */
-		if ( self::is_in_array( 'use_large_image' ) ) {
-			$image_size = 'large';
-		}
-
-		$image_id = self::set_image_id();
-
+		$image_id   = self::set_image_id();
+		$image_size = self::image_size();
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
@@ -316,4 +306,22 @@ class Display_Featured_Image_Genesis_Common {
 		return absint( intval( $large ) );
 	}
 
+	/**
+	 * Select which image size to use. Can be filtered to use a custom size.
+	 * @return mixed|string|void
+	 * @since x.y.z
+	 */
+	protected static function image_size() {
+		$image_size = 'displayfeaturedimage_backstretch';
+		/**
+		 * Creates display_featured_image_genesis_use_large_image filter to check
+		 * whether get_post_type array should use large image instead of backstretch.
+		 * @uses is_in_array()
+		 */
+		if ( self::is_in_array( 'use_large_image' ) ) {
+			$image_size = 'large';
+		}
+		$image_size = apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
+		return $image_size;
+	}
 }
