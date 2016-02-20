@@ -40,7 +40,7 @@ class Display_Featured_Image_Genesis_Description {
 		if ( $headline || $intro_text ) {
 			$print = $headline . wpautop( $intro_text );
 			$class = 'excerpt';
-			$this->print_description( $print, $class );
+			$this->print_description( $print, $class, $class );
 		}
 	}
 
@@ -70,7 +70,7 @@ class Display_Featured_Image_Genesis_Description {
 		if ( $headline || $intro_text ) {
 			$print = $headline . wpautop( $intro_text );
 			$class = 'excerpt';
-			$this->print_description( $print, $class );
+			$this->print_description( $print, $class, $class );
 		}
 
 	}
@@ -243,11 +243,11 @@ class Display_Featured_Image_Genesis_Description {
 	 *
 	 * @since x.y.z
 	 */
-	protected function print_description( $intro_text, $class = '' ) {
+	protected function print_description( $intro_text, $class = '', $context = 'archive_intro' ) {
 		printf( '<div class="%s">', $class );
-		do_action( 'displayfeaturedimagegenesis_before_archive_intro' );
+		do_action( "displayfeaturedimagegenesis_before_{$context}" );
 		echo wp_kses_post( wpautop( $intro_text ) );
-		do_action( 'displayfeaturedimagegenesis_after_archive_intro' );
+		do_action( "displayfeaturedimagegenesis_after_{$context}" );
 		echo '</div>';
 	}
 }
