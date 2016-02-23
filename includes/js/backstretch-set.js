@@ -13,24 +13,17 @@
 
 	function _backstretchHandler() {
 
-		var source = plugin.params.source.backstretch,
-			$el = $( '.big-leader' );
+		var $el = $( '.big-leader' );
 
 		if ( typeof $el === 'undefined' ) {
 			return false;
-		}
-
-		if ( window.innerWidth <= plugin.params.width.large ) {
-			source = plugin.params.source.large;
-		}
-		if ( window.innerWidth <= plugin.params.width.medium_large ) {
-			source = plugin.params.source.medium_large;
 		}
 
 		$el.css( {
 			height: ( $(window).height() ) - ( [ plugin.params.height ] ) + 'px'
 		} );
 
+		var source = _getSource();
 		$el.backstretch(
 			[source], {
 				centeredX: '1' === plugin.params.centeredX ? true : false,
@@ -38,6 +31,18 @@
 				fade: parseInt( plugin.params.fade )
 			}
 		);
+	}
+
+	function _getSource() {
+		var source = plugin.params.source.backstretch;
+
+		if ( plugin.params.source.large && window.innerWidth <= plugin.params.width.large ) {
+			source = plugin.params.source.large;
+		}
+		if ( plugin.params.source.medium_large && window.innerWidth <= plugin.params.width.medium_large ) {
+			source = plugin.params.source.medium_large;
+		}
+		return source;
 	}
 
 	$(document).ready(function () {

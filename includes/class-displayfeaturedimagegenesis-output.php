@@ -140,13 +140,13 @@ class Display_Featured_Image_Genesis_Output {
 		$output       = array(
 			'source' => array(
 				'backstretch'  => esc_url( $this->item->backstretch[0] ),
-				'large'        => esc_url( $large[0] ),
-				'medium_large' => esc_url( $medium_large[0] ),
+				'large'        => $large[3] ? esc_url( $large[0] ) : '',
+				'medium_large' => $medium_large[3] ? esc_url( $medium_large[0] ) : '',
 			),
 			'width' => array(
 				'backstretch'  => $this->item->backstretch[1],
-				'large'        => $large[1],
-				'medium_large' => $medium_large[1],
+				'large'        => $large[3] ? $large[1] : '',
+				'medium_large' => $medium_large[3] ? $medium_large[1] : '',
 			),
 			'height'    => (int) $this->displaysetting['less_header'],
 			'centeredX' => (int) (bool) $backstretch_vars['centeredX'],
