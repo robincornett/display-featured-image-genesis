@@ -36,8 +36,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 
-		$settings             = new Display_Featured_Image_Genesis_Settings();
-		$this->displaysetting = $settings->get_display_setting();
+		$this->displaysetting = displayfeaturedimagegenesis_get_setting();
 		$skip                 = $this->displaysetting['exclude_front'];
 		/**
 		 * Creates display_featured_image_genesis_skipped_posttypes filter to check

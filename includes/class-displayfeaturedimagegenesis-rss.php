@@ -17,8 +17,7 @@ class Display_Featured_Image_Genesis_RSS {
 	 */
 	public function maybe_do_feed() {
 
-		$settings       = new Display_Featured_Image_Genesis_Settings();
-		$displaysetting = $settings->get_display_setting();
+		$displaysetting = displayfeaturedimagegenesis_get_setting();
 		$feed_image     = $displaysetting['feed_image'];
 
 		// if the user isn't sending images to the feed, we're done

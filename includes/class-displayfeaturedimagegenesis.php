@@ -110,6 +110,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
+		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
 
 	}
 

@@ -2,7 +2,6 @@
 
 class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genesis_Helper {
 
-	protected $settings;
 	protected $name;
 
 	/**
@@ -12,8 +11,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	 */
 	public function set_author_meta() {
 
-		$this->settings = new Display_Featured_Image_Genesis_Settings();
-		$this->name     = 'displayfeaturedimagegenesis';
+		$this->name = 'displayfeaturedimagegenesis';
 		// current user
 		add_action( 'profile_personal_options', array( $this, 'do_author_fields' ) );
 		add_action( 'personal_options_update', array( $this, 'save_profile_fields' ) );

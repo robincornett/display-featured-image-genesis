@@ -225,3 +225,7 @@ function displayfeaturedimagegenesis_check_image_id( $image_id = '' ) {
 function displayfeaturedimagegenesis_can_do() {
 	return apply_filters( 'displayfeaturedimagegenesis_can_do', false );
 }
+
+function displayfeaturedimagegenesis_get_setting() {
+	return apply_filters( 'displayfeaturedimagegenesis_get_setting', false );
+}
