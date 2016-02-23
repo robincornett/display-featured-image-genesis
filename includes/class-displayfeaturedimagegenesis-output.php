@@ -48,7 +48,6 @@ class Display_Featured_Image_Genesis_Output {
 			return;
 		}
 
-		add_filter( 'displayfeaturedimagegenesis_can_do', array( $this, 'can_do_things' ) );
 		$this->common = new Display_Featured_Image_Genesis_Common();
 		$this->item   = Display_Featured_Image_Genesis_Common::get_image_variables();
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' );
@@ -307,6 +306,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.4
 	 */
 	public function can_do_things() {
+		$can_do = true;
 		$medium = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
 		$width  = (int) $this->item->backstretch[1];
 
@@ -314,9 +314,9 @@ class Display_Featured_Image_Genesis_Output {
 		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
 		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
 		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $this->item->content ) ) {
-			return false;
+			$can_do = false;
 		}
-		return true;
+		return apply_filters( 'displayfeaturedimagegenesis_can_do', $can_do );
 	}
 
 	/**
