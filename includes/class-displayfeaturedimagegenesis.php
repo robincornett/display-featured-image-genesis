@@ -156,9 +156,15 @@ class Display_Featured_Image_Genesis {
 	 * @since 1.3.0
 	 */
 	public function add_plugin_supports() {
-		add_image_size( 'displayfeaturedimage_backstretch', 2000, 2000, false );
 
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$args = apply_filters( 'displayfeaturedimagegenesis_custom_image_size', array(
+			'width'  => 2000,
+			'height' => 2000,
+			'crop'   => false,
+		) );
+		add_image_size( 'displayfeaturedimage_backstretch', (int) $args['width'], (int) $args['height'], (bool) $args['crop'] );
+
+		$displaysetting = displayfeaturedimagegenesis_get_setting();
 		if ( $displaysetting['move_excerpts'] ) {
 			add_post_type_support( 'page', 'excerpt' );
 		}
@@ -171,7 +177,7 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function check_settings() {
 
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+		$displaysetting = displayfeaturedimagegenesis_get_setting();
 
 		// return early if the option doesn't exist yet
 		if ( empty( $displaysetting ) ) {
