@@ -225,3 +225,27 @@ function displayfeaturedimagegenesis_check_image_id( $image_id = '' ) {
 function displayfeaturedimagegenesis_get_setting() {
 	return apply_filters( 'displayfeaturedimagegenesis_get_setting', false );
 }
+
+/**
+ * Get the term meta (generally headline or intro text). Backwards compatible,
+ * but uses new term meta (as of Genesis 2.2.7)
+ * @param $term object the term
+ * @param $key string meta key to retrieve
+ * @param string $value string output of the term meta
+ *
+ * @return mixed|string
+ *
+ * @ since 2.5.0
+ */
+function displayfeaturedimagegenesis_get_term_meta( $term, $key, $value = '' ) {
+	if ( ! $term ) {
+		return $value;
+	}
+	if ( function_exists( 'get_term_meta' ) ) {
+		$value = get_term_meta( $term->term_id, $key, true );
+	}
+	if ( ! $value && isset( $term->meta[ $key ] ) ) {
+		$value = $term->meta[ $key ];
+	}
+	return $value;
+}

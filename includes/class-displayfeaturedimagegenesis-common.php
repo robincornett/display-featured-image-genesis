@@ -190,10 +190,10 @@ class Display_Featured_Image_Genesis_Common {
 			$title = get_post( $postspage )->post_title;
 		} elseif ( is_category() || is_tag() || is_tax() ) {
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
-			if ( ! $term || ! isset( $term->meta ) ) {
+			if ( ! $term ) {
 				return;
 			}
-			$title = $term->meta['headline'];
+			$title = displayfeaturedimagegenesis_get_term_meta( $term, 'headline' );
 			if ( empty( $title ) && $a11ycheck ) {
 				$title = $term->name;
 			}

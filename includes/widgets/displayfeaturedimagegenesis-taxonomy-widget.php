@@ -82,7 +82,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			return;
 		}
 
-		$title = $term->meta['headline'];
+		$title = displayfeaturedimagegenesis_get_term_meta( $term, 'headline' );
 		if ( ! $title ) {
 			$title = $term->name;
 		}
@@ -125,7 +125,8 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 			echo genesis_html5() ? '<div class="term-description">' : '';
 
-			$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $term->meta['intro_text'] );
+			$intro_text = displayfeaturedimagegenesis_get_term_meta( $term, 'intro_text' );
+			$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $intro_text );
 			if ( ! $intro_text ) {
 				$intro_text = $term->description;
 			}

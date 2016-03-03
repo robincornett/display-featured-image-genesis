@@ -104,11 +104,12 @@ class Display_Featured_Image_Genesis_Description {
 
 		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
 
-		if ( ! $term || ! isset( $term->meta ) ) {
+		if ( ! $term ) {
 			return;
 		}
 
-		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $term->meta['intro_text'] );
+		$intro_text = displayfeaturedimagegenesis_get_term_meta( $term, 'intro_text' );
+		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $intro_text );
 
 		if ( $intro_text ) {
 			$class = 'archive-description taxonomy-description';
