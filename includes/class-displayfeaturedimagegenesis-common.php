@@ -13,7 +13,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public $version = '2.4.1';
+	public $version = '2.5.0';
 
 	/**
 	 * set and retrieve variables for the featured image.
@@ -309,7 +309,7 @@ class Display_Featured_Image_Genesis_Common {
 	/**
 	 * Select which image size to use. Can be filtered to use a custom size.
 	 * @return mixed|string|void
-	 * @since x.y.z
+	 * @since 2.5.0
 	 */
 	protected static function image_size() {
 		$image_size = 'displayfeaturedimage_backstretch';

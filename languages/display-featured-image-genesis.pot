@@ -5,8 +5,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Display Featured Image for Genesis 2.4.1\n"
-"POT-Creation-Date: 2015-12-15 07:40-0500\n"
+"Project-Id-Version: Display Featured Image for Genesis 2.5.0\n"
+"POT-Creation-Date: 2016-03-02 22:16-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Robin Cornett <hello@robincornett.com>\n"
 "Language-Team: Robin Cornett <hello@robincornett.com>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Revision-Date: 2014-11-22 21:07-0500\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
@@ -24,32 +24,32 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../includes/class-displayfeaturedimagegenesis-admin.php:88
+#: ../includes/class-displayfeaturedimagegenesis-admin.php:89
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:48
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:73
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:205
 msgid "Featured Image"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:54
+#: ../includes/class-displayfeaturedimagegenesis-author.php:52
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:329
 msgid "Something unexpected happened. Please try again."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:104
+#: ../includes/class-displayfeaturedimagegenesis-author.php:102
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:195
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:379
 #, php-format
 msgid " The %s Featured Image has been reset to the last valid setting."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:107
+#: ../includes/class-displayfeaturedimagegenesis-author.php:105
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:203
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:392
 msgid "Sorry, that is an invalid file type."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:109
+#: ../includes/class-displayfeaturedimagegenesis-author.php:107
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:206
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:395
 msgid "Sorry, your image is too small."
@@ -57,7 +57,7 @@ msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:145
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:50
-#: ../includes/class-displayfeaturedimagegenesis.php:184
+#: ../includes/class-displayfeaturedimagegenesis.php:254
 msgid "Select Image"
 msgstr ""
 
@@ -350,13 +350,13 @@ msgid ""
 "not have a featured image of its own."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:71
+#: ../includes/class-displayfeaturedimagegenesis.php:135
 msgid ""
 "Sorry, Display Featured Image for Genesis works only with the Genesis "
 "Framework. It has been deactivated."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:75
+#: ../includes/class-displayfeaturedimagegenesis.php:139
 #, php-format
 msgid ""
 " But since we're talking anyway, did you know that your server is running "
@@ -364,7 +364,7 @@ msgid ""
 "for you."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:233
+#: ../includes/class-displayfeaturedimagegenesis.php:303
 msgid "Settings"
 msgstr ""
 
@@ -399,14 +399,14 @@ msgid "Show the user's featured image."
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:159
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:249
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:246
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:253
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:247
 msgid "Image Size:"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:170
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:260
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:257
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:264
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:258
 msgid "Image Alignment:"
 msgstr ""
 
@@ -414,28 +414,28 @@ msgstr ""
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:199
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:211
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:226
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:262
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:259
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:266
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:260
 msgid "None"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:173
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:200
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:263
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:260
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:267
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:261
 msgid "Left"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:174
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:201
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:264
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:261
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:268
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:262
 msgid "Right"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:175
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:265
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:262
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:269
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:263
 msgid "Center"
 msgstr ""
 
@@ -509,29 +509,29 @@ msgstr ""
 msgid "Display Featured Post Type Archive Image"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:193
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:177
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:197
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:178
 msgid "Title:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:202
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:206
 msgid "Post Type:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:214
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:218
 msgid "Posts"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:227
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:231
 msgid "Show Archive Title"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:232
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:236
 msgid "Show Archive Intro Text"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:245
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:242
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:249
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:243
 msgid "Show Featured Image"
 msgstr ""
 
@@ -543,18 +543,18 @@ msgstr ""
 msgid "Display Featured Term Image"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:186
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:187
 msgid "Taxonomy:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:202
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:203
 msgid "Term:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:224
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:225
 msgid "Show Term Title"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:229
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:230
 msgid "Show Term Intro Text"
 msgstr ""

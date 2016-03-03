@@ -228,6 +228,16 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.5.0
+* added: supports new term meta (headlines/intro text) from Genesis
+* added: the featured image column is now sortable
+* added: filter to check if plugin can do its thing
+* added: filter for the title output
+* added: filter to change which image size to use
+* bugfix: make sure an appropriately sized image is always used
+* bugfix: error on post type archive widget if there is no image
+* bugfix: featured image column no longer borks on mobile
+
 ### 2.4.1 - 2015-12-16
 * bugfix: correctly retrieves posts page image as fallback for single posts
 * bugfix: medium image size comparison consistent throughout plugin
