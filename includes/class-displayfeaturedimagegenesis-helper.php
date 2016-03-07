@@ -85,10 +85,11 @@ class Display_Featured_Image_Genesis_Helper {
 	 * @since  2.3.0
 	 */
 	public function do_checkbox( $args ) {
+		$setting = isset( $this->displaysetting[ $args['setting'] ] ) ? $this->displaysetting[ $args['setting'] ] : 0;
 		printf( '<input type="hidden" name="displayfeaturedimagegenesis[%s]" value="0" />', esc_attr( $args['setting'] ) );
 		printf( '<label for="displayfeaturedimagegenesis[%1$s]"><input type="checkbox" name="displayfeaturedimagegenesis[%1$s]" id="displayfeaturedimagegenesis[%1$s]" value="1" %2$s class="code" />%3$s</label>',
 			esc_attr( $args['setting'] ),
-			checked( 1, esc_attr( $this->displaysetting[ $args['setting'] ] ), false ),
+			checked( 1, esc_attr( $setting ), false ),
 			esc_attr( $args['label'] )
 		);
 		$this->do_description( $args['setting'] );

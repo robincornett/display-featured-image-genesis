@@ -111,6 +111,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
 		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
+		add_filter( 'genesis_get_image_default_args', array( $this->output, 'change_thumbnail_fallback' ) );
 
 	}
 

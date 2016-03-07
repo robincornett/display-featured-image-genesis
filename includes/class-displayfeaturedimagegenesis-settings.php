@@ -100,6 +100,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			'move_excerpts' => 0,
 			'is_paged'      => 0,
 			'feed_image'    => 0,
+			'thumbnails'    => 0,
 		);
 
 		return get_option( 'displayfeaturedimagegenesis', $defaults );
@@ -197,6 +198,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'args'     => array( 'setting' => 'feed_image', 'label' => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ) ),
+			),
+			array(
+				'id'       => 'thumbnails',
+				'title'    => __( 'Archive Thumbnails?', 'display-featured-image-genesis' ),
+				'callback' => 'do_checkbox',
+				'section'  => 'main',
+				'args'     => array( 'setting' => 'thumbnails', 'label' => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ) ),
 			),
 		);
 

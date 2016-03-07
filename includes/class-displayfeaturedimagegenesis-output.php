@@ -354,4 +354,38 @@ class Display_Featured_Image_Genesis_Output {
 		}
 		return false;
 	}
+
+	/**
+	 * If there is no image to use for the post thumbnail in archives,
+	 * optionally use the term or post type image as a fallback instead.
+	 *
+	 * @param $defaults
+	 *
+	 * @return mixed
+	 * @since 2.5.0
+	 */
+	public function change_thumbnail_fallback( $defaults ) {
+		if ( ! isset( $this->displaysetting['thumbnails'] ) || ! $this->displaysetting['thumbnails'] ) {
+			return $defaults;
+		}
+		remove_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 );
+		$args            = array(
+			'post_mime_type' => 'image',
+			'post_parent'    => get_the_ID(),
+			'post_type'      => 'attachment',
+		);
+		$attached_images = get_children( $args );
+		if ( $attached_images ) {
+			return $defaults;
+		}
+		$image_id = display_featured_image_genesis_get_term_image_id();
+		if ( empty( $image_id ) ) {
+			$image_id = display_featured_image_genesis_get_cpt_image_id();
+		}
+		if ( $image_id ) {
+			$defaults['fallback'] = $image_id;
+		}
+
+		return $defaults;
+	}
 }
