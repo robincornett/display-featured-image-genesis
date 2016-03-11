@@ -134,6 +134,16 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
+		// search page
+		if ( is_search() && isset( $displaysetting['post_type']['search'] ) ) {
+			$image_id = $displaysetting['post_type']['search'];
+		}
+
+		// 404
+		if ( is_404() && isset( $displaysetting['post_type']['fourohfour'] ) ) {
+			$image_id = $displaysetting['post_type']['fourohfour'];
+		}
+
 		// any singular post/page/CPT
 		if ( is_singular() ) {
 
@@ -285,7 +295,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @param array $post_types affected post types (empty array by default)
 	 * @return bool
 	 *
-	 * @since x.y.z
+	 * @since 2.5.0
 	 */
 	public static function is_in_array( $value, $post_types = array() ) {
 		$post_types = apply_filters( "display_featured_image_genesis_$value", $post_types );
