@@ -204,25 +204,25 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			),
 			array(
 				'id'       => 'thumbnails',
-				'title'    => __( 'Archive Thumbnails?', 'display-featured-image-genesis' ),
+				'title'    => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'args'     => array( 'setting' => 'thumbnails', 'label' => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ) ),
 			),
-		);
-		$this->fields[] = array(
-			'id'       => '[post_types][search]',
-			'title'    => __( 'Search Results', 'display-featured-image-genesis' ),
-			'callback' => 'set_cpt_image',
-			'section'  => 'cpt',
-			'args'     => array( 'post_type' => 'search' ),
-		);
-		$this->fields[] = array(
-			'id'       => '[post_types][fourohfour]',
-			'title'    => __( '404 Page', 'display-featured-image-genesis' ),
-			'callback' => 'set_cpt_image',
-			'section'  => 'cpt',
-			'args'     => array( 'post_type' => 'fourohfour' ),
+			array(
+				'id'       => 'post_types][search',
+				'title'    => __( 'Search Results', 'display-featured-image-genesis' ),
+				'callback' => 'set_cpt_image',
+				'section'  => 'cpt',
+				'args'     => array( 'post_type' => 'search' ),
+			),
+			array(
+				'id'       => 'post_types][fourohfour',
+				'title'    => __( '404 Page', 'display-featured-image-genesis' ),
+				'callback' => 'set_cpt_image',
+				'section'  => 'cpt',
+				'args'     => array( 'post_type' => 'fourohfour' ),
+			),
 		);
 
 		if ( $this->post_types ) {
@@ -230,7 +230,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			foreach ( $this->post_types as $post ) {
 				$object = get_post_type_object( $post );
 				$this->fields[] = array(
-					'id'       => '[post_types]' . esc_attr( $object->name ),
+					'id'       => 'post_types][' . esc_attr( $object->name ),
 					'title'    => esc_attr( $object->label ),
 					'callback' => 'set_cpt_image',
 					'section'  => 'cpt',
@@ -244,7 +244,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Section description
-	 * @return section description
+	 * @return string description
 	 *
 	 * @since 1.1.0
 	 */
@@ -255,12 +255,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Section description
-	 * @return section description
+	 * @return string description
 	 *
 	 * @since 1.1.0
 	 */
 	public function cpt_section_description() {
-		$description = __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' );
+		$description = __( 'Optional: set a custom image for search results and 404 (no results found) pages.', 'display-featured-image-genesis' );
+		if ( $this->post_types ) {
+			$description .= __( ' Additionally, since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' );
+		}
 		$this->print_section_description( $description );
 	}
 
@@ -481,8 +484,14 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$feed_help .= '<p>' . __( 'This plugin does not add the Featured Image to your content, so normally you will not see your Featured Image in the feed. If you select this option, however, the Featured Image (if it is set) will be added to each entry in your RSS feed.', 'display-featured-image-genesis' ) . '</p>';
 		$feed_help .= '<p>' . __( 'If your RSS feed is set to Full Text, the Featured Image will be added to the entry content. If it is set to Summary, the Featured Image will be added to the excerpt instead.', 'display-featured-image-genesis' ) . '</p>';
 
-		$cpt_help  = '<h3>' . __( 'Featured Images for Custom Post Types', 'display-featured-image-genesis' ) . '</h3>';
-		$cpt_help .= '<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>';
+		$archive_help  = '<h3>' . __( 'Archive Thumbnails', 'display-featured-image-genesis' ) . '</h3>';
+		$archive_help .= '<p>' . __( 'This setting will set a fallback image for all content types in your archives. If there is no featured image, and no images uploaded to the post/page, the plugin will use the featured image for the term, or post type, as the thumbnail.', 'display-featured-image-genesis' ) . '</p>';
+		$archive_help .= '<p>' . __( 'The thumbnail will adhere to the settings from the Genesis settings page.', 'display-featured-image-genesis' ) . '</p>';
+
+		$special_help  = '<h3>' . __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ) . '</h3>';
+		$special_help .= '<p>' . __( 'You can now set a featured image for search results and 404 (no results found) pages.', 'display-featured-image-genesis' ) . '</p>';
+
+		$cpt_help  = '<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>';
 		$cpt_help .= '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>';
 		$cpt_help .= '<p>' . __( 'Featured Images for archives can be smaller than the Default Featured Image, but still need to be larger than your site\'s "medium" image size.', 'display-featured-image-genesis' ) . '</p>';
 
@@ -522,14 +531,17 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'   => __( 'RSS Feed', 'display-featured-image-genesis' ),
 				'content' => $feed_help,
 			),
-		);
-		if ( $this->post_types ) {
-			$help_tabs[] = array(
+			array(
+				'id'      => 'displayfeaturedimage_archive-help',
+				'title'   => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
+				'content' => $archive_help,
+			),
+			array(
 				'id'      => 'displayfeaturedimage_cpt-help',
-				'title'   => __( 'Custom Post Types', 'display-featured-image-genesis' ),
-				'content' => $cpt_help,
-			);
-		}
+				'title'   => __( 'Custom Content Types', 'display-featured-image-genesis' ),
+				'content' => $this->post_types ? $special_help . $cpt_help : $special_help,
+			),
+		);
 		foreach ( $help_tabs as $tab ) {
 			$screen->add_help_tab( $tab );
 		}
