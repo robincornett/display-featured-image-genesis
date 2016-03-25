@@ -32,8 +32,9 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		);
 
 		$widget_ops = array(
-			'classname'   => 'author-profile',
-			'description' => __( 'Displays user profile block with Gravatar', 'display-featured-image-genesis' ),
+			'classname'                   => 'author-profile',
+			'description'                 => __( 'Displays user profile block with Gravatar', 'display-featured-image-genesis' ),
+			'customize_selective_refresh' => true,
 		);
 
 		$control_ops = array(

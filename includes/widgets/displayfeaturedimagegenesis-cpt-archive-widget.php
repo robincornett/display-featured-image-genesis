@@ -43,8 +43,9 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		);
 
 		$widget_ops = array(
-			'classname'   => 'featured-posttype',
-			'description' => __( 'Displays a post type archive with its featured image', 'display-featured-image-genesis' ),
+			'classname'                   => 'featured-posttype',
+			'description'                 => __( 'Displays a post type archive with its featured image', 'display-featured-image-genesis' ),
+			'customize_selective_refresh' => true,
 		);
 
 		$control_ops = array(
