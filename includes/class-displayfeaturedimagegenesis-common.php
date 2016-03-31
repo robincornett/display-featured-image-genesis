@@ -240,6 +240,12 @@ class Display_Featured_Image_Genesis_Common {
 		if ( is_numeric( $attachment_url ) || '' === $attachment_url ) {
 			return $attachment_url;
 		}
+		// if we're running 4.0 or later, we can do this all using a new core function.
+		if ( function_exists( 'attachment_url_to_postid' ) ) {
+			$url_stripped = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
+
+			return attachment_url_to_postid( $url_stripped );
+		}
 
 		// Get the upload directory paths
 		$upload_dir_paths = wp_upload_dir();
