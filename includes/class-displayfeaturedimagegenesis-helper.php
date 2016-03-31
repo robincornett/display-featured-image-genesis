@@ -119,6 +119,26 @@ class Display_Featured_Image_Genesis_Helper {
 	}
 
 	/**
+	 * Build a checkbox array.
+	 * @param $args
+	 */
+	public function do_checkbox_array( $args ) {
+		$built_in   = array( 'post', 'page' );
+		$post_types = $this->get_content_types();
+		$post_types = array_merge( $built_in, $post_types );
+		foreach ( $post_types as $post_type ) {
+			$object = get_post_type_object( $post_type );
+			$type_args = array(
+				'setting'      => "{$args['setting']}][{$post_type}",
+				'label'        => $object->label,
+				'setting_name' => $args['setting'],
+				'name'         => $post_type,
+			);
+			$this->do_checkbox( $type_args );
+		}
+	}
+
+	/**
 	 * Generic callback to display a field description.
 	 * @param  string $args setting name used to identify description callback
 	 * @return string       Description to explain a field.

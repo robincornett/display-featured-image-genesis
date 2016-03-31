@@ -210,6 +210,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'args'     => array( 'setting' => 'thumbnails', 'label' => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ) ),
 			),
 			array(
+				'id'       => 'skip',
+				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
+				'callback' => 'do_checkbox_array',
+				'section'  => 'main',
+				'args'     => array( 'setting' => 'skip' ),
+			),
+			array(
 				'id'       => 'post_types][search',
 				'title'    => __( 'Search Results', 'display-featured-image-genesis' ),
 				'callback' => 'set_cpt_image',
@@ -325,20 +332,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		}
 
 		if ( is_object( $args['post_type'] ) ) {
-			$skip_args = array(
-				'setting'      => "skip][{$post_type}",
-				'label'        => sprintf( __( 'Never show a featured image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['post_type']->label ) ),
-				'setting_name' => 'skip',
-				'name'         => $post_type,
-			);
-			$this->do_checkbox( $skip_args );
 			$fallback_args = array(
 				'setting'      => "fallback][{$post_type}",
 				'label'        => sprintf( __( 'Always use a fallback image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['post_type']->label ) ),
 				'setting_name' => 'fallback',
 				'name'         => $post_type,
 			);
+			echo '<p>';
 			$this->do_checkbox( $fallback_args );
+			echo '</p>';
 		}
 		$id   = $this->setting['post_type'][ $post_type ];
 		$name = 'displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']';
@@ -408,9 +410,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			$size_to_check = get_option( 'medium_size_w' );
 
 			// sanitize
-			$new_value['post_type'][ $object->name ] = $this->validate_image( $new_value['post_type'][ $object->name ], $old_value, $label, $size_to_check );
-			$new_value['skip'][ $object->name ]      = $this->one_zero( $new_value['skip'][ $object->name ] );
-			$new_value['fallback'][ $object->name ]  = $this->one_zero( $new_value['fallback'][ $object->name ] );
+			$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
+			$new_value['fallback'][ $post_type ]  = $this->one_zero( $new_value['fallback'][ $post_type ] );
 		}
 
 		return $new_value;
