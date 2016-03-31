@@ -42,6 +42,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 		$this->setting    = $this->get_display_setting();
 		$this->post_types = $this->get_content_types();
+		$sections         = $this->register_sections();
+		$this->add_sections( $sections );
+		$this->register_fields( $sections );
 	}
 
 	/**
@@ -55,10 +58,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			$this->update_delete_term_meta();
 		}
 		$page_title = get_admin_page_title();
-		$heading    = $GLOBALS['wp_version'] >= '4.3' ? 'h1' : 'h2';
-
 		echo '<div class="wrap">';
-			printf( '<%1$s>%2$s</%1$s>', esc_attr( $heading ), esc_attr( $page_title ) );
+			printf( '<h1>%s</h1>', esc_attr( $page_title ) );
 			if ( $this->terms_need_updating() ) {
 				$this->term_meta_notice();
 			}
@@ -79,11 +80,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 1.1.0
 	 */
 	public function register_settings() {
-
 		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
-
-		$this->register_sections();
-
 	}
 
 	/**
@@ -114,7 +111,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 2.3.0
 	 */
 	protected function register_sections() {
-		$sections = array(
+		return array(
 			'main' => array(
 				'id'    => 'main',
 				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
@@ -124,9 +121,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title' => __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ),
 			),
 		);
-
-		$this->add_sections( $sections );
-		$this->register_fields( $sections );
 	}
 
 	/**
@@ -210,13 +204,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'args'     => array( 'setting' => 'thumbnails', 'label' => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ) ),
 			),
 			array(
-				'id'       => 'skip',
-				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
-				'callback' => 'do_checkbox_array',
-				'section'  => 'main',
-				'args'     => array( 'setting' => 'skip' ),
-			),
-			array(
 				'id'       => 'post_types][search',
 				'title'    => __( 'Search Results', 'display-featured-image-genesis' ),
 				'callback' => 'set_cpt_image',
@@ -229,6 +216,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'callback' => 'set_cpt_image',
 				'section'  => 'cpt',
 				'args'     => array( 'post_type' => 'fourohfour' ),
+			),
+			array(
+				'id'       => 'skip',
+				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
+				'callback' => 'do_checkbox_array',
+				'section'  => 'cpt',
+				'args'     => array( 'setting' => 'skip' ),
 			),
 		);
 
