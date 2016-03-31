@@ -83,9 +83,9 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function set_image_id( $image_id = '' ) {
 
-		$displaysetting  = get_option( 'displayfeaturedimagegenesis' );
-		$fallback        = $displaysetting['default'];
-		$fallback_id     = displayfeaturedimagegenesis_check_image_id( $fallback );
+		$setting     = get_option( 'displayfeaturedimagegenesis' );
+		$fallback    = $setting['default'];
+		$fallback_id = displayfeaturedimagegenesis_check_image_id( $fallback );
 
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
@@ -104,20 +104,20 @@ class Display_Featured_Image_Genesis_Common {
 		// also provisionally sets featured image for posts, similar to CPT archives
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		if ( 'page' === $frontpage ) {
-			$postspage                           = get_option( 'page_for_posts' );
-			$postspage_image                     = get_post_thumbnail_id( $postspage );
-			$displaysetting['post_type']['post'] = (int) $postspage_image;
+			$postspage                    = get_option( 'page_for_posts' );
+			$postspage_image              = get_post_thumbnail_id( $postspage );
+			$setting['post_type']['post'] = (int) $postspage_image;
 		}
 
 		// if a post type image exists, it takes priority over the fallback. check that next.
 		$post_type = get_post_type();
-		if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
+		if ( ! empty( $setting['post_type'][ $post_type ] ) ) {
 			/**
 			 * Creates display_featured_image_genesis_use_post_type_image filter to check
 			 * whether get_post_type array should use the post type image.
 			 * @uses is_in_array()
 			 */
-			$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
+			$image_id = displayfeaturedimagegenesis_check_image_id( $setting['post_type'][ $post_type ] );
 			if ( self::is_in_array( 'use_post_type_image' ) ) {
 				return (int) $image_id;
 			}
@@ -135,13 +135,13 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// search page
-		if ( is_search() && isset( $displaysetting['post_type']['search'] ) ) {
-			$image_id = $displaysetting['post_type']['search'];
+		if ( is_search() && isset( $setting['post_type']['search'] ) ) {
+			$image_id = $setting['post_type']['search'];
 		}
 
 		// 404
-		if ( is_404() && isset( $displaysetting['post_type']['fourohfour'] ) ) {
-			$image_id = $displaysetting['post_type']['fourohfour'];
+		if ( is_404() && isset( $setting['post_type']['fourohfour'] ) ) {
+			$image_id = $setting['post_type']['fourohfour'];
 		}
 
 		// any singular post/page/CPT

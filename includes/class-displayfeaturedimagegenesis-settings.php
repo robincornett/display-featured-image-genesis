@@ -15,7 +15,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected $common;
 	protected $page;
-	protected $displaysetting;
+	protected $setting;
 	protected $post_types;
 	protected $fields;
 
@@ -40,8 +40,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
-		$this->displaysetting = $this->get_display_setting();
-		$this->post_types     = $this->get_content_types();
+		$this->setting    = $this->get_display_setting();
+		$this->post_types = $this->get_content_types();
 	}
 
 	/**
@@ -286,7 +286,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function set_default_image() {
 
-		$id   = $this->displaysetting['default'] ? $this->displaysetting['default'] : '';
+		$id   = $this->setting['default'] ? $this->setting['default'] : '';
 		$name = 'displayfeaturedimagegenesis[default]';
 		if ( ! empty( $id ) ) {
 			echo wp_kses_post( $this->render_image_preview( $id ) );
@@ -320,11 +320,11 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	public function set_cpt_image( $args ) {
 
 		$post_type = is_object( $args['post_type'] ) ? $args['post_type']->name : $args['post_type'];
-		if ( empty( $this->displaysetting['post_type'][ $post_type ] ) ) {
-			$this->displaysetting['post_type'][ $post_type ] = $id = '';
+		if ( empty( $this->setting['post_type'][ $post_type ] ) ) {
+			$this->setting['post_type'][ $post_type ] = $id = '';
 		}
 
-		$id   = $this->displaysetting['post_type'][ $post_type ];
+		$id   = $this->setting['post_type'][ $post_type ];
 		$name = 'displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']';
 		if ( $id ) {
 			echo wp_kses_post( $this->render_image_preview( $id ) );
@@ -373,21 +373,21 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$size_to_check = $this->common->minimum_backstretch_width();
 
 		// validate default image
-		$new_value['default'] = $this->validate_image( $new_value['default'], $this->displaysetting['default'], __( 'Default', 'display-featured-image-genesis' ), $size_to_check );
+		$new_value['default'] = $this->validate_image( $new_value['default'], $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size_to_check );
 
 		// search
-		$search = isset( $this->displaysetting['post_type']['search'] ) ? $this->displaysetting['post_type']['search'] : '';
+		$search = isset( $this->setting['post_type']['search'] ) ? $this->setting['post_type']['search'] : '';
 		$new_value['post_type']['search'] = $this->validate_image( $new_value['post_type']['search'], $search, __( 'Search Results', 'display-featured-image-genesis' ), $size_to_check );
 
 		// 404
-		$fourohfour = isset( $this->displaysetting['post_type']['fourohfour'] ) ? $this->displaysetting['post_type']['fourohfour'] : '';
+		$fourohfour = isset( $this->setting['post_type']['fourohfour'] ) ? $this->setting['post_type']['fourohfour'] : '';
 		$new_value['post_type']['fourohfour'] = $this->validate_image( $new_value['post_type']['fourohfour'], $fourohfour, __( '404 Page', 'display-featured-image-genesis' ), $size_to_check );
 
 		foreach ( $this->post_types as $post_type ) {
 
 			$object = get_post_type_object( $post_type );
 			// extra variables to pass through to image validation
-			$old_value     = isset( $this->displaysetting['post_type'][ $object->name ] ) ? $this->displaysetting['post_type'][ $object->name ] : '';
+			$old_value     = isset( $this->setting['post_type'][ $object->name ] ) ? $this->setting['post_type'][ $object->name ] : '';
 			$label         = $object->label;
 			$size_to_check = get_option( 'medium_size_w' );
 

@@ -22,7 +22,7 @@ class Display_Featured_Image_Genesis_Output {
 	/**
 	 * @var
 	 */
-	protected $displaysetting;
+	protected $setting;
 
 	/**
 	 * @var
@@ -36,8 +36,8 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 
-		$this->displaysetting = displayfeaturedimagegenesis_get_setting();
-		$skip                 = $this->displaysetting['exclude_front'];
+		$this->setting = displayfeaturedimagegenesis_get_setting();
+		$exclude_front = $this->setting['exclude_front'];
 		/**
 		 * Creates display_featured_image_genesis_skipped_posttypes filter to check
 		 * whether get_post_type array should not run plugin on this post type.
@@ -148,7 +148,7 @@ class Display_Featured_Image_Genesis_Output {
 				'large'        => $large[3] ? $large[1] : '',
 				'medium_large' => $medium_large[3] ? $medium_large[1] : '',
 			),
-			'height'    => (int) $this->displaysetting['less_header'],
+			'height'    => (int) $this->setting['less_header'],
 			'centeredX' => (int) (bool) $backstretch_vars['centeredX'],
 			'centeredY' => (int) (bool) $backstretch_vars['centeredY'],
 			'fade'      => (int) $backstretch_vars['fade'],
@@ -312,7 +312,7 @@ class Display_Featured_Image_Genesis_Output {
 		$width  = (int) $this->item->backstretch[1];
 
 		// check if they have enabled display on subsequent pages
-		$is_paged = ! empty( $this->displaysetting['is_paged'] ) ? $this->displaysetting['is_paged'] : 0;
+		$is_paged = ! empty( $this->setting['is_paged'] ) ? $this->setting['is_paged'] : 0;
 		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
 		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $this->item->content ) ) {
 			$can_do = false;
@@ -326,7 +326,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  2.0.0 (deprecated old function from 1.3.3)
 	 */
 	protected function move_excerpts() {
-		$move_excerpts = $this->displaysetting['move_excerpts'];
+		$move_excerpts = $this->setting['move_excerpts'];
 		/**
 		 * Creates display_featured_image_genesis_omit_excerpt filter to check
 		 * whether get_post_type array should not move excerpts for this post type.
@@ -344,7 +344,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.2.0
 	 */
 	protected function move_title() {
-		$keep_titles       = $this->displaysetting['keep_titles'];
+		$keep_titles       = $this->setting['keep_titles'];
 		/**
 		 * Creates display_featured_image_genesis_do_not_move_titles filter to check
 		 * whether get_post_type array should not move titles to overlay the featured image.
@@ -366,7 +366,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.5.0
 	 */
 	public function change_thumbnail_fallback( $defaults ) {
-		if ( ! isset( $this->displaysetting['thumbnails'] ) || ! $this->displaysetting['thumbnails'] ) {
+		if ( ! isset( $this->setting['thumbnails'] ) || ! $this->setting['thumbnails'] ) {
 			return $defaults;
 		}
 		remove_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 );

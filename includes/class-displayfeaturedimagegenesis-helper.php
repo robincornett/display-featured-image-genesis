@@ -9,6 +9,10 @@
 
 class Display_Featured_Image_Genesis_Helper {
 
+	protected $setting;
+
+	protected $page = 'displayfeaturedimagegenesis';
+
 	/**
 	 * Generic function to add settings sections
 	 *
@@ -71,7 +75,7 @@ class Display_Featured_Image_Genesis_Helper {
 			(int) $args['min'],
 			(int) $args['max'],
 			esc_attr( $args['setting'] ),
-			esc_attr( $this->displaysetting[ $args['setting'] ] ),
+			esc_attr( $this->setting[ $args['setting'] ] ),
 			esc_attr( $this->page )
 		);
 		$this->do_description( $args['setting'] );
