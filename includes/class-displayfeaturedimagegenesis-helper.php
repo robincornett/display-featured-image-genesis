@@ -89,14 +89,33 @@ class Display_Featured_Image_Genesis_Helper {
 	 * @since  2.3.0
 	 */
 	public function do_checkbox( $args ) {
-		$setting = isset( $this->displaysetting[ $args['setting'] ] ) ? $this->displaysetting[ $args['setting'] ] : 0;
-		printf( '<input type="hidden" name="displayfeaturedimagegenesis[%s]" value="0" />', esc_attr( $args['setting'] ) );
-		printf( '<label for="displayfeaturedimagegenesis[%1$s]"><input type="checkbox" name="displayfeaturedimagegenesis[%1$s]" id="displayfeaturedimagegenesis[%1$s]" value="1" %2$s class="code" />%3$s</label>',
+		echo '<p>';
+		$setting = $this->get_checkbox_setting( $args );
+		printf( '<input type="hidden" name="%s[%s]" value="0" />', esc_attr( $this->page ), esc_attr( $args['setting'] ) );
+		printf( '<label for="%4$s[%1$s]"><input type="checkbox" name="%4$s[%1$s]" id="%4$s[%1$s]" value="1" %2$s class="code" />%3$s</label>',
 			esc_attr( $args['setting'] ),
 			checked( 1, esc_attr( $setting ), false ),
-			esc_attr( $args['label'] )
+			esc_attr( $args['label'] ),
+			esc_attr( $this->page )
 		);
+		echo '</p>';
 		$this->do_description( $args['setting'] );
+	}
+
+	/**
+	 * Get the current value for the checkbox.
+	 * @param $args
+	 *
+	 * @return int
+	 */
+	protected function get_checkbox_setting( $args ) {
+		$setting = isset( $this->setting[ $args['setting'] ] ) ? $this->setting[ $args['setting'] ] : 0;
+		if ( isset( $args['setting_name'] ) ) {
+			if ( isset( $this->setting[ $args['setting_name'] ][ $args['name'] ] ) ) {
+				$setting = $this->setting[ $args['setting_name'] ][ $args['name'] ];
+			}
+		}
+		return $setting;
 	}
 
 	/**

@@ -160,11 +160,13 @@ class Display_Featured_Image_Genesis_Common {
 				}
 			}
 
-			$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
-			$width          = $thumb_metadata ? $thumb_metadata['width'] : '';
-			$medium         = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
-			if ( has_post_thumbnail() && $width > $medium ) {
-				$image_id = get_post_thumbnail_id( get_the_ID() );
+			if ( isset( $setting['fallback'][ $post_type ] ) && ! $setting['fallback'][ $post_type ] ) {
+				$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
+				$width          = $thumb_metadata ? $thumb_metadata['width'] : '';
+				$medium         = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
+				if ( has_post_thumbnail() && $width > $medium ) {
+					$image_id = get_post_thumbnail_id( get_the_ID() );
+				}
 			}
 		}
 
