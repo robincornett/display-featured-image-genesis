@@ -325,6 +325,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		}
 
 		if ( is_object( $args['post_type'] ) ) {
+			$skip_args = array(
+				'setting'      => "skip][{$post_type}",
+				'label'        => sprintf( __( 'Never show a featured image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['post_type']->label ) ),
+				'setting_name' => 'skip',
+				'name'         => $post_type,
+			);
+			$this->do_checkbox( $skip_args );
 			$fallback_args = array(
 				'setting'      => "fallback][{$post_type}",
 				'label'        => sprintf( __( 'Always use a fallback image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['post_type']->label ) ),
@@ -402,6 +409,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 			// sanitize
 			$new_value['post_type'][ $object->name ] = $this->validate_image( $new_value['post_type'][ $object->name ], $old_value, $label, $size_to_check );
+			$new_value['skip'][ $object->name ]      = $this->one_zero( $new_value['skip'][ $object->name ] );
 			$new_value['fallback'][ $object->name ]  = $this->one_zero( $new_value['fallback'][ $object->name ] );
 		}
 

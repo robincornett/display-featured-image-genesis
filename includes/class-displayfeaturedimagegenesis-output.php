@@ -38,13 +38,15 @@ class Display_Featured_Image_Genesis_Output {
 
 		$this->setting = displayfeaturedimagegenesis_get_setting();
 		$exclude_front = $this->setting['exclude_front'];
+		$post_type     = get_post_type();
+		$skip          = isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
 		/**
 		 * Creates display_featured_image_genesis_skipped_posttypes filter to check
 		 * whether get_post_type array should not run plugin on this post type.
 		 * @uses is_in_array()
 		 */
-		$post_types           = array( 'attachment', 'revision', 'nav_menu_item' );
-		if ( is_admin() || ( Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) ) || ( $skip && is_front_page() ) ) {
+		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
+		if ( is_admin() || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) || $skip || ( $exclude_front && is_front_page() ) ) {
 			return;
 		}
 
