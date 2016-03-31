@@ -89,16 +89,14 @@ class Display_Featured_Image_Genesis_Helper {
 	 * @since  2.3.0
 	 */
 	public function do_checkbox( $args ) {
-		echo '<p>';
 		$setting = $this->get_checkbox_setting( $args );
 		printf( '<input type="hidden" name="%s[%s]" value="0" />', esc_attr( $this->page ), esc_attr( $args['setting'] ) );
-		printf( '<label for="%4$s[%1$s]"><input type="checkbox" name="%4$s[%1$s]" id="%4$s[%1$s]" value="1" %2$s class="code" />%3$s</label>',
+		printf( '<label for="%4$s[%1$s]" style="margin-right:12px;"><input type="checkbox" name="%4$s[%1$s]" id="%4$s[%1$s]" value="1" %2$s class="code" />%3$s</label>',
 			esc_attr( $args['setting'] ),
 			checked( 1, esc_attr( $setting ), false ),
 			esc_attr( $args['label'] ),
 			esc_attr( $this->page )
 		);
-		echo '</p>';
 		$this->do_description( $args['setting'] );
 	}
 
