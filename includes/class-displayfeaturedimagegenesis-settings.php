@@ -63,14 +63,45 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( $this->terms_need_updating() ) {
 				$this->term_meta_notice();
 			}
+			$active_tab = $this->get_active_tab();
+			echo $this->do_tabs( $active_tab );
 			echo '<form action="options.php" method="post">';
 				settings_fields( 'displayfeaturedimagegenesis' );
-				do_settings_sections( 'displayfeaturedimagegenesis' );
+				do_settings_sections( 'displayfeaturedimagegenesis_' . $active_tab );
 				wp_nonce_field( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce', false );
 				submit_button();
 				settings_errors();
 			echo '</form>';
 		echo '</div>';
+	}
+
+	/**
+	 * Output tabs. All tabs will be output if it's a single site or the main site, and the settings page is not disabled.
+	 * @return string
+	 * @since 2.5.0
+	 */
+	protected function do_tabs( $active_tab ) {
+		$tabs = array(
+			'main' => array( 'id' => 'main', 'title' => __( 'Main', 'display-featured-image-genesis' ) ),
+			'cpt'  => array( 'id' => 'cpt', 'title' => __( 'Content Types', 'display-featured-image-genesis' ) ),
+		);
+		$output = '<h2 class="nav-tab-wrapper">';
+		foreach ( $tabs as $tab ) {
+			$class   = $active_tab === $tab['id'] ? ' nav-tab-active' : '';
+			$output .= sprintf( '<a href="themes.php?page=%s&tab=%s" class="nav-tab%s">%s</a>', $this->page, $tab['id'], $class, $tab['title'] );
+		}
+		$output .= '</h2>';
+
+		return $output;
+	}
+
+	/**
+	 * Set which tab is considered active.
+	 * @return string
+	 * @since 2.5.0
+	 */
+	protected function get_active_tab() {
+		return isset( $_GET['tab'] ) ? $_GET['tab'] : 'main';
 	}
 
 	/**
@@ -101,7 +132,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			'thumbnails'    => 0,
 		);
 
-		return get_option( 'displayfeaturedimagegenesis', $defaults );
+		$setting = get_option( 'displayfeaturedimagegenesis', $defaults );
+		return wp_parse_args( $setting, $defaults );
 
 	}
 
@@ -373,6 +405,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		check_admin_referer( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce' );
 
 		$new_value['less_header'] = absint( $new_value['less_header'] );
+		$new_value = array_merge( $this->setting, $new_value );
 
 		// validate all checkbox fields
 		foreach ( $this->fields as $field ) {
@@ -506,12 +539,20 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$archive_help .= '<p>' . __( 'This setting will set a fallback image for all content types in your archives. If there is no featured image, and no images uploaded to the post/page, the plugin will use the featured image for the term, or post type, as the thumbnail.', 'display-featured-image-genesis' ) . '</p>';
 		$archive_help .= '<p>' . __( 'The thumbnail will adhere to the settings from the Genesis settings page.', 'display-featured-image-genesis' ) . '</p>';
 
-		$special_help  = '<h3>' . __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ) . '</h3>';
+		$special_help  = '<h3>' . __( 'Featured Images for Special Pages', 'display-featured-image-genesis' ) . '</h3>';
 		$special_help .= '<p>' . __( 'You can now set a featured image for search results and 404 (no results found) pages.', 'display-featured-image-genesis' ) . '</p>';
 
-		$cpt_help  = '<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>';
+		$cpt_help  = '<h3>' . __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ) . '</h3>';
+		$cpt_help .= '<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>';
 		$cpt_help .= '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>';
 		$cpt_help .= '<p>' . __( 'Featured Images for archives can be smaller than the Default Featured Image, but still need to be larger than your site\'s "medium" image size.', 'display-featured-image-genesis' ) . '</p>';
+
+		$skip_help  = '<h3>' . __( 'Skip Content Types', 'display-featured-image-genesis' ) . '</h3>';
+		$skip_help .= '<p>' . __( 'Tell WordPress which content types should never have the featured image added.', 'display-featured-image-genesis' ) . '</p>';
+
+		$fallback_help  = '<h3>' . __( 'Fallback Images', 'display-featured-image-genesis' ) . '</h3>';
+		$fallback_help .= '<p>' . __( 'Instead of using the content type\'s Featured Image on singular posts, use one of the fallback images. This may be assigned to a term within a taxonomy, or be the content type featured image, or be the sitewide default image.', 'display-featured-image-genesis' ) . '</p>';
+		$fallback_help .= '<p>' . __( 'If no fallback image exists, no featured image will display, as this will shortcut the check for the post\'s featured image.' , 'display-featured-image-genesis' ) . '</p>';
 
 		$help_tabs = array(
 			array(
@@ -554,12 +595,34 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'   => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
 				'content' => $archive_help,
 			),
-			array(
-				'id'      => 'displayfeaturedimage_cpt-help',
-				'title'   => __( 'Custom Content Types', 'display-featured-image-genesis' ),
-				'content' => $this->post_types ? $special_help . $cpt_help : $special_help,
-			),
 		);
+		$active_tab = $this->get_active_tab();
+		if ( 'cpt' === $active_tab ) {
+			$help_tabs = array(
+				array(
+					'id'      => 'displayfeaturedimage_special-help',
+					'title'   => __( 'Special Pages', 'display-featured-image-genesis' ),
+					'content' => $special_help,
+				),
+				array(
+					'id'      => 'displayfeaturedimage_skip-help',
+					'title'   => __( 'Skip Content Types', 'display-featured-image-genesis' ),
+					'content' => $skip_help,
+				),
+				array(
+					'id'      => 'displayfeaturedimage_fallback-help',
+					'title'   => __( 'Fallback Images', 'display-featured-image-genesis' ),
+					'content' => $fallback_help,
+				),
+			);
+			if ( $this->get_content_types() ) {
+				$help_tabs[] = array(
+					'id'      => 'displayfeaturedimage_cpt-help',
+					'title'   => __( 'Custom Content Types', 'display-featured-image-genesis' ),
+					'content' => $cpt_help,
+				);
+			}
+		}
 		foreach ( $help_tabs as $tab ) {
 			$screen->add_help_tab( $tab );
 		}
