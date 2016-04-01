@@ -403,14 +403,14 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		}
 
 		check_admin_referer( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce' );
-
-		$new_value['less_header'] = absint( $new_value['less_header'] );
 		$new_value = array_merge( $this->setting, $new_value );
 
 		// validate all checkbox fields
 		foreach ( $this->fields as $field ) {
 			if ( 'do_checkbox' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = $this->one_zero( $new_value[ $field['id'] ] );
+			} elseif ( 'do_number' === $field['callback'] ) {
+				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['args']['min'], $field['args']['max'] );
 			}
 		}
 
@@ -420,13 +420,21 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		// validate default image
 		$new_value['default'] = $this->validate_image( $new_value['default'], $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size_to_check );
 
-		// search
-		$search = isset( $this->setting['post_type']['search'] ) ? $this->setting['post_type']['search'] : '';
-		$new_value['post_type']['search'] = $this->validate_image( $new_value['post_type']['search'], $search, __( 'Search Results', 'display-featured-image-genesis' ), $size_to_check );
-
-		// 404
-		$fourohfour = isset( $this->setting['post_type']['fourohfour'] ) ? $this->setting['post_type']['fourohfour'] : '';
-		$new_value['post_type']['fourohfour'] = $this->validate_image( $new_value['post_type']['fourohfour'], $fourohfour, __( '404 Page', 'display-featured-image-genesis' ), $size_to_check );
+		// search/404
+		$custom_pages = array(
+			array(
+				'id'    => 'search',
+				'label' => __( 'Search Results', 'display-featured-image-genesis' ),
+			),
+			array(
+				'id'    => 'fourohfour',
+				'label' => __( '404 Page', 'display-featured-image-genesis' ),
+			),
+		);
+		foreach ( $custom_pages as $page ) {
+			$setting_to_check                       = isset( $this->setting['post_type'][ $page['id'] ] ) ? $this->setting['post_type'][ $page['id'] ] : '';
+			$new_value['post_type'][ $page ['id'] ] = $this->validate_image( $new_value['post_type'][ $page['id'] ], $setting_to_check, $page['label'], $size_to_check );
+		}
 
 		foreach ( $this->post_types as $post_type ) {
 
@@ -447,7 +455,22 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		}
 
 		return $new_value;
+	}
 
+	/**
+	 * Check the numeric value against the allowed range. If it's within the range, return it; otherwise, return the old value.
+	 * @param $new_value int new submitted value
+	 * @param $old_value int old setting value
+	 * @param $min int minimum value
+	 * @param $max int maximum value
+	 *
+	 * @return int
+	 */
+	protected function check_value( $new_value, $old_value, $min, $max ) {
+		if ( $new_value >= $min && $new_value <= $max ) {
+			return (int) $new_value;
+		}
+		return (int) $old_value;
 	}
 
 	/**
