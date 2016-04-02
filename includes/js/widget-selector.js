@@ -1,4 +1,5 @@
 function term_postback( select_id, taxonomy ) {
+	'use strict';
 	var data = {
 		action: 'widget_selector',
 		taxonomy: taxonomy

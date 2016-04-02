@@ -151,8 +151,8 @@ class Display_Featured_Image_Genesis_Output {
 				'medium_large' => $medium_large[3] ? $medium_large[1] : '',
 			),
 			'height'    => (int) $this->setting['less_header'],
-			'centeredX' => (int) (bool) $backstretch_vars['centeredX'],
-			'centeredY' => (int) (bool) $backstretch_vars['centeredY'],
+			'centeredX' => (bool) $backstretch_vars['centeredX'],
+			'centeredY' => (bool) $backstretch_vars['centeredY'],
 			'fade'      => (int) $backstretch_vars['fade'],
 		);
 
