@@ -82,7 +82,10 @@ _Screenshot of a page using the Backstretch Featured Image._
 ![Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
 _Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page._
 
-![Quickly see which posts and terms have been assigned a Featured Image.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-3.png)  
+![Optionally, set featured images for custom content types, or change plugin behavior for custom content types.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-3.jpg)
+_Optionally, set featured images for custom content types, or change plugin behavior for custom content types._
+
+![Quickly see which posts and terms have been assigned a Featured Image.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-4.png)  
 _Quickly see which posts and terms have been assigned a Featured Image._
 
 ## Frequently Asked Questions

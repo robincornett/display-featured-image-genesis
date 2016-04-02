@@ -168,7 +168,8 @@ This will follow the settings you choose in the Genesis Theme Settings.
 == Screenshots ==
 1. Screenshot of a page using the Backstretch Featured Image
 2. Set a Default Featured Image on the Appearance > Display Featured Image Settings page.
-3. Quickly see the featured image assigned to each post or term.
+3. Optionally, set featured images for custom content types, or change plugin behavior for custom content types.
+4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
 = 2.5.0 =
