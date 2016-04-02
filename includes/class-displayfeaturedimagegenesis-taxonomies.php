@@ -3,7 +3,11 @@
 /**
  * settings for taxonomy pages
  *
- * @package DisplayFeaturedImageGenesis
+ * @package   DisplayFeaturedImageGenesis
+ * @author    Robin Cornett <hello@robincornett.com>
+ * @license   GPL-2.0+
+ * @link      http://robincornett.com
+ * @copyright 2014-2016 Robin Cornett Creative, LLC
  *
  * @since 2.0.0
  */

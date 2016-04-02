@@ -46,7 +46,7 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 * `.featured` is appended to the large image output directly above the post/page content.
 
 ## Requirements
-* WordPress 3.8, tested up to 4.3
+* WordPress 4.1, tested up to 4.5
 * the Genesis Framework
 
 ## Installation
@@ -89,6 +89,8 @@ _Quickly see which posts and terms have been assigned a Featured Image._
 
 ### What is term metadata and why does it matter to me? ###
 
+*Update for version 2.5:* Genesis 2.3, when it is released, will change how term archive headlines/descriptions will be pulled from the database. __Display Featured Image for Genesis__ has been using the old, inefficient method for getting the Genesis term information, which will no longer be supported in Genesis 2.3. Version 2.5 will use the new, better method to retrieve the Genesis term metadata (for archive headlines and intro text). Please make sure that your plugin is up to date so that you do not get unexpected behavior. (see [StudioPress](http://www.studiopress.com/important-announcement-for-genesis-plugin-developers/) for more information)
+
 Term metadata is a new feature introduced in WordPress 4.4, which allows us to add custom data to each term (categories, tags, etc.) on a site. Version 2.4 of __Display Featured Image for Genesis__ will use the new term metadata.
 
 If you have been using __Display Featured Image for Genesis__ and have already added featured images to your terms, when you visit the main plugin settings page, you'll be prompted to allow the plugin to update all terms with featured images, or given the information to allow you to do it yourself. This _should_ be a simple, pain-free process, but make sure your database is backed up, and please check your terms after the update.
@@ -109,10 +111,11 @@ There are several filters built into Display Featured Image for Genesis, to give
 
 Available filters include, but are not limited to:
 
-* `display_featured_image_genesis_skipped_posttypes`: select post type(s) which will not have the featured image effect applied
+* `display_featured_image_genesis_skipped_posttypes`: select post type(s) which will not have the featured image effect applied __(Note: this filter still totally works, but there is now a setting to handle this. It's on the Content Types tab.)__
 * `display_featured_image_genesis_use_default`: force post type(s) to use your sitewide default image (set on the main plugin settings page) for the featured image effect, regardless of what is set as the individual post's featured image
 * `displayfeaturedimagegenesis_use_post_type_image`: force post type(s) to use the image assigned (if one is set) as the custom post type featured image, regardless of what is set as the individual post's featured image
 * `display_featured_image_genesis_use_taxonomy`: force post type(s) to use a taxonomy term's image (if one is set) for the featured image effect, regardless of what is set as the individual post's featured image
+__Note: as of version 2.5, you can set any post type to use a fallback image without using one of the above filters. It will use the images in this order as they exist: term, content type, default.__
 * `display_featured_image_genesis_use_large_image`: force post type(s) to output the featured image as a large image above the post content, and to not use the backstretch effect at all
 * `display_featured_image_genesis_omit_excerpt`: force post type(s) to not move the excerpt to overlay the featured image, even if the "Move Excerpts/Archive Descriptions" setting is selected
 
@@ -158,7 +161,7 @@ It seems that you can also include [conditional tags](http://codex.wordpress.org
 
 If you do not want the height of the backstretch image to be quite the height of the user's browser window, which is the standard, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter the window will be calculated to be. Feel free to experiment, as no images are harmed by changing this number.
 
-_Note:_ **Display Featured Image for Genesis** determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window.
+_Note:_ __Display Featured Image for Genesis__ determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window.
 
 If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead.
 
@@ -198,17 +201,7 @@ Similar hooks:
 
 ### If a post does not have a featured image of its own, can the term, post type, or default featured image show in the archives?
 
-Yes! A helper function exists for this, but only runs if you add it. You can easily do this by adding the following to your theme's functions.php file:
-
-```php
-add_action( 'genesis_before_entry', 'rgc_add_archive_thumbnails' );
-function rgc_add_archive_thumbnails() {
-	if ( class_exists( 'Display_Featured_Image_Genesis' ) ) {
-		add_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 ); // HTML5 themes
-		add_action( 'genesis_post_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 ); // XHTML themes
-	}
-}
-```
+Yes! This is a new setting, added in version 2.5. Please see the plugin settings page. If you were using the old method (`display_featured_image_genesis_add_archive_thumbnails`) to do this, the plugin will attempt to remove that from your output, but you may want to double check your archives.
 
 This will follow the settings you choose in the Genesis Theme Settings.
 
@@ -229,6 +222,10 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 ## Changelog
 
 ### 2.5.0
+* added: setting to disable plugin output on specific content types
+* added: setting to use a fallback image on specific content types
+* added: custom featured images for search and 404 pages
+* added: setting to add fallback images for archive thumbnails
 * added: supports new term meta (headlines/intro text) from Genesis
 * added: the featured image column is now sortable
 * added: filter to check if plugin can do its thing
