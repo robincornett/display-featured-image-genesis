@@ -50,6 +50,11 @@ class Display_Featured_Image_Genesis_Output {
 			return;
 		}
 
+		// if the output is disabled for this specific post, quit
+		if ( is_singular() && get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true ) ) {
+			return;
+		}
+
 		$this->common = new Display_Featured_Image_Genesis_Common();
 		$this->item   = Display_Featured_Image_Genesis_Common::get_image_variables();
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' );

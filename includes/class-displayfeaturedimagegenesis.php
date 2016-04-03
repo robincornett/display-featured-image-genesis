@@ -47,6 +47,12 @@ class Display_Featured_Image_Genesis {
 	protected $output;
 
 	/**
+	 * Updates metabox on post edit page
+	 * @var Display_Featured_Image_Genesis_Post_Meta $postmeta
+	 */
+	protected $postmeta;
+
+	/**
 	 * Handles RSS feed output
 	 * @var Display_Featured_Image_Genesis_RSS $rss
 	 */
@@ -76,12 +82,13 @@ class Display_Featured_Image_Genesis {
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	function __construct( $admin, $author, $common, $description, $output, $rss, $settings, $taxonomies ) {
+	function __construct( $admin, $author, $common, $description, $output, $postmeta, $rss, $settings, $taxonomies ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
 		$this->description = $description;
 		$this->output      = $output;
+		$this->postmeta    = $postmeta;
 		$this->rss         = $rss;
 		$this->settings    = $settings;
 		$this->taxonomies  = $taxonomies;
@@ -112,6 +119,8 @@ class Display_Featured_Image_Genesis {
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
 		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
 		add_filter( 'genesis_get_image_default_args', array( $this->output, 'change_thumbnail_fallback' ) );
+		add_filter( 'admin_post_thumbnail_html', array( $this->postmeta, 'meta_box' ) );
+		add_action( 'save_post' , array( $this->postmeta, 'save_meta' ) );
 
 	}
 

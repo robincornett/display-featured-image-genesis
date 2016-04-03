@@ -38,6 +38,7 @@ function display_featured_image_genesis_require() {
 		'class-displayfeaturedimagegenesis-common',
 		'class-displayfeaturedimagegenesis-description',
 		'class-displayfeaturedimagegenesis-output',
+		'class-displayfeaturedimagegenesis-postmeta',
 		'class-displayfeaturedimagegenesis-rss',
 		'class-displayfeaturedimagegenesis-settings',
 		'class-displayfeaturedimagegenesis-taxonomies',
@@ -56,6 +57,7 @@ $displayfeaturedimagegenesis_author      = new Display_Featured_Image_Genesis_Au
 $displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();
 $displayfeaturedimagegenesis_description = new Display_Featured_Image_Genesis_Description();
 $displayfeaturedimagegenesis_output      = new Display_Featured_Image_Genesis_Output();
+$displayfeaturedimagegenesis_postmeta    = new Display_Featured_Image_Genesis_Post_Meta();
 $displayfeaturedimagegenesis_rss         = new Display_Featured_Image_Genesis_RSS();
 $displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Settings();
 $displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies();
@@ -66,6 +68,7 @@ $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_common,
 	$displayfeaturedimagegenesis_description,
 	$displayfeaturedimagegenesis_output,
+	$displayfeaturedimagegenesis_postmeta,
 	$displayfeaturedimagegenesis_rss,
 	$displayfeaturedimagegenesis_settings,
 	$displayfeaturedimagegenesis_taxonomies
