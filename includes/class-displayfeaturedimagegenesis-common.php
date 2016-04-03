@@ -151,28 +151,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		// any singular post/page/CPT
 		if ( is_singular() ) {
-
-			$term_image = display_featured_image_genesis_get_term_image_id();
-			if ( ! empty( $term_image ) ) {
-				/**
-				 * Creates display_featured_image_genesis_use_taxonomy filter to check
-				 * whether get_post_type array should use the term image.
-				 * @uses is_in_array()
-				 */
-				$image_id = $term_image;
-				if ( self::is_in_array( 'use_taxonomy' ) ) {
-					return (int) $image_id;
-				}
-			}
-
-			if ( isset( $setting['fallback'][ $post_type ] ) && ! $setting['fallback'][ $post_type ] ) {
-				$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
-				$width          = $thumb_metadata ? $thumb_metadata['width'] : '';
-				$medium         = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
-				if ( has_post_thumbnail() && $width > $medium ) {
-					$image_id = get_post_thumbnail_id( get_the_ID() );
-				}
-			}
+			$image_id = self::get_singular_post_image( $image_id, $post_type );
 		}
 
 		/**
@@ -187,7 +166,41 @@ class Display_Featured_Image_Genesis_Common {
 		$image_id = is_numeric( $image_id ) ? (int) $image_id : '';
 
 		return $image_id;
+	}
 
+	/**
+	 * Get the featured image for the singular post
+	 * @param $image_id
+	 * @param $post_type
+	 *
+	 * @return string
+	 *
+	 * @since 2.5.0
+	 */
+	protected static function get_singular_post_image( $image_id, $post_type ) {
+		$term_image = display_featured_image_genesis_get_term_image_id();
+		if ( ! empty( $term_image ) ) {
+			/**
+			 * Creates display_featured_image_genesis_use_taxonomy filter to check
+			 * whether get_post_type array should use the term image.
+			 * @uses is_in_array()
+			 */
+			$image_id = $term_image;
+			if ( self::is_in_array( 'use_taxonomy' ) ) {
+				return $image_id;
+			}
+		}
+
+		if ( ! isset( $setting['fallback'][ $post_type ] ) || ( isset( $setting['fallback'][ $post_type ] ) && ! $setting['fallback'][ $post_type ] ) ) {
+			return $image_id;
+		}
+		$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
+		$width          = $thumb_metadata ? $thumb_metadata['width'] : '';
+		$medium         = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
+		if ( has_post_thumbnail() && $width > $medium ) {
+			$image_id = get_post_thumbnail_id( get_the_ID() );
+		}
+		return $image_id;
 	}
 
 	/**
