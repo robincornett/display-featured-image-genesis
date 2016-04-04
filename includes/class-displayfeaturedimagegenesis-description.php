@@ -32,7 +32,11 @@ class Display_Featured_Image_Genesis_Description {
 		if ( genesis_html5() ) {
 			$itemprop = 'itemprop="headline"';
 		}
-		$headline = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', get_the_title() );
+
+		$setting  = displayfeaturedimagegenesis_get_setting();
+		if ( ! $setting['keep_titles'] ) {
+			$headline = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', get_the_title() );
+		}
 
 		if ( has_excerpt() ) {
 			$intro_text = apply_filters( 'display_featured_image_genesis_singular_description', get_the_excerpt() );
@@ -242,10 +246,10 @@ class Display_Featured_Image_Genesis_Description {
 	 * @param $intro_text string the archive intro text.
 	 * @param string $class optional class for the div.
 	 *
-	 * @since x.y.z
+	 * @since 2.5.0
 	 */
 	protected function print_description( $intro_text, $class = '', $context = 'archive_intro' ) {
-		printf( '<div class="%s">', $class );
+		printf( '<div class="%s">', esc_html( $class ) );
 		do_action( "displayfeaturedimagegenesis_before_{$context}" );
 		echo wp_kses_post( wpautop( $intro_text ) );
 		do_action( "displayfeaturedimagegenesis_after_{$context}" );
