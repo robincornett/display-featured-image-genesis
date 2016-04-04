@@ -172,8 +172,8 @@ class Display_Featured_Image_Genesis_Helper {
 
 	/**
 	 * show image select/delete buttons
-	 * @param  variable $id   image ID
-	 * @param  varable $name name for value/ID/class
+	 * @param  int $id   image ID
+	 * @param  string $name name for value/ID/class
 	 * @return $buttons       select/delete image buttons
 	 *
 	 * @since 2.3.0
@@ -191,6 +191,21 @@ class Display_Featured_Image_Genesis_Helper {
 				esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
 			);
 		}
+	}
+
+	/**
+	 * Get all public content types.
+	 * @return array
+	 */
+	protected function get_content_types() {
+		$args = array(
+			'public'      => true,
+			'_builtin'    => false,
+			'has_archive' => true,
+		);
+		$output = 'names';
+
+		return get_post_types( $args, $output );
 	}
 
 	/**

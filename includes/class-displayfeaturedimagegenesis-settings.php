@@ -156,21 +156,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
-	 * Get all public content types.
-	 * @return array
-	 */
-	protected function get_content_types() {
-		$args = array(
-			'public'      => true,
-			'_builtin'    => false,
-			'has_archive' => true,
-		);
-		$output = 'names';
-
-		return get_post_types( $args, $output );
-	}
-
-	/**
 	 * Register plugin settings fields
 	 * @param  array $sections registerd sections
 	 * @return array           all settings fields
@@ -421,7 +406,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$new_value['default'] = $this->validate_image( $new_value['default'], $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size_to_check );
 
 		// search/404
-		$custom_pages = array(
+		$size_to_check = get_option( 'medium_size_w' );
+		$custom_pages  = array(
 			array(
 				'id'    => 'search',
 				'label' => __( 'Search Results', 'display-featured-image-genesis' ),
@@ -438,17 +424,14 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 		foreach ( $this->post_types as $post_type ) {
 
-			$object = get_post_type_object( $post_type );
-			// extra variables to pass through to image validation
-			$old_value     = isset( $this->setting['post_type'][ $object->name ] ) ? $this->setting['post_type'][ $object->name ] : '';
-			$label         = $object->label;
-			$size_to_check = get_option( 'medium_size_w' );
+			$object    = get_post_type_object( $post_type );
+			$old_value = isset( $this->setting['post_type'][ $object->name ] ) ? $this->setting['post_type'][ $object->name ] : '';
+			$label     = $object->label;
 
-			// sanitize
 			$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
 			$new_value['fallback'][ $post_type ]  = $this->one_zero( $new_value['fallback'][ $post_type ] );
 		}
-		$built_ins = array( 'post', 'page' );
+		$built_ins  = array( 'post', 'page' );
 		$post_types = array_merge( $built_ins, $this->post_types );
 		foreach ( $post_types as $post_type ) {
 			$new_value['skip'][ $post_type ] = $this->one_zero( $new_value['skip'][ $post_type ] );
