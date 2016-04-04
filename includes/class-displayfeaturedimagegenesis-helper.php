@@ -108,10 +108,8 @@ class Display_Featured_Image_Genesis_Helper {
 	 */
 	protected function get_checkbox_setting( $args ) {
 		$setting = isset( $this->setting[ $args['setting'] ] ) ? $this->setting[ $args['setting'] ] : 0;
-		if ( isset( $args['setting_name'] ) ) {
-			if ( isset( $this->setting[ $args['setting_name'] ][ $args['name'] ] ) ) {
-				$setting = $this->setting[ $args['setting_name'] ][ $args['name'] ];
-			}
+		if ( isset( $args['setting_name'] ) && isset( $this->setting[ $args['setting_name'] ][ $args['name'] ] ) ) {
+			$setting = $this->setting[ $args['setting_name'] ][ $args['name'] ];
 		}
 		return $setting;
 	}
@@ -154,7 +152,7 @@ class Display_Featured_Image_Genesis_Helper {
 
 	/**
 	 * display image preview
-	 * @param  variable $id featured image ID
+	 * @param  int $id featured image ID
 	 * @return $image     image preview
 	 *
 	 * @since 2.3.0
@@ -166,7 +164,7 @@ class Display_Featured_Image_Genesis_Helper {
 
 		$id      = displayfeaturedimagegenesis_check_image_id( $id );
 		$preview = wp_get_attachment_image_src( (int) $id, 'medium' );
-		$image   = sprintf( '<div class="upload_logo_preview"><img src="%s" /></div>', $preview[0] );
+		$image   = sprintf( '<div class="upload_logo_preview"><img src="%s" /></div>', esc_url( $preview[0] ) );
 		return $image;
 	}
 
