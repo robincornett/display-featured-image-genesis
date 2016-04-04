@@ -48,9 +48,9 @@ class Display_Featured_Image_Genesis {
 
 	/**
 	 * Updates metabox on post edit page
-	 * @var Display_Featured_Image_Genesis_Post_Meta $postmeta
+	 * @var Display_Featured_Image_Genesis_Post_Meta $post_meta
 	 */
-	protected $postmeta;
+	protected $post_meta;
 
 	/**
 	 * Handles RSS feed output
@@ -82,13 +82,13 @@ class Display_Featured_Image_Genesis {
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	function __construct( $admin, $author, $common, $description, $output, $postmeta, $rss, $settings, $taxonomies ) {
+	function __construct( $admin, $author, $common, $description, $output, $post_meta, $rss, $settings, $taxonomies ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
 		$this->description = $description;
 		$this->output      = $output;
-		$this->postmeta    = $postmeta;
+		$this->post_meta   = $post_meta;
 		$this->rss         = $rss;
 		$this->settings    = $settings;
 		$this->taxonomies  = $taxonomies;
@@ -119,8 +119,8 @@ class Display_Featured_Image_Genesis {
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
 		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
 		add_filter( 'genesis_get_image_default_args', array( $this->output, 'change_thumbnail_fallback' ) );
-		add_filter( 'admin_post_thumbnail_html', array( $this->postmeta, 'meta_box' ) );
-		add_action( 'save_post' , array( $this->postmeta, 'save_meta' ) );
+		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ) );
+		add_action( 'save_post', array( $this->post_meta, 'save_meta' ) );
 
 	}
 
