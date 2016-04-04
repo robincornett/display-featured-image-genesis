@@ -43,8 +43,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$this->setting    = $this->get_display_setting();
 		$this->post_types = $this->get_content_types();
 		$sections         = $this->register_sections();
+		$this->fields     = $this->register_fields();
 		$this->add_sections( $sections );
-		$this->register_fields( $sections );
+		$this->add_fields( $this->fields, $sections );
 	}
 
 	/**
@@ -160,14 +161,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Register plugin settings fields
-	 * @param  array $sections registerd sections
 	 * @return array           all settings fields
 	 *
 	 * @since 2.3.0
 	 */
-	protected function register_fields( $sections ) {
+	protected function register_fields() {
 
-		$this->fields = array(
+		$fields = array(
 			array(
 				'id'       => 'less_header',
 				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
@@ -250,7 +250,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 			foreach ( $this->post_types as $post ) {
 				$object = get_post_type_object( $post );
-				$this->fields[] = array(
+				$fields[] = array(
 					'id'       => 'post_types][' . esc_attr( $object->name ),
 					'title'    => esc_attr( $object->label ),
 					'callback' => 'set_cpt_image',
@@ -259,8 +259,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				);
 			}
 		}
-
-		$this->add_fields( $this->fields, $sections );
+		return $fields;
 	}
 
 	/**
