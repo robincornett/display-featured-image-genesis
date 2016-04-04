@@ -121,7 +121,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 2.3.0
 	 */
 	public function get_display_setting() {
-		$defaults = array(
+		$defaults = apply_filters( 'displayfeaturedimagegenesis_defaults', array(
 			'less_header'   => 0,
 			'default'       => '',
 			'exclude_front' => 0,
@@ -130,7 +130,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			'is_paged'      => 0,
 			'feed_image'    => 0,
 			'thumbnails'    => 0,
-		);
+			'post_types'    => array(),
+			'skip'          => array(),
+			'fallback'      => array(),
+		) );
 
 		$setting = get_option( 'displayfeaturedimagegenesis', $defaults );
 		return wp_parse_args( $setting, $defaults );
