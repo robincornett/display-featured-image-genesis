@@ -37,21 +37,7 @@ class Display_Featured_Image_Genesis_Output {
 	public function manage_output() {
 
 		$this->setting = displayfeaturedimagegenesis_get_setting();
-		$exclude_front = $this->setting['exclude_front'];
-		$post_type     = get_post_type();
-		$skip          = isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
-		/**
-		 * Creates display_featured_image_genesis_skipped_posttypes filter to check
-		 * whether get_post_type array should not run plugin on this post type.
-		 * @uses is_in_array()
-		 */
-		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
-		if ( is_admin() || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) || $skip || ( $exclude_front && is_front_page() ) ) {
-			return;
-		}
-
-		// if the output is disabled for this specific post, quit
-		if ( is_singular() && get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true ) ) {
+		if ( $this->quit_now() ) {
 			return;
 		}
 
@@ -305,6 +291,28 @@ class Display_Featured_Image_Genesis_Output {
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 		remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
 		remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
+	}
+
+	/**
+	 * Check plugin settings/filters to see if the featured image should output on this post/etc. at all.
+	 * Returns true to quit now; false to carry on.
+	 * @return bool
+	 */
+	protected function quit_now() {
+		$exclude_front  = is_front_page() && $this->setting['exclude_front'];
+		$post_type      = get_post_type();
+		$skip_post_type = is_singular() && isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
+		$skip_singular  = is_singular() && get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
+		/**
+		 * Creates display_featured_image_genesis_skipped_posttypes filter to check
+		 * whether get_post_type array should not run plugin on this post type.
+		 * @uses is_in_array()
+		 */
+		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
+		if ( is_admin() || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) || $skip_post_type || $exclude_front || $skip_singular ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
