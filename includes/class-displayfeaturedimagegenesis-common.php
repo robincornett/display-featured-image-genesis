@@ -31,8 +31,8 @@ class Display_Featured_Image_Genesis_Common {
 		$item = new stdClass();
 
 		// variables internal to this function
-		$displaysetting = get_option( 'displayfeaturedimagegenesis' );
-		$fallback       = $displaysetting['default']; // url only
+		$setting  = get_option( 'displayfeaturedimagegenesis' );
+		$fallback = $setting['default']; // url only
 
 		// sitewide variables used outside this function
 		$item->backstretch = '';
@@ -151,7 +151,7 @@ class Display_Featured_Image_Genesis_Common {
 
 		// any singular post/page/CPT
 		if ( is_singular() ) {
-			$image_id = self::get_singular_post_image( $image_id, $post_type );
+			$image_id = self::get_singular_post_image( $image_id, $setting, $post_type );
 		}
 
 		/**
@@ -177,7 +177,7 @@ class Display_Featured_Image_Genesis_Common {
 	 *
 	 * @since 2.5.0
 	 */
-	protected static function get_singular_post_image( $image_id, $post_type ) {
+	protected static function get_singular_post_image( $image_id, $setting, $post_type ) {
 		$term_image = display_featured_image_genesis_get_term_image_id();
 		if ( ! empty( $term_image ) ) {
 			/**
@@ -191,7 +191,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
-		if ( ! isset( $setting['fallback'][ $post_type ] ) || ( isset( $setting['fallback'][ $post_type ] ) && ! $setting['fallback'][ $post_type ] ) ) {
+		if ( isset( $setting['fallback'][ $post_type ] ) && $setting['fallback'][ $post_type ] ) {
 			return $image_id;
 		}
 		$thumb_metadata = wp_get_attachment_metadata( get_post_thumbnail_id( get_the_ID() ) ); // needed only for the next line
