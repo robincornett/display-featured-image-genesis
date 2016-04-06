@@ -355,7 +355,7 @@ class Display_Featured_Image_Genesis_Common {
 		 * @uses is_in_array()
 		 */
 		if ( self::is_in_array( 'use_large_image' ) ) {
-			$image_size = 'large';
+			return 'large';
 		}
 		$image_size = apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
 		return $image_size;
