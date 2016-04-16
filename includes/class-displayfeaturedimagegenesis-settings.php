@@ -83,15 +83,18 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function do_tabs( $active_tab ) {
 		$tabs = array(
-			'main' => array( 'id' => 'main', 'title' => __( 'Main', 'display-featured-image-genesis' ) ),
-			'cpt'  => array( 'id' => 'cpt', 'title' => __( 'Content Types', 'display-featured-image-genesis' ) ),
+			'main' => array( 'id' => 'main', 'tab' => __( 'Main', 'display-featured-image-genesis' ) ),
+			'cpt'  => array( 'id' => 'cpt', 'tab' => __( 'Content Types', 'display-featured-image-genesis' ) ),
 		);
-		$output = '<h2 class="nav-tab-wrapper">';
+		$output  = '<div class="nav-tab-wrapper">';
+		$output .= sprintf( '<h2 id="settings-tabs" class="screen-reader-text">%s</h2>', __( 'Settings Tabs', 'display-featured-image-genesis' ) );
+		$output .= '<ul>';
 		foreach ( $tabs as $tab ) {
 			$class   = $active_tab === $tab['id'] ? ' nav-tab-active' : '';
-			$output .= sprintf( '<a href="themes.php?page=%s&tab=%s" class="nav-tab%s">%s</a>', $this->page, $tab['id'], $class, $tab['title'] );
+			$output .= sprintf( '<li><a href="themes.php?page=%s&tab=%s" class="nav-tab%s">%s</a></li>', $this->page, $tab['id'], $class, $tab['tab'] );
 		}
-		$output .= '</h2>';
+		$output .= '</ul>';
+		$output .= '</div>';
 
 		return $output;
 	}
