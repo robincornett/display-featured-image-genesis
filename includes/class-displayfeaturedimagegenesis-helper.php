@@ -69,14 +69,13 @@ class Display_Featured_Image_Genesis_Helper {
 	 * @since 2.3.0
 	 */
 	public function do_number( $args ) {
-
-		printf( '<label for="%s[%s]">%s</label>', esc_attr( $this->page ),esc_attr( $args['setting'] ), esc_attr( $args['label'] ) );
-		printf( '<input type="number" step="1" min="%1$s" max="%2$s" id="%5$s[%3$s]" name="%5$s[%3$s]" value="%4$s" class="small-text" />',
+		printf( '<label for="%5$s[%3$s]"><input type="number" step="1" min="%1$s" max="%2$s" id="%5$s[%3$s]" name="%5$s[%3$s]" value="%4$s" class="small-text" />%6$s</label>',
 			(int) $args['min'],
 			(int) $args['max'],
 			esc_attr( $args['setting'] ),
 			esc_attr( $this->setting[ $args['setting'] ] ),
-			esc_attr( $this->page )
+			esc_attr( $this->page ),
+			esc_attr( $args['label'] )
 		);
 		$this->do_description( $args['setting'] );
 

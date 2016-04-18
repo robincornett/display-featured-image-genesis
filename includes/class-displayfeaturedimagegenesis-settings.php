@@ -176,7 +176,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
 				'callback' => 'do_number',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'less_header', 'label' => __( 'Pixels to remove ', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 400 ),
+				'args'     => array( 'setting' => 'less_header', 'label' => __( 'pixels to remove', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 400 ),
 			),
 			array(
 				'id'       => 'default',
