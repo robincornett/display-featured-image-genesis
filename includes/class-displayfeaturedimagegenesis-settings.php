@@ -312,7 +312,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$id   = $this->setting['default'] ? $this->setting['default'] : '';
 		$name = 'displayfeaturedimagegenesis[default]';
 		if ( ! empty( $id ) ) {
-			echo wp_kses_post( $this->render_image_preview( $id ) );
+			echo wp_kses_post( $this->render_image_preview( $id, 'default' ) );
 		}
 		$this->render_buttons( $id, $name );
 		$this->do_description( 'default_image' );
@@ -361,7 +361,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$id   = $this->setting['post_type'][ $post_type ];
 		$name = 'displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']';
 		if ( $id ) {
-			echo wp_kses_post( $this->render_image_preview( $id ) );
+			echo wp_kses_post( $this->render_image_preview( $id, $post_type ) );
 		}
 
 		$this->render_buttons( $id, $name );

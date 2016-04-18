@@ -153,18 +153,20 @@ class Display_Featured_Image_Genesis_Helper {
 	/**
 	 * display image preview
 	 * @param  int $id featured image ID
+	 * @param $alt string description for alt text
 	 * @return $image     image preview
 	 *
 	 * @since 2.3.0
 	 */
-	public function render_image_preview( $id ) {
+	public function render_image_preview( $id, $alt ) {
 		if ( empty( $id ) ) {
 			return;
 		}
 
-		$id      = displayfeaturedimagegenesis_check_image_id( $id );
-		$preview = wp_get_attachment_image_src( (int) $id, 'medium' );
-		$image   = sprintf( '<div class="upload_logo_preview"><img src="%s" /></div>', esc_url( $preview[0] ) );
+		$id       = displayfeaturedimagegenesis_check_image_id( $id );
+		$alt_text = sprintf( __( '%s featured image', 'display-featured-image-genesis' ), $alt );
+		$preview  = wp_get_attachment_image_src( (int) $id, 'medium' );
+		$image    = sprintf( '<div class="upload_logo_preview"><img src="%s" alt="%s" /></div>', esc_url( $preview[0] ), esc_attr( $alt_text ) );
 		return $image;
 	}
 
@@ -179,7 +181,7 @@ class Display_Featured_Image_Genesis_Helper {
 	public function render_buttons( $id, $name ) {
 		$id = displayfeaturedimagegenesis_check_image_id( $id );
 		$id = $id ? (int) $id : '';
-		printf( '<input type="hidden" class="upload_image_id" id="%1$s" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
+		printf( '<input type="hidden" class="upload_image_id" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
 		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
 			esc_attr( $name ),
 			esc_attr__( 'Select Image', 'display-featured-image-genesis' )
