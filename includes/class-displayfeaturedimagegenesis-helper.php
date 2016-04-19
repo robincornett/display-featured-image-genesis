@@ -42,14 +42,13 @@ class Display_Featured_Image_Genesis_Helper {
 		foreach ( $fields as $field ) {
 			add_settings_field(
 				'[' . $field['id'] . ']',
-				sprintf( '<label for="%s[%s]">%s</label>', $this->page, $field['id'], $field['title'] ),
+				sprintf( '<label for="%s">%s</label>', $field['id'], $field['title'] ),
 				array( $this, $field['callback'] ),
 				$this->page . '_' . $sections[ $field['section'] ]['id'],
 				$this->page . '_' . $sections[ $field['section'] ]['id'],
 				empty( $field['args'] ) ? array() : $field['args']
 			);
 		}
-
 	}
 
 	/**
