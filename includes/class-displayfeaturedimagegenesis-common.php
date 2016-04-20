@@ -44,27 +44,11 @@ class Display_Featured_Image_Genesis_Common {
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
-		$item->content = '';
+		$item->content = false;
 		// declare this last so that $item->backstretch is set.
 		if ( ! is_admin() && is_singular() ) {
-			$fullsize      = wp_get_attachment_image_src( $image_id, 'full' );
 			$post          = get_post();
-			$item->content = strpos( $post->post_content, 'src="' . $fullsize[0] );
-
-			if ( false !== $item->content ) {
-				$source_id     = '';
-				$term_image    = display_featured_image_genesis_get_term_image_id();
-				$default_image = display_featured_image_genesis_get_default_image_id();
-				// reset backstretch image source to term image if it exists and the featured image is being used in content.
-				if ( ! empty( $term_image ) ) {
-					$source_id = $term_image;
-				} elseif ( ! empty( $fallback ) ) {
-					// else, reset backstretch image source to fallback.
-					$source_id = $default_image;
-				}
-				$item->backstretch = wp_get_attachment_image_src( $source_id, $image_size );
-				$item->content     = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
-			}
+			$item->content = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
 		}
 
 		// $title is set by new title function
@@ -77,7 +61,6 @@ class Display_Featured_Image_Genesis_Common {
 		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
 
 		return $item;
-
 	}
 
 	/**
@@ -199,7 +182,35 @@ class Display_Featured_Image_Genesis_Common {
 		$medium         = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
 		if ( has_post_thumbnail() && $width > $medium ) {
 			$image_id = get_post_thumbnail_id( get_the_ID() );
+			$image_id = self::singular_reset_image( $image_id );
 		}
+		return $image_id;
+	}
+
+	/**
+	 * Check the post content for the featured image. If it's there (full size), reset the featured image to a fallback.
+	 * @param $image_id
+	 *
+	 * @return string
+	 * @since 2.5.0
+	 */
+	static function singular_reset_image( $image_id ) {
+		$fullsize     = wp_get_attachment_image_src( $image_id, 'full' );
+		$post         = get_post( get_the_ID() );
+		$item_content = strpos( $post->post_content, 'src="' . $fullsize[0] );
+
+		if ( false !== $item_content ) {
+			$term_image    = display_featured_image_genesis_get_term_image_id();
+			$default_image = display_featured_image_genesis_get_default_image_id();
+			// reset backstretch image source to term image if it exists and the featured image is being used in content.
+			if ( $term_image ) {
+				$image_id = $term_image;
+			} elseif ( $default_image ) {
+				// else, reset backstretch image source to fallback.
+				$image_id = $default_image;
+			}
+		}
+
 		return $image_id;
 	}
 
