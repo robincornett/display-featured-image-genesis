@@ -199,16 +199,17 @@ class Display_Featured_Image_Genesis_Common {
 		$post         = get_post( get_the_ID() );
 		$item_content = strpos( $post->post_content, 'src="' . $fullsize[0] );
 
-		if ( false !== $item_content ) {
-			$term_image    = display_featured_image_genesis_get_term_image_id();
-			$default_image = display_featured_image_genesis_get_default_image_id();
-			// reset backstretch image source to term image if it exists and the featured image is being used in content.
-			if ( $term_image ) {
-				$image_id = $term_image;
-			} elseif ( $default_image ) {
-				// else, reset backstretch image source to fallback.
-				$image_id = $default_image;
-			}
+		if ( false === $item_content ) {
+			return $image_id;
+		}
+		$term_image    = display_featured_image_genesis_get_term_image_id();
+		$default_image = display_featured_image_genesis_get_default_image_id();
+		// reset backstretch image source to term image if it exists and the featured image is being used in content.
+		if ( $term_image ) {
+			$image_id = $term_image;
+		} elseif ( $default_image ) {
+			// else, reset backstretch image source to fallback.
+			$image_id = $default_image;
 		}
 
 		return $image_id;
