@@ -117,9 +117,7 @@ class Display_Featured_Image_Genesis_Helper {
 	 * @param $args
 	 */
 	public function do_checkbox_array( $args ) {
-		$built_in   = array( 'post', 'page' );
-		$post_types = $this->get_content_types();
-		$post_types = array_merge( $built_in, $post_types );
+		$post_types = $this->get_content_types_built_in();
 		foreach ( $post_types as $post_type ) {
 			$object = get_post_type_object( $post_type );
 			$type_args = array(
@@ -192,7 +190,9 @@ class Display_Featured_Image_Genesis_Helper {
 	}
 
 	/**
-	 * Get all public content types.
+	 * Get all public content types, not including built in.
+	 *
+	 * @since 2.5.0
 	 * @return array
 	 */
 	protected function get_content_types() {
@@ -204,6 +204,18 @@ class Display_Featured_Image_Genesis_Helper {
 		$output = 'names';
 
 		return get_post_types( $args, $output );
+	}
+
+	/**
+	 * Get all public content types, including built in.
+	 *
+	 * @since 2.5.0
+	 * @return array
+	 */
+	protected function get_content_types_built_in() {
+		$built_in   = array( 'post', 'page' );
+		$post_types = $this->get_content_types();
+		return array_merge( $built_in, $post_types );
 	}
 
 	/**

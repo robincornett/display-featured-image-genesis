@@ -436,8 +436,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
 			$new_value['fallback'][ $post_type ]  = $this->one_zero( $new_value['fallback'][ $post_type ] );
 		}
-		$built_ins  = array( 'post', 'page' );
-		$post_types = array_merge( $built_ins, $this->post_types );
+		$post_types = $this->get_content_types_built_in();
 		foreach ( $post_types as $post_type ) {
 			$new_value['skip'][ $post_type ] = $this->one_zero( $new_value['skip'][ $post_type ] );
 		}
