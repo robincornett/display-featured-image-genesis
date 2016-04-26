@@ -154,13 +154,13 @@ class Display_Featured_Image_Genesis_Helper {
 	 *
 	 * @since 2.3.0
 	 */
-	public function render_image_preview( $id, $alt ) {
+	public function render_image_preview( $id, $alt = '' ) {
 		if ( empty( $id ) ) {
 			return;
 		}
 
 		$id       = displayfeaturedimagegenesis_check_image_id( $id );
-		$alt_text = sprintf( __( '%s featured image', 'display-featured-image-genesis' ), $alt );
+		$alt_text = sprintf( __( '%s featured image', 'display-featured-image-genesis' ), esc_attr( $alt ) );
 		$preview  = wp_get_attachment_image_src( (int) $id, 'medium' );
 		$image    = sprintf( '<div class="upload_logo_preview"><img src="%s" alt="%s" /></div>', esc_url( $preview[0] ), esc_attr( $alt_text ) );
 		return $image;

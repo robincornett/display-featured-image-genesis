@@ -11,6 +11,10 @@
 
 class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genesis_Helper {
 
+	/**
+	 * The key for the plugin user meta.
+	 * @var string $name
+	 */
 	protected $name;
 
 	/**
@@ -29,6 +33,10 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 		add_action( 'edit_user_profile_update', array( $this, 'save_profile_fields' ) );
 	}
 
+	/**
+	 * Add the featured image row to the user profile.
+	 * @param $user object the user being edited.
+	 */
 	public function do_author_fields( $user ) {
 
 		$id = get_the_author_meta( $this->name, $user->ID );
@@ -36,21 +44,27 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 		echo '<table class="form-table">';
 
 			echo '<tr class="user-featured-image-wrap">';
-				echo '<th scope="row"><label for="' . esc_attr( $this->name ) . '">Featured Image</label></th>';
+				printf( '<th scope="row"><label for="' . esc_attr( $this->name ) . '">%s</label></th>', __( 'Featured Image', 'display-featured-image-genesis' ) );
 
 				echo '<td>';
 				if ( $id ) {
-					echo wp_kses_post( $this->render_image_preview( $id ) );
+					echo wp_kses_post( $this->render_image_preview( $id, $user->display_name ) );
 				}
 
 				$this->render_buttons( $id, $this->name );
-				echo '<p class="description">Upload an image to use as your author page featured image.</p>';
+				printf( '<p class="description">%s</p>', __( 'Upload an image to use as your author page featured image.', 'display-featured-image-genesis' ) );
 				echo '</td>';
 			echo '</tr>';
 
 		echo '</table>';
 	}
 
+	/**
+	 * Update the user meta.
+	 * @param $user_id int The user being updated
+	 *
+	 * @return bool
+	 */
 	public function save_profile_fields( $user_id ) {
 
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
@@ -97,7 +111,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	 * User profile error message
 	 * @param  var $errors error message depending on what's wrong
 	 * @param  var $update whether or not to update
-	 * @param  var $user   user being updated
+	 * @param  object $user   user being updated
 	 * @return error message
 	 *
 	 * @since 2.3.0

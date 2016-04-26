@@ -60,10 +60,8 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	}
 
 	/**
-	 * edit term page
-	 * @param  term $term featured image input/display for individual term page
-	 *
-	 * @return preview/uploader       upload/preview featured image for term
+	 * upload/preview featured image for term. edit term page
+	 * @param  object $term featured image input/display for individual term page
 	 *
 	 * @since  2.0.0
 	 */
@@ -79,7 +77,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 			echo '<td>';
 				$name = 'displayfeaturedimagegenesis[term_image]';
 				if ( $image_id ) {
-					echo wp_kses_post( $this->render_image_preview( $image_id ) );
+					echo wp_kses_post( $this->render_image_preview( $image_id, $term->name ) );
 				}
 				$this->render_buttons( $image_id, $name );
 				echo '<p class="description">';
