@@ -26,7 +26,7 @@ _Note: although this plugin requires the [Genesis Framework by StudioPress](http
 
 = An Image for Every Page =
 
-__Display Featured Image for Genesis__ now allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
+__Display Featured Image for Genesis__ allows you to select a default, or fallback, Featured Image, which will be used if a post/page does not have a Featured Image set, or if the post/page's Featured Image is too small (smaller than your medium image setting), and on archive and taxonomy pages. You may set the Default Featured Image under Appearance > Display Featured Image Settings.
 
 You may set a Featured Image for each term within a taxonomy (categories, tags, and any taxonomy for custom post types). This image will be used on taxonomy archives, and as a fallback image for posts within that taxonomy if no featured image exists (or if the featured image is too small). If a post is assigned to multiple terms and has no featured image of its own, the most used term which has a featured image assigned will be the one used.
 
@@ -76,6 +76,8 @@ If you have not yet updated your site to WordPress 4.4, fear not: for the time b
 Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout, the output may be unexpected, and require some tweaking. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
 
 = How can I change how the plugin works? =
+
+*Update for version 2.5:* quite a few new settings have been added to the plugin, some of which make options available which were previously limited to these filters.
 
 There are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a later one.
 
@@ -173,12 +175,13 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 == Upgrade Notice ==
 = 2.5.0 =
-Really important upgrade for Genesis 2.3, due to changes in how Genesis handles term meta.
-Also, new custom images for search/404 pages.
+Settings page has been completely renovated, new bells and whistles for more customization.
 
 == Changelog ==
 
 = 2.5.0 =
+* added: filter to modify plugin defaults
+* added: setting to disable plugin output on individual posts
 * added: setting to disable plugin output on specific content types
 * added: setting to use a fallback image on specific content types
 * added: custom featured images for search and 404 pages
@@ -188,6 +191,7 @@ Also, new custom images for search/404 pages.
 * added: filter to check if plugin can do its thing
 * added: filter for the title output
 * added: filter to change which image size to use
+* improved: plugins settings page is now accessible
 * bugfix: make sure an appropriately sized image is always used
 * bugfix: error on post type archive widget if there is no image
 * bugfix: featured image column no longer borks on mobile
