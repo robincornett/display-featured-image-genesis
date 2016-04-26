@@ -22,7 +22,7 @@ class Display_Featured_Image_Genesis_Common {
 
 	/**
 	 * set and retrieve variables for the featured image.
-	 * @return $item
+	 * @return \stdClass $item
 	 *
 	 * @since  1.1.0
 	 */
@@ -60,9 +60,11 @@ class Display_Featured_Image_Genesis_Common {
 
 	/**
 	 * retrieve image ID for output
+	 *
 	 * @param string $image_id variable, ID of featured image
 	 *
 	 * @since 2.2.1
+	 * @return int|string $image_id
 	 */
 	public static function set_image_id( $image_id = '' ) {
 
@@ -148,7 +150,8 @@ class Display_Featured_Image_Genesis_Common {
 
 	/**
 	 * Get the featured image for the singular post
-	 * @param $image_id
+	 * @param $image_id int|string
+	 * @param $setting array
 	 * @param $post_type
 	 *
 	 * @return string
@@ -252,10 +255,14 @@ class Display_Featured_Image_Genesis_Common {
 	/**
 	 * Get the ID of each image dynamically.
 	 *
-	 * @since 1.2.0
+	 * @since  1.2.0
 	 *
 	 * @author Philip Newcomer
 	 * @link   http://philipnewcomer.net/2012/11/get-the-attachment-id-from-an-image-url-in-wordpress/
+	 *
+	 * @param string $attachment_url
+	 *
+	 * @return bool|int|mixed|string
 	 */
 	public static function get_image_id( $attachment_url = '' ) {
 
@@ -296,8 +303,8 @@ class Display_Featured_Image_Genesis_Common {
 
 	/**
 	 * Fetch image ID from database
-	 * @param  var $url_stripped   image url without WP resize string (eg 150x150)
-	 * @param  var $attachment_url image url
+	 * @param  $url_stripped   string url without WP resize (eg 150x150)
+	 * @param  $attachment_url string url
 	 * @return int (image id)                 image ID, or false
 	 *
 	 * @since 2.2.0
