@@ -30,11 +30,6 @@ class Display_Featured_Image_Genesis_Common {
 
 		$item = new stdClass();
 
-		// variables internal to this function
-		$setting  = get_option( 'displayfeaturedimagegenesis' );
-		$fallback = $setting['default']; // url only
-
-		// sitewide variables used outside this function
 		$item->backstretch = '';
 
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
