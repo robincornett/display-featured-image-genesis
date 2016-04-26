@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Display Featured Image for Genesis 2.5.0\n"
-"POT-Creation-Date: 2016-04-26 09:42-0400\n"
+"POT-Creation-Date: 2016-04-26 11:51-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Robin Cornett <hello@robincornett.com>\n"
 "Language-Team: Robin Cornett <hello@robincornett.com>\n"
@@ -25,31 +25,36 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../includes/class-displayfeaturedimagegenesis-admin.php:89
+#: ../includes/class-displayfeaturedimagegenesis-author.php:47
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:52
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:77
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:209
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:75
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:207
 msgid "Featured Image"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:61
+#: ../includes/class-displayfeaturedimagegenesis-author.php:55
+msgid "Upload an image to use as your author page featured image."
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-author.php:75
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:392
 msgid "Something unexpected happened. Please try again."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:111
+#: ../includes/class-displayfeaturedimagegenesis-author.php:125
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:262
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:476
 #, php-format
 msgid " The %s Featured Image has been reset to the last valid setting."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:114
+#: ../includes/class-displayfeaturedimagegenesis-author.php:128
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:270
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:489
 msgid "Sorry, that is an invalid file type."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-author.php:116
+#: ../includes/class-displayfeaturedimagegenesis-author.php:130
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:273
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:492
 msgid "Sorry, your image is too small."
@@ -453,16 +458,16 @@ msgstr ""
 msgid "Set Featured Image for new term."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:87
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:85
 #, php-format
 msgid "Set Featured Image for %1$s."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:204
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:202
 msgid "Set Featured Image"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:205
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:203
 msgid ""
 "You may set a featured image for your terms. This image will be used on the "
 "term archive page, and as a fallback image on a single post page if it does "
