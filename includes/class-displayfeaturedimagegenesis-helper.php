@@ -259,29 +259,26 @@ class Display_Featured_Image_Genesis_Helper {
 		$source    = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid     = $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
-		$reset     = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
 
 		if ( $valid && $width > $size_to_check ) {
 			return (int) $new_value;
 		}
 
-		$new_value = $old_value;
+		$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
+		$class   = 'weetiny';
 		if ( ! $valid ) {
 			$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
 			$class   = 'invalid';
-		} elseif ( $width <= $size_to_check ) {
-			$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-			$class   = 'weetiny';
 		}
 
+		$reset = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
 		add_settings_error(
 			$old_value,
 			esc_attr( $class ),
 			esc_attr( $message . $reset ),
 			'error'
 		);
-
-		return (int) $new_value;
+		return (int) $old_value;
 	}
 
 	/**
