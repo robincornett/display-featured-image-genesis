@@ -285,25 +285,23 @@ class Display_Featured_Image_Genesis_Helper {
 	}
 
 	/**
-	 * returns file extension
+	 * check if file type is image. updated to use WP function.
+	 * @return file       check file extension against list
 	 * @since  1.2.2
+	 * @since 2.5.0
 	 */
-	protected function get_file_ext( $file ) {
-		$parsed = @parse_url( $file, PHP_URL_PATH );
-		return $parsed ? strtolower( pathinfo( $parsed, PATHINFO_EXTENSION ) ) : false;
+	protected function is_valid_img_ext( $file ) {
+		$valid = wp_check_filetype( $file );
+		return (bool) in_array( $valid['ext'], $this->allowed_file_types(), true );
 	}
 
 	/**
-	 * check if file type is image
-	 * @return file       check file extension against list
-	 * @since  1.2.2
+	 * Define the array of allowed image/file types.
+	 * @return mixed|void array
+	 * @since 2.5.0
 	 */
-	protected function is_valid_img_ext( $file ) {
-		$file_ext = $this->get_file_ext( $file );
-
-		$is_valid_types = (array) apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
-
-		return ( $file_ext && in_array( $file_ext, $is_valid_types, true ) );
+	protected function allowed_file_types() {
+		return apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
 	}
 
 	/**
