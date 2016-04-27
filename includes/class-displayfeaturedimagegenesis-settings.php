@@ -461,49 +461,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
-	 * Returns previous value for image if not correct file type/size
-	 * @param  string $new_value New value
-	 * @return string            New or previous value, depending on allowed image size.
-	 * @since  1.2.2
-	 */
-	protected function validate_image( $new_value, $old_value, $label, $size_to_check ) {
-
-		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
-		$old_value = displayfeaturedimagegenesis_check_image_id( $old_value );
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
-		$reset     = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
-
-		// ok for field to be empty
-		if ( ! $new_value ) {
-			return '';
-		}
-
-		if ( $valid && $width > $size_to_check ) {
-			return (int) $new_value;
-		}
-
-		$new_value = $old_value;
-		if ( ! $valid ) {
-			$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-			$class   = 'invalid';
-		} elseif ( $width <= $size_to_check ) {
-			$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-			$class   = 'weetiny';
-		}
-
-		add_settings_error(
-			$old_value,
-			esc_attr( $class ),
-			esc_attr( $message . $reset ),
-			'error'
-		);
-
-		return (int) $new_value;
-	}
-
-	/**
 	 * Help tab for media screen
 	 * @return help tab with verbose information for plugin
 	 *
