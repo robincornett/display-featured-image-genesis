@@ -298,7 +298,8 @@ class Display_Featured_Image_Genesis_Helper {
 	 * @since 2.5.0
 	 */
 	protected function allowed_file_types() {
-		return apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
+		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
+		return is_array( $allowed ) ? $allowed : explode( ',', $allowed );
 	}
 
 	/**
