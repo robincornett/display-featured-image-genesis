@@ -30,12 +30,12 @@ class Display_Featured_Image_Genesis_Description {
 		$headline = $intro_text = $itemprop = '';
 
 		if ( genesis_html5() ) {
-			$itemprop = 'itemprop="headline"';
+			$itemprop = ' itemprop="headline"';
 		}
 
 		$setting  = displayfeaturedimagegenesis_get_setting();
 		if ( ! $setting['keep_titles'] ) {
-			$headline = sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', get_the_title() );
+			$headline = sprintf( '<h1 class="entry-title"%s>%s</h1>', $itemprop, get_the_title() );
 		}
 
 		if ( has_excerpt() ) {
@@ -67,8 +67,8 @@ class Display_Featured_Image_Genesis_Description {
 
 		// set front page and posts page variables
 		$title      = $this->get_front_blog_title();
-		$itemprop   = genesis_html5() ? 'itemprop="headline"' : '';
-		$headline   = empty( $title ) ? '' : sprintf( '<h1 class="entry-title" ' . $itemprop . '>%s</h1>', $title );
+		$itemprop   = genesis_html5() ? ' itemprop="headline"' : '';
+		$headline   = empty( $title ) ? '' : sprintf( '<h1 class="entry-title"%s>%s</h1>', $itemprop, $title );
 		$intro_text = $this->get_front_blog_intro_text();
 
 		if ( $headline || $intro_text ) {
@@ -76,7 +76,6 @@ class Display_Featured_Image_Genesis_Description {
 			$class = 'excerpt';
 			$this->print_description( $print, $class, $class );
 		}
-
 	}
 
 	/**
