@@ -44,7 +44,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 		echo '<table class="form-table">';
 
 			echo '<tr class="user-featured-image-wrap">';
-				printf( '<th scope="row"><label for="' . esc_attr( $this->name ) . '">%s</label></th>', __( 'Featured Image', 'display-featured-image-genesis' ) );
+				printf( '<th scope="row"><label for="%s">%s</label></th>', esc_attr( $this->name ), __( 'Featured Image', 'display-featured-image-genesis' ) );
 
 				echo '<td>';
 				if ( $id ) {
@@ -97,7 +97,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 		$valid  = $this->is_valid_img_ext( $source[0] );
 		$width  = $source[1];
 
-		if ( ! $new_value  || ( $new_value && $valid && $width > $medium ) ) {
+		if ( ! $new_value || ( $new_value && $valid && $width > $medium ) ) {
 			return $new_value;
 		}
 
@@ -118,16 +118,13 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	 */
 	public function user_profile_error_message( $errors, $update, $user ) {
 		$new_value = (int) $_POST['displayfeaturedimagegenesis'];
-		$medium    = get_option( 'medium_size_w' );
 		$source    = wp_get_attachment_image_src( $new_value, 'full' );
 		$valid     = $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
 		$reset     = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $user->display_name );
+		$error     = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
 
 		if ( ! $valid ) {
 			$error = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-		} elseif ( $width <= $medium ) {
-			$error = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
 		}
 		$errors->add( 'profile_error', $error . $reset );
 	}
