@@ -217,7 +217,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 * Make the featured image column sortable.
 	 * @param $columns
 	 * @return mixed
-	 * @since x.y.z
+	 * @since 2.5.0
 	 */
 	public function make_sortable( $columns ) {
 		$columns['featured_image'] = 'featured_image';
@@ -226,8 +226,8 @@ class Display_Featured_Image_Genesis_Admin {
 
 	/**
 	 * Set a custom query to handle sorting by featured image
-	 * @param $query
-	 * @since x.y.z
+	 * @param $query WP_Query
+	 * @since 2.5.0
 	 */
 	public function orderby( $query ) {
 		if ( ! is_admin() ) {
@@ -249,7 +249,7 @@ class Display_Featured_Image_Genesis_Admin {
 					),
 				)
 			);
-			$post_type       = $query->get ( 'post_type' );
+			$post_type       = $query->get( 'post_type' );
 			$secondary_order = is_post_type_hierarchical( $post_type ) ? 'title' : 'date';
 			$query->set( 'orderby', "meta_value_num $secondary_order" );
 		}

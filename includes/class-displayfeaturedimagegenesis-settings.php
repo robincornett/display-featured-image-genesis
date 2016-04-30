@@ -10,13 +10,33 @@
 class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Genesis_Helper {
 
 	/**
-	 * variable set for featured image option
-	 * @var option
+	 * The common plugin class.
+	 * @var $commmon Display_Featured_Image_Genesis_Common
 	 */
 	protected $common;
+
+	/**
+	 * The plugin admin page.
+	 * @var $page string
+	 */
 	protected $page = 'displayfeaturedimagegenesis';
+
+	/**
+	 * The plugin setting.
+	 * @var $setting string
+	 */
 	protected $setting;
+
+	/**
+	 * Public post types on the site.
+	 * @var $post_types array
+	 */
 	protected $post_types;
+
+	/**
+	 * The plugin settings fields.
+	 * @var $fields array
+	 */
 	protected $fields;
 
 	/**
@@ -76,7 +96,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
-	 * Output tabs. All tabs will be output if it's a single site or the main site, and the settings page is not disabled.
+	 * Output tabs.
 	 * @return string
 	 * @since 2.5.0
 	 */
@@ -708,7 +728,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
-	 * Check whether terms need to be udpated
+	 * Check whether terms need to be updated
 	 * @return boolean true if on 4.4 and wp_options for terms exist; false otherwise
 	 *
 	 * @since 2.4.0

@@ -172,6 +172,7 @@ class Display_Featured_Image_Genesis_Common {
 			}
 		}
 
+		// If this post type is set to always use a fallback image, stop here and use it.
 		if ( isset( $setting['fallback'][ $post_type ] ) && $setting['fallback'][ $post_type ] ) {
 			return $image_id;
 		}
