@@ -68,7 +68,7 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function set_image_id( $image_id = '' ) {
 
-		$setting     = get_option( 'displayfeaturedimagegenesis' );
+		$setting     = displayfeaturedimagegenesis_get_setting();
 		$fallback    = $setting['default'];
 		$fallback_id = displayfeaturedimagegenesis_check_image_id( $fallback );
 

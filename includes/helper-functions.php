@@ -77,7 +77,7 @@ function display_featured_image_genesis_get_term_image_url( $size = 'displayfeat
  */
 function display_featured_image_genesis_get_default_image_id( $image_id = '' ) {
 
-	$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+	$displaysetting = displayfeaturedimagegenesis_get_setting();
 	$fallback       = $displaysetting['default'];
 	$image_id       = displayfeaturedimagegenesis_check_image_id( $fallback );
 
@@ -110,7 +110,7 @@ function display_featured_image_genesis_get_default_image_url( $size = 'displayf
 function display_featured_image_genesis_get_cpt_image_id( $image_id = '' ) {
 
 	$post_type      = '';
-	$displaysetting = get_option( 'displayfeaturedimagegenesis' );
+	$displaysetting = displayfeaturedimagegenesis_get_setting();
 	$object         = get_queried_object();
 	if ( ! $object || is_admin() ) {
 		return;
