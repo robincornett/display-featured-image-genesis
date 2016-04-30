@@ -14,7 +14,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @var option
 	 */
 	protected $common;
-	protected $page;
+	protected $page = 'displayfeaturedimagegenesis';
 	protected $setting;
 	protected $post_types;
 	protected $fields;
@@ -26,8 +26,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function do_submenu_page() {
 
-		$this->page   = 'displayfeaturedimagegenesis';
-		$this->common = new Display_Featured_Image_Genesis_Common();
+		$this->common     = new Display_Featured_Image_Genesis_Common();
+		$this->setting    = $this->get_display_setting();
+		$this->post_types = $this->get_content_types();
 
 		add_theme_page(
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
@@ -40,10 +41,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
-		$this->setting    = $this->get_display_setting();
-		$this->post_types = $this->get_content_types();
-		$sections         = $this->register_sections();
-		$this->fields     = $this->register_fields();
+		$sections     = $this->register_sections();
+		$this->fields = $this->register_fields();
 		$this->add_sections( $sections );
 		$this->add_fields( $this->fields, $sections );
 	}
