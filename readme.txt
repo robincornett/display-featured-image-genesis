@@ -175,7 +175,7 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 == Upgrade Notice ==
 = 2.5.0 =
-Settings page has been completely renovated, new bells and whistles for more customization.
+Settings page has been completely renovated, new bells and whistles for more customization. Much code tightening/cleanup.
 
 == Changelog ==
 
