@@ -96,6 +96,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
 		}
 
+		$image      = '';
 		$term_image = displayfeaturedimagegenesis_get_term_image( $term_id );
 		if ( $term_image ) {
 			$image_src = wp_get_attachment_image_src( $term_image, $instance['image_size'] );
