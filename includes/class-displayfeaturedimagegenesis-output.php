@@ -204,9 +204,12 @@ class Display_Featured_Image_Genesis_Output {
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 		add_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description', 15 );
 
-		$hook = 'genesis_before_loop';
-		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
-			$hook = apply_filters( 'display_featured_image_genesis_move_large_image', $hook );
+		$hook = apply_filters( 'display_featured_image_genesis_move_large_image', 'genesis_before_loop' );
+		if ( ! is_singular() || is_page_template( 'page_blog.php' ) ) {
+			$check = strpos( $hook, 'entry' ) || strpos( $hook, 'post' );
+			if ( false !== $check ) {
+				$hook = 'genesis_before_loop';
+			}
 		}
 		$priority = apply_filters( 'display_featured_image_genesis_move_large_image_priority', 12 );
 		add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), $priority ); // works for both HTML5 and XHTML
