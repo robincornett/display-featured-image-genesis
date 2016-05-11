@@ -339,8 +339,8 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 2.5.0
 	 */
 	public static function is_in_array( $value, $post_types = array() ) {
-		$post_types = apply_filters( "display_featured_image_genesis_$value", $post_types );
-		return in_array( get_post_type(), $post_types, true );
+		$post_types = apply_filters( "display_featured_image_genesis_{$value}", $post_types );
+		return in_array( get_post_type(), $post_types );
 	}
 
 	/**
