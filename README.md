@@ -188,14 +188,13 @@ If you need to control the size of the backstretch Featured Image output with mo
 There is a filter for this, too. By default, the large (as opposed to backstretch) image is added before the Genesis loop, which places it above your post or page title. You can add this filter to your theme's functions.php file to move the image below your post/page title:
 
 ```php
-add_filter( 'display_featured_image_genesis_move_large_image', 'rgc_move_image' );
-function rgc_move_image( $hook ) {
-	$hook = 'genesis_entry_header';
-	return $hook;
+add_filter( 'display_featured_image_genesis_move_large_image', 'prefix_move_image' );
+function prefix_move_image( $hook ) {
+	return 'genesis_entry_header';
 }
 ```
 
-_Note:_ because the entry header applies to all posts on a page, such as a blog or archive page, this filter modifies the output only on singular posts.
+_Note:_ because the entry header applies to all posts on a page, on archive pages, this filter will be overridden with the default `genesis_before_loop`. To move the large image on an archive page, do not use a hook related to a single post.
 
 Similar hooks:
 
@@ -224,6 +223,10 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 * Built by [Robin Cornett](http://robincornett.com/)
 
 ## Changelog
+
+### 2.5.1
+* enhancement: large image can now be moved on archive pages
+* bugfix: array filter has been reset to less strict mode
 
 ### 2.5.0
 * added: filter to modify plugin defaults
