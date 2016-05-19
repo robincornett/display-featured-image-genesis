@@ -362,7 +362,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @return mixed|string|void
 	 * @since 2.5.0
 	 */
-	protected static function image_size() {
+	public static function image_size() {
 		$image_size = 'displayfeaturedimage_backstretch';
 		/**
 		 * Creates display_featured_image_genesis_use_large_image filter to check
