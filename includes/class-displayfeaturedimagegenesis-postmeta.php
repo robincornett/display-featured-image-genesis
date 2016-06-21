@@ -24,11 +24,26 @@ class Display_Featured_Image_Genesis_Post_Meta {
 
 	/**
 	 * Build the metabox with the checkbox setting.
+	 * @since 2.5.0
 	 */
 	public function meta_box( $content, $post_id ) {
 
 		$output     = wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce', true, false );
-		$checkboxes = array(
+		$checkboxes = $this->get_checkboxes();
+		foreach ( $checkboxes as $checkbox ) {
+			$output .= $this->do_checkbox( $checkbox, $post_id );
+		}
+
+		return $output . $content;
+	}
+
+	/**
+	 * Define array of checkboxes to add to post editor featured image.
+	 * @return array
+	 * @since 2.5.2
+	 */
+	protected function get_checkboxes() {
+		return array(
 			array(
 				'setting' => $this->disable,
 				'label'   => __( 'Don\'t show the featured image on this post', 'display-featured-image-genesis' ),
@@ -38,11 +53,6 @@ class Display_Featured_Image_Genesis_Post_Meta {
 				'label'   => __( 'Don\'t move the title to overlay the featured image on this post', 'display-featured-image-genesis' ),
 			),
 		);
-		foreach ( $checkboxes as $checkbox ) {
-			$output .= $this->do_checkbox( $checkbox, $post_id );
-		}
-
-		return $output . $content;
 	}
 
 	/**
@@ -50,6 +60,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * @param $args array includes setting and label
 	 *
 	 * @return string checkbox label/input
+	 * @since 2.5.2
 	 */
 	protected function do_checkbox( $args, $post_id ) {
 		$check   = get_post_meta( $post_id, $args['setting'], true ) ? 1 : '';
@@ -83,13 +94,13 @@ class Display_Featured_Image_Genesis_Post_Meta {
 			return;
 		}
 
-		$settings = array( $this->disable, $this->move );
+		$checkboxes = $this->get_checkboxes();
 
-		foreach ( $settings as $setting ) {
-			if ( isset( $_POST[ $setting ] ) ) {
-				update_post_meta( $post_id, $setting, 1 );
+		foreach ( $checkboxes as $checkbox ) {
+			if ( isset( $_POST[ $checkbox['setting'] ] ) ) {
+				update_post_meta( $post_id, $checkbox['setting'], 1 );
 			} else {
-				delete_post_meta( $post_id, $setting );
+				delete_post_meta( $post_id, $checkbox['setting'] );
 			}
 		}
 	}
