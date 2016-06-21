@@ -362,13 +362,14 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.2.0
 	 */
 	protected function move_title() {
-		$keep_titles       = $this->setting['keep_titles'];
+		$keep_titles = $this->setting['keep_titles'];
+		$post_meta   = (bool) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_move', true );
 		/**
 		 * Creates display_featured_image_genesis_do_not_move_titles filter to check
 		 * whether get_post_type array should not move titles to overlay the featured image.
 		 * @uses is_in_array()
 		 */
-		if ( ! $keep_titles && ! Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) ) {
+		if ( ! $keep_titles && ! Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) && ! $post_meta ) {
 			return true;
 		}
 		return false;

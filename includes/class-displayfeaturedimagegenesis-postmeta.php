@@ -11,31 +11,55 @@
 class Display_Featured_Image_Genesis_Post_Meta {
 
 	/**
-	 * The plugin setting
-	 * @var $setting
-	 */
-	protected $setting;
-
-	/**
 	 * Post meta key to disable buttons
 	 * @var string
 	 */
 	protected $disable = '_displayfeaturedimagegenesis_disable';
 
 	/**
+	 * Post meta key to not move titles
+	 * @var string
+	 */
+	protected $move = '_displayfeaturedimagegenesis_move';
+
+	/**
 	 * Build the metabox with the checkbox setting.
 	 */
 	public function meta_box( $content ) {
 
-		$check = get_post_meta( get_the_ID(), $this->disable, true ) ? 1 : '';
-
-		wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce' );
-		$output  = '<p>';
-		$output .= sprintf( '<input type="checkbox" id="%1$s" name="%1$s" %2$s/>', $this->disable, checked( $check, 1, false ) );
-		$output .= sprintf( '<label for="%s">%s</label>', $this->disable, __( 'Don\'t show the featured image on this post', 'display-featured-image-genesis' ) );
-		$output .= '</p>';
+		$checkboxes = array(
+			array(
+				'setting' => $this->disable,
+				'label'   => __( 'Don\'t show the featured image on this post', 'display-featured-image-genesis' ),
+			),
+			array(
+				'setting' => $this->move,
+				'label'   => __( 'Don\'t move the title to overlay the featured image on this post', 'display-featured-image-genesis' ),
+			),
+		);
+		foreach ( $checkboxes as $checkbox ) {
+			$output .= $this->do_checkbox( $checkbox );
+		}
 
 		return $output . $content;
+	}
+
+		wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce' );
+	/**
+	 * Generic function to add a post_meta checkbox
+	 * @param $args array includes setting and label
+	 *
+	 * @return string checkbox label/input
+	 */
+	protected function do_checkbox( $args ) {
+		$check   = get_post_meta( get_the_ID(), $args['setting'], true ) ? 1 : '';
+		$output  = '<p>';
+		$output .= sprintf( '<label for="%s">', $args['setting'] );
+		$output .= sprintf( '<input type="checkbox" id="%1$s" name="%1$s" %2$s />%3$s', $args['setting'], checked( $check, 1, false ), $args['label'] );
+		$output .= '</label>';
+		$output .= '</p>';
+
+		return $output;
 	}
 
 	/**
@@ -59,10 +83,14 @@ class Display_Featured_Image_Genesis_Post_Meta {
 			return;
 		}
 
-		if ( isset( $_POST[ $this->disable ] ) ) {
-			update_post_meta( $post_id, $this->disable, 1 );
-		} else {
-			delete_post_meta( $post_id, $this->disable );
+		$settings = array( $this->disable, $this->move );
+
+		foreach ( $settings as $setting ) {
+			if ( isset( $_POST[ $setting ] ) ) {
+				update_post_meta( $post_id, $setting, 1 );
+			} else {
+				delete_post_meta( $post_id, $setting );
+			}
 		}
 	}
 
