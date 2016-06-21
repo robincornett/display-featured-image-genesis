@@ -119,7 +119,7 @@ class Display_Featured_Image_Genesis {
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
 		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
 		add_filter( 'genesis_get_image_default_args', array( $this->output, 'change_thumbnail_fallback' ) );
-		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ) );
+		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ), 10, 2 );
 		add_action( 'save_post', array( $this->post_meta, 'save_meta' ) );
 
 	}

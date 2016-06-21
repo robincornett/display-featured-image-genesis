@@ -25,7 +25,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	/**
 	 * Build the metabox with the checkbox setting.
 	 */
-	public function meta_box( $content ) {
+	public function meta_box( $content, $post_id ) {
 
 		$output     = wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce', true, false );
 		$checkboxes = array(
@@ -39,7 +39,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 			),
 		);
 		foreach ( $checkboxes as $checkbox ) {
-			$output .= $this->do_checkbox( $checkbox );
+			$output .= $this->do_checkbox( $checkbox, $post_id );
 		}
 
 		return $output . $content;
@@ -51,8 +51,8 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 *
 	 * @return string checkbox label/input
 	 */
-	protected function do_checkbox( $args ) {
-		$check   = get_post_meta( get_the_ID(), $args['setting'], true ) ? 1 : '';
+	protected function do_checkbox( $args, $post_id ) {
+		$check   = get_post_meta( $post_id, $args['setting'], true ) ? 1 : '';
 		$output  = '<p>';
 		$output .= sprintf( '<label for="%s">', $args['setting'] );
 		$output .= sprintf( '<input type="checkbox" id="%1$s" name="%1$s" %2$s />%3$s', $args['setting'], checked( $check, 1, false ), $args['label'] );
