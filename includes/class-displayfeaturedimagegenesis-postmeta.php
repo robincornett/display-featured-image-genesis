@@ -27,6 +27,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 */
 	public function meta_box( $content ) {
 
+		$output     = wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce', true, false );
 		$checkboxes = array(
 			array(
 				'setting' => $this->disable,
@@ -44,7 +45,6 @@ class Display_Featured_Image_Genesis_Post_Meta {
 		return $output . $content;
 	}
 
-		wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce' );
 	/**
 	 * Generic function to add a post_meta checkbox
 	 * @param $args array includes setting and label
