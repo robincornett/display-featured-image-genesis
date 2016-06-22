@@ -305,14 +305,13 @@ class Display_Featured_Image_Genesis_Output {
 		$exclude_front  = is_front_page() && $this->setting['exclude_front'];
 		$post_type      = get_post_type();
 		$skip_post_type = is_singular() && isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
-		$skip_singular  = is_singular() && get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
 		/**
 		 * Creates display_featured_image_genesis_skipped_posttypes filter to check
 		 * whether get_post_type array should not run plugin on this post type.
 		 * @uses is_in_array()
 		 */
 		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
-		if ( is_admin() || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) || $skip_post_type || $exclude_front || $skip_singular ) {
+		if ( is_admin() || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) || $skip_post_type || $exclude_front || $this->check_post_meta( '_displayfeaturedimagegenesis_disable' ) ) {
 			return true;
 		}
 		return false;
@@ -363,16 +362,15 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function move_title() {
 		$keep_titles = $this->setting['keep_titles'];
-		$post_meta   = (bool) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_move', true );
 		/**
 		 * Creates display_featured_image_genesis_do_not_move_titles filter to check
 		 * whether get_post_type array should not move titles to overlay the featured image.
 		 * @uses is_in_array()
 		 */
-		if ( ! $keep_titles && ! Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) && ! $post_meta ) {
-			return true;
+		if ( $keep_titles || Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) || $this->check_post_meta( '_displayfeaturedimagegenesis_move' ) ) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	/**
@@ -407,5 +405,18 @@ class Display_Featured_Image_Genesis_Output {
 		}
 
 		return $defaults;
+	}
+
+	/**
+	 * Check the post_meta for singular posts/pages/posts page.
+	 * @param $meta_key string the post_meta key to check
+	 *
+	 * @return bool
+	 * @since 2.5.2
+	 */
+	protected function check_post_meta( $meta_key ) {
+		$post_id   = get_option( 'page_for_posts' ) && is_home() ? get_option( 'page_for_posts' ) : get_the_ID();
+		$post_meta = (bool) get_post_meta( $post_id, $meta_key, true );
+		return (bool) ( is_home() || is_singular() ) && $post_meta;
 	}
 }
