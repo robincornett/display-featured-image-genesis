@@ -43,16 +43,20 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * @since 2.5.2
 	 */
 	protected function get_checkboxes() {
-		return array(
+		$checkboxes = array(
 			array(
 				'setting' => $this->disable,
 				'label'   => __( 'Don\'t show the featured image on this post', 'display-featured-image-genesis' ),
 			),
-			array(
-				'setting' => $this->move,
-				'label'   => __( 'Don\'t move the title to overlay the featured image on this post', 'display-featured-image-genesis' ),
-			),
 		);
+		$setting = displayfeaturedimagegenesis_get_setting();
+		if ( ! $setting['keep_titles'] ) {
+			$checkboxes[] = array(
+				'setting' => $this->move,
+				'label'   => __( 'Don\'t move the title to overlay the backstretch featured image on this post', 'display-featured-image-genesis' ),
+			);
+		}
+		return $checkboxes;
 	}
 
 	/**
