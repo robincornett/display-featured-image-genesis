@@ -33,7 +33,7 @@
 		);
 
 		var image = $( '.big-leader .backstretch img' );
-		image.attr( 'alt', plugin.params.title );
+		image.attr( 'alt', plugin.params.title ).attr( 'aria-hidden', true );
 	}
 
 	function _getSource() {
