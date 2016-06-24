@@ -145,6 +145,7 @@ class Display_Featured_Image_Genesis_Output {
 			'centeredX' => (bool) $backstretch_vars['centeredX'],
 			'centeredY' => (bool) $backstretch_vars['centeredY'],
 			'fade'      => (int) $backstretch_vars['fade'],
+			'title'     => esc_attr( $this->item->title ),
 		);
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );

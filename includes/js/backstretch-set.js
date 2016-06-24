@@ -31,6 +31,9 @@
 				fade: parseInt( plugin.params.fade )
 			}
 		);
+
+		var image = $( '.big-leader .backstretch img' );
+		image.attr( 'alt', plugin.params.title );
 	}
 
 	function _getSource() {
