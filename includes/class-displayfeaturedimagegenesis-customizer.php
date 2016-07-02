@@ -95,20 +95,24 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	protected function checkbox_fields() {
 		return array(
 			array(
-				'setting' => 'exclude_front',
-				'label'   => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),
+				'setting'     => 'exclude_front',
+				'label'       => __( 'Skip Front Page', 'display-featured-image-genesis' ),
+				'description' => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),
 			),
 			array(
-				'setting' => 'keep_titles',
-				'label'   => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
+				'setting'     => 'keep_titles',
+				'label'       => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
+				'description' => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
 			),
 			array(
-				'setting' => 'move_excerpts',
-				'label'   => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ),
+				'setting'     => 'move_excerpts',
+				'label'       => __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ),
+				'description' => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ),
 			),
 			array(
-				'setting' => 'thumbnails',
-				'label'   => __( 'Use term/post type fallback images for content archive thumbnails?', 'display-featured-image-genesis' ),
+				'setting'     => 'thumbnails',
+				'label'       => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
+				'description' => __( 'Use term/post type fallback images for content archive thumbnails?', 'display-featured-image-genesis' ),
 			),
 		);
 	}
