@@ -461,8 +461,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			),
 		);
 		foreach ( $custom_pages as $page ) {
-			$setting_to_check                       = isset( $this->setting['post_type'][ $page['id'] ] ) ? $this->setting['post_type'][ $page['id'] ] : '';
-			$new_value['post_type'][ $page ['id'] ] = $this->validate_image( $new_value['post_type'][ $page['id'] ], $setting_to_check, $page['label'], $size_to_check );
+			$setting_to_check = isset( $this->setting['post_type'][ $page['id'] ] ) ? $this->setting['post_type'][ $page['id'] ] : '';
+			if ( isset( $new_value['post_type'][ $page ['id'] ] ) ) {
+				$new_value['post_type'][ $page ['id'] ] = $this->validate_image( $new_value['post_type'][ $page['id'] ], $setting_to_check, $page['label'], $size_to_check );
+			}
 		}
 
 		foreach ( $this->post_types as $post_type ) {
@@ -471,12 +473,16 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			$old_value = isset( $this->setting['post_type'][ $object->name ] ) ? $this->setting['post_type'][ $object->name ] : '';
 			$label     = $object->label;
 
-			$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
-			$new_value['fallback'][ $post_type ]  = $this->one_zero( $new_value['fallback'][ $post_type ] );
+			if ( isset( $new_value['post_type'][ $post_type ] ) ) {
+				$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
+			}
+			if ( isset( $new_value['fallback'][ $post_type ] ) ) {
+				$new_value['fallback'][ $post_type ] = $this->one_zero( $new_value['fallback'][ $post_type ] );
+			}
 		}
 		$post_types = $this->get_content_types_built_in();
 		foreach ( $post_types as $post_type ) {
-			$new_value['skip'][ $post_type ] = $this->one_zero( $new_value['skip'][ $post_type ] );
+			$new_value['skip'][ $post_type ] = isset( $new_value['skip'][ $post_type ] ) ? $this->one_zero( $new_value['skip'][ $post_type ] ) : 0;
 		}
 
 		return $new_value;
