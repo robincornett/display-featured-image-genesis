@@ -501,7 +501,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( $new_value >= $min && $new_value <= $max ) {
 			return (int) $new_value;
 		}
-		return (int) $old_value;
+		return $old_value;
 	}
 
 	/**
