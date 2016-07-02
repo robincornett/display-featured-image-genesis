@@ -60,6 +60,9 @@ class Display_Featured_Image_Genesis_Output {
 		}
 		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
 		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $this->common->version );
+		if ( $this->setting['max_height'] ) {
+			$this->add_inline_style();
+		}
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
 		$large = $this->common->minimum_backstretch_width();
@@ -74,6 +77,16 @@ class Display_Featured_Image_Genesis_Output {
 		} else {
 			$this->do_large_image_things();
 		}
+	}
+
+	/**
+	 * Add max_height to output via inline style.
+	 *
+	 * @since 2.6.0
+	 */
+	public function add_inline_style() {
+		$css = sprintf( '.big-leader { max-height: %spx }', $this->setting['max_height'] );
+		wp_add_inline_style( 'displayfeaturedimage-style', strip_tags( $css ) );
 	}
 
 	/**

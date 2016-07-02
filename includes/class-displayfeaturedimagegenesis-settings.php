@@ -150,6 +150,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			'post_types'    => array(),
 			'skip'          => array(),
 			'fallback'      => array(),
+			'max_height'    => '',
 		) );
 	}
 
@@ -203,6 +204,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'callback' => 'do_number',
 				'section'  => 'main',
 				'args'     => array( 'setting' => 'less_header', 'label' => __( 'pixels to remove', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 400 ),
+			),
+			array(
+				'id'       => 'max_height',
+				'title'    => __( 'Maximum Height' , 'display-featured-image-genesis' ),
+				'callback' => 'do_number',
+				'section'  => 'main',
+				'args'     => array( 'setting' => 'max_height', 'label' => __( 'pixels', 'display-featured-image-genesis' ), 'min' => 100, 'max' => 1000 ),
 			),
 			array(
 				'id'       => 'default',
@@ -329,6 +337,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function less_header_description() {
 		return __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' );
+	}
+
+	/**
+	 * Description for the max_height setting.
+	 * @return string|void description
+	 * @since 2.6.0
+	 */
+	protected function max_height_description() {
+		return __( 'Optionally, set a max-height value for the header image; it will be added to your CSS.', 'display-featured-image-genesis' );
 	}
 
 	/**
