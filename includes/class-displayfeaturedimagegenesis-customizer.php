@@ -83,11 +83,19 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 				'setting'     => 'less_header',
 				'label'       => __( 'Height', 'display-featured-image-genesis' ),
 				'description' => __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' ),
+				'input_attrs' => array(
+					'min'   => 0,
+					'max'   => 400,
+				),
 			),
 			array(
 				'setting'     => 'max_height',
 				'label'       => __( 'Maximum Height', 'display-featured-image-genesis' ),
 				'description' => __( 'Optionally, set a max-height value for the header image; it will be added to your CSS.', 'display-featured-image-genesis' ),
+				'input_attrs' => array(
+					'min'   => 100,
+					'max'   => 1000,
+				),
 			),
 		);
 	}
@@ -183,6 +191,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 				'type'        => isset( $setting['type'] ) ? $setting['type'] : '',
 				'description' => isset( $setting['description'] ) ? $setting['description'] : '',
 				'choices'     => isset( $setting['choices'] ) ? $setting['choices'] : array(),
+				'input_attrs' => isset( $setting['input_attrs'] ) ? $setting['input_attrs'] : array(),
 			)
 		);
 	}
