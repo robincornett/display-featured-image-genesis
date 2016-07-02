@@ -121,23 +121,32 @@ class Display_Featured_Image_Genesis {
 
 		add_action( 'after_setup_theme', array( $this, 'add_plugin_supports' ) );
 		add_action( 'admin_init', array( $this, 'check_settings' ) );
-		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
-		add_action( 'admin_init', array( $this->author, 'set_author_meta' ) );
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
-		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this->helptabs, 'help' ) );
-		add_action( 'get_header', array( $this->output, 'manage_output' ) );
-		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
-		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
-		add_filter( 'genesis_get_image_default_args', array( $this->output, 'change_thumbnail_fallback' ) );
+
+		// Taxonomies, Author, Post Meta
+		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
+		add_action( 'admin_init', array( $this->author, 'set_author_meta' ) );
 		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ), 10, 2 );
 		add_action( 'save_post', array( $this->post_meta, 'save_meta' ) );
 
+		// Settings
+		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
+		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
+		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this->helptabs, 'help' ) );
+
+		// Customizer
 		add_action( 'customize_register', array( $this->customizer, 'customizer' ) );
+
+		// Front End Output
+		add_action( 'get_header', array( $this->output, 'manage_output' ) );
+		add_filter( 'genesis_get_image_default_args', array( $this->output, 'change_thumbnail_fallback' ) );
+
+		// RSS
+		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
 
 	}
 
