@@ -137,14 +137,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
 	}
 
-	/**
-	 * Retrieve plugin setting.
-	 * @return array All plugin settings.
-	 *
-	 * @since 2.3.0
-	 */
-	public function get_display_setting() {
-		$defaults = apply_filters( 'displayfeaturedimagegenesis_defaults', array(
+	public function defaults() {
+		return apply_filters( 'displayfeaturedimagegenesis_defaults', array(
 			'less_header'   => 0,
 			'default'       => '',
 			'exclude_front' => 0,
@@ -157,8 +151,17 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			'skip'          => array(),
 			'fallback'      => array(),
 		) );
+	}
 
-		$setting = get_option( 'displayfeaturedimagegenesis', $defaults );
+	/**
+	 * Retrieve plugin setting.
+	 * @return array All plugin settings.
+	 *
+	 * @since 2.3.0
+	 */
+	public function get_display_setting() {
+		$defaults = $this->defaults();
+		$setting  = get_option( 'displayfeaturedimagegenesis', $defaults );
 		return wp_parse_args( $setting, $defaults );
 
 	}
@@ -189,7 +192,11 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function register_fields() {
 
-		$fields = array(
+		return array_merge( $this->define_main_fields(), $this->define_cpt_fields() );
+	}
+
+	protected function define_main_fields() {
+		return array(
 			array(
 				'id'       => 'less_header',
 				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
@@ -245,6 +252,11 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'section'  => 'main',
 				'args'     => array( 'setting' => 'thumbnails', 'label' => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ) ),
 			),
+		);
+	}
+
+	protected function define_cpt_fields() {
+		$fields = array(
 			array(
 				'id'       => 'post_types][search',
 				'title'    => __( 'Search Results', 'display-featured-image-genesis' ),
