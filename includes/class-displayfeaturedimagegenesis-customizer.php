@@ -114,9 +114,11 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	}
 
 	protected function default_image() {
+		$common = new Display_Featured_Image_Genesis_Common();
+		$size   = $common->minimum_backstretch_width();
 		return array(
 			'setting'     => 'default',
-			'description' => __( 'Set the sitewide default image.', 'display-featured-image-genesis' ),
+			'description' => sprintf( __( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.' , 'display-featured-image-genesis' ), absint( $size + 1 ) ),
 			'label'       => __( 'Default Image', 'display-featured-image-genesis' ),
 			'transport'   => 'postMessage',
 		);
@@ -154,9 +156,10 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 				$wp_customize,
 				$this->section . '[' . $setting['setting'] . ']',
 				array(
-					'label'    => $setting['label'],
-					'section'  => $this->section,
-					'settings' => $this->section . '[' . $setting['setting'] . ']',
+					'label'       => $setting['label'],
+					'section'     => $this->section,
+					'settings'    => $this->section . '[' . $setting['setting'] . ']',
+					'description' => isset( $setting['description'] ) ? $setting['description'] : '',
 				)
 			)
 		);
