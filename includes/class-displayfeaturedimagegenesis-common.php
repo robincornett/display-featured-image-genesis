@@ -80,7 +80,7 @@ class Display_Featured_Image_Genesis_Common {
 			 * @uses is_in_array()
 			 */
 			$image_id = $fallback_id;
-			if ( self::is_in_array( 'use_default' ) ) {
+			if ( self::is_in_array( 'use_default' ) || $setting['always_default'] ) {
 				return (int) $image_id;
 			}
 		}

@@ -103,6 +103,11 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	protected function checkbox_fields() {
 		return array(
 			array(
+				'setting'     => 'always_default',
+				'label'       => __( 'Always Use Default', 'display-featured-image-genesis' ),
+				'description' => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ),
+			),
+			array(
 				'setting'     => 'exclude_front',
 				'label'       => __( 'Skip Front Page', 'display-featured-image-genesis' ),
 				'description' => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),

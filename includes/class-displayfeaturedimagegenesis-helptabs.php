@@ -144,6 +144,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 				__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 				absint( $large + 1 )
 			) . '</p>';
+		$help  .= '<p>' . __( 'If you choose "Always Use Default", your default image will be used site wide, no matter what content types/posts/etc. have featured images set.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}

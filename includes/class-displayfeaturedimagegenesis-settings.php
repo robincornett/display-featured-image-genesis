@@ -141,6 +141,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			'skip'          => array(),
 			'fallback'      => array(),
 			'max_height'    => '',
+			'always_default' => 0,
 		) );
 	}
 
@@ -207,6 +208,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'    => __( 'Default Featured Image', 'display-featured-image-genesis' ),
 				'callback' => 'set_default_image',
 				'section'  => 'main',
+			),
+			array(
+				'id'       => 'always_default',
+				'title'    => __( 'Always Use Default', 'display-featured-image-genesis' ),
+				'callback' => 'do_checkbox',
+				'section'  => 'main',
+				'args'     => array( 'setting' => 'always_default', 'label' => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ) ),
 			),
 			array(
 				'id'       => 'exclude_front',
