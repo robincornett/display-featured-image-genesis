@@ -6,7 +6,7 @@
  * @package Display_Featured_Image_Genesis
  * @copyright 2016 Robin Cornett
  */
-class Display_Featured_Image_Genesis_Customizer {
+class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Helper {
 
 	/**
 	 * Section for the Customizer.
@@ -56,8 +56,10 @@ class Display_Featured_Image_Genesis_Customizer {
 	 * @param $wp_customize
 	 */
 	protected function build_fields( $wp_customize ) {
-		$fields = $this->number_fields();
-		foreach ( $fields as $field ) {
+		$numbers = $this->number_fields();
+		foreach ( $numbers as $field ) {
+			$number['sanitize_callback'] = 'absint';
+			$number['type']              = 'number';
 			$this->add_control( $wp_customize, $field );
 		}
 
@@ -78,16 +80,14 @@ class Display_Featured_Image_Genesis_Customizer {
 	function number_fields() {
 		return array(
 			array(
-				'setting'           => 'less_header',
-				'label'             => __( 'Height', 'display-featured-image-genesis' ),
-				'sanitize_callback' => 'absint',
-				'type'              => 'number',
+				'setting'     => 'less_header',
+				'label'       => __( 'Height', 'display-featured-image-genesis' ),
+				'description' => __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' ),
 			),
 			array(
-				'setting'           => 'max_height',
-				'label'             => __( 'Maximum Height', 'display-featured-image-genesis' ),
-				'sanitize_callback' => 'absint',
-				'type'              => 'number',
+				'setting'     => 'max_height',
+				'label'       => __( 'Maximum Height', 'display-featured-image-genesis' ),
+				'description' => __( 'Optionally, set a max-height value for the header image; it will be added to your CSS.', 'display-featured-image-genesis' ),
 			),
 		);
 	}
@@ -190,18 +190,10 @@ class Display_Featured_Image_Genesis_Customizer {
 			array(
 				'capability'        => 'manage_options',
 				'default'           => $this->defaults[ $setting['setting'] ],
-				'sanitize_callback' => $setting['sanitize_callback'],
+				'sanitize_callback' => isset( $setting['sanitize_callback'] ) ? $setting['sanitize_callback'] : '',
 				'type'              => 'option',
 				'transport'         => isset( $setting['transport'] ) ? $setting['transport'] : 'refresh',
 			)
 		);
-	}
-
-	/**
-	 * @param $input
-	 * @return int
-	 */
-	public function one_zero( $input ) {
-		return (int) (bool) $input;
 	}
 }
