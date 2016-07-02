@@ -35,6 +35,11 @@ class Display_Featured_Image_Genesis {
 	protected $common;
 
 	/**
+	 * @var $customizer Display_Featured_Image_Genesis_Customizer
+	 */
+	protected $customizer;
+
+	/**
 	 * All archive description functions.
 	 * @var Display_Featured_Image_Genesis_Description $description
 	 */
@@ -76,16 +81,18 @@ class Display_Featured_Image_Genesis {
 	 * @param $admin
 	 * @param $author
 	 * @param $common
+	 * @param $customizer
 	 * @param $description
 	 * @param $output
 	 * @param $rss
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	function __construct( $admin, $author, $common, $description, $output, $post_meta, $rss, $settings, $taxonomies ) {
+	function __construct( $admin, $author, $common, $customizer, $description, $output, $post_meta, $rss, $settings, $taxonomies ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
+		$this->customizer  = $customizer;
 		$this->description = $description;
 		$this->output      = $output;
 		$this->post_meta   = $post_meta;
@@ -121,6 +128,8 @@ class Display_Featured_Image_Genesis {
 		add_filter( 'genesis_get_image_default_args', array( $this->output, 'change_thumbnail_fallback' ) );
 		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ), 10, 2 );
 		add_action( 'save_post', array( $this->post_meta, 'save_meta' ) );
+
+		add_action( 'customize_register', array( $this->customizer, 'customizer' ) );
 
 	}
 
