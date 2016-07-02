@@ -46,6 +46,12 @@ class Display_Featured_Image_Genesis {
 	protected $description;
 
 	/**
+	 * Manages help tabs for settings page.
+	 * @var $helptabs Display_Featured_Image_Genesis_HelpTabs
+	 */
+	protected $helptabs;
+
+	/**
 	 * Handles all image output functionality
 	 * @var Display_Featured_Image_Genesis_Output $output
 	 */
@@ -88,12 +94,13 @@ class Display_Featured_Image_Genesis {
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	function __construct( $admin, $author, $common, $customizer, $description, $output, $post_meta, $rss, $settings, $taxonomies ) {
+	function __construct( $admin, $author, $common, $customizer, $description, $helptabs, $output, $post_meta, $rss, $settings, $taxonomies ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
 		$this->customizer  = $customizer;
 		$this->description = $description;
+		$this->helptabs    = $helptabs;
 		$this->output      = $output;
 		$this->post_meta   = $post_meta;
 		$this->rss         = $rss;
@@ -120,6 +127,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
+		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this->helptabs, 'help' ) );
 		add_action( 'get_header', array( $this->output, 'manage_output' ) );
 		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );

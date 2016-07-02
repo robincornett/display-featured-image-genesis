@@ -52,6 +52,15 @@ class Display_Featured_Image_Genesis_Helper {
 	}
 
 	/**
+	 * Set which tab is considered active.
+	 * @return string
+	 * @since 2.5.0
+	 */
+	protected function get_active_tab() {
+		return isset( $_GET['tab'] ) ? $_GET['tab'] : 'main';
+	}
+
+	/**
 	 * Echoes out the section description.
 	 * @param  string $description text string for description
 	 * @return string              as paragraph and escaped

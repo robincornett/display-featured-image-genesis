@@ -59,7 +59,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		);
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this, 'help' ) );
 
 		$sections     = $this->register_sections();
 		$this->fields = $this->register_fields();
@@ -116,15 +115,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$output .= '</div>';
 
 		return $output;
-	}
-
-	/**
-	 * Set which tab is considered active.
-	 * @return string
-	 * @since 2.5.0
-	 */
-	protected function get_active_tab() {
-		return isset( $_GET['tab'] ) ? $_GET['tab'] : 'main';
 	}
 
 	/**
@@ -506,141 +496,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			return (int) $new_value;
 		}
 		return (int) $old_value;
-	}
-
-	/**
-	 * Help tab for media screen
-	 * @return help tab with verbose information for plugin
-	 *
-	 * @since 1.1.0
-	 */
-	public function help() {
-		$screen = get_current_screen();
-		$large  = $this->common->minimum_backstretch_width();
-
-		$height_help  = '<h3>' . __( 'Height', 'display-featured-image-genesis' ) . '</h3>';
-		$height_help .= '<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your backstretch image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the backstretch image, making it shorter.', 'display-featured-image-genesis' ) . '</p>';
-		$height_help .= '<p>' . __( 'The plugin determines the size of your backstretch image based on the size of the user\'s browser window. Changing the "Height" setting tells the plugin to subtract that number of pixels from the measured height of the user\'s window, regardless of the size of that window.', 'display-featured-image-genesis' ) . '</p>';
-		$height_help .= '<p>' . __( 'If you need to control the size of the backstretch Featured Image output with more attention to the user\'s screen size, you will want to consider a CSS approach instead. Check the readme for an example.', 'display-featured-image-genesis' ) . '</p>';
-
-		$default_help  = '<h3>' . __( 'Default Featured Image', 'display-featured-image-genesis' ) . '</h3>';
-		$default_help .= '<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives.', 'display-featured-image-genesis' ) . '</p>';
-		$default_help .= '<p>' . sprintf(
-			__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
-			absint( $large + 1 )
-		) . '</p>';
-
-		$skipfront_help  = '<h3>' . __( 'Skip Front Page', 'display-featured-image-genesis' ) . '</h3>';
-		$skipfront_help .= '<p>' . __( 'If you set a Default Featured Image, it will show on every post/page of your site. This may not be desirable on child themes with a front page constructed with widgets, so you can select this option to prevent the Featured Image from showing on the front page. Checking this will prevent the Featured Image from showing on the Front Page, even if you have set an image for that page individually.', 'display-featured-image-genesis' ) . '</p>';
-		$skipfront_help .= '<p>' . sprintf(
-			__( 'If you want to prevent entire groups of posts from not using the Featured Image, you will want to <a href="%s" target="_blank">add a filter</a> to your theme functions.php file.', 'display-featured-image-genesis' ),
-			esc_url( 'https://github.com/robincornett/display-featured-image-genesis#how-do-i-stop-the-featured-image-action-from-showing-on-my-custom-post-types' )
-		) . '</p>';
-
-		$keeptitles_help  = '<h3>' . __( 'Do Not Move Titles', 'display-featured-image-genesis' ) . '</h3>';
-		$keeptitles_help .= '<p>' . __( 'This setting applies to the backstretch Featured Image only. It allows you to keep the post/page titles in their original location, instead of overlaying the new image.', 'display-featured-image-genesis' ) . '</p>';
-
-		$excerpts_help  = '<h3>' . __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ) . '</h3>';
-		$excerpts_help .= '<p>' . __( 'By default, archive descriptions (set on the Genesis Archive Settings pages) show below the Default Featured Image, while the archive title displays on top of the image. If you check this box, all headlines, descriptions, and optional excerpts will display in a box overlaying the Featured Image.', 'display-featured-image-genesis' ) . '</p>';
-
-		$paged_help  = '<h3>' . __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ) . '</h3>';
-		$paged_help .= '<p>' . __( 'Featured Images do not normally show on the second (and following) page of term/blog/post archives. Check this setting to ensure that they do.', 'display-featured-image-genesis' ) . '</p>';
-
-		$feed_help  = '<h3>' . __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ) . '</h3>';
-		$feed_help .= '<p>' . __( 'This plugin does not add the Featured Image to your content, so normally you will not see your Featured Image in the feed. If you select this option, however, the Featured Image (if it is set) will be added to each entry in your RSS feed.', 'display-featured-image-genesis' ) . '</p>';
-		$feed_help .= '<p>' . __( 'If your RSS feed is set to Full Text, the Featured Image will be added to the entry content. If it is set to Summary, the Featured Image will be added to the excerpt instead.', 'display-featured-image-genesis' ) . '</p>';
-
-		$archive_help  = '<h3>' . __( 'Archive Thumbnails', 'display-featured-image-genesis' ) . '</h3>';
-		$archive_help .= '<p>' . __( 'This setting will set a fallback image for all content types in your archives. If there is no featured image, and no images uploaded to the post/page, the plugin will use the featured image for the term, or post type, as the thumbnail.', 'display-featured-image-genesis' ) . '</p>';
-		$archive_help .= '<p>' . __( 'The thumbnail will adhere to the settings from the Genesis settings page.', 'display-featured-image-genesis' ) . '</p>';
-
-		$special_help  = '<h3>' . __( 'Featured Images for Special Pages', 'display-featured-image-genesis' ) . '</h3>';
-		$special_help .= '<p>' . __( 'You can now set a featured image for search results and 404 (no results found) pages.', 'display-featured-image-genesis' ) . '</p>';
-
-		$cpt_help  = '<h3>' . __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ) . '</h3>';
-		$cpt_help .= '<p>' . __( 'Some plugins and/or developers extend the power of WordPress by using Custom Post Types to create special kinds of content.', 'display-featured-image-genesis' ) . '</p>';
-		$cpt_help .= '<p>' . __( 'Since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' ) . '</p>';
-		$cpt_help .= '<p>' . __( 'Featured Images for archives can be smaller than the Default Featured Image, but still need to be larger than your site\'s "medium" image size.', 'display-featured-image-genesis' ) . '</p>';
-
-		$skip_help  = '<h3>' . __( 'Skip Content Types', 'display-featured-image-genesis' ) . '</h3>';
-		$skip_help .= '<p>' . __( 'Tell WordPress which content types should never have the featured image added.', 'display-featured-image-genesis' ) . '</p>';
-
-		$fallback_help  = '<h3>' . __( 'Fallback Images', 'display-featured-image-genesis' ) . '</h3>';
-		$fallback_help .= '<p>' . __( 'Instead of using the content type\'s Featured Image on singular posts, use one of the fallback images. This may be assigned to a term within a taxonomy, or be the content type featured image, or be the sitewide default image.', 'display-featured-image-genesis' ) . '</p>';
-		$fallback_help .= '<p>' . __( 'If no fallback image exists, no featured image will display, as this will shortcut the check for the post\'s featured image.' , 'display-featured-image-genesis' ) . '</p>';
-
-		$help_tabs = array(
-			array(
-				'id'      => 'displayfeaturedimage_less_header-help',
-				'title'   => __( 'Height', 'display-featured-image-genesis' ),
-				'content' => $height_help,
-			),
-			array(
-				'id'      => 'displayfeaturedimage_default-help',
-				'title'   => __( 'Default Featured Image', 'display-featured-image-genesis' ),
-				'content' => $default_help,
-			),
-			array(
-				'id'      => 'displayfeaturedimage_exclude_front-help',
-				'title'   => __( 'Skip Front Page', 'display-featured-image-genesis' ),
-				'content' => $skipfront_help,
-			),
-			array(
-				'id'      => 'displayfeaturedimage_keep_titles-help',
-				'title'   => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
-				'content' => $keeptitles_help,
-			),
-			array(
-				'id'      => 'displayfeaturedimage_excerpts-help',
-				'title'   => __( 'Move Excerpts', 'display-featured-image-genesis' ),
-				'content' => $excerpts_help,
-			),
-			array(
-				'id'      => 'displayfeaturedimage_paged-help',
-				'title'   => __( 'Subsequent Pages', 'display-featured-image-genesis' ),
-				'content' => $paged_help,
-			),
-			array(
-				'id'      => 'displayfeaturedimage_feed-help',
-				'title'   => __( 'RSS Feed', 'display-featured-image-genesis' ),
-				'content' => $feed_help,
-			),
-			array(
-				'id'      => 'displayfeaturedimage_archive-help',
-				'title'   => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
-				'content' => $archive_help,
-			),
-		);
-		$active_tab = $this->get_active_tab();
-		if ( 'cpt' === $active_tab ) {
-			$help_tabs = array(
-				array(
-					'id'      => 'displayfeaturedimage_special-help',
-					'title'   => __( 'Special Pages', 'display-featured-image-genesis' ),
-					'content' => $special_help,
-				),
-				array(
-					'id'      => 'displayfeaturedimage_skip-help',
-					'title'   => __( 'Skip Content Types', 'display-featured-image-genesis' ),
-					'content' => $skip_help,
-				),
-				array(
-					'id'      => 'displayfeaturedimage_fallback-help',
-					'title'   => __( 'Fallback Images', 'display-featured-image-genesis' ),
-					'content' => $fallback_help,
-				),
-			);
-			if ( $this->get_content_types() ) {
-				$help_tabs[] = array(
-					'id'      => 'displayfeaturedimage_cpt-help',
-					'title'   => __( 'Custom Content Types', 'display-featured-image-genesis' ),
-					'content' => $cpt_help,
-				);
-			}
-		}
-		foreach ( $help_tabs as $tab ) {
-			$screen->add_help_tab( $tab );
-		}
 	}
 
 	/**
