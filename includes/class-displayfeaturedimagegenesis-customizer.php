@@ -137,7 +137,6 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 			'setting'     => 'default',
 			'description' => sprintf( __( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.' , 'display-featured-image-genesis' ), absint( $size + 1 ) ),
 			'label'       => __( 'Default Image', 'display-featured-image-genesis' ),
-			'transport'   => 'postMessage',
 		);
 	}
 
