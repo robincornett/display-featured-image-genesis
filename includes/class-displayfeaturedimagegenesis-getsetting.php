@@ -2,12 +2,16 @@
 
 /**
  * Class DisplayFeaturedImageGenesisDoSetting
- * @package DisplayFeaturedImageGenesis
+ * @package Display_Featured_Image_Genesis
  * @copyright 2016 Robin Cornett
  */
 class DisplayFeaturedImageGenesisGetSetting {
-	
 
+	/**
+	 * Define the default plugin settings.
+	 * @return mixed|void
+	 * @since 2.6.0
+	 */
 	public function defaults() {
 		return apply_filters( 'displayfeaturedimagegenesis_defaults', array(
 			'less_header'   => 0,

@@ -30,6 +30,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 * Adds the individual sections, settings, and controls to the theme customizer
 	 * @param $wp_customize WP_Customize_Manager
 	 * @uses add_section() adds a section to the customizer
+	 * @since 2.6.0
 	 */
 	public function customizer( $wp_customize ) {
 
@@ -53,6 +54,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	/**
 	 * Build the Display Featured Image for Genesis Customizer settings panel.
 	 * @param $wp_customize
+	 * @since 2.6.0
 	 */
 	protected function build_fields( $wp_customize ) {
 		$numbers = $this->number_fields();
@@ -74,7 +76,9 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	}
 
 	/**
+	 * Define the number fields (height, max-height) for the customizer.
 	 * @return array
+	 * @since 2.6.0
 	 */
 	function number_fields() {
 		return array(
@@ -99,6 +103,11 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 		);
 	}
 
+	/**
+	 * Define all the checkbox fields for the customizer.
+	 * @return array
+	 * @since 2.6.0
+	 */
 	protected function checkbox_fields() {
 		return array(
 			array(
@@ -129,6 +138,11 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 		);
 	}
 
+	/**
+	 * Define the control setting for the default image.
+	 * @return array
+	 * @since 2.6.0
+	 */
 	protected function default_image() {
 		$common = new Display_Featured_Image_Genesis_Common();
 		$size   = $common->minimum_backstretch_width();
@@ -142,27 +156,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	/**
 	 * @param $wp_customize WP_Customize_Manager
 	 * @param $setting
-	 */
-	protected function do_color_setting( $wp_customize, $setting ) {
-
-		$this->add_setting( $wp_customize, $setting );
-		$wp_customize->add_control(
-			new WP_Customize_Color_Control(
-				$wp_customize,
-				$this->section . '[' . $setting['setting'] . ']',
-				array(
-					'description' => $setting['description'],
-					'label'       => $setting['label'],
-					'section'     => $this->section,
-					'settings'    => $this->section . '[' . $setting['setting'] . ']',
-				)
-			)
-		);
-	}
-
-	/**
-	 * @param $wp_customize WP_Customize_Manager
-	 * @param $setting
+	 * @since 2.6.0
 	 */
 	protected function do_image_setting( $wp_customize, $setting ) {
 		$this->add_setting( $wp_customize, $setting );
@@ -183,6 +177,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	/**
 	 * @param $wp_customize WP_Customize_Manager
 	 * @param $setting
+	 * @since 2.6.0
 	 */
 	protected function add_control( $wp_customize, $setting ) {
 		$this->add_setting( $wp_customize, $setting );
@@ -202,6 +197,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	/**
 	 * @param $wp_customize WP_Customize_Manager
 	 * @param $setting
+	 * @since 2.6.0
 	 */
 	protected function add_setting( $wp_customize, $setting ) {
 		$wp_customize->add_setting(

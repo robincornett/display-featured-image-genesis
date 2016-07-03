@@ -1,11 +1,11 @@
 <?php
 /**
- * Simple plugin to vary how the post/page featured image displays
+ * This plugin works within the Genesis Framework, to display featured images in beautiful and dynamic ways.
  *
  * @package   DisplayFeaturedImageGenesis
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
- * @link      http://robincornett.com
+ * @link      https://robincornett.com
  * @copyright 2014-2016 Robin Cornett Creative, LLC
  *
  * @wordpress-plugin
@@ -14,7 +14,7 @@
  * Description:       This plugin works within the Genesis Framework, to display featured images in beautiful and dynamic ways.
  * Version:           2.5.1
  * Author:            Robin Cornett
- * Author URI:        http://robincornett.com
+ * Author URI:        https://robincornett.com
  * Text Domain:       display-featured-image-genesis
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

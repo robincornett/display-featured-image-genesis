@@ -7,7 +7,7 @@
  * @package   DisplayFeaturedImageGenesis
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
- * @link      http://robincornett.com
+ * @link      https://robincornett.com
  * @copyright 2014-2016 Robin Cornett Creative, LLC
  * @since 1.2.1
  */
@@ -18,7 +18,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public $version = '2.5.1';
+	public $version = '2.6.0';
 
 	/**
 	 * set and retrieve variables for the featured image.
