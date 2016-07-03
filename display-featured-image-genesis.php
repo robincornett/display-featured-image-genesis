@@ -32,6 +32,7 @@ if ( ! defined( 'DISPLAYFEATUREDIMAGEGENESIS_BASENAME' ) ) {
 function display_featured_image_genesis_require() {
 	$files = array(
 		'class-displayfeaturedimagegenesis',
+		'class-displayfeaturedimagegenesis-getsetting',
 		'class-displayfeaturedimagegenesis-helper',
 		'class-displayfeaturedimagegenesis-admin',
 		'class-displayfeaturedimagegenesis-author',

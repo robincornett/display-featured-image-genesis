@@ -33,8 +33,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 */
 	public function customizer( $wp_customize ) {
 
-		$this->settings = new Display_Featured_Image_Genesis_Settings();
-		$this->defaults = $this->settings->defaults();
+		$this->defaults = $this->defaults();
 		$setting = get_option( 'displayfeaturedimagegenesis', false );
 		if ( ! $setting ) {
 			add_option( 'displayfeaturedimagegenesis', $this->defaults );

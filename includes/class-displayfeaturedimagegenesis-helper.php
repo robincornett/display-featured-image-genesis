@@ -7,7 +7,7 @@
  * @copyright 2014-2016 Robin Cornett Creative, LLC
  */
 
-class Display_Featured_Image_Genesis_Helper {
+class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisGetSetting {
 
 	protected $setting;
 
