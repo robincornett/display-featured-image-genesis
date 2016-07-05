@@ -73,6 +73,9 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
 
 		$post_type = get_post_type_object( $instance['post_type'] );
+		if ( ! $post_type ) {
+			return;
+		}
 		$option    = displayfeaturedimagegenesis_get_setting();
 		$image_id  = '';
 
