@@ -135,9 +135,9 @@ class Display_Featured_Image_Genesis_Output {
 	public function localize_scripts() {
 		// backstretch settings which can be filtered
 		$backstretch_vars = apply_filters( 'display_featured_image_genesis_backstretch_variables', array(
-			'centeredX' => true,
-			'centeredY' => true,
-			'fade'      => 750,
+			'centeredX' => $this->setting['centeredX'],
+			'centeredY' => $this->setting['centeredY'],
+			'fade'      => $this->setting['fade'],
 		) );
 
 		$image_id     = Display_Featured_Image_Genesis_Common::set_image_id();

@@ -14,19 +14,22 @@ class DisplayFeaturedImageGenesisGetSetting {
 	 */
 	public function defaults() {
 		return apply_filters( 'displayfeaturedimagegenesis_defaults', array(
-			'less_header'   => 0,
-			'default'       => '',
-			'exclude_front' => 0,
-			'keep_titles'   => 0,
-			'move_excerpts' => 0,
-			'is_paged'      => 0,
-			'feed_image'    => 0,
-			'thumbnails'    => 0,
-			'post_types'    => array(),
-			'skip'          => array(),
-			'fallback'      => array(),
-			'max_height'    => '',
+			'less_header'    => 0,
+			'default'        => '',
+			'exclude_front'  => 0,
+			'keep_titles'    => 0,
+			'move_excerpts'  => 0,
+			'is_paged'       => 0,
+			'feed_image'     => 0,
+			'thumbnails'     => 0,
+			'post_types'     => array(),
+			'skip'           => array(),
+			'fallback'       => array(),
+			'max_height'     => '',
 			'always_default' => 0,
+			'centeredX'      => 1,
+			'centeredY'      => 1,
+			'fade'           => 750,
 		) );
 	}
 

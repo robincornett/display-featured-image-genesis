@@ -148,6 +148,26 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	}
 
 	/**
+	 * radio buttons
+	 * @return string radio button output
+	 * @since 2.6.0
+	 */
+	public function do_radio_buttons( $args ) {
+		echo '<fieldset>';
+		printf( '<legend class="screen-reader-text">%s</legend>', $args['legend'] );
+		foreach ( $args['buttons'] as $key => $button ) {
+			printf( '<label for="%5$s[%1$s][%2$s]" style="margin-right:12px !important;"><input type="radio" id="%5$s[%1$s][%2$s]" name="%5$s[%1$s]" value="%2$s"%3$s />%4$s</label>  ',
+				esc_attr( $args['setting'] ),
+				esc_attr( $key ),
+				checked( $key, $this->setting[ $args['setting'] ], false ),
+				esc_attr( $button ),
+				esc_attr( $this->page )
+			);
+		}
+		echo '</fieldset>';
+	}
+
+	/**
 	 * Generic callback to display a field description.
 	 * @param  string $args setting name used to identify description callback
 	 * @return string       Description to explain a field.

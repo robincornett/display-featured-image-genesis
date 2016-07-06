@@ -100,10 +100,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 2.5.0
 	 */
 	protected function do_tabs( $active_tab ) {
-		$tabs = array(
-			'main' => array( 'id' => 'main', 'tab' => __( 'Main', 'display-featured-image-genesis' ) ),
-			'cpt'  => array( 'id' => 'cpt', 'tab' => __( 'Content Types', 'display-featured-image-genesis' ) ),
-		);
+		$tabs    = $this->define_tabs();
 		$output  = '<div class="nav-tab-wrapper">';
 		$output .= sprintf( '<h2 id="settings-tabs" class="screen-reader-text">%s</h2>', __( 'Settings Tabs', 'display-featured-image-genesis' ) );
 		$output .= '<ul>';
@@ -128,6 +125,19 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
+	 * Define tabs for the settings page.
+	 * @return array
+	 * @since 2.6.0
+	 */
+	protected function define_tabs() {
+		return array(
+			'main'  => array( 'id' => 'main', 'tab' => __( 'Main', 'display-featured-image-genesis' ) ),
+			'style' => array( 'id' => 'style', 'tab' => __( 'Backstretch Output', 'display-featured-image-genesis' ) ),
+			'cpt'   => array( 'id' => 'cpt', 'tab' => __( 'Content Types', 'display-featured-image-genesis' ) ),
+		);
+	}
+
+	/**
 	 * Register plugin settings page sections
 	 *
 	 * @since 2.3.0
@@ -137,6 +147,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			'main' => array(
 				'id'    => 'main',
 				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
+			),
+			'style' => array(
+				'id'    => 'style',
+				'title' => __( 'Display Settings', 'display-featured-image-genesis' ),
 			),
 			'cpt' => array(
 				'id'    => 'cpt',
@@ -153,25 +167,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function register_fields() {
 
-		return array_merge( $this->define_main_fields(), $this->define_cpt_fields() );
+		return array_merge( $this->define_main_fields(), $this->define_style_fields(), $this->define_cpt_fields() );
 	}
 
+	/**
+	 * Define the fields for the main/first tab.
+	 * @return array
+	 */
 	protected function define_main_fields() {
 		return array(
-			array(
-				'id'       => 'less_header',
-				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
-				'callback' => 'do_number',
-				'section'  => 'main',
-				'args'     => array( 'setting' => 'less_header', 'label' => __( 'pixels to remove', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 400 ),
-			),
-			array(
-				'id'       => 'max_height',
-				'title'    => __( 'Maximum Height' , 'display-featured-image-genesis' ),
-				'callback' => 'do_number',
-				'section'  => 'main',
-				'args'     => array( 'setting' => 'max_height', 'label' => __( 'pixels', 'display-featured-image-genesis' ), 'min' => 100, 'max' => 1000 ),
-			),
 			array(
 				'id'       => 'default',
 				'title'    => __( 'Default Featured Image', 'display-featured-image-genesis' ),
@@ -230,6 +234,62 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		);
 	}
 
+	/**
+	 * Define the fields for the style tab.
+	 * @return array
+	 */
+	protected function define_style_fields() {
+		return array(
+			array(
+				'id'       => 'less_header',
+				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
+				'callback' => 'do_number',
+				'section'  => 'style',
+				'args'     => array( 'setting' => 'less_header', 'label' => __( 'pixels to remove', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 400 ),
+			),
+			array(
+				'id'       => 'max_height',
+				'title'    => __( 'Maximum Height' , 'display-featured-image-genesis' ),
+				'callback' => 'do_number',
+				'section'  => 'style',
+				'args'     => array( 'setting' => 'max_height', 'label' => __( 'pixels', 'display-featured-image-genesis' ), 'min' => 100, 'max' => 1000 ),
+			),
+			array(
+				'id'       => 'centeredX',
+				'title'    => __( 'Center Horizontally' , 'display-featured-image-genesis' ),
+				'callback' => 'do_radio_buttons',
+				'section'  => 'style',
+				'args'     => array(
+					'setting' => 'centeredX',
+					'buttons' => $this->pick_center(),
+					'legend'  => __( 'Center the backstretch image on the horizontal axis?', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'id'       => 'centeredY',
+				'title'    => __( 'Center Vertically' , 'display-featured-image-genesis' ),
+				'callback' => 'do_radio_buttons',
+				'section'  => 'style',
+				'args'     => array(
+					'setting' => 'centeredY',
+					'buttons' => $this->pick_center(),
+					'legend'  => __( 'Center the backstretch image on the vertical axis?', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'id'       => 'fade',
+				'title'    => __( 'Fade' , 'display-featured-image-genesis' ),
+				'callback' => 'do_number',
+				'section'  => 'style',
+				'args'     => array( 'setting' => 'fade', 'label' => __( 'milliseconds', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 20000 ),
+			),
+		);
+	}
+
+	/**
+	 * Define the fields for the content types tab.
+	 * @return array
+	 */
 	protected function define_cpt_fields() {
 		$fields = array(
 			array(
@@ -278,7 +338,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 1.1.0
 	 */
 	public function main_section_description() {
-		$description = __( 'The Display Featured Image for Genesis plugin has just a few optional settings. Check the Help tab for more information. ', 'display-featured-image-genesis' );
+		$description = __( 'Use these settings to modify the plugin behavior throughout your site. Check the Help tab for more information. ', 'display-featured-image-genesis' );
+		$this->print_section_description( $description );
+	}
+
+	/**
+	 * Style section description
+	 */
+	public function style_section_description() {
+		$description = __( 'These settings modify the output style/methods for the backstretch image.', 'display-featured-image-genesis' );
 		$this->print_section_description( $description );
 	}
 
@@ -392,6 +460,16 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
+	 * @return array
+	 */
+	public function pick_center() {
+		return array(
+			1 => __( 'Center', 'display-featured-image-genesis' ),
+			0 => __( 'Do Not Center', 'display-featured-image-genesis' ),
+		);
+	}
+
+	/**
 	 * validate all inputs
 	 * @param  string $new_value various settings
 	 * @return string            number or URL
@@ -416,6 +494,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				$new_value[ $field['id'] ] = $this->one_zero( $new_value[ $field['id'] ] );
 			} elseif ( 'do_number' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['args']['min'], $field['args']['max'] );
+			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
+				$new_value[ $field['id'] ] = (int) $new_value[ $field['id'] ];
 			}
 		}
 
