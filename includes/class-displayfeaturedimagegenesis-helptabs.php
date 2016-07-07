@@ -12,7 +12,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * Base id for the help tabs
 	 * @var string $id
 	 */
-	protected $id = 'displayfeaturedimage-help';
+	protected $id = 'displayfeaturedimage-help-';
 
 	/**
 	 * Help tab for settings screen
@@ -40,6 +40,26 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 
 		$active_tab = $this->get_active_tab();
 		switch ( $active_tab ) {
+			case 'style':
+				$help_tabs = array(
+					array(
+						'id'      => $this->id . 'less_header',
+						'title'   => __( 'Height', 'display-featured-image-genesis' ),
+						'content' => $this->height(),
+					),
+					array(
+						'id'      => $this->id . 'centering',
+						'title'   => __( 'Centering', 'display-featured-image-genesis' ),
+						'content' => $this->centering(),
+					),
+					array(
+						'id'      => $this->id . 'fade',
+						'title'   => __( 'Fade', 'display-featured-image-genesis' ),
+						'content' => $this->fade(),
+					),
+				);
+				break;
+
 			case 'cpt':
 				$help_tabs = array(
 					array(
@@ -69,11 +89,6 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 
 			default:
 				$help_tabs = array(
-					array(
-						'id'      => $this->id . 'less_header',
-						'title'   => __( 'Height', 'display-featured-image-genesis' ),
-						'content' => $this->height(),
-					),
 					array(
 						'id'      => $this->id . 'default',
 						'title'   => __( 'Default Featured Image', 'display-featured-image-genesis' ),
@@ -112,7 +127,6 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 				);
 				break;
 		}
-
 
 		return $help_tabs;
 	}
@@ -260,5 +274,26 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 		$help .= '<p>' . __( 'If no fallback image exists, no featured image will display, as this will shortcut the check for the post\'s featured image.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
+	}
+
+	/**
+	 * Help text for the centering settings.
+	 * @return string
+	 * @since 2.6.0
+	 */
+	protected function centering() {
+		$help  = '<p>' . __( 'By default, backstretch images are centered both vertically and horizontally. If centering is disabled horizontally, the image will start at left edge of the screen; if vertically, the top of the image will align with the top of the screen.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'Depending on the screen size and orientation, this can make a significant difference in the output of the image. Please note that although not all images will center well, not all images will <em>not</em> center well, either.', 'display-featured-image-genesis' ) . '</p>';
+
+		return $help;
+	}
+
+	/**
+	 * Help text for the fade setting.
+	 * @return string
+	 * @since 2.6.0
+	 */
+	protected function fade() {
+		return '<p>' . __( 'By default, the backstretch image takes 750 milliseconds to fade in once the image has loaded into the browser. You can make the image fade in more quickly or slowly, as you prefer.', 'display-featured-image-genesis' ) . '</p>';
 	}
 }
