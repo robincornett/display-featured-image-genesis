@@ -57,22 +57,32 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 * @since 2.6.0
 	 */
 	protected function build_fields( $wp_customize ) {
-		$numbers = $this->number_fields();
-		foreach ( $numbers as $field ) {
-			$number['sanitize_callback'] = 'absint';
-			$number['type']              = 'number';
-			$this->add_control( $wp_customize, $field );
-		}
 
 		$this->do_image_setting( $wp_customize, $this->default_image() );
 
-		$checkboxes = $this->checkbox_fields();
+		$checkboxes = $this->main_fields();
 		foreach ( $checkboxes as $checkbox ) {
 			$checkbox['sanitize_callback'] = array( $this, 'one_zero' );
 			$checkbox['type']              = 'checkbox';
 			$this->add_control( $wp_customize, $checkbox );
 		}
 
+		$numbers = $this->height_fields();
+		foreach ( $numbers as $field ) {
+			$field['sanitize_callback'] = 'absint';
+			$field['type']              = 'number';
+			$this->add_control( $wp_customize, $field );
+		}
+
+		$radios = $this->radio_fields();
+		foreach ( $radios as $radio ) {
+			$radio['type']              = 'radio';
+			$radio['choices']           = $this->pick_center();
+			$radio['sanitize_callback'] = 'absint';
+			$this->add_control( $wp_customize, $radio );
+		}
+
+		$this->add_control( $wp_customize, $this->fade() );
 	}
 
 	/**
@@ -80,7 +90,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 * @return array
 	 * @since 2.6.0
 	 */
-	function number_fields() {
+	function height_fields() {
 		return array(
 			array(
 				'setting'     => 'less_header',
@@ -104,11 +114,28 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	}
 
 	/**
+	 * Define the fade field for the customizer.
+	 * @return array
+	 */
+	protected function fade() {
+		return array(
+			'setting'           => 'fade',
+			'label'             => __( 'Fade', 'display-featured-image-genesis' ),
+			'description'       => __( 'Time (in milliseconds) it will take for the backstretch image to appear.', 'display-featured-image-genesis' ),
+			'input_attrs'       => array(
+				'min' => 0,
+				'max' => 10000,
+			),
+			'sanitize_callback' => 'absint',
+		);
+	}
+
+	/**
 	 * Define all the checkbox fields for the customizer.
 	 * @return array
 	 * @since 2.6.0
 	 */
-	protected function checkbox_fields() {
+	protected function main_fields() {
 		return array(
 			array(
 				'setting'     => 'always_default',
@@ -135,6 +162,36 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 				'label'       => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
 				'description' => __( 'Use term/post type fallback images for content archive thumbnails?', 'display-featured-image-genesis' ),
 			),
+		);
+	}
+
+	/**
+	 * Define the radio/centering fields for the customizer.
+	 * @return array
+	 */
+	protected function radio_fields() {
+		return array(
+			array(
+				'setting'     => 'centeredX',
+				'label'       => __( 'Center Horizontally', 'display-featured-image-genesis' ),
+				'description' => __( 'Center the backstretch image on the horizontal axis?', 'display-featured-image-genesis' ),
+			),
+			array(
+				'setting'     => 'centeredY',
+				'label'       => __( 'Center Vertically', 'display-featured-image-genesis' ),
+				'description' => __( 'Center the backstretch image on the vertical axis?', 'display-featured-image-genesis' ),
+			),
+		);
+	}
+
+	/**
+	 * Define the choices for the centering settings.
+	 * @return array
+	 */
+	protected function pick_center() {
+		return array(
+			1 => __( 'Center', 'display-featured-image-genesis' ),
+			0 => __( 'Do Not Center', 'display-featured-image-genesis' ),
 		);
 	}
 

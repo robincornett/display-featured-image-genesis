@@ -495,7 +495,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			} elseif ( 'do_number' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['args']['min'], $field['args']['max'] );
 			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
-				$new_value[ $field['id'] ] = (int) $new_value[ $field['id'] ];
+				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
 			}
 		}
 
