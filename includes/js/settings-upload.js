@@ -23,7 +23,8 @@ jQuery( document ).ready( function ( $ ) {
 			button: {
 				text: ( [ objectL10n.text ] )
 			},
-			multiple: false
+			multiple: false,
+			library: { type : 'image' }
 		});
 
 		//When a file is selected, grab the URL and set it as the text field's value
