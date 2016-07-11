@@ -308,13 +308,15 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			$class   = 'invalid';
 		}
 
-		$reset = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
-		add_settings_error(
-			$old_value,
-			esc_attr( $class ),
-			esc_attr( $message . $reset ),
-			'error'
-		);
+		$message .= sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
+		if ( ! is_customize_preview() ) {
+			add_settings_error(
+				$old_value,
+				esc_attr( $class ),
+				esc_attr( $message ),
+				'error'
+			);
+		}
 		return (int) $old_value;
 	}
 

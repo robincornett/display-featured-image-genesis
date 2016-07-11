@@ -27,6 +27,12 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	protected $defaults;
 
 	/**
+	 * Plugin setting from database.
+	 * @var array $setting
+	 */
+	protected $setting;
+
+	/**
 	 * Adds the individual sections, settings, and controls to the theme customizer
 	 * @param $wp_customize WP_Customize_Manager
 	 * @uses add_section() adds a section to the customizer
@@ -35,8 +41,8 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	public function customizer( $wp_customize ) {
 
 		$this->defaults = $this->defaults();
-		$setting = get_option( 'displayfeaturedimagegenesis', false );
-		if ( ! $setting ) {
+		$this->setting  = get_option( 'displayfeaturedimagegenesis', false );
+		if ( ! $this->setting ) {
 			add_option( 'displayfeaturedimagegenesis', $this->defaults );
 		}
 		$wp_customize->add_section(
@@ -203,10 +209,12 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	protected function default_image() {
 		$common = new Display_Featured_Image_Genesis_Common();
 		$size   = $common->minimum_backstretch_width();
+
 		return array(
-			'setting'     => 'default',
-			'description' => sprintf( __( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.' , 'display-featured-image-genesis' ), absint( $size + 1 ) ),
-			'label'       => __( 'Default Image', 'display-featured-image-genesis' ),
+			'setting'           => 'default',
+			'description'       => sprintf( __( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ), absint( $size + 1 ) ),
+			'label'             => __( 'Default Image', 'display-featured-image-genesis' ),
+			'sanitize_callback' => array( $this, 'send_image_to_validator' ),
 		);
 	}
 
@@ -267,5 +275,19 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 				'transport'         => isset( $setting['transport'] ) ? $setting['transport'] : 'refresh',
 			)
 		);
+	}
+
+	/**
+	 * Custom validation function for the default image--ensure image is appropriately sized.
+	 * @param $new_value
+	 *
+	 * @return string
+	 * @since 2.6.0
+	 */
+	public function send_image_to_validator( $new_value ) {
+		$common    = new Display_Featured_Image_Genesis_Common();
+		$size      = $common->minimum_backstretch_width();
+		$new_value = $this->validate_image( $new_value, $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size );
+		return $new_value;
 	}
 }
