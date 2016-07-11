@@ -294,21 +294,15 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
 		$old_value = displayfeaturedimagegenesis_check_image_id( $old_value );
 		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
+		$valid     = (bool) $this->is_valid_img_ext( $source[0] );
 		$width     = $source[1];
 
 		if ( $valid && $width > $size_to_check ) {
 			return (int) $new_value;
 		}
 
-		$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-		$class   = 'weetiny';
-		if ( ! $valid ) {
-			$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-			$class   = 'invalid';
-		}
-
-		$message .= sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
+		$class   = 'invalid';
+		$message = $this->image_validation_message( $valid, $label );
 		if ( ! is_customize_preview() ) {
 			add_settings_error(
 				$old_value,
@@ -316,8 +310,27 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 				esc_attr( $message ),
 				'error'
 			);
+		} elseif ( method_exists( 'WP_Customize_Setting', 'validate' ) ) {
+			return new WP_Error( esc_attr( $class ), esc_attr( $message ) );
 		}
 		return (int) $old_value;
+	}
+
+	/**
+	 * Define the error message for invalid images.
+	 * @param $valid bool false if the filetype is invalid.
+	 * @param $label string which context the image is from.
+	 *
+	 * @return string|void
+	 */
+	protected function image_validation_message( $valid, $label ) {
+		$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
+		if ( ! $valid && ! is_customize_preview() ) {
+			$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
+		}
+
+		$message .= sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
+		return $message;
 	}
 
 	/**
