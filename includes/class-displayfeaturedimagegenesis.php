@@ -89,6 +89,7 @@ class Display_Featured_Image_Genesis {
 	 * @param $common
 	 * @param $customizer
 	 * @param $description
+	 * @param $helptabs
 	 * @param $output
 	 * @param $rss
 	 * @param $settings
@@ -119,12 +120,15 @@ class Display_Featured_Image_Genesis {
 
 		require plugin_dir_path( __FILE__ ) . 'helper-functions.php';
 
+		// Plugin setup
 		add_action( 'after_setup_theme', array( $this, 'add_plugin_supports' ) );
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
-		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
+
+		// Admin
+		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		// Taxonomies, Author, Post Meta
 		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
