@@ -120,12 +120,12 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// search page
-		if ( is_search() && isset( $setting['post_type']['search'] ) ) {
+		if ( is_search() && ! empty( $setting['post_type']['search'] ) ) {
 			$image_id = $setting['post_type']['search'];
 		}
 
 		// 404
-		if ( is_404() && isset( $setting['post_type']['fourohfour'] ) ) {
+		if ( is_404() && ! empty( $setting['post_type']['fourohfour'] ) ) {
 			$image_id = $setting['post_type']['fourohfour'];
 		}
 
