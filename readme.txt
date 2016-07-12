@@ -175,8 +175,8 @@ This will follow the settings you choose in the Genesis Theme Settings.
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.5.0 =
-Settings page has been completely renovated, new bells and whistles for more customization. Much code tightening/cleanup.
+= 2.6.0 =
+New settings to control backstretch output, Customizer support, some tweaks and fixes.
 
 == Changelog ==
 
