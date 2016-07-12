@@ -260,7 +260,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * @since 2.6.0
 	 */
 	protected function skip() {
-		return '<p>' . __( 'Tell WordPress which content types should never have the featured image added.', 'display-featured-image-genesis' ) . '</p>';
+		return '<p>' . __( 'Tell WordPress which content types should never have the featured image added. This applies to singular views of the content type, not the archive. If there is an archive or default image set, that will show on the content type archive.', 'display-featured-image-genesis' ) . '</p>';
 	}
 
 	/**
