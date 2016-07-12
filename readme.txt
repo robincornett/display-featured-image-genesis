@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
 Tested up to: 4.5
-Stable tag: 2.5.1
+Stable tag: 2.6.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -20,7 +20,7 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image width is less than or equal to your Medium Media Setting.
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
-More words at [my site](http://robincornett.com/downloads/display-featured-image-genesis/).
+More words at [my site](https://robincornett.com/downloads/display-featured-image-genesis/).
 
 _Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress._
 
@@ -129,7 +129,7 @@ If you do not want the height of the backstretch image to be quite the height of
 
 _Note:_ __Display Featured Image for Genesis__ determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window, which is partly why you cannot set this to more than 400.
 
-If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead.
+If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet:
 
 	.big-leader {
 		max-height: 700px;
@@ -140,8 +140,10 @@ If you need to control the size of the backstretch Featured Image output with mo
 		.big-leader {
 			max-height: 300px;
 		}
-
 	}
+
+_Note:_ if your theme has CSS like this in it already, and you change the Maximum Height setting, it will (most likely) override your theme's styling, due to the order in which stylesheets load.
+
 
 = My (large) Featured Image is above my post/page title, and I want it to show below it instead. =
 
@@ -177,6 +179,17 @@ This will follow the settings you choose in the Genesis Theme Settings.
 Settings page has been completely renovated, new bells and whistles for more customization. Much code tightening/cleanup.
 
 == Changelog ==
+
+= 2.6.0 =
+* added: backstretch control settings
+* added: setting to always use default image
+* added: Customizer support for main plugin settings
+* added: setting to not move title over image on a per-post basis
+* added/fixed: alt attribute and aria value for backstretch featured image
+* fixed: aria attribute on widget images
+* fixed: media uploader limited to images
+* bugfix: nonce output causing some issues in post editor
+* bugfix: large image size filter no longer overrides earlier setting
 
 = 2.5.1 =
 * enhancement: large image can now be moved on archive pages

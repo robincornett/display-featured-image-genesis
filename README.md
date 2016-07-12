@@ -12,7 +12,7 @@ This plugin takes a different approach to how we use and display featured images
 * display _nothing_ if your featured image is already displayed in your content (the original image, not a resized version).
 * display a _default featured image_ as a backstretch image if one is uploaded.
 
-More words at [my site](http://robincornett.com/downloads/display-featured-image-genesis/).
+More words at [my site](https://robincornett.com/downloads/display-featured-image-genesis/).
 
 _Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress._
 
@@ -220,9 +220,20 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Credits
 
-* Built by [Robin Cornett](http://robincornett.com/)
+* Built by [Robin Cornett](https://robincornett.com/)
 
 ## Changelog
+
+### 2.6.0
+* added: backstretch control settings
+* added: setting to always use default image
+* added: Customizer support for main plugin settings
+* added: setting to not move title over image on a per-post basis
+* added/fixed: alt attribute and aria value for backstretch featured image
+* fixed: aria attribute on widget images
+* fixed: media uploader limited to images
+* bugfix: nonce output causing some issues in post editor
+* bugfix: large image size filter no longer overrides earlier setting
 
 ### 2.5.1
 * enhancement: large image can now be moved on archive pages
