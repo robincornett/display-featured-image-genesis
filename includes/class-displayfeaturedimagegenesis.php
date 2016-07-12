@@ -120,7 +120,6 @@ class Display_Featured_Image_Genesis {
 		require plugin_dir_path( __FILE__ ) . 'helper-functions.php';
 
 		add_action( 'after_setup_theme', array( $this, 'add_plugin_supports' ) );
-		add_action( 'admin_init', array( $this, 'check_settings' ) );
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
