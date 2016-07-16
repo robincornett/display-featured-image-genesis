@@ -555,10 +555,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @return int
 	 */
 	protected function check_value( $new_value, $old_value, $min, $max ) {
+		if ( empty( $new_value ) ) {
+			return '';
+		}
 		if ( $new_value >= $min && $new_value <= $max ) {
 			return (int) $new_value;
 		}
-		return $old_value;
+		return (int) $old_value;
 	}
 
 	/**
