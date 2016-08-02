@@ -13,10 +13,7 @@
 
 class Display_Featured_Image_Genesis_Admin {
 
-	protected $common;
-
 	public function set_up_columns() {
-		$this->common = new Display_Featured_Image_Genesis_Common();
 		$this->set_up_taxonomy_columns();
 		$this->set_up_post_type_columns();
 		$this->set_up_author_columns();
@@ -164,7 +161,7 @@ class Display_Featured_Image_Genesis_Admin {
 			<style type="text/css">
 				.column-featured_image { width: 105px; }
 				.column-featured_image img { margin: 0 auto; height: auto; width: auto; max-width: 60px; max-height: 80px; }
-				@media screen and (max-width: 782px) { .column-featured_image img { margin: 0; } }
+				@media screen and (max-width: 782px) { .column-featured_image { display: table-cell !important; width: 52px; } .column-featured_image img { margin: 0; max-width: 42px; } }
 			</style> <?php
 		}
 	}
