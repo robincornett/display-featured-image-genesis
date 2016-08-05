@@ -1,4 +1,4 @@
-( function ( document, $, undefined ) {
+;( function ( document, $, undefined ) {
 	'use strict';
 
 	var plugin = {};
@@ -51,9 +51,10 @@
 	$(document).ready(function () {
 		plugin.params = typeof BackStretchVars === 'undefined' ? '' : BackStretchVars;
 
-		if ( typeof plugin.params !== 'undefined' ) {
-			plugin.init();
+		if ( typeof plugin.params === 'undefined' ) {
+			return;
 		}
+		plugin.init();
 	});
 
 } )( document, jQuery );
