@@ -1,4 +1,4 @@
-;( function ( document, $, undefined ) {
+( function ( document, $, undefined ) {
 	'use strict';
 
 	var plugin = {};

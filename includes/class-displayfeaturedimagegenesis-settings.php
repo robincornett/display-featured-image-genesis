@@ -493,6 +493,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( 'do_checkbox' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = $this->one_zero( $new_value[ $field['id'] ] );
 			} elseif ( 'do_number' === $field['callback'] ) {
+				if ( 'max_height' === $field['id'] && empty( $new_value[ $field['id'] ] ) ) {
+					continue;
+				}
 				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['args']['min'], $field['args']['max'] );
 			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
@@ -555,9 +558,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @return int
 	 */
 	protected function check_value( $new_value, $old_value, $min, $max ) {
-		if ( empty( $new_value ) ) {
-			return '';
-		}
 		if ( $new_value >= $min && $new_value <= $max ) {
 			return (int) $new_value;
 		}
