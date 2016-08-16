@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Display Featured Image for Genesis 2.6.0\n"
-"POT-Creation-Date: 2016-07-11 16:14-0400\n"
+"POT-Creation-Date: 2016-08-16 16:35-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Robin Cornett <hello@robincornett.com>\n"
 "Language-Team: Robin Cornett <hello@robincornett.com>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../includes/class-displayfeaturedimagegenesis-admin.php:89
+#: ../includes/class-displayfeaturedimagegenesis-admin.php:86
 #: ../includes/class-displayfeaturedimagegenesis-author.php:47
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:52
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:75
@@ -205,7 +205,7 @@ msgid "Default Image"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:290
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:506
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:509
 msgid "Default"
 msgstr ""
 
@@ -216,7 +216,7 @@ msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-helper.php:220
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:54
-#: ../includes/class-displayfeaturedimagegenesis.php:290
+#: ../includes/class-displayfeaturedimagegenesis.php:293
 msgid "Select Image"
 msgstr ""
 
@@ -511,12 +511,12 @@ msgid "milliseconds"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:297
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:513
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:516
 msgid "Search Results"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-settings.php:304
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:517
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:520
 msgid "404 Page"
 msgstr ""
 
@@ -553,39 +553,39 @@ msgstr ""
 msgid "View your <a href=\"%1$s\" target=\"_blank\">%2$s</a> archive."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:578
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:581
 msgid ""
 "WordPress 4.4 introduces term metadata for categories, tags, and other "
 "taxonomies. This is your opportunity to optionally update all impacted terms "
 "on your site to use the new metadata."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:579
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:582
 msgid ""
 "This <strong>will modify</strong> your database (potentially many entries at "
 "once), so if you'd rather do it yourself, you can. Here's a list of the "
 "affected terms:"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:585
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:588
 msgid ""
 "To get rid of this notice, you can 1) update your terms by hand; 2) click "
 "the update button (please check your terms afterward); or 3) click the "
 "dismiss button."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:586
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:589
 #, php-format
 msgid ""
 "For more information, please visit the plugin's <a href=\"%s\" target="
 "\"_blank\">Frequently Asked Questions</a> on WordPress.org."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:593
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:596
 msgid "Update My Terms"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-settings.php:598
+#: ../includes/class-displayfeaturedimagegenesis-settings.php:601
 msgid "Dismiss (I've got this!)"
 msgstr ""
 
@@ -609,13 +609,13 @@ msgid ""
 "not have a featured image of its own."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:171
+#: ../includes/class-displayfeaturedimagegenesis.php:174
 msgid ""
 "Sorry, Display Featured Image for Genesis works only with the Genesis "
 "Framework. It has been deactivated."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:175
+#: ../includes/class-displayfeaturedimagegenesis.php:178
 #, php-format
 msgid ""
 " But since we're talking anyway, did you know that your server is running "
@@ -623,7 +623,7 @@ msgid ""
 "for you."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:339
+#: ../includes/class-displayfeaturedimagegenesis.php:342
 msgid "Settings"
 msgstr ""
 

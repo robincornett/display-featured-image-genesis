@@ -4,7 +4,7 @@ Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
-Tested up to: 4.5
+Tested up to: 4.6
 Stable tag: 2.6.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -175,10 +175,15 @@ This will follow the settings you choose in the Genesis Theme Settings.
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.6.0 =
-New settings to control backstretch output, Customizer support, some tweaks and fixes.
+= 2.6.1 =
+Fixes admin columns on mobile; fixes max_height setting
 
 == Changelog ==
+
+= 2.6.1 =
+* fixed: admin columns display on mobile
+* fixed: allow max height field to be empty
+* marked as compatible with 4.6
 
 = 2.6.0 =
 * added: backstretch control settings

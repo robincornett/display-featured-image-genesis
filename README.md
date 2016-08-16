@@ -224,6 +224,11 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.6.1
+* fixed: admin columns display on mobile
+* fixed: allow max height field to be empty
+* marked as compatible with 4.6
+
 ### 2.6.0
 * added: backstretch control settings
 * added: setting to always use default image
