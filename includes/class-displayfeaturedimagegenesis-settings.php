@@ -43,7 +43,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * The db query for old term options.
 	 * @var $term_option_query
 	 */
-	protected $term_option_query = false;
+	protected $term_option_query = array();
 
 	/**
 	 * add a submenu page under Appearance
@@ -726,7 +726,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	protected function check_database() {
 		global $wpdb;
 
-		$query = $wpdb->get_col( "select * from $wpdb->options where option_name like 'displayfeaturedimagegenesis_%' and option_name != 'displayfeaturedimagegenesis_updatedterms'", 1 );
+		$query = $wpdb->get_col( "SELECT * FROM $wpdb->options WHERE option_name LIKE 'displayfeaturedimagegenesis_%' AND option_name != 'displayfeaturedimagegenesis_updatedterms'", 1 );
 
 		return ! empty( $query ) ? $query : false;
 	}
