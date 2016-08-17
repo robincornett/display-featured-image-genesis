@@ -40,6 +40,12 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	protected $fields;
 
 	/**
+	 * The db query for old term options.
+	 * @var $term_option_query
+	 */
+	protected $term_option_query = false;
+
+	/**
 	 * add a submenu page under Appearance
 	 * @return submenu Display Featured image settings page
 	 * @since  1.4.0
@@ -97,16 +103,16 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( ! function_exists( 'get_term_meta' ) ) {
 			return;
 		}
+		if ( $this->terms_have_been_updated() ) {
+			return;
+		}
 		$previous_user = get_option( 'displayfeaturedimagegenesis', false );
 		if ( ! $previous_user ) {
 			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
 			return;
 		}
-
-		if ( ! $this->terms_need_updating() ) {
-			return;
-		}
-		if ( $this->check_database() ) {
+		$this->term_option_query = $this->check_database();
+		if ( $this->term_option_query ) {
 			$this->update_delete_term_meta();
 			$this->term_meta_notice();
 		} else {
@@ -594,7 +600,11 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( 'appearance_page_displayfeaturedimagegenesis' !== $screen->id ) {
 			return;
 		}
-		$rows = $this->check_database();
+		$updated_terms = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
+		if ( $updated_terms ) {
+			return;
+		}
+		$rows = $this->term_option_query;
 		if ( ! $rows ) {
 			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
 			return;
@@ -649,7 +659,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
 				return;
 			}
-			$terms = $this->check_database();
+			$terms = $this->term_option_query;
 			if ( $terms ) {
 				foreach ( $terms as $term ) {
 					$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $term );
@@ -710,7 +720,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 *
 	 * @since 2.4.0
 	 */
-	protected function terms_need_updating() {
+	protected function terms_have_been_updated() {
 		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
 		return (bool) $updated;
 	}
