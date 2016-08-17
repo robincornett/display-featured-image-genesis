@@ -661,6 +661,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @deprecated 2.7.0 by check_database() due to heavy load on sites with many terms
 	 */
 	protected function get_affected_terms( $affected_terms = array() ) {
+		_deprecated_function( __FUNCTION__, '2.7.0', array( $this, 'check_database' ) );
 		$args       = apply_filters( 'displayfeaturedimagegenesis_get_taxonomies', array(
 			'public'  => true,
 			'show_ui' => true,
