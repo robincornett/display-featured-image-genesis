@@ -73,14 +73,16 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since  1.4.0
 	 */
 	public function do_settings_form() {
-		if ( $this->terms_need_updating() ) {
-			$this->update_delete_term_meta();
-		}
 		$page_title = get_admin_page_title();
 		echo '<div class="wrap">';
 			printf( '<h1>%s</h1>', esc_attr( $page_title ) );
 			if ( $this->terms_need_updating() ) {
-				$this->term_meta_notice();
+				if ( $this->check_database() ) {
+					$this->update_delete_term_meta();
+					$this->term_meta_notice();
+				} else {
+					update_option( 'displayfeaturedimagegenesis_updatedterms', true );
+				}
 			}
 			$active_tab = $this->get_active_tab();
 			echo $this->do_tabs( $active_tab );
@@ -574,14 +576,17 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( 'appearance_page_displayfeaturedimagegenesis' !== $screen->id ) {
 			return;
 		}
-		$terms = $this->get_affected_terms();
-		if ( empty( $terms ) ) {
+		$rows = $this->check_database();
+		if ( empty( $rows ) ) {
+			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
 			return;
 		}
 		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduces term metadata for categories, tags, and other taxonomies. This is your opportunity to optionally update all impacted terms on your site to use the new metadata.', 'display-featured-image-genesis' ) );
 		$message .= sprintf( '<p>%s</p>', __( 'This <strong>will modify</strong> your database (potentially many entries at once), so if you\'d rather do it yourself, you can. Here\'s a list of the affected terms:', 'display-featured-image-genesis' ) );
 		$message .= '<ul style="margin-left:24px;">';
-		foreach ( $terms as $term ) {
+		foreach ( $rows as $row ) {
+			$term_id  = str_replace( 'displayfeaturedimagegenesis_', '', $row );
+			$term     = get_term( $term_id );
 			$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
 		}
 		$message .= '</ul>';
@@ -598,7 +603,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'class' => 'button-primary',
 			),
 			array(
-				'value' => __( 'Dismiss (I\'ve got this!)', 'display-featured-image-genesis' ),
+				'value' => __( 'Dismiss (Not Recommended)', 'display-featured-image-genesis' ),
 				'name'  => 'displayfeaturedimagegenesis_termmetadismiss',
 				'class' => 'button-secondary',
 			),
@@ -626,10 +631,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
 				return;
 			}
-			$terms = $this->get_affected_terms();
+			$terms = $this->check_database();
 			foreach ( $terms as $term ) {
-				$term_id = $term->term_id;
-				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}" );
+				$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $term );
+				$option  = get_option( $term );
 				if ( false !== $option ) {
 					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
 					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
@@ -651,21 +656,22 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @param  array  $term_ids empty array
 	 * @return array           all terms with featured images
 	 * @since 2.4.0
+	 * @deprecated 2.7.0 by check_database() due to heavy load on sites with many terms
 	 */
 	protected function get_affected_terms( $affected_terms = array() ) {
-		$args = array(
+		$args       = apply_filters( 'displayfeaturedimagegenesis_get_taxonomies', array(
 			'public'  => true,
 			'show_ui' => true,
-		);
-		$taxonomies = get_taxonomies( $args, 'objects' );
+		) );
+		$taxonomies = get_taxonomies( $args );
 
 		foreach ( $taxonomies as $tax ) {
-			$args   = array(
+			$args  = array(
 				'orderby'    => 'name',
 				'order'      => 'ASC',
 				'hide_empty' => false,
 			);
-			$terms  = get_terms( $tax->name, $args );
+			$terms = get_terms( $tax, $args );
 			foreach ( $terms as $term ) {
 				$term_id = $term->term_id;
 				$option  = get_option( "displayfeaturedimagegenesis_{$term_id}", false );
@@ -689,5 +695,18 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Check the database for term images stored as options.
+	 * @return array|bool
+	 * @since 2.7.0
+	 */
+	protected function check_database() {
+		global $wpdb;
+
+		$query = $wpdb->get_col( "select * from $wpdb->options where option_name like 'displayfeaturedimagegenesis_%' and option_name != 'displayfeaturedimagegenesis_updatedterms'", 1 );
+
+		return ! empty( $query ) ? $query : false;
 	}
 }
