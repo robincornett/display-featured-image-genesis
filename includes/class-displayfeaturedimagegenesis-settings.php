@@ -577,13 +577,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			return;
 		}
 		$rows = $this->check_database();
-		if ( empty( $rows ) ) {
+		if ( ! $rows ) {
 			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
 			return;
 		}
 		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduces term metadata for categories, tags, and other taxonomies. This is your opportunity to optionally update all impacted terms on your site to use the new metadata.', 'display-featured-image-genesis' ) );
 		$message .= sprintf( '<p>%s</p>', __( 'This <strong>will modify</strong> your database (potentially many entries at once), so if you\'d rather do it yourself, you can. Here\'s a list of the affected terms:', 'display-featured-image-genesis' ) );
-		$message .= '<ul style="margin-left:24px;">';
+		$message .= '<ul style="margin-left:24px;list-style-type:disc;">';
 		foreach ( $rows as $row ) {
 			$term_id  = str_replace( 'displayfeaturedimagegenesis_', '', $row );
 			$term     = get_term( $term_id );
@@ -632,13 +632,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				return;
 			}
 			$terms = $this->check_database();
-			foreach ( $terms as $term ) {
-				$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $term );
-				$option  = get_option( $term );
-				if ( false !== $option ) {
-					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
-					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
-					delete_option( "displayfeaturedimagegenesis_{$term_id}" );
+			if ( $terms ) {
+				foreach ( $terms as $term ) {
+					$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $term );
+					$option  = get_option( $term );
+					if ( false !== $option ) {
+						$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
+						update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
+						delete_option( "displayfeaturedimagegenesis_{$term_id}" );
+					}
 				}
 			}
 		}
