@@ -412,8 +412,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	/**
 	 * Default image uploader
 	 *
-	 * @return  image
-	 *
 	 * @since  1.2.1
 	 */
 	public function set_default_image() {
@@ -444,8 +442,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Custom Post Type image uploader
-	 *
-	 * @return  image
 	 *
 	 * @since  2.0.0
 	 */
@@ -659,16 +655,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
 				return;
 			}
-			$terms = $this->term_option_query;
-			if ( $terms ) {
-				foreach ( $terms as $term ) {
-					$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $term );
-					$option  = get_option( $term );
-					if ( false !== $option ) {
-						$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
-						update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
-						delete_option( "displayfeaturedimagegenesis_{$term_id}" );
-					}
+			foreach ( $this->term_option_query as $term ) {
+				$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $term );
+				$option  = get_option( $term, false );
+				if ( false !== $option ) {
+					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
+					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
+					delete_option( "displayfeaturedimagegenesis_{$term_id}" );
 				}
 			}
 		}
