@@ -76,14 +76,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$page_title = get_admin_page_title();
 		echo '<div class="wrap">';
 			printf( '<h1>%s</h1>', esc_attr( $page_title ) );
-			if ( $this->terms_need_updating() ) {
-				if ( $this->check_database() ) {
-					$this->update_delete_term_meta();
-					$this->term_meta_notice();
-				} else {
-					update_option( 'displayfeaturedimagegenesis_updatedterms', true );
-				}
-			}
+			$this->check_and_maybe_update_terms();
 			$active_tab = $this->get_active_tab();
 			echo $this->do_tabs( $active_tab );
 			echo '<form action="options.php" method="post">';
@@ -94,6 +87,31 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				settings_errors();
 			echo '</form>';
 		echo '</div>';
+	}
+
+	/**
+	 * Check if term images need to be updated because they were added before WP 4.4 and this plugin 2.4.
+	 * @since 2.7.0
+	 */
+	protected function check_and_maybe_update_terms() {
+		if ( ! function_exists( 'get_term_meta' ) ) {
+			return;
+		}
+		$previous_user = get_option( 'displayfeaturedimagegenesis', false );
+		if ( ! $previous_user ) {
+			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
+			return;
+		}
+
+		if ( ! $this->terms_need_updating() ) {
+			return;
+		}
+		if ( $this->check_database() ) {
+			$this->update_delete_term_meta();
+			$this->term_meta_notice();
+		} else {
+			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
+		}
 	}
 
 	/**
@@ -694,10 +712,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function terms_need_updating() {
 		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
-		if ( ! $updated && function_exists( 'get_term_meta' ) ) {
-			return true;
-		}
-		return false;
+		return (bool) $updated;
 	}
 
 	/**
