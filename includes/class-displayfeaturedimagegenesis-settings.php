@@ -726,7 +726,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	protected function check_database() {
 		global $wpdb;
 
-		$query = $wpdb->get_col( "SELECT * FROM $wpdb->options WHERE option_name LIKE 'displayfeaturedimagegenesis_%' AND option_name != 'displayfeaturedimagegenesis_updatedterms'", 1 );
+		$query = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE 'displayfeaturedimagegenesis_%' AND option_name != 'displayfeaturedimagegenesis_updatedterms'" );
 
 		return ! empty( $query ) ? $query : false;
 	}
