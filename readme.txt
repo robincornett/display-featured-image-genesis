@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
 Tested up to: 4.6
-Stable tag: 2.6.0
+Stable tag: 2.6.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -183,6 +183,7 @@ Fixes admin columns on mobile; fixes max_height setting
 = 2.6.1 =
 * fixed: admin columns display on mobile
 * fixed: allow max height field to be empty
+* fixed: possible wild database query on plugin settings page
 * marked as compatible with 4.6
 
 = 2.6.0 =

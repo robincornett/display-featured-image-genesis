@@ -227,6 +227,7 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 ### 2.6.1
 * fixed: admin columns display on mobile
 * fixed: allow max height field to be empty
+* fixed: possible wild database query on plugin settings page
 * marked as compatible with 4.6
 
 ### 2.6.0

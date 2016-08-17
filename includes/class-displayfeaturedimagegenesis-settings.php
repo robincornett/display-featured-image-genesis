@@ -97,7 +97,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Check if term images need to be updated because they were added before WP 4.4 and this plugin 2.4.
-	 * @since 2.7.0
+	 * @since 2.6.1
 	 */
 	protected function check_and_maybe_update_terms() {
 		if ( ! function_exists( 'get_term_meta' ) ) {
@@ -682,10 +682,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @param  array  $term_ids empty array
 	 * @return array           all terms with featured images
 	 * @since 2.4.0
-	 * @deprecated 2.7.0 by check_database() due to heavy load on sites with many terms
+	 * @deprecated 2.6.1 by check_database() due to heavy load on sites with many terms
 	 */
 	protected function get_affected_terms( $affected_terms = array() ) {
-		_deprecated_function( __FUNCTION__, '2.7.0', array( $this, 'check_database' ) );
+		_deprecated_function( __FUNCTION__, '2.6.1', array( $this, 'check_database' ) );
 		$args       = apply_filters( 'displayfeaturedimagegenesis_get_taxonomies', array(
 			'public'  => true,
 			'show_ui' => true,
@@ -724,7 +724,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	/**
 	 * Check the database for term images stored as options.
 	 * @return array|bool
-	 * @since 2.7.0
+	 * @since 2.6.1
 	 */
 	protected function check_database() {
 		global $wpdb;
