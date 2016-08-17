@@ -610,7 +610,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$message .= '<ul style="margin-left:24px;list-style-type:disc;">';
 		foreach ( $rows as $row ) {
 			$term_id  = str_replace( 'displayfeaturedimagegenesis_', '', $row );
-			$term     = get_term( $term_id );
+			$term     = get_term( (int) $term_id );
+			if ( ! $term ) {
+				continue;
+			}
 			$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
 		}
 		$message .= '</ul>';
@@ -656,8 +659,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				return;
 			}
 			foreach ( $this->term_option_query as $term ) {
-				$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $term );
-				$option  = get_option( $term, false );
+				$term_id = (int) str_replace( 'displayfeaturedimagegenesis_', '', $term );
+				$option  = get_option( esc_attr( $term ), false );
 				if ( false !== $option ) {
 					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
 					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
