@@ -159,7 +159,17 @@ function rgc_use_tax_image( $post_types ) {
 
 If a post has no featured image of its own, and is assigned to multiple taxonomy terms which do have images assigned, the plugin will opt to use the featured image from the most popular term (the one with the most posts already).
 
-It seems that you can also include [conditional tags](http://codex.wordpress.org/Conditional_Tags) in the above, eg `$post_types[] = is_post_type_archive();`.
+If you're needing to have a little more control than just specifying which post type to skip, and maybe want to use WordPress conditional statements, you'll want a different filter. This example disables the plugin on WooCommerce term archives:
+
+```php
+add_filter( 'displayfeaturedimagegenesis_disable', 'prefix_skip_woo_terms' );
+function prefix_skip_woo_terms( $disable ) {
+	if ( 'product' === get_post_type() && is_tax() ) {
+		return true;
+	}
+	return $disable;
+}
+```
 
 ### The backstretch image takes up too much room on the screen.
 
@@ -225,6 +235,7 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 ## Changelog
 
 ### 2.6.1
+* added: filter to disable plugin output conditionally
 * fixed: admin columns display on mobile
 * fixed: allow max height field to be empty
 * fixed: possible wild database query on plugin settings page
