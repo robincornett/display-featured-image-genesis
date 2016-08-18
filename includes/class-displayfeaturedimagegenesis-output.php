@@ -316,20 +316,20 @@ class Display_Featured_Image_Genesis_Output {
 	 * @return bool
 	 */
 	protected function quit_now() {
-		$quit_early    = false;
+		$disable       = false;
 		$exclude_front = is_front_page() && $this->setting['exclude_front'];
 		$post_type     = get_post_type();
 		$skip_singular = is_singular() && isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
 
 		if ( $this->get_skipped_posttypes() || $skip_singular || $exclude_front || $this->check_post_meta( '_displayfeaturedimagegenesis_disable' ) ) {
-			$quit_early = true;
+			$disable = true;
 		}
 
 		/**
 		 * Allow users to decide to quite early conditionally, outside of specific post types.
 		 * @since 2.6.1
 		 */
-		return apply_filters( 'displayfeaturedimagegenesis_quit_early', $quit_early );
+		return apply_filters( 'displayfeaturedimagegenesis_disable', $disable );
 	}
 
 	/**
