@@ -111,7 +111,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
 			return;
 		}
-		$this->term_option_query = $this->check_database();
+		$this->term_option_query = $this->check_term_images();
 		if ( $this->term_option_query ) {
 			$this->update_delete_term_meta();
 			$this->term_meta_notice();
@@ -682,10 +682,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @param  array  $term_ids empty array
 	 * @return array           all terms with featured images
 	 * @since 2.4.0
-	 * @deprecated 2.6.1 by check_database() due to heavy load on sites with many terms
+	 * @deprecated 2.6.1 by check_term_images() due to heavy load on sites with many terms
 	 */
 	protected function get_affected_terms( $affected_terms = array() ) {
-		_deprecated_function( __FUNCTION__, '2.6.1', array( $this, 'check_database' ) );
+		_deprecated_function( __FUNCTION__, '2.6.1', array( $this, 'check_term_images' ) );
 		$args       = apply_filters( 'displayfeaturedimagegenesis_get_taxonomies', array(
 			'public'  => true,
 			'show_ui' => true,
@@ -722,15 +722,20 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
-	 * Check the database for term images stored as options.
+	 * Check for term images stored as options.
 	 * @return array|bool
 	 * @since 2.6.1
 	 */
-	protected function check_database() {
-		global $wpdb;
+	protected function check_term_images() {
+		$all_options = wp_load_alloptions();
+		$options     = false;
 
-		$query = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE 'displayfeaturedimagegenesis_%' AND option_name != 'displayfeaturedimagegenesis_updatedterms'" );
+		foreach ( $all_options as $name => $value ) {
+			if ( stristr( $name, 'displayfeaturedimagegenesis_' ) && 'displayfeaturedimagegenesis_updatedterms' !== $name ) {
+				$options[] = $name;
+			}
+		}
 
-		return ! empty( $query ) ? $query : false;
+		return $options;
 	}
 }
