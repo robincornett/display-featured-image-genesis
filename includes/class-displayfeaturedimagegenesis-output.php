@@ -316,19 +316,30 @@ class Display_Featured_Image_Genesis_Output {
 	 * @return bool
 	 */
 	protected function quit_now() {
-		$exclude_front  = is_front_page() && $this->setting['exclude_front'];
-		$post_type      = get_post_type();
-		$skip_post_type = is_singular() && isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
-		/**
-		 * Creates display_featured_image_genesis_skipped_posttypes filter to check
-		 * whether get_post_type array should not run plugin on this post type.
-		 * @uses is_in_array()
-		 */
-		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
-		if ( is_admin() || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types ) || $skip_post_type || $exclude_front || $this->check_post_meta( '_displayfeaturedimagegenesis_disable' ) ) {
-			return true;
+		$quit_early    = false;
+		$exclude_front = is_front_page() && $this->setting['exclude_front'];
+		$post_type     = get_post_type();
+		$skip_singular = is_singular() && isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
+
+		if ( $this->get_skipped_posttypes() || $skip_singular || $exclude_front || $this->check_post_meta( '_displayfeaturedimagegenesis_disable' ) ) {
+			$quit_early = true;
 		}
-		return false;
+
+		/**
+		 * Allow users to decide to quite early conditionally, outside of specific post types.
+		 * @since 2.6.1
+		 */
+		return apply_filters( 'displayfeaturedimagegenesis_quit_early', $quit_early );
+	}
+
+	/**
+	 * Creates display_featured_image_genesis_skipped_posttypes filter to check
+	 * whether get_post_type array should not run plugin on this post type.
+	 * @uses is_in_array()
+	 */
+	protected function get_skipped_posttypes() {
+		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
+		return Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types );
 	}
 
 	/**
