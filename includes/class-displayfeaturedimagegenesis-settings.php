@@ -507,7 +507,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			wp_die( esc_attr__( 'Something unexpected happened. Please try again.', 'display-featured-image-genesis' ) );
 		}
 
-		check_admin_referer( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce' );
+		check_admin_referer( $action, $nonce );
 		$new_value = array_merge( $this->setting, $new_value );
 
 		// validate all checkbox fields
@@ -611,10 +611,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		foreach ( $rows as $row ) {
 			$term_id  = str_replace( 'displayfeaturedimagegenesis_', '', $row );
 			$term     = get_term( (int) $term_id );
-			if ( ! $term ) {
-				continue;
+			if ( ! is_wp_error( $term ) && ! is_null( $term ) ) {
+				$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
 			}
-			$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
 		}
 		$message .= '</ul>';
 		$message .= sprintf( '<p>%s</p>', __( 'To get rid of this notice, you can 1) update your terms by hand; 2) click the update button (please check your terms afterward); or 3) click the dismiss button.', 'display-featured-image-genesis' ) );
@@ -658,13 +657,16 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			if ( ! check_admin_referer( 'displayfeaturedimagegenesis_metanonce', 'displayfeaturedimagegenesis_metanonce' ) ) {
 				return;
 			}
-			foreach ( $this->term_option_query as $term ) {
-				$term_id = (int) str_replace( 'displayfeaturedimagegenesis_', '', $term );
-				$option  = get_option( esc_attr( $term ), false );
-				if ( false !== $option ) {
+			foreach ( $this->term_option_query as $option_key ) {
+				$term_id = (int) str_replace( 'displayfeaturedimagegenesis_', '', $option_key );
+				$option  = get_option( esc_attr( $option_key ), false );
+				$term    = get_term( (int) $term_id );
+				if ( ! is_wp_error( $term ) && ! is_null( $term ) ) {
 					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
 					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
-					delete_option( "displayfeaturedimagegenesis_{$term_id}" );
+				}
+				if ( false !== $option ) {
+					delete_option( esc_attr( $option_key ) );
 				}
 			}
 		}
