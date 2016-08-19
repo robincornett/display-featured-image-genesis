@@ -184,7 +184,7 @@ This will follow the settings you choose in the Genesis Theme Settings.
 
 == Upgrade Notice ==
 = 2.6.1 =
-Fixes admin columns on mobile; fixes max_height setting
+Fixes old term images check/migration; fixes admin columns on mobile; fixes max_height setting
 
 == Changelog ==
 
