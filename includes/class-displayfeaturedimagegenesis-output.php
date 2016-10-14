@@ -143,11 +143,12 @@ class Display_Featured_Image_Genesis_Output {
 		$image_id     = Display_Featured_Image_Genesis_Common::set_image_id();
 		$large        = wp_get_attachment_image_src( $image_id, 'large' );
 		$medium_large = wp_get_attachment_image_src( $image_id, 'medium_large' );
+		$responsive   = apply_filters( 'displayfeaturedimagegenesis_responsive_backstretch', true );
 		$output       = array(
 			'source' => array(
 				'backstretch'  => esc_url( $this->item->backstretch[0] ),
-				'large'        => $large[3] ? esc_url( $large[0] ) : '',
-				'medium_large' => $medium_large[3] ? esc_url( $medium_large[0] ) : '',
+				'large'        => $large[3] && $responsive ? esc_url( $large[0] ) : '',
+				'medium_large' => $medium_large[3] && $responsive ? esc_url( $medium_large[0] ) : '',
 			),
 			'width' => array(
 				'backstretch'  => $this->item->backstretch[1],
