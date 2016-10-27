@@ -47,7 +47,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * add a submenu page under Appearance
-	 * @return submenu Display Featured image settings page
 	 * @since  1.4.0
 	 */
 	public function do_submenu_page() {
@@ -74,7 +73,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * create settings form
-	 * @return form Display Featured Image for Genesis settings
 	 *
 	 * @since  1.4.0
 	 */

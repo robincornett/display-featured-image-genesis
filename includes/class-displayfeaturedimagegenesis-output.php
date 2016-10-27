@@ -49,7 +49,6 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * enqueue plugin styles and scripts.
-	 * @return enqueue
 	 *
 	 * @since  1.0.0
 	 */
@@ -128,7 +127,6 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * Pass variables through to our js
-	 * @return $output variable array to send to js
 	 *
 	 * @since 2.3.0
 	 */
@@ -167,7 +165,6 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * backstretch image title ( for images which are larger than Media Settings > Large )
-	 * @return image
 	 *
 	 * @since  1.0.0
 	 */
@@ -208,7 +205,7 @@ class Display_Featured_Image_Genesis_Output {
 		// close big-leader
 		echo '</div>';
 
-		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' ); // TODO remove
+		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' );
 	}
 
 	/**
@@ -232,7 +229,6 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * Large image, centered above content
-	 * @return image
 	 *
 	 * @since  1.0.0
 	 */
@@ -254,7 +250,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function do_the_title() {
 		if ( is_front_page() && ! $this->description->show_front_page_title() ) {
-			return;
+			return '';
 		}
 		$class        = is_singular() ? 'entry-title' : 'archive-title';
 		$itemprop     = genesis_html5() ? 'itemprop="headline"' : '';
@@ -267,8 +263,6 @@ class Display_Featured_Image_Genesis_Output {
 	/**
 	 * Separate archive titles from descriptions. Titles show in leader image
 	 * area; descriptions show before loop.
-	 *
-	 * @return descriptions
 	 *
 	 * @since  1.3.0
 	 *
@@ -283,7 +277,6 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * Do title and description together (for excerpt output)
-	 * @return title/description/excerpt
 	 *
 	 * @since 2.3.1
 	 */
@@ -362,10 +355,9 @@ class Display_Featured_Image_Genesis_Output {
 		}
 		return apply_filters( 'displayfeaturedimagegenesis_can_do', $can_do );
 	}
-
 	/**
-	 * create a filter to not move excerpts if move excerpts is enabled
-	 * @var filter
+	 * Create a filter to not move excerpts if move excerpts is enabled.
+	 * @return bool
 	 * @since  2.0.0 (deprecated old function from 1.3.3)
 	 */
 	protected function move_excerpts() {
@@ -383,7 +375,7 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * filter to maybe move titles, or not
-	 * @var filter
+	 * @return bool
 	 * @since 2.2.0
 	 */
 	protected function move_title() {
