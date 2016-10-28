@@ -199,8 +199,8 @@ class Display_Featured_Image_Genesis_Output {
 		// close wrap
 		echo '</div>';
 
-		// if javascript not enabled, do a fallback background image
-		printf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $this->item->backstretch[0] ) );
+		// if javascript not enabled, do a fallback featured image
+		echo '<noscript><div class="backstretch no-js">' . get_the_post_thumbnail( get_the_ID() , 'post-image') . '</div></noscript>';
 
 		// close big-leader
 		echo '</div>';
