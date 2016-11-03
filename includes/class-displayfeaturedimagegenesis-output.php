@@ -201,15 +201,13 @@ class Display_Featured_Image_Genesis_Output {
 
 		// if javascript not enabled, do a fallback featured image
 		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
-		$image_alt = '';
+		$attributes = array( 'class' => 'post-image', 'aria-hidden' => 'true', 'itemprop' => 'image' );
 
 		if ( get_post_meta( $image_id, '_wp_attachment_image_alt', true) ) {	// set image alt and do fallback to posts title if image alt is not set
-			$image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true);
+			$attributes['alt'] = get_post_meta( $image_id, '_wp_attachment_image_alt', true);
 		} else {
-			$image_alt = the_title_attribute( 'echo=0' );
+			$attributes['alt'] = the_title_attribute( 'echo=0' );
 		}
-
-		$attributes = array( 'alt' => $image_alt, 'class' => 'post-image', 'aria-hidden' => 'true' );
 
 		if ( get_the_title( $image_id ) ) {	// set image title tag and skip if image title is not set
 			$attributes['title'] = get_the_title( $image_id );
