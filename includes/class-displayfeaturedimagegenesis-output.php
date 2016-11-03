@@ -202,21 +202,20 @@ class Display_Featured_Image_Genesis_Output {
 		// if javascript not enabled, do a fallback featured image
 		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
 		$image_alt = '';
-		$image_title = '';
-		
-		if ( get_post_meta( $image_id, '_wp_attachment_image_alt', true) ) {	// fallback to posts title if image alt doesn't exists
+
+		if ( get_post_meta( $image_id, '_wp_attachment_image_alt', true) ) {	// set image alt and do fallback to posts title if image alt is not set
 			$image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true);
 		} else {
 			$image_alt = the_title_attribute( 'echo=0' );
 		}
 
-		if ( get_the_title( $image_id ) ) {	// fallback to posts title if image title doesn't exists
-			$image_title = get_the_title( $image_id );
-		} else {
-			$image_title = the_title_attribute( 'echo=0' );
+		$attributes = array( 'alt' => $image_alt, 'class' => 'post-image', 'aria-hidden' => 'true' );
+
+		if ( get_the_title( $image_id ) ) {	// set image title tag and skip if image title is not set
+			$attributes['title'] = get_the_title( $image_id );
 		}
 
-		$image = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, array( 'alt' => $image_alt, 'class' => 'post-image', 'aria-hidden' => 'true', 'title' => $image_title ) );
+		$image = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, $attributes );
 		printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
 
 		// close big-leader
