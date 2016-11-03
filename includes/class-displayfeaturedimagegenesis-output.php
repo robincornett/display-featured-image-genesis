@@ -200,7 +200,24 @@ class Display_Featured_Image_Genesis_Output {
 		echo '</div>';
 
 		// if javascript not enabled, do a fallback featured image
-		echo '<noscript><div class="backstretch no-js">' . get_the_post_thumbnail( get_the_ID() , 'post-image') . '</div></noscript>';
+		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		$image_alt = '';
+		$image_title = '';
+		
+		if ( get_post_meta( $image_id, '_wp_attachment_image_alt', true) ) {	// fallback to posts title if image alt doesn't exists
+			$image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true);
+		} else {
+			$image_alt = the_title_attribute( 'echo=0' );
+		}
+
+		if ( get_the_title( $image_id ) ) {	// fallback to posts title if image title doesn't exists
+			$image_title = get_the_title( $image_id );
+		} else {
+			$image_title = the_title_attribute( 'echo=0' );
+		}
+
+		$image = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, array( 'alt' => $image_alt, 'class' => 'post-image', 'aria-hidden' => 'true', 'title' => $image_title ) );
+		printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
 
 		// close big-leader
 		echo '</div>';
