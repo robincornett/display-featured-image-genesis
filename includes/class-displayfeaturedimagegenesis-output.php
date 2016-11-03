@@ -199,8 +199,22 @@ class Display_Featured_Image_Genesis_Output {
 		// close wrap
 		echo '</div>';
 
-		// if javascript not enabled, do a fallback background image
-		printf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $this->item->backstretch[0] ) );
+		// if javascript not enabled, do a fallback featured image
+		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		$attributes = array( 'class' => 'post-image', 'aria-hidden' => 'true' );
+
+		if ( get_post_meta( $image_id, '_wp_attachment_image_alt', true) ) {	// set image alt and do fallback to posts title if image alt is not set
+			$attributes['alt'] = get_post_meta( $image_id, '_wp_attachment_image_alt', true);
+		} else {
+			$attributes['alt'] = the_title_attribute( 'echo=0' );
+		}
+
+		if ( get_the_title( $image_id ) ) {	// set image title tag and skip if image title is not set
+			$attributes['title'] = get_the_title( $image_id );
+		}
+
+		$image = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, $attributes );
+		printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
 
 		// close big-leader
 		echo '</div>';
