@@ -157,7 +157,7 @@ class Display_Featured_Image_Genesis_Output {
 			'centeredX' => (bool) $backstretch_vars['centeredX'],
 			'centeredY' => (bool) $backstretch_vars['centeredY'],
 			'fade'      => (int) $backstretch_vars['fade'],
-			'title'     => esc_attr( $this->item->title ),
+			'title'     => esc_attr( $this->get_image_alt_text( $image_id ) ),
 		);
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
@@ -209,6 +209,23 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
+	 * Get the alt text for the featured image. Use the image alt text if filter is true.
+	 * @param string $image_id
+	 *
+	 * @return mixed
+	 */
+	protected function get_image_alt_text( $image_id = '' ) {
+		$alt_text = $this->item->title;
+		if ( $image_id && apply_filters( 'displayfeaturedimagegenesis_prefer_image_alt', false ) ) {
+			$image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+			if ( $image_alt ) {
+				$alt_text = $image_alt;
+			}
+		}
+		return $alt_text;
+	}
+
+	/**
 	 * All actions required to output the large image
 	 * @since 2.3.4
 	 */
@@ -235,7 +252,7 @@ class Display_Featured_Image_Genesis_Output {
 	public function do_large_image() {
 		$image_id      = Display_Featured_Image_Genesis_Common::set_image_id();
 		$attr['class'] = 'aligncenter featured';
-		$attr['alt']   = $this->item->title;
+		$attr['alt']   = $this->get_image_alt_text( $image_id );
 		$image_size    = apply_filters( 'display_featured_image_large_image_size', Display_Featured_Image_Genesis_Common::image_size() );
 		$image         = wp_get_attachment_image( $image_id, $image_size, false, $attr );
 		$image         = apply_filters( 'display_featured_image_genesis_large_image_output', $image );
