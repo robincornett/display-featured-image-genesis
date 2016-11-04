@@ -199,8 +199,10 @@ class Display_Featured_Image_Genesis_Output {
 		// close wrap
 		echo '</div>';
 
-		// if javascript not enabled, do a fallback background image
-		printf( '<noscript><div class="backstretch no-js" style="background-image: url(%s); }"></div></noscript>', esc_url( $this->item->backstretch[0] ) );
+		// if javascript not enabled, do a fallback featured image
+		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		$image    = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, array( 'alt' => $this->get_image_alt_text( $image_id ), 'class' => 'post-image', 'aria-hidden' => 'true' ) );
+		printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
 
 		// close big-leader
 		echo '</div>';
