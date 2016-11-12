@@ -28,6 +28,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		);
 		$output     = 'names';
 		$taxonomies = get_taxonomies( $args, $output );
+		$taxonomies = apply_filters( 'displayfeaturedimagegenesis_get_taxonomies', $taxonomies );
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
@@ -39,6 +40,17 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 		add_action( 'split_shared_term', array( $this, 'split_shared_term' ) );
 
+	}
+
+	/**
+	 * Remove Edit Flow's post statuses from the allowed taxonomies.
+	 * @param $taxonomies
+	 *
+	 * @return mixed
+	 */
+	public function remove_post_status_terms( $taxonomies ) {
+		unset( $taxonomies['post_status'] );
+		return $taxonomies;
 	}
 
 	/**
@@ -92,8 +104,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 	/**
 	 * Save extra taxonomy fields callback function.
-	 * @param  term id $term_id the id of the term
-	 * @return updated option          updated option for term featured image
+	 * @param $term_id int the id of the term
 	 *
 	 * @since 2.0.0
 	 */
@@ -104,6 +115,9 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		}
 		$input          = $_POST['displayfeaturedimagegenesis'];
 		$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id", false );
+		if ( ! $displaysetting ) {
+			return;
+		}
 		$action         = function_exists( 'get_term_meta' ) ? 'update_term_meta' : 'update_options_meta';
 		$this->$action( $term_id, $input, $displaysetting );
 	}
@@ -112,7 +126,6 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 * update/delete term meta
 	 * @param  int $term_id        term id
 	 * @param  array $displaysetting old option, if it exists
-	 * @return term_meta
 	 *
 	 * @since 2.4.0
 	 */
@@ -139,7 +152,6 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 * update term option (for sites running WP below 4.4)
 	 * @param  int $term_id        term id
 	 * @param  array $displaysetting previous option, if it exists
-	 * @return array                 updated option
 	 *
 	 * @since 2.4.0
 	 */
@@ -192,7 +204,6 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 	/**
 	 * Help tab for media screen
-	 * @return help tab with verbose information for plugin
 	 *
 	 * @since 2.0.0
 	 */

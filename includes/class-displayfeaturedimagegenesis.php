@@ -131,6 +131,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		// Taxonomies, Author, Post Meta
+		add_filter( 'displayfeaturedimagegenesis_get_taxonomies', array( $this->taxonomies, 'remove_post_status_terms' ) );
 		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
 		add_action( 'admin_init', array( $this->author, 'set_author_meta' ) );
 		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ), 10, 2 );
