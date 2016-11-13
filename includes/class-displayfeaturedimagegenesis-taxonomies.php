@@ -115,9 +115,6 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		}
 		$input          = $_POST['displayfeaturedimagegenesis'];
 		$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id", false );
-		if ( ! $displaysetting ) {
-			return;
-		}
 		$action         = function_exists( 'get_term_meta' ) ? 'update_term_meta' : 'update_options_meta';
 		$this->$action( $term_id, $input, $displaysetting );
 	}
