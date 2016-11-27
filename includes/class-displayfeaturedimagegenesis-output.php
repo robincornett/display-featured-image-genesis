@@ -315,6 +315,10 @@ class Display_Featured_Image_Genesis_Output {
 		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
 			remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
 			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
+			if ( ! post_type_supports( get_post_type( get_the_ID() ), 'genesis-entry-meta-before-content' ) && apply_filters( 'displayfeaturedimagegenesis_remove_entry_header', true ) ) {
+				remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
+				remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
+			}
 		}
 		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
 		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
