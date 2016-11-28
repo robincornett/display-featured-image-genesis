@@ -101,10 +101,6 @@ class Display_Featured_Image_Genesis_Description {
 			return;
 		}
 
-		if ( get_query_var( 'paged' ) >= 2 ) {
-			return;
-		}
-
 		$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
 
 		if ( ! $term ) {
@@ -171,10 +167,6 @@ class Display_Featured_Image_Genesis_Description {
 	public function do_cpt_archive_description() {
 
 		if ( ! is_post_type_archive() || ! genesis_has_post_type_archive_support() ) {
-			return;
-		}
-
-		if ( get_query_var( 'paged' ) >= 2 ) {
 			return;
 		}
 
