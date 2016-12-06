@@ -234,6 +234,13 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.6.2
+* added: filter to disable responsive images (backstretch)
+* added: filter to manage supported taxonomies
+* changed: noscript fallback image is now inline, not background
+* fixed: entry title output
+* fixed: title/description output on subsequent archive pages
+
 ### 2.6.1
 * added: filter to disable plugin output conditionally
 * fixed: admin columns display on mobile

@@ -4,8 +4,8 @@ Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
-Tested up to: 4.6
-Stable tag: 2.6.1
+Tested up to: 4.7
+Stable tag: 2.6.2
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -183,10 +183,17 @@ This will follow the settings you choose in the Genesis Theme Settings.
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.6.1 =
-Fixes old term images check/migration; fixes admin columns on mobile; fixes max_height setting
+= 2.6.2 =
+Changes to the featured image for non-JavaScript users, added filter to disable responsive images
 
 == Changelog ==
+
+= 2.6.2 =
+* added: filter to disable responsive images (backstretch)
+* added: filter to manage supported taxonomies
+* changed: noscript fallback image is now inline, not background
+* fixed: entry title output
+* fixed: title/description output on subsequent archive pages
 
 = 2.6.1 =
 * added: filter to disable plugin output conditionally
