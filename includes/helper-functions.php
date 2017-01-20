@@ -31,15 +31,20 @@ function displayfeaturedimagegenesis_get_term_image( $term_id, $image_id = '' ) 
 
 /**
  * gets the term image ID
- * @return image_id reusable function to get a post's term image, if it exists
+ * @return int reusable function to get a post's term image, if it exists
  *
+ * @param $image_id string
  * @since  2.1.0
  */
 function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 
-	$taxonomies = get_taxonomies();
-	$args       = array( 'orderby' => 'count', 'order' => 'DESC' );
-	$terms      = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
+	$post       = get_post( get_the_ID() );
+	$taxonomies = array();
+	foreach ( get_object_taxonomies( $post, 'names' ) as $taxonomy ) {
+		$taxonomies[] = $taxonomy;
+	}
+	$args  = array( 'orderby' => 'count', 'order' => 'DESC' );
+	$terms = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
 
 	foreach ( $terms as $term ) {
 		$term_id  = $term->term_id;
