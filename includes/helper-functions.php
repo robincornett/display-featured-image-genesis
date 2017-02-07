@@ -43,8 +43,11 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 	foreach ( get_object_taxonomies( $post, 'names' ) as $taxonomy ) {
 		$taxonomies[] = $taxonomy;
 	}
-	$args  = array( 'orderby' => 'count', 'order' => 'DESC' );
-	$terms = wp_get_object_terms( get_the_ID(), $taxonomies, $args );
+	$args  = array(
+		'orderby' => 'count',
+		'order'   => 'DESC',
+	);
+	$terms = apply_filters( 'displayfeaturedimagegenesis_object_terms', wp_get_object_terms( get_the_ID(), $taxonomies, $args ), $taxonomies, $args );
 
 	foreach ( $terms as $term ) {
 		$term_id  = $term->term_id;
