@@ -153,6 +153,11 @@ class Display_Featured_Image_Genesis_Output {
 				'large'        => $large[3] ? $large[1] : '',
 				'medium_large' => $medium_large[3] ? $medium_large[1] : '',
 			),
+			'image_height' => array(
+				'backstretch'  => $this->item->backstretch[2],
+				'large'        => $large[3] ? $large[2] : '',
+				'medium_large' => $medium_large[3] ? $medium_large[2] : '',
+			),
 			'height'    => (int) $this->setting['less_header'],
 			'centeredX' => (bool) $backstretch_vars['centeredX'],
 			'centeredY' => (bool) $backstretch_vars['centeredY'],

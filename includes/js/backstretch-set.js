@@ -1,9 +1,9 @@
-( function ( document, $, undefined ) {
+(function ( document, $, undefined ) {
 	'use strict';
 
 	var plugin = {};
 
-	plugin.init = function() {
+	plugin.init = function () {
 		_backstretchHandler();
 	};
 
@@ -20,12 +20,11 @@
 		}
 
 		$el.css( {
-			height: ( $(window).height() ) - ( [ plugin.params.height ] ) + 'px'
+			height: ( $( window ).height() ) - ( [plugin.params.height] ) + 'px'
 		} );
 
-		var source = _getSource();
 		$el.backstretch(
-			[source], {
+			[ _getSource() ], {
 				centeredX: Boolean( plugin.params.centeredX ),
 				centeredY: Boolean( plugin.params.centeredY ),
 				fade: parseInt( plugin.params.fade )
@@ -37,24 +36,26 @@
 	}
 
 	function _getSource() {
-		var source = plugin.params.source.backstretch;
+		var source = plugin.params.source.backstretch,
+			width  = window.innerWidth,
+			height = $( '.big-leader' ).height();
 
-		if ( plugin.params.source.large && window.innerWidth <= plugin.params.width.large ) {
+		if ( plugin.params.source.large && ( plugin.params.width.large >= width && plugin.params.image_height.large >= height ) ) {
 			source = plugin.params.source.large;
 		}
-		if ( plugin.params.source.medium_large && window.innerWidth <= plugin.params.width.medium_large ) {
+		if ( plugin.params.source.medium_large && ( plugin.params.width.medium_large >= width && plugin.params.image_height.medium_large >= height ) ) {
 			source = plugin.params.source.medium_large;
 		}
 		return source;
 	}
 
-	$(document).ready(function () {
+	$( document ).ready( function () {
 		plugin.params = typeof BackStretchVars === 'undefined' ? '' : BackStretchVars;
 
 		if ( typeof plugin.params === 'undefined' ) {
 			return;
 		}
 		plugin.init();
-	});
+	} );
 
-} )( document, jQuery );
+})( document, jQuery );
