@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.1
 Tested up to: 4.7
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -183,10 +183,14 @@ This will follow the settings you choose in the Genesis Theme Settings.
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-= 2.6.2 =
-Changes to the featured image for non-JavaScript users, added filter to disable responsive images
+2.6.3: better responsive image selection, term fallback image function updated for WordPress 4.8
 
 == Changelog ==
+
+= 2.6.3 =
+* added: filter for term selection for term fallback image
+* improved: decision making process to select the appropriate responsive image size
+* improved: term fallback image function (due to changes in WP4.8)
 
 = 2.6.2 =
 * added: filter to disable responsive images (backstretch)

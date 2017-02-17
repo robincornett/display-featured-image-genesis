@@ -234,6 +234,11 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.6.3
+* added: filter for term selection for term fallback image
+* improved: decision making process to select the appropriate responsive image size
+* improved: term fallback image function (due to changes in WP4.8)
+
 ### 2.6.2
 * added: filter to disable responsive images (backstretch)
 * added: filter to manage supported taxonomies
