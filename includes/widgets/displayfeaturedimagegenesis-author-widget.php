@@ -6,7 +6,7 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      https://robincornett.com
- * @copyright 2014-2016 Robin Cornett Creative, LLC
+ * @copyright 2014-2017 Robin Cornett Creative, LLC
  */
 
 class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
