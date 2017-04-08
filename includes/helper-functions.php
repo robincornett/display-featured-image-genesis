@@ -40,7 +40,8 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 
 	$post       = get_post( get_the_ID() );
 	$taxonomies = array();
-	foreach ( get_object_taxonomies( $post, 'names' ) as $taxonomy ) {
+	$object_tax = get_object_taxonomies( $post, 'names' );
+	foreach ( $object_tax as $taxonomy ) {
 		$taxonomies[] = $taxonomy;
 	}
 	$args  = array(
