@@ -212,7 +212,6 @@ class Display_Featured_Image_Genesis {
 
 	/**
 	 * check existing settings array to see if a setting is in the array
-	 * @return updated setting updates to default (0)
 	 * @since  1.5.0
 	 */
 	public function check_settings() {
@@ -253,6 +252,8 @@ class Display_Featured_Image_Genesis {
 	 *
 	 * @param string|array $new     New settings. Can be a string, or an array.
 	 * @param string       $setting Optional. Settings field name. Default is displayfeaturedimagegenesis.
+	 *
+	 * @return mixed updated option
 	 */
 	protected function update_settings( $new = '', $setting = 'displayfeaturedimagegenesis' ) {
 		return update_option( $setting, wp_parse_args( $new, get_option( $setting ) ) );
@@ -264,12 +265,11 @@ class Display_Featured_Image_Genesis {
 	 * @since 1.1.0
 	 */
 	public function load_textdomain() {
-		load_plugin_textdomain( 'display-featured-image-genesis', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'display-featured-image-genesis' );
 	}
 
 	/**
 	 * enqueue admin scripts
-	 * @return scripts to use image uploader
 	 *
 	 * @since  1.2.1
 	 */
@@ -301,41 +301,41 @@ class Display_Featured_Image_Genesis {
 
 		if ( in_array( $screen->id, array( 'widgets', 'customize' ), true ) ) {
 			wp_enqueue_script( 'widget_selector' );
-			wp_localize_script( 'widget_selector', 'displayfeaturedimagegenesis_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+			wp_localize_script( 'widget_selector', 'displayfeaturedimagegenesis_ajax_object', array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+			) );
 		}
 
 	}
 
 	/**
 	 * Register widgets for plugin
-	 * @return widgets Taxonomy/term, CPT, and Author widgets
 	 *
 	 * @since 2.0.0
 	 */
 	public function register_widgets() {
 
-		$files = array(
-			'author',
-			'cpt-archive',
-			'taxonomy',
-		);
-
-		foreach ( $files as $file ) {
-			require_once plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
-		}
-
 		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() && ! function_exists( 'genesis' ) ) {
 			return;
 		}
-		register_widget( 'Display_Featured_Image_Genesis_Author_Widget' );
-		register_widget( 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
-		register_widget( 'Display_Featured_Image_Genesis_Widget_CPT' );
 
+		$widgets = array(
+			'author'      => 'Display_Featured_Image_Genesis_Author_Widget',
+			'cpt-archive' => 'Display_Featured_Image_Genesis_Widget_CPT',
+			'taxonomy'    => 'Display_Featured_Image_Genesis_Widget_Taxonomy',
+		);
+
+		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets.php';
+		foreach ( $widgets as $file => $widget ) {
+			require_once plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
+			register_widget( $widget );
+		}
 	}
 
 	/**
 	 * Add link to plugin settings page in plugin table
-	 * @param $links link to settings page
+	 * @param $links array link to settings page
+	 * @return array
 	 *
 	 * @since 2.3.0
 	 */

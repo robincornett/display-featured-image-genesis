@@ -70,9 +70,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
 	 * @param array $instance The settings for the particular instance of the widget
 	 */
-	function widget( $args, $instance ) {
-
-		global $wp_query, $_genesis_displayed_ids;
+	public function widget( $args, $instance ) {
 
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
@@ -170,107 +168,143 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 *
 	 * @param array $instance Current settings
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
+		$form     = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
 
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'display-featured-image-genesis' ); ?> </label>
-			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
-		</p>
+		$form->do_text( $instance, array(
+			'id'    => 'title',
+			'label' => __( 'Title:', 'display-featured-image-genesis' ),
+			'class' => 'widefat',
+		) );
 
-		<div class="genesis-widget-column">
+		echo '<div class="genesis-widget-column">';
 
-			<div class="genesis-widget-column-box genesis-widget-column-box-top">
+			$form->do_boxes( array(
+				'taxonomy' => array(
+					array(
+						'method' => 'select',
+						'args'   => array(
+							'id'       => 'taxonomy',
+							'label'    => __( 'Taxonomy:', 'display-featured-image-genesis' ),
+							'flex'     => true,
+							'onchange' => sprintf( 'term_postback(\'%s\', this.value );', esc_attr( $this->get_field_id( 'term' ) ) ),
+						    'choices'  => $this->get_taxonomies(),
+						),
+					),
+					array(
+						'method' => 'select',
+						'args'   => array(
+							'id'    => 'term',
+							'label'   => __( 'Term:', 'display-featured-image-genesis' ),
+							'flex'    => true,
+							'choices' => $this->get_term_lists( $instance, false ),
+						),
+					),
+				),
+			), 'genesis-widget-column-box-top' );
 
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'taxonomy' ) ); ?>"><?php esc_attr_e( 'Taxonomy:', 'display-featured-image-genesis' ); ?> </label>
-					<select id="<?php echo esc_attr( $this->get_field_id( 'taxonomy' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'taxonomy' ) ); ?>" onchange="term_postback('<?php echo esc_attr( $this->get_field_id( 'term' ) ); ?>', this.value);" >
-					<?php
-					$args = array(
-						'public'   => true,
-						'show_ui'  => true,
-					);
-					$taxonomies = get_taxonomies( $args, 'objects' );
+			$form->do_boxes( array(
+				'words' => array(
+					array(
+						'method' => 'checkbox',
+						'args'   => array(
+							'id'    => 'show_title',
+							'label' => __( 'Show Term Title', 'display-featured-image-genesis' ),
+						),
+					),
+					array(
+						'method' => 'checkbox',
+						'args'   => array(
+							'id'    => 'show_content',
+							'label' => __( 'Show Term Intro Text', 'display-featured-image-genesis' ),
+						),
+					),
+				),
+			) );
 
-					foreach ( $taxonomies as $taxonomy ) {
-						echo '<option value="' . esc_attr( $taxonomy->name ) . '"' . selected( esc_attr( $taxonomy->name ), $instance['taxonomy'], false ) . '>' . esc_attr( $taxonomy->label ) . '</option>';
-					} ?>
-					</select>
-				</p>
+		echo '</div>';
+		echo '<div class="genesis-widget-column genesis-widget-column-right">';
 
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'term' ) ); ?>"><?php esc_attr_e( 'Term:', 'display-featured-image-genesis' ); ?> </label>
-					<select id="<?php echo esc_attr( $this->get_field_id( 'term' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'term' ) ); ?>" >
-						<?php
-						$args   = array(
-							'orderby'    => 'name',
-							'order'      => 'ASC',
-							'hide_empty' => false,
-						);
-						$terms  = get_terms( $instance['taxonomy'], $args );
-						echo '<option value="none"' . selected( 'none', $instance['term'], false ) . '>--</option>';
-						foreach ( $terms as $term ) {
-							echo '<option value="' . esc_attr( $term->term_id ) . '"' . selected( esc_attr( $term->term_id ), $instance['term'], false ) . '>' . esc_attr( $term->name ) . '</option>';
-						} ?>
-					</select>
-				</p>
+		$form->do_boxes( array(
+			'image' => array(
+				array(
+					'method' => 'checkbox',
+					'args'   => array(
+						'id'    => 'show_image',
+						'label' => __( 'Show Featured Image', 'display-featured-image-genesis' ),
+					),
+				),
+				array(
+					'method' => 'select',
+					'args'   => array(
+						'id'    => 'image_size',
+						'label' => __( 'Image Size:', 'display-featured-image-genesis' ),
+						'flex'  => true,
+					    'choices' => $form->get_image_size(),
+					),
+				),
+				array(
+					'method' => 'select',
+					'args'   => array(
+						'id'      => 'image_alignment',
+						'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
+						'flex'    => true,
+						'choices' => array(
+							'alignnone'   => __( 'None', 'display-featured-image-genesis' ),
+							'alignleft'   => __( 'Left', 'display-featured-image-genesis' ),
+							'alignright'  => __( 'Right', 'display-featured-image-genesis' ),
+							'aligncenter' => __( 'Center', 'display-featured-image-genesis' ),
+						),
+					),
+				),
+			),
+		), 'genesis-widget-column-box-top' );
 
-			</div>
+		echo '</div>';
+	}
 
-			<div class="genesis-widget-column-box">
+	/**
+	 * @return array
+	 */
+	protected function get_taxonomies() {
+		$args       = array(
+			'public'  => true,
+			'show_ui' => true,
+		);
+		$taxonomies = get_taxonomies( $args, 'objects' );
+		$options    = array();
+		foreach ( $taxonomies as $taxonomy ) {
+			$options[ $taxonomy->name ] = $taxonomy->label;
+		}
 
-				<p>
-					<input id="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_title' ) ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>"><?php esc_attr_e( 'Show Term Title', 'display-featured-image-genesis' ); ?></label>
-				</p>
+		return $options;
+	}
 
-				<p>
-					<input id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php esc_attr_e( 'Show Term Intro Text', 'display-featured-image-genesis' ); ?></label>
-				</p>
+	/**
+	 * @param $instance
+	 * @param bool $ajax
+	 *
+	 * @return mixed
+	 */
+	protected function get_term_lists( $instance, $ajax = false ) {
+		$args            = array(
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'hide_empty' => false,
+		);
+		$taxonomy        = $ajax ? sanitize_text_field( $_POST['taxonomy'] ) : $instance['taxonomy'];
+		$terms           = get_terms( $taxonomy, $args );
+		$options['none'] = '--';
+		foreach ( $terms as $term ) {
+			if ( is_object( $term ) ) {
+				$options[ $term->term_id ] = $term->name;
+			}
+		}
 
-			</div>
-
-		</div>
-
-		<div class="genesis-widget-column genesis-widget-column-right">
-
-			<div class="genesis-widget-column-box genesis-widget-column-box-top">
-
-				<p>
-					<input id="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_image' ) ); ?>" value="1" <?php checked( $instance['show_image'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>"><?php esc_attr_e( 'Show Featured Image', 'display-featured-image-genesis' ); ?></label>
-				</p>
-
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>"><?php esc_attr_e( 'Image Size:', 'display-featured-image-genesis' ); ?> </label>
-					<select id="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>" class="genesis-image-size-selector" name="<?php echo esc_attr( $this->get_field_name( 'image_size' ) ); ?>">
-						<?php
-						$sizes = genesis_get_image_sizes();
-						foreach ( (array) $sizes as $name => $size ) {
-							printf( '<option value="%s"%s>%s ( %s x %s )</option>', esc_attr( $name ), selected( $name, $instance['image_size'], false ), esc_html( $name ), (int) $size['width'], (int) $size['height'] );
-						} ?>
-					</select>
-				</p>
-
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>"><?php esc_attr_e( 'Image Alignment:', 'display-featured-image-genesis' ); ?></label>
-					<select id="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image_alignment' ) ); ?>">
-						<option value="alignnone">- <?php esc_attr_e( 'None', 'display-featured-image-genesis' ); ?> -</option>
-						<option value="alignleft" <?php selected( 'alignleft', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Left', 'display-featured-image-genesis' ); ?></option>
-						<option value="alignright" <?php selected( 'alignright', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Right', 'display-featured-image-genesis' ); ?></option>
-						<option value="aligncenter" <?php selected( 'aligncenter', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Center', 'display-featured-image-genesis' ); ?></option>
-					</select>
-				</p>
-
-			</div>
-
-		</div>
-		<?php
-
+		return $options;
 	}
 
 	/**
@@ -280,26 +314,10 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 */
 	function term_action_callback() {
 
-		$args  = array(
-			'orderby'    => 'name',
-			'order'      => 'ASC',
-			'hide_empty' => false,
-		);
-		$terms = get_terms( $_POST['taxonomy'], $args );
-
-		// Build an appropriate JSON response containing this info
-		$list['none'] = '--';
-		foreach ( $terms as $term ) {
-			$list[ $term->term_id ] = esc_attr( $term->name );
-		}
+		$list = $this->get_term_lists( array(), true );
 
 		// And emit it
-		$emit = json_encode( $list );
-		if ( function_exists( 'wp_json_encode' ) ) {
-			$emit = wp_json_encode( $list );
-		}
-		echo $emit;
+		echo wp_json_encode( $list );
 		die();
 	}
-
 }
