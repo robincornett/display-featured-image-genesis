@@ -30,7 +30,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 *
 	 * @since 2.0.0
 	 */
-	function __construct() {
+	public function __construct() {
 
 		$this->defaults = array(
 			'title'                   => '',
@@ -67,7 +67,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
 	 * @param array $instance The settings for the particular instance of the widget
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
@@ -191,94 +191,106 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 *
 	 * @param array $instance Current settings
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 
 		//* Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults );
+		$form     = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
 
-		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'display-featured-image-genesis' ); ?> </label>
-			<input type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $instance['title'] ); ?>" class="widefat" />
-		</p>
+		$form->do_text( $instance, array(
+			'id'    => 'title',
+			'label' => __( 'Title:', 'display-featured-image-genesis' ),
+			'class' => 'widefat',
+		) );
 
-		<div class="genesis-widget-column">
+		echo '<div class="genesis-widget-column">';
 
-			<div class="genesis-widget-column-box genesis-widget-column-box-top">
+		$form->do_boxes( array(
+			'post_type' => array(
+				array(
+					'method' => 'select',
+					'args'   => array(
+						'id'      => 'post_type',
+						'label'   => __( 'Post Type:', 'display-featured-image-genesis' ),
+						'flex'    => true,
+						'choices' => $this->get_post_types(),
+					),
+				),
+			),
+		), 'genesis-widget-column-box-top' );
 
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>"><?php esc_attr_e( 'Post Type:', 'display-featured-image-genesis' ); ?> </label>
-					<select id="<?php echo esc_attr( $this->get_field_id( 'post_type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'post_type' ) ); ?>" >
-					<?php
-					// Fetch a list of possible post types
-					$args = array(
-						'public'      => true,
-						'_builtin'    => false,
-						'has_archive' => true,
-					);
-					$output     = 'objects';
-					$post_types = get_post_types( $args, $output );
+		$form->do_boxes( array(
+			'text' => array(
+				array(
+					'method' => 'checkbox',
+					'args'   => array(
+						'id'    => 'show_title',
+						'label' => __( 'Show Archive Title', 'display-featured-image-genesis' ),
+					),
+				),
+				array(
+					'method' => 'checkbox',
+					'args'   => array(
+						'id'    => 'show_content',
+						'label' => __( 'Show Archive Intro Text', 'display-featured-image-genesis' ),
+					),
+				),
+			),
+		) );
 
-					printf( '<option value="post"%s>%s</option>', selected( 'post', $instance['post_type'], false ), esc_attr__( 'Posts', 'display-featured-image-genesis' ) );
-					foreach ( $post_types as $post_type ) {
-						printf( '<option value="%s"%s>%s</option>', esc_attr( $post_type->name ), selected( esc_attr( $post_type->name ), $instance['post_type'], false ), esc_attr( $post_type->label ) );
-					} ?>
-					</select>
-				</p>
+		echo '</div>';
+		echo '<div class="genesis-widget-column genesis-widget-column-right">';
 
-			</div>
+		$form->do_boxes( array(
+			'image' => array(
+				array(
+					'method' => 'checkbox',
+					'args'   => array(
+						'id'    => 'show_image',
+						'label' => __( 'Show Featured Image', 'display-featured-image-genesis' ),
+					),
+				),
+				array(
+					'method' => 'select',
+					'args'   => array(
+						'id'      => 'image_size',
+						'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
+						'flex'    => true,
+						'choices' => $form->get_image_size(),
+					),
+				),
+				array(
+					'method' => 'select',
+					'args'   => array(
+						'id'      => 'image_alignment',
+						'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
+						'flex'    => true,
+						'choices' => $form->get_image_alignment(),
+					),
+				),
+			),
+		), 'genesis-widget-column-box-top' );
 
-			<div class="genesis-widget-column-box">
-
-				<p>
-					<input id="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_title' ) ); ?>" value="1" <?php checked( $instance['show_title'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_title' ) ); ?>"><?php esc_attr_e( 'Show Archive Title', 'display-featured-image-genesis' ); ?></label>
-				</p>
-
-				<p>
-					<input id="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_content' ) ); ?>" value="1" <?php checked( $instance['show_content'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_content' ) ); ?>"><?php esc_attr_e( 'Show Archive Intro Text', 'display-featured-image-genesis' ); ?></label>
-				</p>
-
-			</div>
-
-		</div>
-
-		<div class="genesis-widget-column genesis-widget-column-right">
-
-			<div class="genesis-widget-column-box genesis-widget-column-box-top">
-
-				<p>
-					<input id="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>" type="checkbox" name="<?php echo esc_attr( $this->get_field_name( 'show_image' ) ); ?>" value="1" <?php checked( $instance['show_image'] ); ?>/>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'show_image' ) ); ?>"><?php esc_attr_e( 'Show Featured Image', 'display-featured-image-genesis' ); ?></label>
-				</p>
-
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>"><?php esc_attr_e( 'Image Size:', 'display-featured-image-genesis' ); ?> </label>
-					<select id="<?php echo esc_attr( $this->get_field_id( 'image_size' ) ); ?>" class="genesis-image-size-selector" name="<?php echo esc_attr( $this->get_field_name( 'image_size' ) ); ?>">
-						<?php
-						$sizes = genesis_get_image_sizes();
-						foreach ( (array) $sizes as $name => $size ) {
-							printf( '<option value="%s"%s>%s ( %s x %s )</option>', esc_attr( $name ), selected( $name, $instance['image_size'], false ), esc_html( $name ), (int) $size['width'], (int) $size['height'] );
-						} ?>
-					</select>
-				</p>
-
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>"><?php esc_attr_e( 'Image Alignment:', 'display-featured-image-genesis' ); ?> </label>
-					<select id="<?php echo esc_attr( $this->get_field_id( 'image_alignment' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'image_alignment' ) ); ?>">
-						<option value="alignnone">- <?php esc_attr_e( 'None', 'display-featured-image-genesis' ); ?> -</option>
-						<option value="alignleft" <?php selected( 'alignleft', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Left', 'display-featured-image-genesis' ); ?></option>
-						<option value="alignright" <?php selected( 'alignright', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Right', 'display-featured-image-genesis' ); ?></option>
-						<option value="aligncenter" <?php selected( 'aligncenter', $instance['image_alignment'] ); ?>><?php esc_attr_e( 'Center', 'display-featured-image-genesis' ); ?></option>
-					</select>
-				</p>
-
-			</div>
-
-		</div>
-		<?php
-
+		echo '</div>';
 	}
 
+	/**
+	 * @return mixed
+	 */
+	protected function get_post_types() {
+		$args = array(
+			'public'      => true,
+			'_builtin'    => false,
+			'has_archive' => true,
+		);
+		$output     = 'objects';
+		$post_types = get_post_types( $args, $output );
+
+		$options['post'] = __( 'Posts', 'display-featured-image-genesis' );
+		foreach ( $post_types as $post_type ) {
+		    $options[ $post_type->name ] = $post_type->label;
+		}
+
+		return $options;
+    }
 }
