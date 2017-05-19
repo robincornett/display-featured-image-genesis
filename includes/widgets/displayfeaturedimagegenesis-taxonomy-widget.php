@@ -252,12 +252,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 						'id'      => 'image_alignment',
 						'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
 						'flex'    => true,
-						'choices' => array(
-							'alignnone'   => __( 'None', 'display-featured-image-genesis' ),
-							'alignleft'   => __( 'Left', 'display-featured-image-genesis' ),
-							'alignright'  => __( 'Right', 'display-featured-image-genesis' ),
-							'aligncenter' => __( 'Center', 'display-featured-image-genesis' ),
-						),
+						'choices' => $form->get_image_alignment(),
 					),
 				),
 			),
