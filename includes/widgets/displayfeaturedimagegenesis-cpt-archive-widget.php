@@ -7,7 +7,7 @@
  * @link      https://robincornett.com
  * @copyright 2014-2017 Robin Cornett Creative, LLC
  * @license   GPL-2.0+
- * @since 2.0.0
+ * @since     2.0.0
  */
 
 /**
@@ -19,11 +19,9 @@
 class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 	/**
-	 * Holds widget settings defaults, populated in constructor.
-	 *
-	 * @var array
+	 * @var $form_class \DisplayFeaturedImageGenesisWidgets
 	 */
-	protected $defaults;
+	protected $form_class;
 
 	/**
 	 * Constructor. Set the default widget options and create widget.
@@ -31,16 +29,6 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 * @since 2.0.0
 	 */
 	public function __construct() {
-
-		$this->defaults = array(
-			'title'                   => '',
-			'post_type'               => 'post',
-			'show_image'              => 0,
-			'image_alignment'         => '',
-			'image_size'              => 'medium',
-			'show_title'              => 0,
-			'show_content'            => 0,
-		);
 
 		$widget_ops = array(
 			'classname'                   => 'featured-posttype',
@@ -59,25 +47,41 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	}
 
 	/**
+	 * Define the widget defaults.
+	 * @return array
+	 */
+	public function defaults() {
+		return array(
+			'title'           => '',
+			'post_type'       => 'post',
+			'show_image'      => 0,
+			'image_alignment' => 'alignnone',
+			'image_size'      => 'medium',
+			'show_title'      => 0,
+			'show_content'    => 0,
+		);
+	}
+
+	/**
 	 * Echo the widget content.
 	 *
 	 * @since 2.0.0
 	 *
 	 *
-	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
+	 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 	 * @param array $instance The settings for the particular instance of the widget
 	 */
 	public function widget( $args, $instance ) {
 
 		// Merge with defaults
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
+		$instance = wp_parse_args( (array) $instance, $this->defaults() );
 
 		$post_type = get_post_type_object( $instance['post_type'] );
 		if ( ! $post_type ) {
 			return;
 		}
-		$option    = displayfeaturedimagegenesis_get_setting();
-		$image_id  = '';
+		$option   = displayfeaturedimagegenesis_get_setting();
+		$image_id = '';
 
 		if ( 'post' === $instance['post_type'] ) {
 			$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
@@ -92,8 +96,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 				$permalink       = home_url();
 			}
 			$image_id = $postspage_image;
-		}
-		else {
+		} else {
 			$title     = $post_type->label;
 			$permalink = esc_url( get_post_type_archive_link( $instance['post_type'] ) );
 			if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
@@ -110,15 +113,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
 		}
 
-		$image = '';
-		if ( isset( $option['post_type'][ $post_type->name ] )  ) {
-			$image_id = displayfeaturedimagegenesis_check_image_id( $option['post_type'][ $post_type->name ] );
-		}
-		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
-		if ( $image_src ) {
-			$image = '<img src="' . $image_src[0] . '" alt="' . $title . '" />';
-		}
-
+		$image = $this->get_image( $image_id, $option, $post_type, $instance, $title );
 		if ( $instance['show_image'] && $image ) {
 			$role = empty( $instance['show_title'] ) ? '' : 'aria-hidden="true"';
 			printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), $role, $image );
@@ -126,15 +121,12 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 		if ( $instance['show_title'] ) {
 
-			if ( ! empty( $instance['show_title'] ) ) {
-
-				$title_output = sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
-				if ( genesis_html5() ) {
-					$title_output = sprintf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
-				}
-				echo wp_kses_post( $title_output );
-
+			$title_output = sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+			if ( genesis_html5() ) {
+				$title_output = sprintf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
 			}
+			echo wp_kses_post( $title_output );
+
 		}
 
 		$intro_text = '';
@@ -164,6 +156,28 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	}
 
 	/**
+	 * @param $image_id
+	 * @param $option
+	 * @param $post_type
+	 * @param $instance
+	 * @param $title
+	 *
+	 * @return string
+	 */
+	protected function get_image( $image_id, $option, $post_type, $instance, $title ) {
+		$image = '';
+		if ( isset( $option['post_type'][ $post_type->name ] ) && $option['post_type'][ $post_type->name ] ) {
+			$image_id = displayfeaturedimagegenesis_check_image_id( $option['post_type'][ $post_type->name ] );
+		}
+		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
+		if ( $image_src ) {
+			$image = '<img src="' . $image_src[0] . '" alt="' . $title . '" />';
+		}
+
+		return $image;
+	}
+
+	/**
 	 * Update a particular instance.
 	 *
 	 * This function should check that $new_instance is set correctly.
@@ -174,13 +188,20 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 *
 	 * @param array $new_instance New settings for this instance as input by the user via form()
 	 * @param array $old_instance Old settings for this instance
+	 *
 	 * @return array Settings to save or bool false to cancel saving
 	 */
 	function update( $new_instance, $old_instance ) {
 
-		$new_instance['title']     = strip_tags( $new_instance['title'] );
-		$new_instance['post_type'] = esc_attr( $new_instance['post_type'] );
-		return $new_instance;
+		$form    = $this->get_form_class( $new_instance );
+		$fields  = array_merge(
+			$this->get_post_type_fields(),
+			$form->get_text_fields(),
+			$form->get_image_fields()
+		);
+		$updater = new DisplayFeaturedImageGenesisWidgetsUpdate();
+
+		return $updater->update( $new_instance, $old_instance, $fields );
 
 	}
 
@@ -193,9 +214,9 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 */
 	public function form( $instance ) {
 
-		//* Merge with defaults
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
-		$form     = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
+		// Merge with defaults
+		$instance = wp_parse_args( (array) $instance, $this->defaults() );
+		$form     = $this->get_form_class( $instance );
 
 		$form->do_text( $instance, array(
 			'id'    => 'title',
@@ -206,79 +227,84 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		echo '<div class="genesis-widget-column">';
 
 		$form->do_boxes( array(
-			'post_type' => array(
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'post_type',
-						'label'   => __( 'Post Type:', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => $this->get_post_types(),
-					),
-				),
-			),
+			'post_type' => $this->get_post_type_fields(),
 		), 'genesis-widget-column-box-top' );
 
 		$form->do_boxes( array(
-			'text' => array(
-				array(
-					'method' => 'checkbox',
-					'args'   => array(
-						'id'    => 'show_title',
-						'label' => __( 'Show Archive Title', 'display-featured-image-genesis' ),
-					),
-				),
-				array(
-					'method' => 'checkbox',
-					'args'   => array(
-						'id'    => 'show_content',
-						'label' => __( 'Show Archive Intro Text', 'display-featured-image-genesis' ),
-					),
-				),
-			),
+			'words' => $this->get_text_fields(),
 		) );
 
 		echo '</div>';
 		echo '<div class="genesis-widget-column genesis-widget-column-right">';
 
 		$form->do_boxes( array(
-			'image' => array(
-				array(
-					'method' => 'checkbox',
-					'args'   => array(
-						'id'    => 'show_image',
-						'label' => __( 'Show Featured Image', 'display-featured-image-genesis' ),
-					),
-				),
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'image_size',
-						'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => $form->get_image_size(),
-					),
-				),
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'image_alignment',
-						'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => $form->get_image_alignment(),
-					),
-				),
-			),
+			'image' => $form->get_image_fields(),
 		), 'genesis-widget-column-box-top' );
 
 		echo '</div>';
 	}
 
 	/**
+	 * Get the post type fields.
+	 *
+	 * @return array
+	 */
+	protected function get_post_type_fields() {
+		return array(
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'post_type',
+					'label'   => __( 'Post Type:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $this->get_post_types(),
+				),
+			),
+		);
+	}
+
+	protected function get_text_fields() {
+		return array(
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_title',
+					'label' => __( 'Show Archive Title', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_content',
+					'label' => __( 'Show Archive Intro Text', 'display-featured-image-genesis' ),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get the plugin widget forms class.
+	 *
+	 * @param array $instance
+	 *
+	 * @return \DisplayFeaturedImageGenesisWidgets
+	 */
+	protected function get_form_class( $instance = array() ) {
+		if ( isset( $this->form_class ) ) {
+			return $this->form_class;
+		}
+		$this->form_class = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
+
+		return $this->form_class;
+	}
+
+	/**
+	 * Get the public registered post types on the site.
+	 *
 	 * @return mixed
 	 */
 	protected function get_post_types() {
-		$args = array(
+		$args       = array(
 			'public'      => true,
 			'_builtin'    => false,
 			'has_archive' => true,
@@ -288,9 +314,9 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 		$options['post'] = __( 'Posts', 'display-featured-image-genesis' );
 		foreach ( $post_types as $post_type ) {
-		    $options[ $post_type->name ] = $post_type->label;
+			$options[ $post_type->name ] = $post_type->label;
 		}
 
 		return $options;
-    }
+	}
 }

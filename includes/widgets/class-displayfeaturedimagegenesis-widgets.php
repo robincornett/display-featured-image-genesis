@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * Class DisplayFeaturedImageGenesisWidgets
+ */
 class DisplayFeaturedImageGenesisWidgets {
 
+	/**
+	 * @var
+	 */
 	protected $parent;
 
+	/**
+	 * @var
+	 */
 	public $instance;
 
+	/**
+	 * DisplayFeaturedImageGenesisWidgets constructor.
+	 *
+	 * @param $parent
+	 * @param $instance
+	 */
 	public function __construct( $parent, $instance ) {
 		$this->parent   = $parent;
 		$this->instance = $instance;
@@ -36,6 +51,66 @@ class DisplayFeaturedImageGenesisWidgets {
 		);
 	}
 
+
+	/**
+	 * Get image fields (used in CPT and term).
+	 *
+	 * @return array
+	 */
+	public function get_image_fields() {
+		return array(
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_image',
+					'label' => __( 'Show Featured Image', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'image_size',
+					'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $this->get_image_size(),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'image_alignment',
+					'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $this->get_image_alignment(),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get the text fields (used in CPT and term).
+	 *
+	 * @return array
+	 */
+	public function get_text_fields() {
+		return array(
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_title',
+					'label' => __( 'Show Term Title', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_content',
+					'label' => __( 'Show Term Intro Text', 'display-featured-image-genesis' ),
+				),
+			),
+		);
+	}
+
 	/**
 	 * Build boxes with fields.
 	 *
@@ -57,17 +132,20 @@ class DisplayFeaturedImageGenesisWidgets {
 
 	/**
 	 * Add a description to a widget settings box.
+	 *
 	 * @param $box
 	 *
 	 * @return string
 	 */
 	public function box_description( $box ) {
 		$method = "describe_{$box}";
+
 		return method_exists( $this, $method ) ? $this->$method() : '';
 	}
 
 	/**
 	 * Cycle through the fields for a given box, pick the appropriate method, and go.
+	 *
 	 * @param $instance
 	 * @param $fields
 	 */
@@ -82,6 +160,7 @@ class DisplayFeaturedImageGenesisWidgets {
 
 	/**
 	 * Generic function to build a text input for the widget form.
+	 *
 	 * @param $instance
 	 * @param $args
 	 */
@@ -91,6 +170,7 @@ class DisplayFeaturedImageGenesisWidgets {
 
 	/**
 	 * Generic function to build a select input for the widget form.
+	 *
 	 * @param $instance
 	 * @param $args
 	 */
@@ -100,6 +180,7 @@ class DisplayFeaturedImageGenesisWidgets {
 
 	/**
 	 * Generic function to build a number input.
+	 *
 	 * @param $instance
 	 * @param $args
 	 */
@@ -109,6 +190,7 @@ class DisplayFeaturedImageGenesisWidgets {
 
 	/**
 	 * Generic function to build a checkbox input.
+	 *
 	 * @param $instance
 	 * @param $args
 	 */
@@ -118,6 +200,7 @@ class DisplayFeaturedImageGenesisWidgets {
 
 	/**
 	 * Generic function to build a textarea input
+	 *
 	 * @param $instance
 	 * @param $args
 	 */

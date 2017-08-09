@@ -12,33 +12,14 @@
 class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 	/**
-	 * Holds widget settings defaults, populated in constructor.
-	 *
-	 * @var array
+	 * @var $form_class \DisplayFeaturedImageGenesisWidgets
 	 */
-	protected $defaults;
+	protected $form_class;
 
 	/**
 	 * Constructor. Set the default widget options and create widget.
 	 */
-	function __construct() {
-
-		$this->defaults = array(
-			'title'                    => '',
-			'show_featured_image'      => 0,
-			'featured_image_alignment' => '',
-			'featured_image_size'      => 'medium',
-			'gravatar_alignment'       => 'left',
-			'user'                     => '',
-			'show_gravatar'            => 0,
-			'size'                     => '45',
-			'author_info'              => '',
-			'bio_text'                 => '',
-			'page'                     => '',
-			'page_link_text'           => __( 'Read More', 'display-featured-image-genesis' ) . '&#x02026;',
-			'posts_link'               => '',
-			'link_text'                => __( 'View My Blog Posts', 'display-featured-image-genesis' ),
-		);
+	public function __construct() {
 
 		$widget_ops = array(
 			'classname'                   => 'author-profile',
@@ -57,60 +38,84 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	}
 
 	/**
+	 * Get the widget defaults.
+	 *
+	 * @return array
+	 */
+	public function defaults() {
+		return array(
+			'title'                    => '',
+			'show_featured_image'      => 0,
+			'featured_image_alignment' => 'alignnone',
+			'featured_image_size'      => 'medium',
+			'gravatar_alignment'       => 'left',
+			'user'                     => '',
+			'show_gravatar'            => 0,
+			'size'                     => 45,
+			'author_info'              => '',
+			'bio_text'                 => '',
+			'page'                     => '',
+			'page_link_text'           => __( 'Read More', 'display-featured-image-genesis' ) . '&#x02026;',
+			'posts_link'               => 0,
+			'link_text'                => __( 'View My Blog Posts', 'display-featured-image-genesis' ),
+		);
+	}
+
+	/**
 	 * Echo the widget content.
 	 *
-	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
+	 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 	 * @param array $instance The settings for the particular instance of the widget
 	 */
-	function widget( $args, $instance ) {
+	public function widget( $args, $instance ) {
 
 		// Merge with defaults
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
+		$instance = wp_parse_args( (array) $instance, $this->defaults() );
 
 		echo $args['before_widget'];
 
-			if ( ! empty( $instance['title'] ) ) {
-				echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
+		if ( ! empty( $instance['title'] ) ) {
+			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
+		}
+
+		if ( $instance['show_featured_image'] ) {
+			$image_id  = get_the_author_meta( 'displayfeaturedimagegenesis', $instance['user'] );
+			$image_src = wp_get_attachment_image_src( $image_id, $instance['featured_image_size'] );
+			if ( $image_src ) {
+				echo '<img src="' . esc_url( $image_src[0] ) . '" alt="' . esc_html( get_the_author_meta( 'display_name', $instance['user'] ) ) . '" class="' . esc_attr( $instance['featured_image_alignment'] ) . '" />';
+			}
+		}
+
+		$text = '';
+
+		if ( $instance['show_gravatar'] ) {
+			if ( ! empty( $instance['gravatar_alignment'] ) ) {
+				$text .= '<span class="align' . esc_attr( $instance['gravatar_alignment'] ) . '">';
 			}
 
-			if ( $instance['show_featured_image'] ) {
-				$image_id  = get_the_author_meta( 'displayfeaturedimagegenesis', $instance['user'] );
-				$image_src = wp_get_attachment_image_src( $image_id, $instance['featured_image_size'] );
-				if ( $image_src ) {
-					echo '<img src="' . esc_url( $image_src[0] ) . '" alt="' . esc_html( get_the_author_meta( 'display_name', $instance['user'] ) ) . '" class="' . esc_attr( $instance['featured_image_alignment'] ) . '" />';
-				}
+			$text .= get_avatar( $instance['user'], $instance['size'] );
+
+			if ( ! empty( $instance['gravatar_alignment'] ) ) {
+				$text .= '</span>';
 			}
+		}
 
-			$text = '';
+		if ( $instance['author_info'] ) {
+			$text .= 'text' === $instance['author_info'] ? $instance['bio_text'] : get_the_author_meta( 'description', $instance['user'] );
+		}
 
-			if ( $instance['show_gravatar'] ) {
-				if ( ! empty( $instance['gravatar_alignment'] ) ) {
-					$text .= '<span class="align' . esc_attr( $instance['gravatar_alignment'] ) . '">';
-				}
+		$text .= $instance['page'] ? sprintf( ' <a class="pagelink" href="%s">%s</a>', get_page_link( $instance['page'] ), $instance['page_link_text'] ) : '';
 
-				$text .= get_avatar( $instance['user'], $instance['size'] );
+		// Echo $text
+		echo wp_kses_post( wpautop( $text ) );
 
-				if ( ! empty( $instance['gravatar_alignment'] ) ) {
-					$text .= '</span>';
-				}
-			}
+		// If posts link option checked, add posts link to output
+		$display_name = get_the_author_meta( 'display_name', $instance['user'] );
+		$user_name    = ! empty( $display_name ) && function_exists( 'genesis_a11y' ) && genesis_a11y() ? '<span class="screen-reader-text">' . $display_name . ': </span>' : '';
 
-			if ( $instance['author_info'] ) {
-				$text .= 'text' === $instance['author_info'] ? $instance['bio_text'] : get_the_author_meta( 'description', $instance['user'] );
-			}
-
-			$text .= $instance['page'] ? sprintf( ' <a class="pagelink" href="%s">%s</a>', get_page_link( $instance['page'] ), $instance['page_link_text'] ) : '';
-
-			// Echo $text
-			echo wp_kses_post( wpautop( $text ) );
-
-			// If posts link option checked, add posts link to output
-			$display_name = get_the_author_meta( 'display_name', $instance['user'] );
-			$user_name    = ! empty( $display_name ) && function_exists( 'genesis_a11y' ) && genesis_a11y() ? '<span class="screen-reader-text">' . $display_name . ': </span>' : '';
-
-			if ( $instance['posts_link'] && $instance['link_text'] ) {
-				printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', esc_url( get_author_posts_url( $instance['user'] ) ), wp_kses_post( $user_name ), esc_attr( $instance['link_text'] ) );
-			}
+		if ( $instance['posts_link'] && $instance['link_text'] ) {
+			printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', esc_url( get_author_posts_url( $instance['user'] ) ), wp_kses_post( $user_name ), esc_attr( $instance['link_text'] ) );
+		}
 
 		echo $args['after_widget'];
 
@@ -125,16 +130,22 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 *
 	 * @param array $new_instance New settings for this instance as input by the user via form()
 	 * @param array $old_instance Old settings for this instance
+	 *
 	 * @return array Settings to save or bool false to cancel saving
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 
-		$new_instance['title']          = strip_tags( $new_instance['title'] );
-		$new_instance['bio_text']       = current_user_can( 'unfiltered_html' ) ? $new_instance['bio_text'] : genesis_formatting_kses( $new_instance['bio_text'] );
-		$new_instance['page_link_text'] = strip_tags( $new_instance['page_link_text'] );
-		$new_instance['link_text']      = esc_html( $new_instance['link_text'] );
+		$fields  = array_merge(
+			$this->get_image_fields(),
+			$this->get_gravatar_fields(),
+			$this->get_description_fields(),
+			$this->get_archive_fields()
+		);
 
-		return $new_instance;
+		$new_instance['user'] = (int) $new_instance['user'];
+		$updater              = new DisplayFeaturedImageGenesisWidgetsUpdate();
+
+		return $updater->update( $new_instance, $old_instance, $fields );
 
 	}
 
@@ -143,11 +154,11 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 *
 	 * @param array $instance Current settings
 	 */
-	function form( $instance ) {
+	public function form( $instance ) {
 
 		// Merge with defaults
-		$instance = wp_parse_args( (array) $instance, $this->defaults );
-		$form     = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
+		$instance = wp_parse_args( (array) $instance, $this->defaults() );
+		$form     = $this->get_form_class( $instance );
 
 		$form->do_text( $instance, array(
 			'id'    => 'title',
@@ -162,132 +173,187 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		) );
 
 		$form->do_boxes( array(
-			'author' => array(
-				array(
-					'method' => 'checkbox',
-					'args'   => array(
-						'id'    => 'show_featured_image',
-						'label' => __( 'Show the user\'s featured image.', 'display-featured-image-genesis' ),
-					),
-				),
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'featured_image_size',
-						'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => $form->get_image_size(),
-					),
-				),
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'featured_image_alignment',
-						'label'   => __( 'Image Alignment:', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => $form->get_image_alignment(),
-					),
-				),
-			),
+			'author' => $this->get_image_fields(),
 		), 'genesis-widget-column-box-top' );
 
 		$form->do_boxes( array(
-			'gravatar' => array(
-				array(
-					'method' => 'checkbox',
-					'args'   => array(
-						'id'    => 'show_gravatar',
-						'label' => __( 'Show the user\'s gravatar.', 'display-featured-image-genesis' ),
-					),
-				),
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'size',
-						'label'   => __( 'Gravatar Size:', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => $this->get_gravatar_sizes(),
-					),
-				),
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'gravatar_alignment',
-						'label'   => __( 'Gravatar Alignment:', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => array(
-							''      => __( 'None', 'display-featured-image-genesis' ),
-							'left'  => __( 'Left', 'display-featured-image-genesis' ),
-							'right' => __( 'Right', 'display-featured-image-genesis' ),
-						),
-					),
-				),
-			),
+			'gravatar' => $this->get_gravatar_fields(),
 		) );
 
 		$form->do_boxes( array(
-			'description' => array(
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'author_info',
-						'label'   => __( 'Text to use as the author description:', 'display-featured-image-genesis' ),
-						'flex'    => true,
-						'choices' => array(
-							''     => __( 'None', 'display-featured-image-genesis' ),
-							'bio'  => __( 'Author Bio (from profile)', 'display-featured-image-genesis' ),
-							'text' => __( 'Custom Text (below)', 'display-featured-image-genesis' ),
-						),
-					),
-				),
-				array(
-					'method' => 'textarea',
-					'args'   => array(
-						'id'    => 'bio_text',
-						'label' => __( 'Custom Text Content', 'display-featured-image-genesis' ),
-						'flex'  => true,
-						'rows'  => 6,
-					),
-				),
-			),
+			'description' => $this->get_description_fields(),
 		) );
 
 		$form->do_boxes( array(
-			'archive' => array(
-				array(
-					'method' => 'select',
-					'args'   => array(
-						'id'      => 'page',
-						'label'   => __( 'Choose your extended "About Me" page from the list below. This will be the page linked to at the end of the author description.', 'display-featured-image-genesis' ),
-						'choices' => $this->get_pages(),
-					),
-				),
-				array(
-					'method' => 'text',
-					'args'   => array(
-						'id'    => 'page_link_text',
-						'label' => __( 'Extended page link text', 'display-featured-image-genesis' ),
-					),
-				),
-				array(
-					'method' => 'checkbox',
-					'args'   => array(
-						'id'    => 'posts_link',
-						'label' => __( 'Show Author Archive Link?', 'display-featured-image-genesis' ),
-					),
-				),
-				array(
-					'method' => 'text',
-					'args'   => array(
-						'id'    => 'link_text',
-						'label' => __( 'Link Text:', 'display-featured-image-genesis' ),
-					),
-				),
-			),
+			'archive' => $this->get_archive_fields(),
 		) );
 	}
 
 	/**
+	 * Get the plugin widget forms class.
+	 *
+	 * @param array $instance
+	 *
+	 * @return \DisplayFeaturedImageGenesisWidgets
+	 */
+	protected function get_form_class( $instance = array() ) {
+		if ( isset( $this->form_class ) ) {
+			return $this->form_class;
+		}
+		$this->form_class = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
+
+		return $this->form_class;
+	}
+
+	/**
+	 * Get the image fields (unique to this widget).
+	 *
+	 * @return array
+	 */
+	protected function get_image_fields() {
+		$form = $this->get_form_class();
+		return array(
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_featured_image',
+					'label' => __( 'Show the user\'s featured image.', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'featured_image_size',
+					'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $form->get_image_size(),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'featured_image_alignment',
+					'label'   => __( 'Image Alignment:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $form->get_image_alignment(),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get the gravatar fields.
+	 *
+	 * @return array
+	 */
+	protected function get_gravatar_fields() {
+		return array(
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_gravatar',
+					'label' => __( 'Show the user\'s gravatar.', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'size',
+					'label'   => __( 'Gravatar Size:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $this->get_gravatar_sizes(),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'gravatar_alignment',
+					'label'   => __( 'Gravatar Alignment:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => array(
+						''      => __( 'None', 'display-featured-image-genesis' ),
+						'left'  => __( 'Left', 'display-featured-image-genesis' ),
+						'right' => __( 'Right', 'display-featured-image-genesis' ),
+					),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get the author description fields.
+	 *
+	 * @return array
+	 */
+	protected function get_description_fields() {
+		return array(
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'author_info',
+					'label'   => __( 'Text to use as the author description:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => array(
+						''     => __( 'None', 'display-featured-image-genesis' ),
+						'bio'  => __( 'Author Bio (from profile)', 'display-featured-image-genesis' ),
+						'text' => __( 'Custom Text (below)', 'display-featured-image-genesis' ),
+					),
+				),
+			),
+			array(
+				'method' => 'textarea',
+				'args'   => array(
+					'id'    => 'bio_text',
+					'label' => __( 'Custom Text Content', 'display-featured-image-genesis' ),
+					'flex'  => true,
+					'rows'  => 6,
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get the archive fields.
+	 *
+	 * @return array
+	 */
+	protected function get_archive_fields() {
+		return array(
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'page',
+					'label'   => __( 'Choose your extended "About Me" page from the list below. This will be the page linked to at the end of the author description.', 'display-featured-image-genesis' ),
+					'choices' => $this->get_pages(),
+				),
+			),
+			array(
+				'method' => 'text',
+				'args'   => array(
+					'id'    => 'page_link_text',
+					'label' => __( 'Extended page link text', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'posts_link',
+					'label' => __( 'Show Author Archive Link?', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'text',
+				'args'   => array(
+					'id'    => 'link_text',
+					'label' => __( 'Link Text:', 'display-featured-image-genesis' ),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get the authors on the site.
+	 *
 	 * @return array
 	 */
 	protected function get_users() {
@@ -303,6 +369,8 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	}
 
 	/**
+	 * Get gravatar sizes.
+	 *
 	 * @return array
 	 */
 	protected function get_gravatar_sizes() {
@@ -321,6 +389,8 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	}
 
 	/**
+	 * Get the pages on the site.
+	 *
 	 * @return array
 	 */
 	protected function get_pages() {

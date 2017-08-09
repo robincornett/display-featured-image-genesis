@@ -19,11 +19,16 @@
 class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 	/**
+	 * @var $form_class \DisplayFeaturedImageGenesisWidgets
+	 */
+	protected $form_class;
+
+	/**
 	 * Constructor. Set the default widget options and create widget.
 	 *
 	 * @since 2.0.0
 	 */
-	function __construct() {
+	public function __construct() {
 
 		$widget_ops = array(
 			'classname'                   => 'featured-term',
@@ -46,7 +51,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	/**
 	 * @return array
 	 */
-	protected function defaults() {
+	public function defaults() {
 		return array(
 			'title'           => '',
 			'taxonomy'        => 'category',
@@ -187,12 +192,17 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 *
 	 * @return array Settings to save or bool false to cancel saving
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 
-		$new_instance['title'] = strip_tags( $new_instance['title'] );
+		$form   = $this->get_form_class( $new_instance );
+		$fields = array_merge(
+			$form->get_text_fields(),
+			$this->get_taxonomy_fields( $new_instance ),
+			$form->get_image_fields()
+		);
+		$updater = new DisplayFeaturedImageGenesisWidgetsUpdate();
 
-		return $new_instance;
-
+		return $updater->update( $new_instance, $old_instance, $fields );
 	}
 
 	/**
@@ -208,7 +218,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults() );
-		$form     = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
+		$form     = $this->get_form_class( $instance );
 
 		$form->do_text( $instance, array(
 			'id'    => 'title',
@@ -223,17 +233,32 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		), 'genesis-widget-column-box-top' );
 
 		$form->do_boxes( array(
-			'words' => $this->get_text_fields(),
+			'words' => $form->get_text_fields(),
 		) );
 
 		echo '</div>';
 		echo '<div class="genesis-widget-column genesis-widget-column-right">';
 
 		$form->do_boxes( array(
-			'image' => $this->get_image_fields( $form ),
+			'image' => $form->get_image_fields(),
 		), 'genesis-widget-column-box-top' );
 
 		echo '</div>';
+	}
+
+	/**
+	 * Get the plugin widget forms class.
+	 * @param array $instance
+	 *
+	 * @return \DisplayFeaturedImageGenesisWidgets
+	 */
+	protected function get_form_class( $instance = array() ) {
+		if ( isset( $this->form_class ) ) {
+			return $this->form_class;
+		}
+		$this->form_class = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
+
+		return $this->form_class;
 	}
 
 	/**
@@ -260,63 +285,6 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 					'label'   => __( 'Term:', 'display-featured-image-genesis' ),
 					'flex'    => true,
 					'choices' => $this->get_term_lists( $instance, false ),
-				),
-			),
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function get_text_fields() {
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_title',
-					'label' => __( 'Show Term Title', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_content',
-					'label' => __( 'Show Term Intro Text', 'display-featured-image-genesis' ),
-				),
-			),
-		);
-	}
-
-	/**
-	 * @param $form \DisplayFeaturedImageGenesisWidgets
-	 *
-	 * @return array
-	 */
-	protected function get_image_fields( $form ) {
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_image',
-					'label' => __( 'Show Featured Image', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'image_size',
-					'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $form->get_image_size(),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'image_alignment',
-					'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $form->get_image_alignment(),
 				),
 			),
 		);
