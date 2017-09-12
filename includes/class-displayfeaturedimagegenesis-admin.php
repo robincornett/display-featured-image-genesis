@@ -45,8 +45,8 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	protected function set_up_post_type_columns() {
 		$args       = array(
-			'public'   => true,
 			'_builtin' => false,
+			'show_ui'  => true,
 		);
 		$output     = 'names';
 		$post_types = get_post_types( $args, $output );
