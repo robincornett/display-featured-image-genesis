@@ -186,17 +186,16 @@ class Display_Featured_Image_Genesis_Output {
 
 		do_action( 'display_featured_image_genesis_before_title' );
 
-		if ( $this->move_excerpts() ) {
-
-			$this->do_title_descriptions();
-
-		} elseif ( $this->move_title() ) { // if titles are being moved to overlay the image
-
-			if ( ! empty( $this->item->title ) && $this->do_the_title() ) {
-				echo $this->do_the_title();
+		if ( $this->move_title() ) {
+			if ( $this->move_excerpts() ) {
+				$this->do_title_descriptions();
+			} else {
+				$item = $this->get_item();
+				if ( ! empty( $item->title ) && $this->do_the_title() ) {
+					echo $this->do_the_title();
+				}
+				add_action( 'genesis_before_loop', array( $this, 'add_descriptions' ) );
 			}
-			add_action( 'genesis_before_loop', array( $this, 'add_descriptions' ) );
-
 		}
 
 		do_action( 'display_featured_image_genesis_after_title' );
