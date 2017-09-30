@@ -40,9 +40,6 @@ class Display_Featured_Image_Genesis_Output {
 		if ( $this->quit_now() ) {
 			return;
 		}
-
-		$this->common = new Display_Featured_Image_Genesis_Common();
-		$this->item   = Display_Featured_Image_Genesis_Common::get_image_variables();
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
 	}
@@ -58,14 +55,16 @@ class Display_Featured_Image_Genesis_Output {
 			return;
 		}
 		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
-		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $this->common->version );
+		$common   = $this->get_common_class();
+		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $common->version );
 		if ( $this->setting['max_height'] ) {
 			$this->add_inline_style();
 		}
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
-		$large = $this->common->minimum_backstretch_width();
-		$width = absint( $this->item->backstretch[1] );
+		$large = $common->minimum_backstretch_width();
+		$item  = $this->get_item();
+		$width = absint( $item->backstretch[1] );
 		/**
 		 * Creates display_featured_image_genesis_force_backstretch filter to check
 		 * whether get_post_type array should force the backstretch effect for this post type.
@@ -90,7 +89,10 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * set body class if featured images are displayed using the plugin
-	 * @param filter $classes body_class
+	 *
+	 * @param $classes array
+	 *
+	 * @return array
 	 *
 	 * @since  1.0.0
 	 */
@@ -98,15 +100,18 @@ class Display_Featured_Image_Genesis_Output {
 		if ( ! $this->can_do_things() ) {
 			return $classes;
 		}
-		$large = $this->common->minimum_backstretch_width();
-		$width = (int) $this->item->backstretch[1];
-		if ( false === $this->item->content || ! is_singular() ) {
+		$common = $this->get_common_class();
+		$large  = $common->minimum_backstretch_width();
+		$item   = $this->get_item();
+		$width  = (int) $item->backstretch[1];
+		if ( false === $item->content || ! is_singular() ) {
 			if ( $width > $large ) {
 				$classes[] = 'has-leader';
 			} elseif ( $width <= $large ) {
 				$classes[] = 'large-featured';
 			}
 		}
+
 		return apply_filters( 'display_featured_image_genesis_classes', $classes );
 	}
 
@@ -115,8 +120,12 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.4
 	 */
 	protected function do_backstretch_image_things() {
-		wp_register_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $this->common->version, true );
-		wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array( 'jquery', 'displayfeaturedimage-backstretch' ), $this->common->version, true );
+		$common = $this->get_common_class();
+		wp_register_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $common->version, true );
+		wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array(
+			'jquery',
+			'displayfeaturedimage-backstretch',
+		), $common->version, true );
 
 		add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
 
@@ -142,27 +151,28 @@ class Display_Featured_Image_Genesis_Output {
 		$large        = wp_get_attachment_image_src( $image_id, 'large' );
 		$medium_large = wp_get_attachment_image_src( $image_id, 'medium_large' );
 		$responsive   = apply_filters( 'displayfeaturedimagegenesis_responsive_backstretch', true );
+		$item         = $this->get_item();
 		$output       = array(
-			'source' => array(
-				'backstretch'  => esc_url( $this->item->backstretch[0] ),
+			'source'       => array(
+				'backstretch'  => esc_url( $item->backstretch[0] ),
 				'large'        => $large[3] && $responsive ? esc_url( $large[0] ) : '',
 				'medium_large' => $medium_large[3] && $responsive ? esc_url( $medium_large[0] ) : '',
 			),
-			'width' => array(
-				'backstretch'  => $this->item->backstretch[1],
+			'width'        => array(
+				'backstretch'  => $item->backstretch[1],
 				'large'        => $large[3] ? $large[1] : '',
 				'medium_large' => $medium_large[3] ? $medium_large[1] : '',
 			),
 			'image_height' => array(
-				'backstretch'  => $this->item->backstretch[2],
+				'backstretch'  => $item->backstretch[2],
 				'large'        => $large[3] ? $large[2] : '',
 				'medium_large' => $medium_large[3] ? $medium_large[2] : '',
 			),
-			'height'    => (int) $this->setting['less_header'],
-			'centeredX' => (bool) $backstretch_vars['centeredX'],
-			'centeredY' => (bool) $backstretch_vars['centeredY'],
-			'fade'      => (int) $backstretch_vars['fade'],
-			'title'     => esc_attr( $this->get_image_alt_text( $image_id ) ),
+			'height'       => (int) $this->setting['less_header'],
+			'centeredX'    => (bool) $backstretch_vars['centeredX'],
+			'centeredY'    => (bool) $backstretch_vars['centeredY'],
+			'fade'         => (int) $backstretch_vars['fade'],
+			'title'        => esc_attr( $this->get_image_alt_text( $image_id ) ),
 		);
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
@@ -205,7 +215,11 @@ class Display_Featured_Image_Genesis_Output {
 
 		// if javascript not enabled, do a fallback featured image
 		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
-		$image    = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, array( 'alt' => $this->get_image_alt_text( $image_id ), 'class' => 'post-image', 'aria-hidden' => 'true' ) );
+		$image    = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, array(
+			'alt'         => $this->get_image_alt_text( $image_id ),
+			'class'       => 'post-image',
+			'aria-hidden' => 'true',
+		) );
 		printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
 
 		// close big-leader
@@ -216,18 +230,21 @@ class Display_Featured_Image_Genesis_Output {
 
 	/**
 	 * Get the alt text for the featured image. Use the image alt text if filter is true.
+	 *
 	 * @param string $image_id
 	 *
 	 * @return mixed
 	 */
 	protected function get_image_alt_text( $image_id = '' ) {
-		$alt_text = $this->item->title;
+		$item     = $this->get_item();
+		$alt_text = $item->title;
 		if ( $image_id && apply_filters( 'displayfeaturedimagegenesis_prefer_image_alt', false ) ) {
 			$image_alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
 			if ( $image_alt ) {
 				$alt_text = $image_alt;
 			}
 		}
+
 		return $alt_text;
 	}
 
@@ -277,7 +294,8 @@ class Display_Featured_Image_Genesis_Output {
 		}
 		$class        = is_singular() ? 'entry-title' : 'archive-title';
 		$itemprop     = genesis_html5() ? 'itemprop="headline"' : '';
-		$title        = $this->item->title;
+		$item         = $this->get_item();
+		$title        = $item->title;
 		$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
 
 		return apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
@@ -360,6 +378,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function get_skipped_posttypes() {
 		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
+
 		return Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types );
 	}
 
@@ -371,17 +390,20 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function can_do_things() {
 		$can_do = true;
+		$item   = $this->get_item();
 		$medium = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
-		$width  = (int) $this->item->backstretch[1];
+		$width  = (int) $item->backstretch[1];
 
 		// check if they have enabled display on subsequent pages
 		$is_paged = ! empty( $this->setting['is_paged'] ) ? $this->setting['is_paged'] : 0;
 		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
-		if ( empty( $this->item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $this->item->content ) ) {
+		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $item->content ) ) {
 			$can_do = false;
 		}
+
 		return apply_filters( 'displayfeaturedimagegenesis_can_do', $can_do );
 	}
+
 	/**
 	 * Create a filter to not move excerpts if move excerpts is enabled.
 	 * @return bool
@@ -397,6 +419,7 @@ class Display_Featured_Image_Genesis_Output {
 		if ( $move_excerpts && ! Display_Featured_Image_Genesis_Common::is_in_array( 'omit_excerpt' ) ) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -415,6 +438,7 @@ class Display_Featured_Image_Genesis_Output {
 		if ( $keep_titles || Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) || $this->check_post_meta( '_displayfeaturedimagegenesis_move' ) ) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -453,7 +477,35 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
+	 * Get the plugin's common class.
+	 *
+	 * @return \Display_Featured_Image_Genesis_Common
+	 */
+	protected function get_common_class() {
+		if ( isset( $this->common ) ) {
+			return $this->common;
+		}
+		$this->common = new Display_Featured_Image_Genesis_Common();
+
+		return $this->common;
+	}
+
+	/**
+	 * Get the current featured image and related variables.
+	 * @return \stdClass
+	 */
+	protected function get_item() {
+		if ( isset( $this->item ) ) {
+			return $this->item;
+		}
+		$this->item = Display_Featured_Image_Genesis_Common::get_image_variables();
+
+		return $this->item;
+	}
+
+	/**
 	 * Check the post_meta for singular posts/pages/posts page.
+	 *
 	 * @param $meta_key string the post_meta key to check
 	 *
 	 * @return bool
@@ -462,6 +514,7 @@ class Display_Featured_Image_Genesis_Output {
 	protected function check_post_meta( $meta_key ) {
 		$post_id   = get_option( 'page_for_posts' ) && is_home() ? get_option( 'page_for_posts' ) : get_the_ID();
 		$post_meta = (bool) get_post_meta( $post_id, $meta_key, true );
+
 		return (bool) ( is_home() || is_singular() ) && $post_meta;
 	}
 }
