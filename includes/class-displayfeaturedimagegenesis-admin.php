@@ -74,7 +74,7 @@ class Display_Featured_Image_Genesis_Admin {
 
 	/**
 	 * add featured image column
-	 * @param column $columns set up new column to show featured image for taxonomies/posts/etc.
+	 * @param $columns array set up new column to show featured image for taxonomies/posts/etc.
 	 *
 	 * @since 2.0.0
 	 */
@@ -83,7 +83,7 @@ class Display_Featured_Image_Genesis_Admin {
 		$new_columns = $columns;
 		array_splice( $new_columns, 1 );
 
-		$new_columns['featured_image'] = __( 'Featured Image', 'display-featured-image-genesis' );
+		$new_columns['featured_image'] = __( 'Image', 'display-featured-image-genesis' );
 
 		return array_merge( $new_columns, $columns );
 
@@ -91,10 +91,9 @@ class Display_Featured_Image_Genesis_Admin {
 
 	/**
 	 * manage new taxonomy column
-	 * @param  blank $value   blank (because WP)
-	 * @param  column id $column  column id is featured_image
-	 * @param  term id $term_id term_id for taxonomy
-	 * @return featured image          display featured image, if it exists, for each term in a public taxonomy
+	 * @param  $value string  blank (because WP)
+	 * @param  $column string  column id is featured_image
+	 * @param  $term_id  int $term_id term_id for taxonomy
 	 *
 	 * @since 2.0.0
 	 */
@@ -124,10 +123,10 @@ class Display_Featured_Image_Genesis_Admin {
 	}
 
 	/**
-	 * manage new post_type column
-	 * @param  column id $column  column id is featured_image
-	 * @param  post id $post_id id of each post
-	 * @return featured image          display featured image, if it exists, for each post
+	 * Manage new post_type column: display the featured image, if it exists.
+	 *
+	 * @param  $column string  column id is featured_image
+	 * @param  $post_id int id of each post
 	 *
 	 * @since 2.0.0
 	 */
@@ -152,8 +151,7 @@ class Display_Featured_Image_Genesis_Admin {
 	}
 
 	/**
-	 * sets a width for the featured image column
-	 * @return stylesheet inline stylesheet to set featured image column width
+	 * Add an inline stylesheet to set a width for the featured image column.
 	 */
 	public function featured_image_column_width() {
 		$screen = get_current_screen();
@@ -178,11 +176,11 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	public function manage_user_column( $value, $column_name, $user_id ) {
 		if ( 'featured_image' !== $column_name ) {
-			return;
+			return '';
 		}
 		$image_id = get_the_author_meta( 'displayfeaturedimagegenesis', (int) $user_id );
 		if ( ! $image_id ) {
-			return;
+			return '';
 		}
 		$args = array(
 			'image_id' => $image_id,
@@ -206,7 +204,7 @@ class Display_Featured_Image_Genesis_Admin {
 		$preview  = wp_get_attachment_image_src( $image_id, 'thumbnail' );
 		$preview  = apply_filters( "display_featured_image_genesis_admin_{$args['context']}_thumbnail", $preview, $image_id );
 		if ( ! $preview ) {
-			return;
+			return '';
 		}
 		return sprintf( '<img src="%1$s" alt="%2$s" />', $preview[0], $args['alt'] );
 	}
