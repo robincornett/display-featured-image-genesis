@@ -128,10 +128,8 @@ class Display_Featured_Image_Genesis_Output {
 		), $common->version, true );
 
 		add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
-
-		$hook     = apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' );
-		$priority = apply_filters( 'display_featured_image_move_backstretch_image_priority', 10 );
-		add_action( esc_attr( $hook ), array( $this, 'do_backstretch_image_title' ), $priority );
+		$location = $this->get_hooks();
+		add_action( esc_attr( $location['backstretch']['hook'] ), array( $this, 'do_backstretch_image_title' ), $location['backstretch']['priority'] );
 	}
 
 	/**
@@ -256,15 +254,8 @@ class Display_Featured_Image_Genesis_Output {
 		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
 		add_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description', 15 );
 
-		$hook = apply_filters( 'display_featured_image_genesis_move_large_image', 'genesis_before_loop' );
-		if ( ! is_singular() || is_page_template( 'page_blog.php' ) ) {
-			$check = strpos( $hook, 'entry' ) || strpos( $hook, 'post' );
-			if ( false !== $check ) {
-				$hook = 'genesis_before_loop';
-			}
-		}
-		$priority = apply_filters( 'display_featured_image_genesis_move_large_image_priority', 12 );
-		add_action( esc_attr( $hook ), array( $this, 'do_large_image' ), $priority ); // works for both HTML5 and XHTML
+		$location = $this->get_hooks();
+		add_action( esc_attr( $location['large']['hook'] ), array( $this, 'do_large_image' ), $location['large']['priority'] ); // works for both HTML5 and XHTML
 	}
 
 	/**
@@ -501,6 +492,32 @@ class Display_Featured_Image_Genesis_Output {
 		$this->item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		return $this->item;
+	}
+
+	/**
+	 * Define the hooks/priorities for image output.
+	 *
+	 * @return array
+	 */
+	protected function get_hooks() {
+		$large_hook = apply_filters( 'display_featured_image_genesis_move_large_image', 'genesis_before_loop' );
+		if ( ! is_singular() || is_page_template( 'page_blog.php' ) ) {
+			$check = strpos( $large_hook, 'entry' ) || strpos( $large_hook, 'post' );
+			if ( false !== $check ) {
+				$large_hook = 'genesis_before_loop';
+			}
+		}
+
+		return apply_filters( 'displayfeaturedimagegenesis_hooks', array(
+			'backstretch' => array(
+				'hook'     => apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' ),
+				'priority' => apply_filters( 'display_featured_image_move_backstretch_image_priority', 10 ),
+			),
+			'large'       => array(
+				'hook'     => $large_hook,
+				'priority' => apply_filters( 'display_featured_image_genesis_move_large_image_priority', 12 ),
+			),
+		) );
 	}
 
 	/**
