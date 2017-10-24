@@ -193,16 +193,23 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 */
 	function update( $new_instance, $old_instance ) {
 
-		$form    = $this->get_form_class( $new_instance );
-		$fields  = array_merge(
+		$updater = new DisplayFeaturedImageGenesisWidgetsUpdate();
+
+		return $updater->update( $new_instance, $old_instance, $this->get_fields( $new_instance ) );
+
+	}
+
+	/**
+	 * Get all widget fields.
+	 * @return array
+	 */
+	public function get_fields( $instance = array() ) {
+		$form    = $this->get_form_class( $instance );
+		return array_merge(
 			$this->get_post_type_fields(),
 			$form->get_text_fields(),
 			$form->get_image_fields()
 		);
-		$updater = new DisplayFeaturedImageGenesisWidgetsUpdate();
-
-		return $updater->update( $new_instance, $old_instance, $fields );
-
 	}
 
 	/**

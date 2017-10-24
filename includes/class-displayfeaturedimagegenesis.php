@@ -331,6 +331,12 @@ class Display_Featured_Image_Genesis {
 			require_once plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
 			register_widget( $widget );
 		}
+
+		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php';
+		$shortcode_class = new DisplayFeaturedImageGenesisWidgetsShortcodes();
+		foreach ( array( 'author', 'post_type', 'term' ) as $shortcode ) {
+			add_shortcode( "displayfeaturedimagegenesis_{$shortcode}", array( $shortcode_class, "shortcode_{$shortcode}" ) );
+		}
 	}
 
 	/**

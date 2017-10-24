@@ -194,15 +194,22 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 
-		$form   = $this->get_form_class( $new_instance );
-		$fields = array_merge(
-			$form->get_text_fields(),
-			$this->get_taxonomy_fields( $new_instance ),
-			$form->get_image_fields()
-		);
 		$updater = new DisplayFeaturedImageGenesisWidgetsUpdate();
 
-		return $updater->update( $new_instance, $old_instance, $fields );
+		return $updater->update( $new_instance, $old_instance, $this->get_fields( $new_instance ) );
+	}
+
+	/**
+	 * Get all widget fields.
+	 * @return array
+	 */
+	public function get_fields( $instance = array() ) {
+		$form = $this->get_form_class( $instance );
+		return array_merge(
+			$form->get_text_fields(),
+			$this->get_taxonomy_fields( $instance ),
+			$form->get_image_fields()
+		);
 	}
 
 	/**

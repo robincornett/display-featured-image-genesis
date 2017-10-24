@@ -135,18 +135,23 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 
-		$fields  = array_merge(
+		$new_instance['user'] = (int) $new_instance['user'];
+		$updater              = new DisplayFeaturedImageGenesisWidgetsUpdate();
+
+		return $updater->update( $new_instance, $old_instance, $this->get_fields() );
+	}
+
+	/**
+	 * Get all widget fields.
+	 * @return array
+	 */
+	public function get_fields() {
+		return array_merge(
 			$this->get_image_fields(),
 			$this->get_gravatar_fields(),
 			$this->get_description_fields(),
 			$this->get_archive_fields()
 		);
-
-		$new_instance['user'] = (int) $new_instance['user'];
-		$updater              = new DisplayFeaturedImageGenesisWidgetsUpdate();
-
-		return $updater->update( $new_instance, $old_instance, $fields );
-
 	}
 
 	/**
