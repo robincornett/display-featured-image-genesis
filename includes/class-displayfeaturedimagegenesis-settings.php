@@ -604,7 +604,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
 			} elseif ( 'do_checkbox_array' === $field['callback'] ) {
-				foreach ( $field['args']['options'] as $option ) {
+				foreach ( $field['args']['options'] as $option => $label ) {
 					$new_value[ $field['id'] ][ $option ] = $this->one_zero( $new_value[ $field['id'] ][ $option ] );
 				}
 			}
