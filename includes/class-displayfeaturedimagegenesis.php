@@ -337,6 +337,9 @@ class Display_Featured_Image_Genesis {
 		foreach ( array( 'author', 'post_type', 'term' ) as $shortcode ) {
 			add_shortcode( "displayfeaturedimagegenesis_{$shortcode}", array( $shortcode_class, "shortcode_{$shortcode}" ) );
 		}
+		add_filter( 'sixtenpress_shortcode_inline_css', array( $shortcode_class, 'inline_css' ) );
+		add_action( 'sixtenpress_shortcode_init', array( $shortcode_class, 'shortcode_buttons' ) );
+		add_action( 'sixtenpress_shortcode_modal', array( $shortcode_class, 'do_modal' ) );
 	}
 
 	/**

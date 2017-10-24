@@ -6,6 +6,8 @@
 class DisplayFeaturedImageGenesisWidgetsShortcodes {
 
 	/**
+	 * Build the featured author widget shortcode.
+	 *
 	 * @param $atts
 	 *
 	 * @return string
@@ -20,6 +22,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	}
 
 	/**
+	 * Build the featured post type widget shortcode.
+	 *
 	 * @param $atts
 	 *
 	 * @return string
@@ -34,6 +38,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	}
 
 	/**
+	 * Build the featured term widget shortcode.
+	 *
 	 * @param $atts
 	 *
 	 * @return string
@@ -48,6 +54,68 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	}
 
 	/**
+	 * Add media shortcode buttons to the editor.
+	 */
+	public function shortcode_buttons() {
+		$widgets = array(
+			'displayfeaturedimagegenesis_term'      => __( 'Add Featured Term Widget', 'display-featured-image-genesis' ),
+			'displayfeaturedimagegenesis_author'    => __( 'Add Featured Author Widget', 'display-featured-image-genesis' ),
+			'displayfeaturedimagegenesis_post_type' => __( 'Add Featured Post Type Widget', 'display-featured-image-genesis' ),
+		);
+		$setting = displayfeaturedimagegenesis_get_setting();
+		foreach ( $widgets as $widget => $button_label ) {
+			if ( ! $setting['shortcode'][ $widget ] ) {
+				continue;
+			}
+			sixtenpress_shortcode_register( $widget, array(
+				'modal'  => $widget,
+				'button' => array(
+					'id'    => "{$widget}-create",
+					'class' => "{$widget}-create",
+					'label' => $button_label,
+				),
+				'self'   => true,
+				'labels' => array(
+					'title'  => __( 'Create Widget', 'display-featured-image-genesis' ),
+					'insert' => __( 'Insert Widget', 'display-featured-image-genesis' ),
+				),
+			) );
+		}
+	}
+
+	/**
+	 * Add the widget forms to the modal.
+	 * @param $shortcode
+	 */
+	public function do_modal( $shortcode ) {
+		$widgets = array(
+			'displayfeaturedimagegenesis_term'      => 'Display_Featured_Image_Genesis_Widget_Taxonomy',
+			'displayfeaturedimagegenesis_author'    => 'Display_Featured_Image_Genesis_Author_Widget',
+			'displayfeaturedimagegenesis_post_type' => 'Display_Featured_Image_Genesis_Widget_CPT',
+		);
+		foreach ( $widgets as $shortcode_text => $widget ) {
+			if ( $shortcode_text === $shortcode ) {
+				$class = new $widget();
+				$class->form( array() );
+			}
+		}
+	}
+
+	/**
+	 * Modify our modals' CSS.
+	 *
+	 * @param $css
+	 *
+	 * @return string
+	 */
+	public function inline_css( $css ) {
+		return '.displayfeaturedimagegenesis_term .media-modal-content, .displayfeaturedimagegenesis_post_type .media-modal-content {max-width: 500px;max-height:475px;}
+		.displayfeaturedimagegenesis_author .media-modal-content {max-width: 300px;}';
+	}
+
+	/**
+	 * Get the widget defaults.
+	 *
 	 * @param $class
 	 *
 	 * @return mixed
@@ -59,6 +127,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	}
 
 	/**
+	 * Return the shortcode output.
 	 * @param $atts
 	 * @param $class
 	 *
@@ -76,6 +145,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	}
 
 	/**
+	 * Validate the shortcode.
+	 *
 	 * @param $atts
 	 * @param $class
 	 *

@@ -45,6 +45,7 @@ function display_featured_image_genesis_require() {
 		'class-displayfeaturedimagegenesis-rss',
 		'class-displayfeaturedimagegenesis-settings',
 		'class-displayfeaturedimagegenesis-taxonomies',
+		'sixtenpress-shortcodes/sixtenpress-shortcodes',
 	);
 
 	foreach ( $files as $file ) {

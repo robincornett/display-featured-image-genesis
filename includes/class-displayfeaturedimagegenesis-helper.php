@@ -134,14 +134,12 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @param $args
 	 */
 	public function do_checkbox_array( $args ) {
-		$post_types = $this->get_content_types_built_in();
-		foreach ( $post_types as $post_type ) {
-			$object = get_post_type_object( $post_type );
+		foreach ( $args['options'] as $key => $value ) {
 			$type_args = array(
-				'setting'      => "{$args['setting']}][{$post_type}",
-				'label'        => $object->label,
+				'setting'      => "{$args['setting']}][{$key}",
+				'label'        => $value,
 				'setting_name' => $args['setting'],
-				'name'         => $post_type,
+				'name'         => $key,
 			);
 			$this->do_checkbox( $type_args );
 		}

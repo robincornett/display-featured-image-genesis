@@ -2,14 +2,14 @@
 
 /**
  * Class DisplayFeaturedImageGenesisDoSetting
- * @package Display_Featured_Image_Genesis
+ * @package   Display_Featured_Image_Genesis
  * @copyright 2016 Robin Cornett
  */
 class DisplayFeaturedImageGenesisGetSetting {
 
 	/**
 	 * Define the default plugin settings.
-	 * @return mixed|void
+	 * @return array
 	 * @since 2.6.0
 	 */
 	public function defaults() {
@@ -30,6 +30,11 @@ class DisplayFeaturedImageGenesisGetSetting {
 			'centeredX'      => 1,
 			'centeredY'      => 1,
 			'fade'           => 750,
+			'shortcode'      => array(
+				'displayfeaturedimagegenesis_term'      => 0,
+				'displayfeaturedimagegenesis_author'    => 0,
+				'displayfeaturedimagegenesis_post_type' => 0,
+			),
 		) );
 	}
 
@@ -42,6 +47,7 @@ class DisplayFeaturedImageGenesisGetSetting {
 	public function get_display_setting() {
 		$defaults = $this->defaults();
 		$setting  = get_option( 'displayfeaturedimagegenesis', $defaults );
+
 		return wp_parse_args( $setting, $defaults );
 
 	}

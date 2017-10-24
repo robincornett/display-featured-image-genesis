@@ -23,7 +23,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * The plugin setting.
-	 * @var $setting string
+	 * @var $setting array
 	 */
 	protected $setting;
 
@@ -107,6 +107,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$previous_user = get_option( 'displayfeaturedimagegenesis', false );
 		if ( ! $previous_user ) {
 			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
+
 			return;
 		}
 		$this->term_option_query = $this->check_term_images();
@@ -140,12 +141,14 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Settings for options screen
-	 * @return array settings for backstretch image options
 	 *
 	 * @since 1.1.0
 	 */
 	public function register_settings() {
-		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
+		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array(
+			$this,
+			'do_validation_things',
+		) );
 	}
 
 	/**
@@ -155,9 +158,18 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function define_tabs() {
 		return array(
-			'main'  => array( 'id' => 'main', 'tab' => __( 'Main', 'display-featured-image-genesis' ) ),
-			'style' => array( 'id' => 'style', 'tab' => __( 'Backstretch Output', 'display-featured-image-genesis' ) ),
-			'cpt'   => array( 'id' => 'cpt', 'tab' => __( 'Content Types', 'display-featured-image-genesis' ) ),
+			'main'  => array(
+				'id'  => 'main',
+				'tab' => __( 'Main', 'display-featured-image-genesis' ),
+			),
+			'style' => array(
+				'id'  => 'style',
+				'tab' => __( 'Backstretch Output', 'display-featured-image-genesis' ),
+			),
+			'cpt'   => array(
+				'id'  => 'cpt',
+				'tab' => __( 'Content Types', 'display-featured-image-genesis' ),
+			),
 		);
 	}
 
@@ -168,7 +180,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function register_sections() {
 		return array(
-			'main' => array(
+			'main'  => array(
 				'id'    => 'main',
 				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
 			),
@@ -176,7 +188,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'id'    => 'style',
 				'title' => __( 'Display Settings', 'display-featured-image-genesis' ),
 			),
-			'cpt' => array(
+			'cpt'   => array(
 				'id'    => 'cpt',
 				'title' => __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ),
 			),
@@ -211,49 +223,84 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'    => __( 'Always Use Default', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'always_default', 'label' => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ) ),
+				'args'     => array(
+					'setting' => 'always_default',
+					'label'   => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ),
+				),
 			),
 			array(
 				'id'       => 'exclude_front',
 				'title'    => __( 'Skip Front Page', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'exclude_front', 'label' => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ) ),
+				'args'     => array(
+					'setting' => 'exclude_front',
+					'label'   => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),
+				),
 			),
 			array(
 				'id'       => 'keep_titles',
 				'title'    => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'keep_titles', 'label' => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ) ),
+				'args'     => array(
+					'setting' => 'keep_titles',
+					'label'   => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
+				),
 			),
 			array(
 				'id'       => 'move_excerpts',
 				'title'    => __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'move_excerpts', 'label' => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ) ),
+				'args'     => array(
+					'setting' => 'move_excerpts',
+					'label'   => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ),
+				),
 			),
 			array(
 				'id'       => 'is_paged',
 				'title'    => __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'is_paged', 'label' => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ) ),
+				'args'     => array(
+					'setting' => 'is_paged',
+					'label'   => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ),
+				),
 			),
 			array(
 				'id'       => 'feed_image',
 				'title'    => __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'feed_image', 'label' => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ) ),
+				'args'     => array(
+					'setting' => 'feed_image',
+					'label'   => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ),
+				),
 			),
 			array(
 				'id'       => 'thumbnails',
 				'title'    => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array( 'setting' => 'thumbnails', 'label' => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ) ),
+				'args'     => array(
+					'setting' => 'thumbnails',
+					'label'   => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'id'       => 'shortcode',
+				'title'    => __( 'Add Shortcode Buttons', 'display-featured-image-genesis' ),
+				'callback' => 'do_checkbox_array',
+				'section'  => 'main',
+				'args'     => array(
+					'setting' => 'shortcode',
+					'options' => array(
+						'displayfeaturedimagegenesis_term'      => __( 'Featured Term Widget', 'display-featured-image-genesis' ),
+						'displayfeaturedimagegenesis_author'    => __( 'Featured Author Widget', 'display-featured-image-genesis' ),
+						'displayfeaturedimagegenesis_post_type' => __( 'Featured Post Type Widget', 'display-featured-image-genesis' ),
+					),
+				),
 			),
 		);
 	}
@@ -266,21 +313,31 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		return array(
 			array(
 				'id'       => 'less_header',
-				'title'    => __( 'Height' , 'display-featured-image-genesis' ),
+				'title'    => __( 'Height', 'display-featured-image-genesis' ),
 				'callback' => 'do_number',
 				'section'  => 'style',
-				'args'     => array( 'setting' => 'less_header', 'label' => __( 'pixels to remove', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 400 ),
+				'args'     => array(
+					'setting' => 'less_header',
+					'label'   => __( 'pixels to remove', 'display-featured-image-genesis' ),
+					'min'     => 0,
+					'max'     => 400,
+				),
 			),
 			array(
 				'id'       => 'max_height',
-				'title'    => __( 'Maximum Height' , 'display-featured-image-genesis' ),
+				'title'    => __( 'Maximum Height', 'display-featured-image-genesis' ),
 				'callback' => 'do_number',
 				'section'  => 'style',
-				'args'     => array( 'setting' => 'max_height', 'label' => __( 'pixels', 'display-featured-image-genesis' ), 'min' => 100, 'max' => 1000 ),
+				'args'     => array(
+					'setting' => 'max_height',
+					'label'   => __( 'pixels', 'display-featured-image-genesis' ),
+					'min'     => 100,
+					'max'     => 1000,
+				),
 			),
 			array(
 				'id'       => 'centeredX',
-				'title'    => __( 'Center Horizontally' , 'display-featured-image-genesis' ),
+				'title'    => __( 'Center Horizontally', 'display-featured-image-genesis' ),
 				'callback' => 'do_radio_buttons',
 				'section'  => 'style',
 				'args'     => array(
@@ -291,7 +348,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			),
 			array(
 				'id'       => 'centeredY',
-				'title'    => __( 'Center Vertically' , 'display-featured-image-genesis' ),
+				'title'    => __( 'Center Vertically', 'display-featured-image-genesis' ),
 				'callback' => 'do_radio_buttons',
 				'section'  => 'style',
 				'args'     => array(
@@ -302,10 +359,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			),
 			array(
 				'id'       => 'fade',
-				'title'    => __( 'Fade' , 'display-featured-image-genesis' ),
+				'title'    => __( 'Fade', 'display-featured-image-genesis' ),
 				'callback' => 'do_number',
 				'section'  => 'style',
-				'args'     => array( 'setting' => 'fade', 'label' => __( 'milliseconds', 'display-featured-image-genesis' ), 'min' => 0, 'max' => 20000 ),
+				'args'     => array(
+					'setting' => 'fade',
+					'label'   => __( 'milliseconds', 'display-featured-image-genesis' ),
+					'min'     => 0,
+					'max'     => 20000,
+				),
 			),
 		);
 	}
@@ -335,14 +397,17 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox_array',
 				'section'  => 'cpt',
-				'args'     => array( 'setting' => 'skip' ),
+				'args'     => array(
+					'setting' => 'skip',
+					'options' => $this->get_post_types(),
+				),
 			),
 		);
 
 		if ( $this->post_types ) {
 
 			foreach ( $this->post_types as $post ) {
-				$object = get_post_type_object( $post );
+				$object   = get_post_type_object( $post );
 				$fields[] = array(
 					'id'       => 'post_types][' . esc_attr( $object->name ),
 					'title'    => esc_attr( $object->label ),
@@ -352,6 +417,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				);
 			}
 		}
+
 		return $fields;
 	}
 
@@ -432,6 +498,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function default_image_description() {
 		$large = $this->common->minimum_backstretch_width();
+
 		return sprintf(
 			esc_html__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $large + 1 )
@@ -490,8 +557,25 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
+	 * Get the post types as options.
+	 * @return array
+	 */
+	protected function get_post_types() {
+		$post_types = $this->get_content_types_built_in();
+		$options    = array();
+		foreach ( $post_types as $post_type ) {
+			$object                = get_post_type_object( $post_type );
+			$options[ $post_type ] = $object->label;
+		}
+
+		return $options;
+	}
+
+	/**
 	 * validate all inputs
+	 *
 	 * @param  string $new_value various settings
+	 *
 	 * @return string            number or URL
 	 *
 	 * @since  1.4.0
@@ -519,6 +603,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['args']['min'], $field['args']['max'] );
 			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
+			} elseif ( 'do_checkbox_array' === $field['callback'] ) {
+				foreach ( $field['args']['options'] as $option ) {
+					$new_value[ $field['id'] ][ $option ] = $this->one_zero( $new_value[ $field['id'] ][ $option ] );
+				}
 			}
 		}
 
@@ -569,11 +657,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
-	 * Check the numeric value against the allowed range. If it's within the range, return it; otherwise, return the old value.
+	 * Check the numeric value against the allowed range. If it's within the range, return it; otherwise, return the
+	 * old value.
+	 *
 	 * @param $new_value int new submitted value
 	 * @param $old_value int old setting value
-	 * @param $min int minimum value
-	 * @param $max int maximum value
+	 * @param $min       int minimum value
+	 * @param $max       int maximum value
 	 *
 	 * @return int
 	 */
@@ -581,6 +671,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( $new_value >= $min && $new_value <= $max ) {
 			return (int) $new_value;
 		}
+
 		return (int) $old_value;
 	}
 
@@ -601,21 +692,22 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		$rows = $this->term_option_query;
 		if ( ! $rows ) {
 			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
+
 			return;
 		}
-		$message  = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduces term metadata for categories, tags, and other taxonomies. This is your opportunity to optionally update all impacted terms on your site to use the new metadata.', 'display-featured-image-genesis' ) );
+		$message = sprintf( '<p>%s</p>', __( 'WordPress 4.4 introduces term metadata for categories, tags, and other taxonomies. This is your opportunity to optionally update all impacted terms on your site to use the new metadata.', 'display-featured-image-genesis' ) );
 		$message .= sprintf( '<p>%s</p>', __( 'This <strong>will modify</strong> your database (potentially many entries at once), so if you\'d rather do it yourself, you can. Here\'s a list of the affected terms:', 'display-featured-image-genesis' ) );
 		$message .= '<ul style="margin-left:24px;list-style-type:disc;">';
 		foreach ( $rows as $row ) {
-			$term_id  = str_replace( 'displayfeaturedimagegenesis_', '', $row );
-			$term     = get_term( (int) $term_id );
+			$term_id = str_replace( 'displayfeaturedimagegenesis_', '', $row );
+			$term    = get_term( (int) $term_id );
 			if ( ! is_wp_error( $term ) && ! is_null( $term ) ) {
 				$message .= edit_term_link( $term->name, '<li>', '</li>', $term, false );
 			}
 		}
 		$message .= '</ul>';
 		$message .= sprintf( '<p>%s</p>', __( 'To get rid of this notice, you can 1) update your terms by hand; 2) click the update button (please check your terms afterward); or 3) click the dismiss button.', 'display-featured-image-genesis' ) );
-		$faq      = sprintf( __( 'For more information, please visit the plugin\'s <a href="%s" target="_blank">Frequently Asked Questions</a> on WordPress.org.', 'display-featured-image-genesis' ), esc_url( 'https://wordpress.org/plugins/display-featured-image-genesis/faq/' ) );
+		$faq     = sprintf( __( 'For more information, please visit the plugin\'s <a href="%s" target="_blank">Frequently Asked Questions</a> on WordPress.org.', 'display-featured-image-genesis' ), esc_url( 'https://wordpress.org/plugins/display-featured-image-genesis/faq/' ) );
 		$message .= sprintf( '<p>%s</p>', $faq );
 		echo '<div class="updated">' . wp_kses_post( $message );
 		echo '<form action="" method="post">';
@@ -679,9 +771,11 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Get IDs of terms with featured images
-	 * @param  array  $term_ids empty array
+	 *
+	 * @param  array $term_ids empty array
+	 *
 	 * @return array           all terms with featured images
-	 * @since 2.4.0
+	 * @since      2.4.0
 	 * @deprecated 2.6.1 by check_term_images() due to heavy load on sites with many terms
 	 */
 	protected function get_affected_terms( $affected_terms = array() ) {
@@ -707,6 +801,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				}
 			}
 		}
+
 		return $affected_terms;
 	}
 
@@ -718,6 +813,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function terms_have_been_updated() {
 		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
+
 		return (bool) $updated;
 	}
 
