@@ -25,6 +25,8 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * Generic function to add settings sections
 	 *
 	 * @since 2.4.0
+	 *
+	 * @param $sections
 	 */
 	protected function add_sections( $sections ) {
 
@@ -40,8 +42,9 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 
 	/**
 	 * Generic function to add settings fields
+	 *
+	 * @param $fields
 	 * @param  array $sections registered sections
-	 * @return array           all settings fields
 	 *
 	 * @since 2.4.0
 	 */
@@ -54,7 +57,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 				array( $this, $field['callback'] ),
 				$this->page . '_' . $sections[ $field['section'] ]['id'],
 				$this->page . '_' . $sections[ $field['section'] ]['id'],
-				empty( $field['args'] ) ? array() : $field['args']
+				$field
 			);
 		}
 	}
@@ -65,13 +68,15 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @since 2.5.0
 	 */
 	protected function get_active_tab() {
-		return isset( $_GET['tab'] ) ? $_GET['tab'] : 'main';
+		$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );
+
+		return $tab ? $tab : 'main';
 	}
 
 	/**
 	 * Echoes out the section description.
+	 *
 	 * @param  string $description text string for description
-	 * @return string              as paragraph and escaped
 	 *
 	 * @since 2.3.0
 	 */
@@ -83,62 +88,68 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * Generic callback to create a number field setting.
 	 *
 	 * @since 2.3.0
+	 *
+	 * @param $args
 	 */
 	public function do_number( $args ) {
 		printf( '<label for="%5$s[%3$s]"><input type="number" step="1" min="%1$s" max="%2$s" id="%5$s[%3$s]" name="%5$s[%3$s]" value="%4$s" class="small-text" />%6$s</label>',
 			(int) $args['min'],
 			(int) $args['max'],
-			esc_attr( $args['setting'] ),
-			esc_attr( $this->setting[ $args['setting'] ] ),
+			esc_attr( $args['id'] ),
+			esc_attr( $this->setting[ $args['id'] ] ),
 			esc_attr( $this->page ),
 			esc_attr( $args['label'] )
 		);
-		$this->do_description( $args['setting'] );
+		$this->do_description( $args );
 
 	}
 
 	/**
 	 * generic checkbox function (for all checkbox settings)
-	 * @return 0 1 checkbox
 	 *
 	 * @since  2.3.0
+	 *
+	 * @param $args
 	 */
 	public function do_checkbox( $args ) {
 		$setting = $this->get_checkbox_setting( $args );
-		printf( '<input type="hidden" name="%s[%s]" value="0" />', esc_attr( $this->page ), esc_attr( $args['setting'] ) );
+		printf( '<input type="hidden" name="%s[%s]" value="0" />', esc_attr( $this->page ), esc_attr( $args['id'] ) );
 		printf( '<label for="%4$s[%1$s]" style="margin-right:12px;"><input type="checkbox" name="%4$s[%1$s]" id="%4$s[%1$s]" value="1" %2$s class="code" />%3$s</label>',
-			esc_attr( $args['setting'] ),
+			esc_attr( $args['id'] ),
 			checked( 1, esc_attr( $setting ), false ),
 			esc_attr( $args['label'] ),
 			esc_attr( $this->page )
 		);
-		$this->do_description( $args['setting'] );
+		$this->do_description( $args );
 	}
 
 	/**
 	 * Get the current value for the checkbox.
+	 *
 	 * @param $args
 	 *
 	 * @return int
 	 */
 	protected function get_checkbox_setting( $args ) {
-		$setting = isset( $this->setting[ $args['setting'] ] ) ? $this->setting[ $args['setting'] ] : 0;
+		$setting = isset( $this->setting[ $args['id'] ] ) ? $this->setting[ $args['id'] ] : 0;
 		if ( isset( $args['setting_name'] ) && isset( $this->setting[ $args['setting_name'] ][ $args['name'] ] ) ) {
 			$setting = $this->setting[ $args['setting_name'] ][ $args['name'] ];
 		}
+
 		return $setting;
 	}
 
 	/**
 	 * Build a checkbox array.
+	 *
 	 * @param $args
 	 */
 	public function do_checkbox_array( $args ) {
 		foreach ( $args['options'] as $key => $value ) {
 			$type_args = array(
-				'setting'      => "{$args['setting']}][{$key}",
+				'id'           => "{$args['id']}][{$key}",
 				'label'        => $value,
-				'setting_name' => $args['setting'],
+				'setting_name' => $args['id'],
 				'name'         => $key,
 			);
 			$this->do_checkbox( $type_args );
@@ -147,17 +158,18 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 
 	/**
 	 * radio buttons
-	 * @return string radio button output
 	 * @since 2.6.0
+	 *
+	 * @param $args
 	 */
 	public function do_radio_buttons( $args ) {
 		echo '<fieldset>';
-		printf( '<legend class="screen-reader-text">%s</legend>', $args['legend'] );
+		printf( '<legend class="screen-reader-text">%s</legend>', esc_html( $args['legend'] ) );
 		foreach ( $args['buttons'] as $key => $button ) {
 			printf( '<label for="%5$s[%1$s][%2$s]" style="margin-right:12px !important;"><input type="radio" id="%5$s[%1$s][%2$s]" name="%5$s[%1$s]" value="%2$s"%3$s />%4$s</label>  ',
-				esc_attr( $args['setting'] ),
+				esc_attr( $args['id'] ),
 				esc_attr( $key ),
-				checked( $key, $this->setting[ $args['setting'] ], false ),
+				checked( $key, $this->setting[ $args['id'] ], false ),
 				esc_attr( $button ),
 				esc_attr( $this->page )
 			);
@@ -167,45 +179,51 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 
 	/**
 	 * Generic callback to display a field description.
-	 * @param  string $args setting name used to identify description callback
-	 * @return string       Description to explain a field.
+	 *
+	 * @param  $args array
 	 *
 	 * @since 2.3.0
 	 */
 	protected function do_description( $args ) {
-		$function = $args . '_description';
-		if ( ! method_exists( $this, $function ) ) {
+		$description = isset( $args['description'] ) ? $args['description'] : false;
+		$function    = $args['id'] . '_description';
+		if ( method_exists( $this, $function ) ) {
+			$description = $this->$function();
+		}
+		if ( ! $description ) {
 			return;
 		}
-		$description = $this->$function();
 		printf( '<p class="description">%s</p>', wp_kses_post( $description ) );
 	}
 
 	/**
 	 * display image preview
+	 *
 	 * @param  int $id featured image ID
-	 * @param $alt string description for alt text
-	 * @return $image     image preview
+	 * @param $alt     string description for alt text
+	 *
+	 * @return string
 	 *
 	 * @since 2.3.0
 	 */
 	public function render_image_preview( $id, $alt = '' ) {
 		if ( empty( $id ) ) {
-			return;
+			return '';
 		}
 
-		$id       = displayfeaturedimagegenesis_check_image_id( $id );
+		$id = displayfeaturedimagegenesis_check_image_id( $id );
+		/* translators: the placeholder refers to which featured image */
 		$alt_text = sprintf( __( '%s featured image', 'display-featured-image-genesis' ), esc_attr( $alt ) );
 		$preview  = wp_get_attachment_image_src( (int) $id, 'medium' );
-		$image    = sprintf( '<div class="upload_logo_preview"><img src="%s" alt="%s" /></div>', esc_url( $preview[0] ), esc_attr( $alt_text ) );
-		return $image;
+
+		return sprintf( '<div class="upload_logo_preview"><img src="%s" alt="%s" /></div>', esc_url( $preview[0] ), esc_attr( $alt_text ) );
 	}
 
 	/**
 	 * show image select/delete buttons
-	 * @param  int $id   image ID
+	 *
+	 * @param  int $id      image ID
 	 * @param  string $name name for value/ID/class
-	 * @return $buttons       select/delete image buttons
 	 *
 	 * @since 2.3.0
 	 */
@@ -231,7 +249,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @return array
 	 */
 	protected function get_content_types() {
-		$args = array(
+		$args   = array(
 			'public'      => true,
 			'_builtin'    => false,
 			'has_archive' => true,
@@ -250,6 +268,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	protected function get_content_types_built_in() {
 		$built_in   = array( 'post', 'page' );
 		$post_types = $this->get_content_types();
+
 		return array_merge( $built_in, $post_types );
 	}
 
@@ -260,8 +279,8 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @since    2.3.0
 	 * @access   protected
 	 *
-	 * @param    string    $action   The name of the action specified on the submenu page
-	 * @param    string    $nonce    The nonce specified on the submenu page
+	 * @param    string $action The name of the action specified on the submenu page
+	 * @param    string $nonce  The nonce specified on the submenu page
 	 *
 	 * @return   bool                True if the user has permission to save; false, otherwise.
 	 * @author   Tom McFarlin (https://tommcfarlin.com/save-wordpress-submenu-page-options/)
@@ -273,6 +292,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		if ( $is_nonce_set ) {
 			$is_valid_nonce = wp_verify_nonce( $_POST[ $nonce ], $action );
 		}
+
 		return ( $is_nonce_set && $is_valid_nonce );
 	}
 }

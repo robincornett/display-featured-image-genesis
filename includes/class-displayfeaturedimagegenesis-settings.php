@@ -11,7 +11,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * The common plugin class.
-	 * @var $commmon Display_Featured_Image_Genesis_Common
+	 * @var $common \Display_Featured_Image_Genesis_Common
 	 */
 	protected $common;
 
@@ -58,7 +58,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		);
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( "load-appearance_page_{$this->page}", array( $this, 'build_settings_page' ) );
+	}
 
+	/**
+	 * Build out the settings page sections/fields.
+	 */
+	public function build_settings_page() {
 		$sections     = $this->register_sections();
 		$this->fields = $this->register_fields();
 		$this->add_sections( $sections );
@@ -78,9 +84,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			$active_tab = $this->get_active_tab();
 			echo $this->do_tabs( $active_tab );
 			echo '<form action="options.php" method="post">';
-				settings_fields( 'displayfeaturedimagegenesis' );
-				do_settings_sections( 'displayfeaturedimagegenesis_' . $active_tab );
-				wp_nonce_field( 'displayfeaturedimagegenesis_save-settings', 'displayfeaturedimagegenesis_nonce', false );
+				settings_fields( $this->page );
+				do_settings_sections( $this->page . '_' . $active_tab );
+				wp_nonce_field( $this->page . '_save-settings', $this->page . '_nonce', false );
 				submit_button();
 				settings_errors();
 			echo '</form>';
@@ -205,6 +211,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @return array
 	 */
 	protected function define_main_fields() {
+		$large = $this->common->minimum_backstretch_width();
+
 		return array(
 			array(
 				'id'       => 'default',
@@ -213,13 +221,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'section'  => 'main',
 			),
 			array(
-				'id'       => 'always_default',
-				'title'    => __( 'Always Use Default', 'display-featured-image-genesis' ),
-				'callback' => 'do_checkbox',
-				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'always_default',
-					'label'   => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ),
+				'id'          => 'always_default',
+				'title'       => __( 'Always Use Default', 'display-featured-image-genesis' ),
+				'callback'    => 'do_checkbox',
+				'section'     => 'main',
+				'label'       => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ),
+				'description' => sprintf(
+					/* translators: placeholder is a number equivalent to the width of the site's Large image (Settings > Media) */
+					esc_html__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
+					absint( $large + 1 )
 				),
 			),
 			array(
@@ -227,73 +237,52 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'    => __( 'Skip Front Page', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'exclude_front',
-					'label'   => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),
-				),
+				'label'    => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'keep_titles',
 				'title'    => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'keep_titles',
-					'label'   => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
-				),
+				'label'    => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'move_excerpts',
 				'title'    => __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'move_excerpts',
-					'label'   => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ),
-				),
+				'label'    => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'is_paged',
 				'title'    => __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'is_paged',
-					'label'   => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ),
-				),
+				'label'    => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'feed_image',
 				'title'    => __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'feed_image',
-					'label'   => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ),
-				),
+				'label'    => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'thumbnails',
 				'title'    => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'thumbnails',
-					'label'   => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ),
-				),
+				'label'    => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'shortcode',
 				'title'    => __( 'Add Shortcode Buttons', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox_array',
 				'section'  => 'main',
-				'args'     => array(
-					'setting' => 'shortcode',
-					'options' => array(
-						'displayfeaturedimagegenesis_term'      => __( 'Featured Term Widget', 'display-featured-image-genesis' ),
-						'displayfeaturedimagegenesis_author'    => __( 'Featured Author Widget', 'display-featured-image-genesis' ),
-						'displayfeaturedimagegenesis_post_type' => __( 'Featured Post Type Widget', 'display-featured-image-genesis' ),
-					),
+				'options'  => array(
+					'displayfeaturedimagegenesis_term'      => __( 'Featured Term Widget', 'display-featured-image-genesis' ),
+					'displayfeaturedimagegenesis_author'    => __( 'Featured Author Widget', 'display-featured-image-genesis' ),
+					'displayfeaturedimagegenesis_post_type' => __( 'Featured Post Type Widget', 'display-featured-image-genesis' ),
 				),
 			),
 		);
@@ -310,58 +299,43 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 				'title'    => __( 'Height', 'display-featured-image-genesis' ),
 				'callback' => 'do_number',
 				'section'  => 'style',
-				'args'     => array(
-					'setting' => 'less_header',
-					'label'   => __( 'pixels to remove', 'display-featured-image-genesis' ),
-					'min'     => 0,
-					'max'     => 400,
-				),
+				'label'    => __( 'pixels to remove', 'display-featured-image-genesis' ),
+				'min'      => 0,
+				'max'      => 400,
 			),
 			array(
 				'id'       => 'max_height',
 				'title'    => __( 'Maximum Height', 'display-featured-image-genesis' ),
 				'callback' => 'do_number',
 				'section'  => 'style',
-				'args'     => array(
-					'setting' => 'max_height',
-					'label'   => __( 'pixels', 'display-featured-image-genesis' ),
-					'min'     => 100,
-					'max'     => 1000,
-				),
+				'label'    => __( 'pixels', 'display-featured-image-genesis' ),
+				'min'      => 100,
+				'max'      => 1000,
 			),
 			array(
 				'id'       => 'centeredX',
 				'title'    => __( 'Center Horizontally', 'display-featured-image-genesis' ),
 				'callback' => 'do_radio_buttons',
 				'section'  => 'style',
-				'args'     => array(
-					'setting' => 'centeredX',
-					'buttons' => $this->pick_center(),
-					'legend'  => __( 'Center the backstretch image on the horizontal axis?', 'display-featured-image-genesis' ),
-				),
+				'buttons'  => $this->pick_center(),
+				'legend'   => __( 'Center the backstretch image on the horizontal axis?', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'centeredY',
 				'title'    => __( 'Center Vertically', 'display-featured-image-genesis' ),
 				'callback' => 'do_radio_buttons',
 				'section'  => 'style',
-				'args'     => array(
-					'setting' => 'centeredY',
-					'buttons' => $this->pick_center(),
-					'legend'  => __( 'Center the backstretch image on the vertical axis?', 'display-featured-image-genesis' ),
-				),
+				'buttons'  => $this->pick_center(),
+				'legend'   => __( 'Center the backstretch image on the vertical axis?', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'fade',
 				'title'    => __( 'Fade', 'display-featured-image-genesis' ),
 				'callback' => 'do_number',
 				'section'  => 'style',
-				'args'     => array(
-					'setting' => 'fade',
-					'label'   => __( 'milliseconds', 'display-featured-image-genesis' ),
-					'min'     => 0,
-					'max'     => 20000,
-				),
+				'label'    => __( 'milliseconds', 'display-featured-image-genesis' ),
+				'min'      => 0,
+				'max'      => 20000,
 			),
 		);
 	}
@@ -373,28 +347,25 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	protected function define_cpt_fields() {
 		$fields = array(
 			array(
-				'id'       => 'post_types][search',
-				'title'    => __( 'Search Results', 'display-featured-image-genesis' ),
-				'callback' => 'set_cpt_image',
-				'section'  => 'cpt',
-				'args'     => array( 'post_type' => 'search' ),
+				'id'        => 'post_types][search',
+				'title'     => __( 'Search Results', 'display-featured-image-genesis' ),
+				'callback'  => 'set_cpt_image',
+				'section'   => 'cpt',
+				'post_type' => 'search',
 			),
 			array(
-				'id'       => 'post_types][fourohfour',
-				'title'    => __( '404 Page', 'display-featured-image-genesis' ),
-				'callback' => 'set_cpt_image',
-				'section'  => 'cpt',
-				'args'     => array( 'post_type' => 'fourohfour' ),
+				'id'        => 'post_types][fourohfour',
+				'title'     => __( '404 Page', 'display-featured-image-genesis' ),
+				'callback'  => 'set_cpt_image',
+				'section'   => 'cpt',
+				'post_type' => 'fourohfour',
 			),
 			array(
 				'id'       => 'skip',
 				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox_array',
 				'section'  => 'cpt',
-				'args'     => array(
-					'setting' => 'skip',
-					'options' => $this->get_post_types(),
-				),
+				'options'  => $this->get_post_types(),
 			),
 		);
 
@@ -403,11 +374,11 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			foreach ( $this->post_types as $post ) {
 				$object   = get_post_type_object( $post );
 				$fields[] = array(
-					'id'       => 'post_types][' . esc_attr( $object->name ),
-					'title'    => esc_attr( $object->label ),
-					'callback' => 'set_cpt_image',
-					'section'  => 'cpt',
-					'args'     => array( 'post_type' => $object ),
+					'id'        => 'post_types][' . esc_attr( $object->name ),
+					'title'     => esc_attr( $object->label ),
+					'callback'  => 'set_cpt_image',
+					'section'   => 'cpt',
+					'post_type' => $object,
 				);
 			}
 		}
@@ -417,7 +388,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Section description
-	 * @return string description
 	 *
 	 * @since 1.1.0
 	 */
@@ -436,7 +406,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Section description
-	 * @return string description
 	 *
 	 * @since 1.1.0
 	 */
@@ -460,7 +429,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 	/**
 	 * Description for the max_height setting.
-	 * @return string|void description
+	 * @return string description
 	 * @since 2.6.0
 	 */
 	protected function max_height_description() {
@@ -471,8 +440,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * Default image uploader
 	 *
 	 * @since  1.2.1
+	 *
+	 * @param $args
 	 */
-	public function set_default_image() {
+	public function set_default_image( $args ) {
 
 		$id   = $this->setting['default'] ? $this->setting['default'] : '';
 		$name = 'displayfeaturedimagegenesis[default]';
@@ -480,23 +451,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			echo wp_kses_post( $this->render_image_preview( $id, 'default' ) );
 		}
 		$this->render_buttons( $id, $name );
-		$this->do_description( 'default_image' );
-
-	}
-
-	/**
-	 * Description for default image setting
-	 * @return string
-	 *
-	 * @since 2.3.0
-	 */
-	protected function default_image_description() {
-		$large = $this->common->minimum_backstretch_width();
-
-		return sprintf(
-			esc_html__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
-			absint( $large + 1 )
-		);
+		$this->do_description( $args );
 	}
 
 	/**
@@ -513,7 +468,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 
 		if ( is_object( $args['post_type'] ) ) {
 			$fallback_args = array(
-				'setting'      => "fallback][{$post_type}",
+				'id'           => "fallback][{$post_type}",
+				/* translators: placeholder is the post type label. */
 				'label'        => sprintf( __( 'Always use a fallback image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['post_type']->label ) ),
 				'setting_name' => 'fallback',
 				'name'         => $post_type,
@@ -533,6 +489,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( empty( $id ) || ! is_object( $args['post_type'] ) ) {
 			return;
 		}
+		/* translators: placeholder is the post type name. */
 		$description = sprintf( __( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
 			esc_url( get_post_type_archive_link( $post_type ) ),
 			esc_attr( $args['post_type']->label )
@@ -589,6 +546,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		include_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-settings-validate.php';
 
 		$validation = new Display_Featured_Image_Genesis_Settings_Validate( $this->register_fields(), $this->setting );
+
 		return $validation->validate( $new_value );
 	}
 
