@@ -200,6 +200,29 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	}
 
 	/**
+	 * check if file type is image. updated to use WP function.
+	 * @return bool
+	 * @since  1.2.2
+	 * @since  2.5.0
+	 */
+	protected function is_valid_img_ext( $file ) {
+		$valid = wp_check_filetype( $file );
+
+		return (bool) in_array( $valid['ext'], $this->allowed_file_types(), true );
+	}
+
+	/**
+	 * Define the array of allowed image/file types.
+	 * @return array
+	 * @since 2.5.0
+	 */
+	protected function allowed_file_types() {
+		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
+
+		return is_array( $allowed ) ? $allowed : explode( ',', $allowed );
+	}
+
+	/**
 	 * Help tab for media screen
 	 *
 	 * @since 2.0.0
