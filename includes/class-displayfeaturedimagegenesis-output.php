@@ -121,10 +121,10 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function do_backstretch_image_things() {
 		$common = $this->get_common_class();
-		wp_register_script( 'displayfeaturedimage-backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), $common->version, true );
+		wp_register_script( 'backstretch', plugins_url( '/includes/js/backstretch.js', dirname( __FILE__ ) ), array( 'jquery' ), '2.1.15', true );
 		wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array(
 			'jquery',
-			'displayfeaturedimage-backstretch',
+			'backstretch',
 		), $common->version, true );
 
 		add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
