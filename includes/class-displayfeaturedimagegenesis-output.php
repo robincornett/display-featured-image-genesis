@@ -140,8 +140,8 @@ class Display_Featured_Image_Genesis_Output {
 	public function localize_scripts() {
 		// backstretch settings which can be filtered
 		$backstretch_vars = apply_filters( 'display_featured_image_genesis_backstretch_variables', array(
-			'centeredX' => $this->setting['centeredX'],
-			'centeredY' => $this->setting['centeredY'],
+			'centeredX' => $this->setting['centeredX'] ? 'center' : 'left',
+			'centeredY' => $this->setting['centeredY'] ? 'center' : 'top',
 			'fade'      => $this->setting['fade'],
 		) );
 
@@ -167,8 +167,8 @@ class Display_Featured_Image_Genesis_Output {
 				'medium_large' => $medium_large[3] ? $medium_large[2] : '',
 			),
 			'height'       => (int) $this->setting['less_header'],
-			'centeredX'    => (bool) $backstretch_vars['centeredX'],
-			'centeredY'    => (bool) $backstretch_vars['centeredY'],
+			'alignX'       => $backstretch_vars['centeredX'],
+			'alignY'       => $backstretch_vars['centeredY'],
 			'fade'         => (int) $backstretch_vars['fade'],
 			'title'        => esc_attr( $this->get_image_alt_text( $image_id ) ),
 		);
