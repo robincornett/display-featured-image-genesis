@@ -32,18 +32,18 @@ if ( ! defined( 'DISPLAYFEATUREDIMAGEGENESIS_BASENAME' ) ) {
 function display_featured_image_genesis_require() {
 	$files = array(
 		'class-displayfeaturedimagegenesis',
-		'class-displayfeaturedimagegenesis-getsetting',
-		'class-displayfeaturedimagegenesis-helper',
+		'settings/class-displayfeaturedimagegenesis-getsetting',
+		'settings/class-displayfeaturedimagegenesis-helper',
 		'class-displayfeaturedimagegenesis-admin',
 		'class-displayfeaturedimagegenesis-author',
 		'class-displayfeaturedimagegenesis-common',
 		'class-displayfeaturedimagegenesis-customizer',
 		'class-displayfeaturedimagegenesis-description',
-		'class-displayfeaturedimagegenesis-helptabs',
+		'settings/class-displayfeaturedimagegenesis-helptabs',
 		'class-displayfeaturedimagegenesis-output',
 		'class-displayfeaturedimagegenesis-postmeta',
 		'class-displayfeaturedimagegenesis-rss',
-		'class-displayfeaturedimagegenesis-settings',
+		'settings/class-displayfeaturedimagegenesis-settings',
 		'class-displayfeaturedimagegenesis-taxonomies',
 		'sixtenpress-shortcodes/sixtenpress-shortcodes',
 	);
