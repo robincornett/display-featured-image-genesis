@@ -102,6 +102,10 @@ If an image ID is required, Six/Ten Press image fields in a group will work, as 
 
 ### Changelog
 
+#### 0.3.3
+* fixed: check for script/style enqueue
+* fixed: localized scripts/inline styles output only once
+
 #### 0.3.2
 * reduced unnecessary CSS
 * tweaked filter for hooks on which to load the modal buttons

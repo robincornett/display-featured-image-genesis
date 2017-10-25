@@ -8,22 +8,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/class-sixtenpress-shortcodes.php:111
+#: includes/class-sixtenpress-shortcodes.php:115
 msgid "Add Element"
 msgstr ""
 
-#: includes/class-sixtenpress-shortcodes.php:115
+#: includes/class-sixtenpress-shortcodes.php:119
 msgid "Create"
 msgstr ""
 
-#: includes/class-sixtenpress-shortcodes.php:116
+#: includes/class-sixtenpress-shortcodes.php:120
 msgid "Close"
 msgstr ""
 
-#: includes/class-sixtenpress-shortcodes.php:117
+#: includes/class-sixtenpress-shortcodes.php:121
 msgid "Cancel"
 msgstr ""
 
-#: includes/class-sixtenpress-shortcodes.php:118
+#: includes/class-sixtenpress-shortcodes.php:122
 msgid "Insert"
 msgstr ""

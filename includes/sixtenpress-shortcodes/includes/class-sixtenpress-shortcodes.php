@@ -1,5 +1,9 @@
 <?php
 /**
+ * Copyright (c) 2017 Robin Cornett
+ */
+
+/**
  * Add a hook to initialize our code.
  */
 add_action( 'admin_init', function () {
@@ -127,11 +131,11 @@ class SixTenPressShortcodes {
 	 */
 	public function start_editor() {
 		add_filter( 'sixtenpress_shortcode_localization', array( $this, 'localization_args' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
 		add_action( 'media_buttons', array( $this, 'media_buttons' ), 98 );
 		add_action( 'admin_footer', array( $this, 'widget_builder_modal' ) );
 		add_filter( 'sixtenpress_admin_color_picker', '__return_true' );
-		add_action( 'admin_print_scripts', array( $this, 'localize' ) );
 	}
 
 	/**
@@ -157,12 +161,24 @@ class SixTenPressShortcodes {
 	}
 
 	/**
-	 * Enqueue the scripts and styles needed for the modal.
+	 * Enqueue the scripts needed for the modal.
 	 */
-	public function enqueue() {
+	public function enqueue_script() {
+		if ( wp_script_is( 'sixtenpress-editor-script', 'enqueued' ) ) {
+			return;
+		}
 		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_enqueue_script( 'sixtenpress-editor-script', plugin_dir_url( __FILE__ ) . "js/shortcode-editor{$minify}.js", array( 'jquery' ), SIXTENPRESSSHORTCODES_VERSION, true );
+		add_action( 'admin_print_scripts', array( $this, 'localize' ) );
+	}
 
+	/**
+	 * Enqueue the styles needed for the modal.
+	 */
+	public function enqueue_style() {
+		if ( wp_style_is( 'sixtenpress-editor', 'enqueued' ) ) {
+			return;
+		}
 		add_filter( 'sixtenpress_admin_style', '__return_true' );
 		wp_enqueue_style( 'sixtenpress-editor', plugin_dir_url( __FILE__ ) . 'css/sixtenpress-editor.css', array(), SIXTENPRESSSHORTCODES_VERSION, 'screen' );
 
