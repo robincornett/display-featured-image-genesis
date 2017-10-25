@@ -574,9 +574,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	/**
 	 * validate all inputs
 	 *
-	 * @param  string $new_value various settings
+	 * @param $new_value array
 	 *
-	 * @return string            number or URL
+	 * @return array
 	 *
 	 * @since  1.4.0
 	 */
@@ -592,88 +592,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		check_admin_referer( $action, $nonce );
 		$new_value = array_merge( $this->setting, $new_value );
 
-		// validate all checkbox fields
-		foreach ( $this->fields as $field ) {
-			if ( 'do_checkbox' === $field['callback'] ) {
-				$new_value[ $field['id'] ] = $this->one_zero( $new_value[ $field['id'] ] );
-			} elseif ( 'do_number' === $field['callback'] ) {
-				if ( 'max_height' === $field['id'] && empty( $new_value[ $field['id'] ] ) ) {
-					continue;
-				}
-				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['args']['min'], $field['args']['max'] );
-			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
-				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
-			} elseif ( 'do_checkbox_array' === $field['callback'] ) {
-				foreach ( $field['args']['options'] as $option => $label ) {
-					$new_value[ $field['id'] ][ $option ] = $this->one_zero( $new_value[ $field['id'] ][ $option ] );
-				}
-			}
-		}
+		include_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-settings-validate.php';
 
-		// extra variables to pass through to image validation
-		$size_to_check = $this->common->minimum_backstretch_width();
-
-		// validate default image
-		$new_value['default'] = $this->validate_image( $new_value['default'], $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size_to_check );
-
-		// search/404
-		$size_to_check = get_option( 'medium_size_w' );
-		$custom_pages  = array(
-			array(
-				'id'    => 'search',
-				'label' => __( 'Search Results', 'display-featured-image-genesis' ),
-			),
-			array(
-				'id'    => 'fourohfour',
-				'label' => __( '404 Page', 'display-featured-image-genesis' ),
-			),
-		);
-		foreach ( $custom_pages as $page ) {
-			$setting_to_check = isset( $this->setting['post_type'][ $page['id'] ] ) ? $this->setting['post_type'][ $page['id'] ] : '';
-			if ( isset( $new_value['post_type'][ $page ['id'] ] ) ) {
-				$new_value['post_type'][ $page ['id'] ] = $this->validate_image( $new_value['post_type'][ $page['id'] ], $setting_to_check, $page['label'], $size_to_check );
-			}
-		}
-
-		foreach ( $this->post_types as $post_type ) {
-
-			$object    = get_post_type_object( $post_type );
-			$old_value = isset( $this->setting['post_type'][ $object->name ] ) ? $this->setting['post_type'][ $object->name ] : '';
-			$label     = $object->label;
-
-			if ( isset( $new_value['post_type'][ $post_type ] ) ) {
-				$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
-			}
-			if ( isset( $new_value['fallback'][ $post_type ] ) ) {
-				$new_value['fallback'][ $post_type ] = $this->one_zero( $new_value['fallback'][ $post_type ] );
-			}
-		}
-		$post_types = $this->get_content_types_built_in();
-		foreach ( $post_types as $post_type ) {
-			$new_value['skip'][ $post_type ] = isset( $new_value['skip'][ $post_type ] ) ? $this->one_zero( $new_value['skip'][ $post_type ] ) : 0;
-		}
-
-		return $new_value;
-	}
-
-	/**
-	 * Check the numeric value against the allowed range. If it's within the range, return it; otherwise, return the
-	 * old value.
-	 *
-	 * @param $new_value int new submitted value
-	 * @param $old_value int old setting value
-	 * @param $min       int minimum value
-	 * @param $max       int maximum value
-	 *
-	 * @return int
-	 */
-	protected function check_value( $new_value, $old_value, $min, $max ) {
-		if ( $new_value >= $min && $new_value <= $max ) {
-			return (int) $new_value;
-		}
-
-		return (int) $old_value;
-	}
 
 	/**
 	 * For 4.4, output a notice explaining that old term options can be updated to term_meta.
@@ -803,6 +723,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		}
 
 		return $affected_terms;
+		$validation = new Display_Featured_Image_Genesis_Settings_Validate( $this->register_fields(), $this->setting );
+		return $validation->validate( $new_value );
 	}
 
 	/**
