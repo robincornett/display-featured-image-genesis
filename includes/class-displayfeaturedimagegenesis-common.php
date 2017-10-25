@@ -88,15 +88,15 @@ class Display_Featured_Image_Genesis_Common {
 		// outlier: if it's a home page with a static front page, and there is a featured image set on the home page
 		// also provisionally sets featured image for posts, similar to CPT archives
 		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
-		if ( 'page' === $frontpage ) {
-			$postspage                    = get_option( 'page_for_posts' );
+		$postspage = get_option( 'page_for_posts' );
+		if ( 'page' === $frontpage && $postspage ) {
 			$postspage_image              = get_post_thumbnail_id( $postspage );
 			$setting['post_type']['post'] = (int) $postspage_image;
 		}
 
 		// if a post type image exists, it takes priority over the fallback. check that next.
 		$post_type = get_post_type();
-		if ( ! empty( $setting['post_type'][ $post_type ] ) ) {
+		if ( isset( $setting['post_type'][ $post_type ] ) && $setting['post_type'][ $post_type ] ) {
 			/**
 			 * Creates display_featured_image_genesis_use_post_type_image filter to check
 			 * whether get_post_type array should use the post type image.

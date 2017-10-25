@@ -208,7 +208,11 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 
 		$post_types = $this->get_post_types();
 		if ( $post_types ) {
-			unset( $post_types['post'] );
+			$show_on_front = get_option( 'show_on_front' );
+			$posts_page    = get_option( 'page_for_posts' );
+			if ( 'page' === $show_on_front && $posts_page ) {
+				unset( $post_types['post'] );
+			}
 			foreach ( $post_types as $post_type => $label ) {
 				$fields[] = array(
 					'id'        => 'post_types][' . esc_attr( $post_type ),

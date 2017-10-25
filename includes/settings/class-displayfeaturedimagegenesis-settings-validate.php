@@ -84,7 +84,7 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 			}
 		}
 
-		foreach ( $this->get_content_types() as $post_type ) {
+		foreach ( $this->get_content_types_built_in() as $post_type ) {
 
 			$object    = get_post_type_object( $post_type );
 			$old_value = isset( $this->setting['post_type'][ $object->name ] ) ? $this->setting['post_type'][ $object->name ] : '';
