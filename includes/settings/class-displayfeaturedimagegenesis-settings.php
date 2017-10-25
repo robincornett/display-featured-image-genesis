@@ -1,8 +1,10 @@
 <?php
-/**
- * Copyright (c) 2017 Robin Cornett
- */
 
+/**
+ * Class Display_Featured_Image_Genesis_Settings
+ * @package DisplayFeaturedImageGenesis
+ * @copyright 2017 Robin Cornett
+ */
 class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Genesis_Helper {
 
 	/**
@@ -24,12 +26,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	protected $setting;
 
 	/**
-	 * Public post types on the site.
-	 * @var $post_types array
-	 */
-	protected $post_types;
-
-	/**
 	 * The plugin settings fields.
 	 * @var $fields array
 	 */
@@ -41,9 +37,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function do_submenu_page() {
 
-		$this->common     = new Display_Featured_Image_Genesis_Common();
-		$this->setting    = $this->get_display_setting();
-		$this->post_types = $this->get_content_types();
+		$this->common  = new Display_Featured_Image_Genesis_Common();
+		$this->setting = $this->get_display_setting();
 
 		add_theme_page(
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
@@ -177,16 +172,14 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 1.1.0
 	 */
 	public function main_section_description() {
-		$description = __( 'Use these settings to modify the plugin behavior throughout your site. Check the Help tab for more information. ', 'display-featured-image-genesis' );
-		$this->print_section_description( $description );
+		return __( 'Use these settings to modify the plugin behavior throughout your site. Check the Help tab for more information. ', 'display-featured-image-genesis' );
 	}
 
 	/**
 	 * Style section description
 	 */
 	public function style_section_description() {
-		$description = __( 'These settings modify the output style/methods for the backstretch image.', 'display-featured-image-genesis' );
-		$this->print_section_description( $description );
+		return __( 'These settings modify the output style/methods for the backstretch image.', 'display-featured-image-genesis' );
 	}
 
 	/**
@@ -196,29 +189,12 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function cpt_section_description() {
 		$description = __( 'Optional: set a custom image for search results and 404 (no results found) pages.', 'display-featured-image-genesis' );
-		if ( $this->post_types ) {
+		$post_types  = $this->get_content_types();
+		unset( $post_types['post'] );
+		if ( $post_types ) {
 			$description .= __( ' Additionally, since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' );
 		}
-		$this->print_section_description( $description );
-	}
-
-	/**
-	 * Description for less_header setting.
-	 * @return string description
-	 *
-	 * @since 2.3.0
-	 */
-	protected function less_header_description() {
-		return __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' );
-	}
-
-	/**
-	 * Description for the max_height setting.
-	 * @return string description
-	 * @since 2.6.0
-	 */
-	protected function max_height_description() {
-		return __( 'Optionally, set a max-height value for the header image; it will be added to your CSS.', 'display-featured-image-genesis' );
+		return $description;
 	}
 
 	/**

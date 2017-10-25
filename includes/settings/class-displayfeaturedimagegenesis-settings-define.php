@@ -1,31 +1,11 @@
 <?php
+
 /**
- * Copyright (c) 2017 Robin Cornett
+ * Class Display_Featured_Image_Genesis_Settings_Define
+ * @package DisplayFeaturedImageGenesis
+ * @copyright 2017 Robin Cornett
  */
-
 class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Image_Genesis_Helper {
-
-	/**
-	 * Define tabs for the settings page.
-	 * @return array
-	 * @since 2.6.0
-	 */
-	public function define_tabs() {
-		return array(
-			'main'  => array(
-				'id'  => 'main',
-				'tab' => __( 'Main', 'display-featured-image-genesis' ),
-			),
-			'style' => array(
-				'id'  => 'style',
-				'tab' => __( 'Backstretch Output', 'display-featured-image-genesis' ),
-			),
-			'cpt'   => array(
-				'id'  => 'cpt',
-				'tab' => __( 'Content Types', 'display-featured-image-genesis' ),
-			),
-		);
-	}
 
 	/**
 	 * Register plugin settings page sections
@@ -150,22 +130,24 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 	protected function define_style_fields() {
 		return array(
 			array(
-				'id'       => 'less_header',
-				'title'    => __( 'Height', 'display-featured-image-genesis' ),
-				'callback' => 'do_number',
-				'section'  => 'style',
-				'label'    => __( 'pixels to remove', 'display-featured-image-genesis' ),
-				'min'      => 0,
-				'max'      => 400,
+				'id'          => 'less_header',
+				'title'       => __( 'Height', 'display-featured-image-genesis' ),
+				'callback'    => 'do_number',
+				'section'     => 'style',
+				'label'       => __( 'pixels to remove', 'display-featured-image-genesis' ),
+				'min'         => 0,
+				'max'         => 400,
+				'description' => __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' ),
 			),
 			array(
-				'id'       => 'max_height',
-				'title'    => __( 'Maximum Height', 'display-featured-image-genesis' ),
-				'callback' => 'do_number',
-				'section'  => 'style',
-				'label'    => __( 'pixels', 'display-featured-image-genesis' ),
-				'min'      => 100,
-				'max'      => 1000,
+				'id'          => 'max_height',
+				'title'       => __( 'Maximum Height', 'display-featured-image-genesis' ),
+				'callback'    => 'do_number',
+				'section'     => 'style',
+				'label'       => __( 'pixels', 'display-featured-image-genesis' ),
+				'min'         => 100,
+				'max'         => 1000,
+				'description' => __( 'Optionally, set a max-height value for the header image; it will be added to your CSS.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'       => 'centeredX',

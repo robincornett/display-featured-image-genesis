@@ -1,12 +1,10 @@
 <?php
-/**
- * @package   DisplayFeaturedImageGenesis
- * @author    Robin Cornett <hello@robincornett.com>
- * @license   GPL-2.0+
- * @link      https://robincornett.com
- * @copyright 2014-2017 Robin Cornett Creative, LLC
- */
 
+/**
+ * Class Display_Featured_Image_Genesis_Helper
+ * @package DisplayFeaturedImageGenesis
+ * @copyright 2017 Robin Cornett
+ */
 class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisGetSetting {
 
 	/**
@@ -34,7 +32,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			add_settings_section(
 				$this->page . '_' . $section['id'],
 				$section['title'],
-				array( $this, $section['id'] . '_section_description' ),
+				array( $this, 'section_description' ),
 				$this->page . '_' . $section['id']
 			);
 		}
@@ -76,12 +74,16 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	/**
 	 * Echoes out the section description.
 	 *
-	 * @param  string $description text string for description
-	 *
 	 * @since 2.3.0
+	 *
+	 * @param $section
 	 */
-	protected function print_section_description( $description ) {
-		echo wp_kses_post( wpautop( $description ) );
+	public function section_description( $section ) {
+		$id     = str_replace( "{$this->page}_", '', $section['id'] );
+		$method = "{$id}_section_description";
+		if ( method_exists( $this, $method ) ) {
+			echo wp_kses_post( wpautop( $this->$method() ) );
+		}
 	}
 
 	/**
