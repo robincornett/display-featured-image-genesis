@@ -48,11 +48,11 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 				if ( 'max_height' === $field['id'] && empty( $new_value[ $field['id'] ] ) ) {
 					continue;
 				}
-				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['args']['min'], $field['args']['max'] );
+				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['min'], $field['max'] );
 			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
 				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
 			} elseif ( 'do_checkbox_array' === $field['callback'] ) {
-				foreach ( $field['args']['options'] as $option => $label ) {
+				foreach ( $field['options'] as $option => $label ) {
 					$new_value[ $field['id'] ][ $option ] = $this->one_zero( $new_value[ $field['id'] ][ $option ] );
 				}
 			}
