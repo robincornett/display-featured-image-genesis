@@ -219,41 +219,42 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * Custom Post Type image uploader
 	 *
 	 * @since  2.0.0
+	 *
+	 * @param $args
 	 */
 	public function set_cpt_image( $args ) {
 
-		$post_type = is_object( $args['post_type'] ) ? $args['post_type']->name : $args['post_type'];
-		if ( empty( $this->setting['post_type'][ $post_type ] ) ) {
-			$this->setting['post_type'][ $post_type ] = $id = '';
+		$id   = isset( $this->setting['post_type'][ $args['id'] ] ) && $this->setting['post_type'][ $args['id'] ] ? $this->setting['post_type'][ $args['id'] ] : '';
+		$name = 'displayfeaturedimagegenesis[post_type][' . esc_attr( $args['id'] ) . ']';
+		if ( $id ) {
+			echo wp_kses_post( $this->render_image_preview( $id, $args['id'] ) );
 		}
 
-		if ( is_object( $args['post_type'] ) ) {
+		$this->render_buttons( $id, $name );
+		if ( ! in_array( $args['id'], array( 'search', 'fourohfour' ), true ) ) {
 			$fallback_args = array(
-				'id'           => "fallback][{$post_type}",
+				'id'           => "fallback][{$args['id']}",
 				/* translators: placeholder is the post type label. */
-				'label'        => sprintf( __( 'Always use a fallback image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['post_type']->label ) ),
+				'label'        => sprintf( __( 'Always use a fallback image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['title'] ) ),
 				'setting_name' => 'fallback',
-				'name'         => $post_type,
+				'name'         => $args['id'],
 			);
 			echo '<p>';
 			$this->do_checkbox( $fallback_args );
 			echo '</p>';
 		}
-		$id   = $this->setting['post_type'][ $post_type ];
-		$name = 'displayfeaturedimagegenesis[post_type][' . esc_attr( $post_type ) . ']';
-		if ( $id ) {
-			echo wp_kses_post( $this->render_image_preview( $id, $post_type ) );
+
+		if ( empty( $id ) || in_array( $args['id'], array( 'search', 'fourohfour', 'post' ), true ) ) {
+			return;
 		}
-
-		$this->render_buttons( $id, $name );
-
-		if ( empty( $id ) || ! is_object( $args['post_type'] ) ) {
+		$archive_link = get_post_type_archive_link( $args['id'] );
+		if ( ! $archive_link ) {
 			return;
 		}
 		/* translators: placeholder is the post type name. */
 		$description = sprintf( __( 'View your <a href="%1$s" target="_blank">%2$s</a> archive.', 'display-featured-image-genesis' ),
-			esc_url( get_post_type_archive_link( $post_type ) ),
-			esc_attr( $args['post_type']->label )
+			esc_url( $archive_link ),
+			esc_attr( $args['title'] )
 		);
 		printf( '<p class="description">%s</p>', wp_kses_post( $description ) );
 	}
@@ -269,8 +270,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function do_validation_things( $new_value ) {
 
-		$action = 'displayfeaturedimagegenesis_save-settings';
-		$nonce  = 'displayfeaturedimagegenesis_nonce';
+		$action = $this->page . '_save-settings';
+		$nonce  = $this->page . '_nonce';
 		// If the user doesn't have permission to save, then display an error message
 		if ( ! $this->user_can_save( $action, $nonce ) ) {
 			wp_die( esc_attr__( 'Something unexpected happened. Please try again.', 'display-featured-image-genesis' ) );
@@ -294,7 +295,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 2.4.0
 	 */
 	protected function terms_have_been_updated() {
-		$updated = get_option( 'displayfeaturedimagegenesis_updatedterms', false );
+		$updated = get_option( $this->page . '_updatedterms', false );
 
 		return (bool) $updated;
 	}

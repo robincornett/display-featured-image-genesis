@@ -2,7 +2,7 @@
 
 /**
  * Class Display_Featured_Image_Genesis_Settings_Define
- * @package DisplayFeaturedImageGenesis
+ * @package   DisplayFeaturedImageGenesis
  * @copyright 2017 Robin Cornett
  */
 class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Image_Genesis_Helper {
@@ -184,20 +184,6 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 	protected function define_cpt_fields() {
 		$fields = array(
 			array(
-				'id'        => 'post_types][search',
-				'title'     => __( 'Search Results', 'display-featured-image-genesis' ),
-				'callback'  => 'set_cpt_image',
-				'section'   => 'cpt',
-				'post_type' => 'search',
-			),
-			array(
-				'id'        => 'post_types][fourohfour',
-				'title'     => __( '404 Page', 'display-featured-image-genesis' ),
-				'callback'  => 'set_cpt_image',
-				'section'   => 'cpt',
-				'post_type' => 'fourohfour',
-			),
-			array(
 				'id'       => 'skip',
 				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox_array',
@@ -206,22 +192,23 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 			),
 		);
 
-		$post_types = $this->get_post_types();
-		if ( $post_types ) {
-			$show_on_front = get_option( 'show_on_front' );
-			$posts_page    = get_option( 'page_for_posts' );
-			if ( 'page' === $show_on_front && $posts_page ) {
-				unset( $post_types['post'] );
-			}
-			foreach ( $post_types as $post_type => $label ) {
-				$fields[] = array(
-					'id'        => 'post_types][' . esc_attr( $post_type ),
-					'title'     => esc_attr( $label ),
-					'callback'  => 'set_cpt_image',
-					'section'   => 'cpt',
-					'post_type' => $post_type,
-				);
-			}
+		$custom_pages  = array(
+			'search'     => __( 'Search Results', 'display-featured-image-genesis' ),
+			'fourohfour' => __( '404 Page', 'display-featured-image-genesis' ),
+		);
+		$post_types    = array_merge( $custom_pages, $this->get_post_types() );
+		$show_on_front = get_option( 'show_on_front' );
+		$posts_page    = get_option( 'page_for_posts' );
+		if ( 'page' === $show_on_front && $posts_page ) {
+			unset( $post_types['post'] );
+		}
+		foreach ( $post_types as $post_type => $label ) {
+			$fields[] = array(
+				'id'       => esc_attr( $post_type ),
+				'title'    => esc_attr( $label ),
+				'callback' => 'set_cpt_image',
+				'section'  => 'cpt',
+			);
 		}
 
 		return $fields;
