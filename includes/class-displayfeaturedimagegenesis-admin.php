@@ -160,7 +160,7 @@ class Display_Featured_Image_Genesis_Admin {
 				.column-featured_image { width: 80px; }
 				.edit-tags-php .column-featured_image { width: 60px; }
 				.column-featured_image img { margin: 0 auto; height: auto; width: auto; max-width: 60px; max-height: 80px; }
-				@media screen and (max-width: 782px) { #the-list .column-featured_image { display: table-cell !important; width: 52px; } .column-featured_image img { margin: 0; max-width: 42px; } }
+				@media screen and (max-width: 782px) { .column-featured_image, .wp-list-table .is-expanded td.column-featured_image:not(.hidden) { display: table-cell !important; width: 52px; } .column-featured_image.hidden { display: none !important; } .column-featured_image img { margin: 0; max-width: 42px; } }
 			</style> <?php
 		}
 	}
