@@ -62,7 +62,7 @@ class Display_Featured_Image_Genesis_Output {
 		}
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
-		$large = $common->minimum_backstretch_width();
+		$large = $this->get_minimum_backstretch_width();
 		$item  = $this->get_item();
 		$width = absint( $item->backstretch[1] );
 		/**
@@ -100,10 +100,9 @@ class Display_Featured_Image_Genesis_Output {
 		if ( ! $this->can_do_things() ) {
 			return $classes;
 		}
-		$common = $this->get_common_class();
-		$large  = $common->minimum_backstretch_width();
-		$item   = $this->get_item();
-		$width  = (int) $item->backstretch[1];
+		$large = $this->get_minimum_backstretch_width();
+		$item  = $this->get_item();
+		$width = (int) $item->backstretch[1];
 		if ( false === $item->content || ! is_singular() ) {
 			if ( $width > $large ) {
 				$classes[] = 'has-leader';
@@ -492,6 +491,16 @@ class Display_Featured_Image_Genesis_Output {
 		$this->item = Display_Featured_Image_Genesis_Common::get_image_variables();
 
 		return $this->item;
+	}
+
+	/**
+	 * Get the minimum acceptable backstretch width.
+	 *
+	 * @return int
+	 */
+	protected function get_minimum_backstretch_width() {
+		$common = $this->get_common_class();
+		return $common->minimum_backstretch_width();
 	}
 
 	/**
