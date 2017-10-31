@@ -221,13 +221,12 @@ function display_featured_image_genesis_add_archive_thumbnails() {
  * @since 2.3.0
  */
 function displayfeaturedimagegenesis_check_image_id( $image_id = '' ) {
-	$image_id = is_numeric( $image_id ) ? $image_id : Display_Featured_Image_Genesis_Common::get_image_id( $image_id );
-	return $image_id;
+	return is_numeric( $image_id ) || ! $image_id ? $image_id : Display_Featured_Image_Genesis_Common::get_image_id( $image_id );
 }
 
 /**
  * Helper function to get the plugin settings.
- * @return mixed|void
+ * @return mixed
  *
  * @since 2.4.2
  */

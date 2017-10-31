@@ -267,6 +267,8 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function get_image_id( $attachment_url = '' ) {
 
+		_deprecated_function( __FUNCTION__, '2.7.0' );
+
 		$attachment_id = false;
 
 		// as of 2.2.0, if a (new) image id is passed to the function, or if it's empty, return it as is.
