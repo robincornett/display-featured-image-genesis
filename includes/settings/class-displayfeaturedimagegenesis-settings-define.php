@@ -26,6 +26,10 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'id'    => 'cpt',
 				'title' => __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ),
 			),
+			'advanced'   => array(
+				'id'    => 'advanced',
+				'title' => __( 'Advanced Plugin Settings', 'display-featured-image-genesis' ),
+			),
 		);
 	}
 
@@ -37,7 +41,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 	 */
 	public function register_fields() {
 
-		return array_merge( $this->define_main_fields(), $this->define_style_fields(), $this->define_cpt_fields() );
+		return array_merge( $this->define_main_fields(), $this->define_style_fields(), $this->define_cpt_fields(), $this->define_advanced_fields() );
 	}
 
 	/**
@@ -212,6 +216,54 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * Define the fields for the advanced tab.
+	 *
+	 * @return array
+	 */
+	protected function define_advanced_fields() {
+		return array(
+			array(
+				'id'       => 'backstretch_hook',
+				'title'    => __( 'Backstretch Image Hook', 'display-featured-image-genesis' ),
+				'callback' => 'do_select',
+				'section'  => 'advanced',
+				'options'  => array(
+					'genesis_after_header'  => __( 'After Header', 'display-featured-image-genesis' ),
+					'genesis_before_header' => __( 'Before Header', 'display-featured-image-genesis' ),
+					'genesis_header'        => __( 'Header', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'id'       => 'backstretch_priority',
+				'title'    => __( 'Backstretch Image Priority', 'display-featured-image-genesis' ),
+				'callback' => 'do_number',
+				'section'  => 'advanced',
+				'label'    => '',
+				'min'      => 1,
+				'max'      => 100,
+			),
+			array(
+				'id'       => 'large_hook',
+				'title'    => __( 'Large Image Hook', 'display-featured-image-genesis' ),
+				'callback' => 'do_select',
+				'section'  => 'advanced',
+				'options'  => array(
+					'genesis_before_loop' => __( 'Before Entry Header', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'id'       => 'large_priority',
+				'title'    => __( 'Large Image Priority', 'display-featured-image-genesis' ),
+				'callback' => 'do_number',
+				'section'  => 'advanced',
+				'label'    => '',
+				'min'      => 1,
+				'max'      => 100,
+			),
+		);
 	}
 
 	/**

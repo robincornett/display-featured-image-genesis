@@ -2,7 +2,7 @@
 
 /**
  * Class Display_Featured_Image_Genesis_Settings
- * @package DisplayFeaturedImageGenesis
+ * @package   DisplayFeaturedImageGenesis
  * @copyright 2017 Robin Cornett
  */
 class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Genesis_Helper {
@@ -151,17 +151,21 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	protected function define_tabs() {
 		return array(
-			'main'  => array(
+			'main'     => array(
 				'id'  => 'main',
 				'tab' => __( 'Main', 'display-featured-image-genesis' ),
 			),
-			'style' => array(
+			'style'    => array(
 				'id'  => 'style',
 				'tab' => __( 'Backstretch Output', 'display-featured-image-genesis' ),
 			),
-			'cpt'   => array(
+			'cpt'      => array(
 				'id'  => 'cpt',
 				'tab' => __( 'Content Types', 'display-featured-image-genesis' ),
+			),
+			'advanced' => array(
+				'id'  => 'advanced',
+				'tab' => __( 'Advanced', 'display-featured-image-genesis' ),
 			),
 		);
 	}
@@ -194,6 +198,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( $post_types ) {
 			$description .= __( ' Additionally, since you have custom post types with archives, you might like to set a featured image for each of them.', 'display-featured-image-genesis' );
 		}
+
 		return $description;
 	}
 

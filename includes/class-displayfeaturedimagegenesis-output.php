@@ -509,7 +509,8 @@ class Display_Featured_Image_Genesis_Output {
 	 * @return array
 	 */
 	protected function get_hooks() {
-		$large_hook = apply_filters( 'display_featured_image_genesis_move_large_image', 'genesis_before_loop' );
+		$setting    = displayfeaturedimagegenesis_get_setting();
+		$large_hook = apply_filters( 'display_featured_image_genesis_move_large_image', $setting['large_hook'] );
 		if ( ! is_singular() || is_page_template( 'page_blog.php' ) ) {
 			$check = strpos( $large_hook, 'entry' ) || strpos( $large_hook, 'post' );
 			if ( false !== $check ) {
@@ -519,12 +520,12 @@ class Display_Featured_Image_Genesis_Output {
 
 		return apply_filters( 'displayfeaturedimagegenesis_hooks', array(
 			'backstretch' => array(
-				'hook'     => apply_filters( 'display_featured_image_move_backstretch_image', 'genesis_after_header' ),
-				'priority' => apply_filters( 'display_featured_image_move_backstretch_image_priority', 10 ),
+				'hook'     => apply_filters( 'display_featured_image_move_backstretch_image', $setting['backstretch_hook'] ),
+				'priority' => apply_filters( 'display_featured_image_move_backstretch_image_priority', $setting['backstretch_priority'] ),
 			),
 			'large'       => array(
 				'hook'     => $large_hook,
-				'priority' => apply_filters( 'display_featured_image_genesis_move_large_image_priority', 12 ),
+				'priority' => apply_filters( 'display_featured_image_genesis_move_large_image_priority', $setting['large_priority'] ),
 			),
 		) );
 	}

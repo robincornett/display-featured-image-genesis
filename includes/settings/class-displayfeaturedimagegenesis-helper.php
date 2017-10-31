@@ -47,7 +47,6 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @since 2.4.0
 	 */
 	protected function add_fields( $fields, $sections ) {
-
 		foreach ( $fields as $field ) {
 			add_settings_field(
 				'[' . $field['id'] . ']',
@@ -177,6 +176,26 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			);
 		}
 		echo '</fieldset>';
+	}
+
+	/**
+	 * Output a select field.
+	 *
+	 * @param $args
+	 */
+	public function do_select( $args ) {
+		printf( '<select id="%2$s[%1$s]" name="%2$s[%1$s]">',
+			esc_attr( $args['id'] ),
+			esc_attr( $this->page )
+		);
+		foreach ( (array) $args['options'] as $option => $label ) {
+			printf( '<option value="%s" %s>%s</option>',
+				esc_attr( $option ),
+				selected( $option, $this->setting[ $args['id'] ], false ),
+				esc_attr( $label )
+			);
+		}
+		echo '</select>';
 	}
 
 	/**
