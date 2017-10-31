@@ -3,9 +3,9 @@
 Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
-Requires at least: 4.1
-Tested up to: 4.7
-Stable tag: 2.6.3
+Requires at least: 4.4
+Tested up to: 4.9
+Stable tag: 2.7.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -183,9 +183,16 @@ This will follow the settings you choose in the Genesis Theme Settings.
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-2.6.3: better responsive image selection, term fallback image function updated for WordPress 4.8
+2.7.0: new minimum WP version supported is 4.4! Also, widgets have been updated; shortcodes introduced
 
 == Changelog ==
+
+= 2.7.0 =
+* added: shortcodes for outputting featured image widgets anywhere
+* added: optional media buttons to make shortcode creation easier
+* improved: widgets have been tidied up and refactored
+* improved: settings pages have been tidied up and refactored
+* changed: new minimum WP version is 4.4
 
 = 2.6.3 =
 * added: filter for term selection for term fallback image

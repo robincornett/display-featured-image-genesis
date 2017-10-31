@@ -234,6 +234,13 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
+### 2.7.0
+* added: shortcodes for outputting featured image widgets anywhere
+* added: optional media buttons to make shortcode creation easier
+* improved: widgets have been tidied up and refactored
+* improved: settings pages have been tidied up and refactored
+* changed: new minimum WP version is 4.4
+
 ### 2.6.3
 * added: filter for term selection for term fallback image
 * improved: decision making process to select the appropriate responsive image size
