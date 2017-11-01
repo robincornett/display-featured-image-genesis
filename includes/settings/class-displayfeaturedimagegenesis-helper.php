@@ -116,7 +116,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		$name  = $this->get_field_name( $args );
 		$value = $this->get_field_value( $args );
 		printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $name ) );
-		printf( '<label for="%1$s" style="margin-right:12px !important;"><input type="checkbox" name="%4$s" id="%1$s" value="1" %2$s class="code" />%3$s</label>',
+		printf( '<label for="%1$s"><input type="checkbox" name="%4$s" id="%1$s" value="1" %2$s class="code" />%3$s</label>',
 			esc_attr( $this->get_field_id( $args ) ),
 			checked( 1, esc_attr( $value ), false ),
 			esc_attr( $args['label'] ),
@@ -141,7 +141,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 				esc_attr( $name ),
 				esc_attr( $choice )
 			);
-			printf( '<label for="%5$s-%1$s"><input type="checkbox" name="%4$s[%1$s]" id="%5$s-%1$s" value="1"%2$s class="code" aria-labelledby="%5$s"/>%3$s</label>',
+			printf( '<label for="%5$s-%1$s" style="margin-right:12px !important;"><input type="checkbox" name="%4$s[%1$s]" id="%5$s-%1$s" value="1"%2$s class="code" aria-labelledby="%5$s" />%3$s</label>',
 				esc_attr( $choice ),
 				checked( 1, $check, false ),
 				esc_html( $label ),
