@@ -14,19 +14,19 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 	 */
 	public function register_sections() {
 		return array(
-			'main'  => array(
+			'main'     => array(
 				'id'    => 'main',
 				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
 			),
-			'style' => array(
+			'style'    => array(
 				'id'    => 'style',
 				'title' => __( 'Display Settings', 'display-featured-image-genesis' ),
 			),
-			'cpt'   => array(
+			'cpt'      => array(
 				'id'    => 'cpt',
 				'title' => __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ),
 			),
-			'advanced'   => array(
+			'advanced' => array(
 				'id'    => 'advanced',
 				'title' => __( 'Advanced Plugin Settings', 'display-featured-image-genesis' ),
 			),
@@ -200,12 +200,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 			'search'     => __( 'Search Results', 'display-featured-image-genesis' ),
 			'fourohfour' => __( '404 Page', 'display-featured-image-genesis' ),
 		);
-		$post_types    = array_merge( $custom_pages, $this->get_post_types() );
-		$show_on_front = get_option( 'show_on_front' );
-		$posts_page    = get_option( 'page_for_posts' );
-		if ( 'page' === $show_on_front && $posts_page ) {
-			unset( $post_types['post'] );
-		}
+		$post_types = array_merge( $custom_pages, $this->get_post_types() );
 		foreach ( $post_types as $post_type => $label ) {
 			$fields[] = array(
 				'id'       => esc_attr( $post_type ),
@@ -231,37 +226,45 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_select',
 				'section'  => 'advanced',
 				'options'  => array(
-					'genesis_after_header'  => __( 'After Header', 'display-featured-image-genesis' ),
-					'genesis_before_header' => __( 'Before Header', 'display-featured-image-genesis' ),
-					'genesis_header'        => __( 'Header', 'display-featured-image-genesis' ),
+					'genesis_before_header'               => 'genesis_before_header',
+					'genesis_header'                      => 'genesis_header',
+					'genesis_after_header'                => 'genesis_after_header ' . __( '(default)', 'display-featured-image-genesis' ),
+					'genesis_before_content_sidebar_wrap' => 'genesis_before_content_sidebar_wrap',
+					'genesis_before_content'              => 'genesis_before_content',
 				),
 			),
 			array(
-				'id'       => 'backstretch_priority',
-				'title'    => __( 'Backstretch Image Priority', 'display-featured-image-genesis' ),
-				'callback' => 'do_number',
-				'section'  => 'advanced',
-				'label'    => '',
-				'min'      => 1,
-				'max'      => 100,
+				'id'          => 'backstretch_priority',
+				'title'       => __( 'Backstretch Image Priority', 'display-featured-image-genesis' ),
+				'callback'    => 'do_number',
+				'section'     => 'advanced',
+				'label'       => '',
+				'min'         => 1,
+				'max'         => 100,
+				'description' => __( 'Default: 10', 'display-featured-image-genesis' ),
 			),
 			array(
-				'id'       => 'large_hook',
-				'title'    => __( 'Large Image Hook', 'display-featured-image-genesis' ),
-				'callback' => 'do_select',
-				'section'  => 'advanced',
-				'options'  => array(
-					'genesis_before_loop' => __( 'Before Entry Header', 'display-featured-image-genesis' ),
+				'id'          => 'large_hook',
+				'title'       => __( 'Large Image Hook', 'display-featured-image-genesis' ),
+				'callback'    => 'do_select',
+				'section'     => 'advanced',
+				'options'     => array(
+					'genesis_before_loop'   => 'genesis_before_loop ' . __( '(default)', 'display-featured-image-genesis' ),
+					'genesis_before_entry'  => 'genesis_before_entry',
+					'genesis_entry_header'  => 'genesis_entry_header',
+					'genesis_entry_content' => 'genesis_entry_content',
 				),
+				'description' => __( 'Changing this hook only affects single post/page output, due to overlap/conflict with archive page output.', 'display-featured-image-genesis' ),
 			),
 			array(
-				'id'       => 'large_priority',
-				'title'    => __( 'Large Image Priority', 'display-featured-image-genesis' ),
-				'callback' => 'do_number',
-				'section'  => 'advanced',
-				'label'    => '',
-				'min'      => 1,
-				'max'      => 100,
+				'id'          => 'large_priority',
+				'title'       => __( 'Large Image Priority', 'display-featured-image-genesis' ),
+				'callback'    => 'do_number',
+				'section'     => 'advanced',
+				'label'       => '',
+				'min'         => 1,
+				'max'         => 100,
+				'description' => __( 'Default: 12', 'display-featured-image-genesis' ),
 			),
 		);
 	}

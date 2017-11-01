@@ -196,6 +196,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			);
 		}
 		echo '</select>';
+		$this->do_description( $args );
 	}
 
 	/**
