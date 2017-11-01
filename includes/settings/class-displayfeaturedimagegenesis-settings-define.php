@@ -17,18 +17,27 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 			'main'     => array(
 				'id'    => 'main',
 				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
+				'tab'   => 'main',
 			),
 			'style'    => array(
 				'id'    => 'style',
 				'title' => __( 'Display Settings', 'display-featured-image-genesis' ),
+				'tab'   => 'style',
+			),
+			'cpt_sitewide' => array(
+				'id'    => 'cpt_sitewide',
+				'title' => __( 'Sitewide Settings', 'display-featured-image-genesis' ),
+				'tab'   => 'cpt',
 			),
 			'cpt'      => array(
 				'id'    => 'cpt',
 				'title' => __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ),
+				'tab'   => 'cpt',
 			),
 			'advanced' => array(
 				'id'    => 'advanced',
 				'title' => __( 'Advanced Plugin Settings', 'display-featured-image-genesis' ),
+				'tab'   => 'advanced',
 			),
 		);
 	}
@@ -191,14 +200,14 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'id'       => 'skip',
 				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox_array',
-				'section'  => 'cpt',
+				'section'  => 'cpt_sitewide',
 				'options'  => $this->get_post_types(),
 			),
 			array(
 				'id'          => 'fallback',
 				'title'       => __( 'Prefer Fallback Images', 'display-featured-image-genesis' ),
 				'callback'    => 'do_checkbox_array',
-				'section'     => 'cpt',
+				'section'     => 'cpt_sitewide',
 				'options'     => $this->get_post_types(),
 				'description' => __( 'Select content types which should always use a fallback image, even if a featured image has been set.', 'display-featured-image-genesis' ),
 			),
@@ -206,9 +215,9 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'id'          => 'large',
 				'title'       => __( 'Force Large Images', 'display-featured-image-genesis' ),
 				'callback'    => 'do_checkbox_array',
-				'section'     => 'cpt',
+				'section'     => 'cpt_sitewide',
 				'options'     => $this->get_post_types(),
-				'description' => __( 'Select content types which should always prefer to use the large image size instead of the backstretch, even if a backstretch size image is available.', 'display-featured-image-genesis' ),
+				'description' => __( 'Select content types which should always prefer to use the large image size instead of the backstretch, even if a backstretch size image is available (singular posts/pages, not archives).', 'display-featured-image-genesis' ),
 			),
 		);
 
