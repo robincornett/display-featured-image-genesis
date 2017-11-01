@@ -33,7 +33,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 				$this->page . '_' . $section['id'],
 				$section['title'],
 				array( $this, 'section_description' ),
-				$this->page . '_' . $section['id']
+				$this->page . '_' . $section['tab']
 			);
 		}
 	}
@@ -49,10 +49,10 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	protected function add_fields( $fields, $sections ) {
 		foreach ( $fields as $field ) {
 			add_settings_field(
-				'[' . $field['id'] . ']',
-				sprintf( '<label for="%s">%s</label>', $field['id'], $field['title'] ),
+				$field['id'],
+				sprintf( '<label for="%s-%s">%s</label>', $this->page, $field['id'], $field['title'] ),
 				array( $this, $field['callback'] ),
-				$this->page . '_' . $sections[ $field['section'] ]['id'],
+				$this->page . '_' . $sections[ $field['section'] ]['tab'],
 				$this->page . '_' . $sections[ $field['section'] ]['id'],
 				$field
 			);
@@ -93,12 +93,12 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @param $args
 	 */
 	public function do_number( $args ) {
-		printf( '<label for="%5$s[%3$s]"><input type="number" step="1" min="%1$s" max="%2$s" id="%5$s[%3$s]" name="%5$s[%3$s]" value="%4$s" class="small-text" />%6$s</label>',
+		printf( '<input type="number" step="1" min="%1$s" max="%2$s" id="%3$s" name="%5$s" value="%4$s" class="small-text" />%6$s',
 			(int) $args['min'],
 			(int) $args['max'],
-			esc_attr( $args['id'] ),
-			esc_attr( $this->setting[ $args['id'] ] ),
-			esc_attr( $this->page ),
+			esc_attr( $this->get_field_id( $args ) ),
+			esc_attr( $this->get_field_value( $args ) ),
+			esc_attr( $this->get_field_name( $args ) ),
 			esc_attr( $args['label'] )
 		);
 		$this->do_description( $args );
@@ -113,31 +113,16 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @param $args
 	 */
 	public function do_checkbox( $args ) {
-		$setting = $this->get_checkbox_setting( $args );
-		printf( '<input type="hidden" name="%s[%s]" value="0" />', esc_attr( $this->page ), esc_attr( $args['id'] ) );
-		printf( '<label for="%4$s[%1$s]" style="margin-right:12px;"><input type="checkbox" name="%4$s[%1$s]" id="%4$s[%1$s]" value="1" %2$s class="code" />%3$s</label>',
-			esc_attr( $args['id'] ),
-			checked( 1, esc_attr( $setting ), false ),
+		$name  = $this->get_field_name( $args );
+		$value = $this->get_field_value( $args );
+		printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $name ) );
+		printf( '<label for="%1$s" style="margin-right:12px !important;"><input type="checkbox" name="%4$s" id="%1$s" value="1" %2$s class="code" />%3$s</label>',
+			esc_attr( $this->get_field_id( $args ) ),
+			checked( 1, esc_attr( $value ), false ),
 			esc_attr( $args['label'] ),
-			esc_attr( $this->page )
+			esc_attr( $name )
 		);
 		$this->do_description( $args );
-	}
-
-	/**
-	 * Get the current value for the checkbox.
-	 *
-	 * @param $args
-	 *
-	 * @return int
-	 */
-	protected function get_checkbox_setting( $args ) {
-		$setting = isset( $this->setting[ $args['id'] ] ) ? $this->setting[ $args['id'] ] : 0;
-		if ( isset( $args['setting_name'] ) && isset( $this->setting[ $args['setting_name'] ][ $args['name'] ] ) ) {
-			$setting = $this->setting[ $args['setting_name'] ][ $args['name'] ];
-		}
-
-		return $setting;
 	}
 
 	/**
@@ -146,15 +131,25 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @param $args
 	 */
 	public function do_checkbox_array( $args ) {
-		foreach ( $args['options'] as $key => $value ) {
-			$type_args = array(
-				'id'           => "{$args['id']}][{$key}",
-				'label'        => $value,
-				'setting_name' => $args['id'],
-				'name'         => $key,
+		echo '<fieldset>';
+		$name  = $this->get_field_name( $args );
+		$id    = $this->get_field_id( $args );
+		$value = $this->get_field_value( $args );
+		foreach ( $args['options'] as $choice => $label ) {
+			$check = isset( $value[ $choice ] ) ? $value[ $choice ] : 0;
+			printf( '<input type="hidden" name="%s[%s]" value="0" />',
+				esc_attr( $name ),
+				esc_attr( $choice )
 			);
-			$this->do_checkbox( $type_args );
+			printf( '<label for="%5$s-%1$s"><input type="checkbox" name="%4$s[%1$s]" id="%5$s-%1$s" value="1"%2$s class="code" aria-labelledby="%5$s"/>%3$s</label>',
+				esc_attr( $choice ),
+				checked( 1, $check, false ),
+				esc_html( $label ),
+				esc_attr( $name ),
+				esc_attr( $id )
+			);
 		}
+		echo '</fieldset>';
 		$this->do_description( $args );
 	}
 
@@ -166,14 +161,17 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 */
 	public function do_radio_buttons( $args ) {
 		echo '<fieldset>';
+		$name  = $this->get_field_name( $args );
+		$id    = $this->get_field_id( $args );
+		$value = $this->get_field_value( $args );
 		printf( '<legend class="screen-reader-text">%s</legend>', esc_html( $args['legend'] ) );
-		foreach ( $args['buttons'] as $key => $button ) {
-			printf( '<label for="%5$s[%1$s][%2$s]" style="margin-right:12px !important;"><input type="radio" id="%5$s[%1$s][%2$s]" name="%5$s[%1$s]" value="%2$s"%3$s />%4$s</label>  ',
-				esc_attr( $args['id'] ),
-				esc_attr( $key ),
-				checked( $key, $this->setting[ $args['id'] ], false ),
-				esc_attr( $button ),
-				esc_attr( $this->page )
+		foreach ( $args['buttons'] as $choice => $label ) {
+			printf( '<label for="%1$s-%2$s" style="margin-right:12px !important;"><input type="radio" id="%1$s-%2$s" name="%5$s" value="%2$s"%3$s />%4$s</label>  ',
+				esc_attr( $id ),
+				esc_attr( $choice ),
+				checked( $choice, $value, false ),
+				esc_attr( $label ),
+				esc_attr( $name )
 			);
 		}
 		echo '</fieldset>';
@@ -185,14 +183,15 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @param $args
 	 */
 	public function do_select( $args ) {
-		printf( '<select id="%2$s[%1$s]" name="%2$s[%1$s]">',
-			esc_attr( $args['id'] ),
-			esc_attr( $this->page )
+		$value = $this->get_field_value( $args );
+		printf( '<select id="%1$s" name="%2$s">',
+			esc_attr( $this->get_field_id( $args ) ),
+			esc_attr( $this->get_field_name( $args ) )
 		);
 		foreach ( (array) $args['options'] as $option => $label ) {
 			printf( '<option value="%s" %s>%s</option>',
 				esc_attr( $option ),
-				selected( $option, $this->setting[ $args['id'] ], false ),
+				selected( $option, $value, false ),
 				esc_attr( $label )
 			);
 		}
@@ -293,6 +292,48 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		$post_types = $this->get_content_types();
 
 		return array_merge( $built_in, $post_types );
+	}
+
+	/**
+	 * Get the current field name.
+	 *
+	 * @param $args
+	 *
+	 * @return string
+	 */
+	public function get_field_name( $args ) {
+		return isset( $args['key'] ) && $args['key'] ? $this->page . '[' . $args['key'] . '][' . $args['setting'] . ']' : $this->page . '[' . $args['id'] . ']';
+	}
+
+	/**
+	 * Get the current field id.
+	 *
+	 * @param $args
+	 *
+	 * @return string
+	 *
+	 */
+	public function get_field_id( $args ) {
+		return isset( $args['key'] ) && $args['key'] ? $this->page . '-' . $args['key'] . '-' . $args['setting'] : $this->page . '-' . $args['id'];
+	}
+
+	/**
+	 * Get the current field value.
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 * @internal param $setting
+	 *
+	 */
+	public function get_field_value( $args ) {
+		if ( isset( $args['key'] ) && $args['key'] ) {
+			$value = isset( $this->setting[ $args['key'] ][ $args['setting'] ] ) ? $this->setting[ $args['key'] ][ $args['setting'] ] : 0;
+		} else {
+			$value = isset( $this->setting[ $args['id'] ] ) ? $this->setting[ $args['id'] ] : '';
+		}
+
+		return $value;
 	}
 
 	/**

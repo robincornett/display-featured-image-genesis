@@ -93,13 +93,6 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 			if ( isset( $new_value['post_type'][ $post_type ] ) ) {
 				$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
 			}
-			if ( isset( $new_value['fallback'][ $post_type ] ) ) {
-				$new_value['fallback'][ $post_type ] = $this->one_zero( $new_value['fallback'][ $post_type ] );
-			}
-		}
-		$post_types = $this->get_content_types_built_in();
-		foreach ( $post_types as $post_type ) {
-			$new_value['skip'][ $post_type ] = isset( $new_value['skip'][ $post_type ] ) ? $this->one_zero( $new_value['skip'][ $post_type ] ) : 0;
 		}
 
 		return $new_value;
