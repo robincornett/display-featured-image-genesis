@@ -194,13 +194,29 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'section'  => 'cpt',
 				'options'  => $this->get_post_types(),
 			),
+			array(
+				'id'          => 'fallback',
+				'title'       => __( 'Prefer Fallback Images', 'display-featured-image-genesis' ),
+				'callback'    => 'do_checkbox_array',
+				'section'     => 'cpt',
+				'options'     => $this->get_post_types(),
+				'description' => __( 'Select content types which should always use a fallback image, even if a featured image has been set.', 'display-featured-image-genesis' ),
+			),
+			array(
+				'id'          => 'large',
+				'title'       => __( 'Force Large Images', 'display-featured-image-genesis' ),
+				'callback'    => 'do_checkbox_array',
+				'section'     => 'cpt',
+				'options'     => $this->get_post_types(),
+				'description' => __( 'Select content types which should always prefer to use the large image size instead of the backstretch, even if a backstretch size image is available.', 'display-featured-image-genesis' ),
+			),
 		);
 
-		$custom_pages  = array(
+		$custom_pages = array(
 			'search'     => __( 'Search Results', 'display-featured-image-genesis' ),
 			'fourohfour' => __( '404 Page', 'display-featured-image-genesis' ),
 		);
-		$post_types = array_merge( $custom_pages, $this->get_post_types() );
+		$post_types   = array_merge( $custom_pages, $this->get_post_types() );
 		foreach ( $post_types as $post_type => $label ) {
 			$fields[] = array(
 				'id'       => esc_attr( $post_type ),

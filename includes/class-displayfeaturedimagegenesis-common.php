@@ -373,7 +373,7 @@ class Display_Featured_Image_Genesis_Common {
 		 * whether get_post_type array should use large image instead of backstretch.
 		 * @uses is_in_array()
 		 */
-		if ( self::is_in_array( 'use_large_image' ) || $setting['large'][ $post_type ] ) {
+		if ( self::is_in_array( 'use_large_image' ) || ( isset( $setting['large'][ $post_type ] ) && $setting['large'][ $post_type ] ) ) {
 			return 'large';
 		}
 

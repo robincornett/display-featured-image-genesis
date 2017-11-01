@@ -155,6 +155,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			);
 			$this->do_checkbox( $type_args );
 		}
+		$this->do_description( $args );
 	}
 
 	/**

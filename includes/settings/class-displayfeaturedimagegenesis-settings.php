@@ -239,7 +239,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	public function set_cpt_image( $args ) {
 
 		$this->do_image_buttons( $args );
-		$this->do_cpt_checkboxes( $args );
 
 		if ( empty( $id ) || in_array( $args['id'], array( 'search', 'fourohfour', 'post' ), true ) ) {
 			return;
@@ -268,38 +267,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			echo wp_kses_post( $this->render_image_preview( $id, $args['id'] ) );
 		}
 		$this->render_buttons( $id, $name );
-	}
-
-	/**
-	 * Print the CPT checkboxes.
-	 *
-	 * @param $args
-	 */
-	protected function do_cpt_checkboxes( $args ) {
-		if ( in_array( $args['id'], array( 'search', 'fourohfour' ), true ) ) {
-			return;
-		}
-		$checkbox_args = array(
-			array(
-				'id'           => "fallback][{$args['id']}",
-				/* translators: placeholder is the post type label. */
-				'label'        => sprintf( __( 'Always use a fallback image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['title'] ) ),
-				'setting_name' => 'fallback',
-				'name'         => $args['id'],
-			),
-			array(
-				'id'           => "large][{$args['id']}",
-				/* translators: placeholder is the post type label. */
-				'label'        => sprintf( __( 'Always use a large/not backstretch image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['title'] ) ),
-				'setting_name' => 'large',
-				'name'         => $args['id'],
-			),
-		);
-		foreach ( $checkbox_args as $checkbox ) {
-			echo '<p>';
-			$this->do_checkbox( $checkbox );
-			echo '</p>';
-		}
 	}
 
 	/**
