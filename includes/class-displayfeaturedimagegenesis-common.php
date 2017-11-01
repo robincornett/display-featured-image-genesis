@@ -361,20 +361,22 @@ class Display_Featured_Image_Genesis_Common {
 
 	/**
 	 * Select which image size to use. Can be filtered to use a custom size.
-	 * @return mixed|string|void
+	 * @return string
 	 * @since 2.5.0
 	 */
 	public static function image_size() {
 		$image_size = 'displayfeaturedimage_backstretch';
+		$setting    = displayfeaturedimagegenesis_get_setting();
+		$post_type  = get_post_type();
 		/**
 		 * Creates display_featured_image_genesis_use_large_image filter to check
 		 * whether get_post_type array should use large image instead of backstretch.
 		 * @uses is_in_array()
 		 */
-		if ( self::is_in_array( 'use_large_image' ) ) {
+		if ( self::is_in_array( 'use_large_image' ) || $setting['large'][ $post_type ] ) {
 			return 'large';
 		}
-		$image_size = apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
-		return $image_size;
+
+		return apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
 	}
 }

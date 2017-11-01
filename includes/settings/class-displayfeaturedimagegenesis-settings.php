@@ -203,6 +203,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
+	 * Description for the advanced settings section/tab.
+	 *
+	 * @return string
+	 */
+	public function advanced_section_description() {
+		return __( 'Optionally, change the hook location and priority of the featured image output. Use with caution. Note: this will change the hook/priority of the featured image sitewide. If you need to make changes based on content type, check the readme for code examples.', 'display-featured-image-genesis' );
+	}
+
+	/**
 	 * Default image uploader
 	 *
 	 * @since  1.2.1
@@ -211,10 +220,10 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function set_default_image( $args ) {
 
-		$id   = $this->setting['default'] ? $this->setting['default'] : '';
-		$name = 'displayfeaturedimagegenesis[default]';
+		$id   = $this->setting[ $args['id'] ] ? $this->setting[ $args['id'] ] : '';
+		$name = $this->page . '[' . $args['id'] . ']';
 		if ( ! empty( $id ) ) {
-			echo wp_kses_post( $this->render_image_preview( $id, 'default' ) );
+			echo wp_kses_post( $this->render_image_preview( $id, $args['id'] ) );
 		}
 		$this->render_buttons( $id, $name );
 		$this->do_description( $args );
@@ -229,29 +238,76 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function set_cpt_image( $args ) {
 
+		$this->do_image_buttons( $args );
+		$this->do_cpt_checkboxes( $args );
+
+		if ( empty( $id ) || in_array( $args['id'], array( 'search', 'fourohfour', 'post' ), true ) ) {
+			return;
+		}
+
+		$this->do_cpt_description( $args );
+	}
+
+	/**
+	 * Print the featured image preview and buttons.
+	 *
+	 * @param $args
+	 */
+	protected function do_image_buttons( $args ) {
+		$show_on_front = get_option( 'show_on_front' );
+		$posts_page    = get_option( 'page_for_posts' );
+		if ( 'page' === $show_on_front && $posts_page && 'post' === $args['id'] ) {
+			$link = get_edit_post_link( $posts_page );
+			/* translators: the link is to edit the posts page. */
+			printf( wp_kses_post( __( 'You may set a fallback image for Posts on your <a href="%s">posts page</a>.', 'display-featured-image-genesis' ) ), esc_url( $link ) );
+			return;
+		}
 		$id   = isset( $this->setting['post_type'][ $args['id'] ] ) && $this->setting['post_type'][ $args['id'] ] ? $this->setting['post_type'][ $args['id'] ] : '';
-		$name = 'displayfeaturedimagegenesis[post_type][' . esc_attr( $args['id'] ) . ']';
+		$name = $this->page . '[post_type][' . esc_attr( $args['id'] ) . ']';
 		if ( $id ) {
 			echo wp_kses_post( $this->render_image_preview( $id, $args['id'] ) );
 		}
-
 		$this->render_buttons( $id, $name );
-		if ( ! in_array( $args['id'], array( 'search', 'fourohfour' ), true ) ) {
-			$fallback_args = array(
+	}
+
+	/**
+	 * Print the CPT checkboxes.
+	 *
+	 * @param $args
+	 */
+	protected function do_cpt_checkboxes( $args ) {
+		if ( in_array( $args['id'], array( 'search', 'fourohfour' ), true ) ) {
+			return;
+		}
+		$checkbox_args = array(
+			array(
 				'id'           => "fallback][{$args['id']}",
 				/* translators: placeholder is the post type label. */
 				'label'        => sprintf( __( 'Always use a fallback image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['title'] ) ),
 				'setting_name' => 'fallback',
 				'name'         => $args['id'],
-			);
+			),
+			array(
+				'id'           => "large][{$args['id']}",
+				/* translators: placeholder is the post type label. */
+				'label'        => sprintf( __( 'Always use a large/not backstretch image for %s.', 'display-featured-image-genesis' ), esc_attr( $args['title'] ) ),
+				'setting_name' => 'large',
+				'name'         => $args['id'],
+			),
+		);
+		foreach ( $checkbox_args as $checkbox ) {
 			echo '<p>';
-			$this->do_checkbox( $fallback_args );
+			$this->do_checkbox( $checkbox );
 			echo '</p>';
 		}
+	}
 
-		if ( empty( $id ) || in_array( $args['id'], array( 'search', 'fourohfour', 'post' ), true ) ) {
-			return;
-		}
+	/**
+	 * Print the CPT description.
+	 *
+	 * @param $args
+	 */
+	protected function do_cpt_description( $args ) {
 		$archive_link = get_post_type_archive_link( $args['id'] );
 		if ( ! $archive_link ) {
 			return;
@@ -285,8 +341,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		check_admin_referer( $action, $nonce );
 		$new_value = array_merge( $this->setting, $new_value );
 
-		include_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-settings-define.php';
-		include_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-settings-validate.php';
+		foreach ( array( 'define', 'validate' ) as $file ) {
+			include_once plugin_dir_path( __FILE__ ) . "class-displayfeaturedimagegenesis-settings-{$file}.php";
+		}
 		$definitions = new Display_Featured_Image_Genesis_Settings_Define();
 		$validation  = new Display_Featured_Image_Genesis_Settings_Validate( $definitions->register_fields(), $this->setting );
 

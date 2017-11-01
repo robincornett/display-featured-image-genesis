@@ -39,6 +39,7 @@ class DisplayFeaturedImageGenesisGetSetting {
 			'backstretch_priority' => 10,
 			'large_hook'           => 'genesis_before_loop',
 			'large_priority'       => 12,
+			'large'                => array(),
 		) );
 	}
 
