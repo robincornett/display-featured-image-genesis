@@ -337,6 +337,29 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	}
 
 	/**
+	 * check if file type is image. updated to use WP function.
+	 * @return bool
+	 * @since  1.2.2
+	 * @since  2.5.0
+	 */
+	protected function is_valid_img_ext( $file ) {
+		$valid = wp_check_filetype( $file );
+
+		return (bool) in_array( $valid['ext'], $this->allowed_file_types(), true );
+	}
+
+	/**
+	 * Define the array of allowed image/file types.
+	 * @return array
+	 * @since 2.5.0
+	 */
+	protected function allowed_file_types() {
+		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
+
+		return is_array( $allowed ) ? $allowed : explode( ',', $allowed );
+	}
+
+	/**
 	 * Determines if the user has permission to save the information from the submenu
 	 * page.
 	 *
