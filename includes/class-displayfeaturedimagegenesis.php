@@ -342,7 +342,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'sixtenpress_shortcode_modal', array( $shortcode_class, 'do_modal' ) );
 		add_action( 'sixtenpress_shortcode_before_media_button', array( $shortcode_class, 'button_open' ) );
 		add_action( 'sixtenpress_shortcode_after_media_button', array( $shortcode_class, 'button_close' ) );
-		add_action( 'admin_enqueue_scripts', array( $shortcode_class, 'inline_script_style' ), 1000 );
+		add_action( 'admin_enqueue_scripts', array( $shortcode_class, 'inline_script' ), 1000 );
 	}
 
 	/**

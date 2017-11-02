@@ -127,8 +127,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	/**
 	 * Add inline script/style to 6/10 Press shortcode editor.
 	 */
-	public function inline_script_style() {
-		$script = 'jQuery( \'.displayfeaturedimage-wrapper button\' ).on( \'click\', function( e ) { e.preventDefault(); jQuery( \'.displayfeaturedimage-wrapper .buttons-wrap\' ).toggle(); } );';
+	public function inline_script() {
+		$script = 'jQuery( \'.displayfeaturedimage-wrapper button\' ).on( \'click\', function( e ) { e.preventDefault(); jQuery( this ).parents( \'.displayfeaturedimage-wrapper\' ).find( \'.buttons-wrap\' ).toggle(); } );';
 		wp_add_inline_script( 'sixtenpress-shortcode-editor', $script );
 	}
 
