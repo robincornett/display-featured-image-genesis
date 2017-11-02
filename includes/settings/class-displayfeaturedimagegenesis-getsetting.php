@@ -30,11 +30,7 @@ class DisplayFeaturedImageGenesisGetSetting {
 			'centeredX'            => 1,
 			'centeredY'            => 1,
 			'fade'                 => 750,
-			'shortcode'            => array(
-				'displayfeaturedimagegenesis_term'      => 0,
-				'displayfeaturedimagegenesis_author'    => 0,
-				'displayfeaturedimagegenesis_post_type' => 0,
-			),
+			'shortcodes'           => 0,
 			'backstretch_hook'     => 'genesis_after_header',
 			'backstretch_priority' => 10,
 			'large_hook'           => 'genesis_before_loop',

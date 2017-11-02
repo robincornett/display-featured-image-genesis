@@ -57,21 +57,21 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * Add media shortcode buttons to the editor.
 	 */
 	public function shortcode_buttons() {
+		$setting = displayfeaturedimagegenesis_get_setting();
+		if ( ! $setting['shortcodes'] ) {
+			return;
+		}
 		$widgets = array(
 			'displayfeaturedimagegenesis_term'      => __( 'Add Featured Term Widget', 'display-featured-image-genesis' ),
 			'displayfeaturedimagegenesis_author'    => __( 'Add Featured Author Widget', 'display-featured-image-genesis' ),
 			'displayfeaturedimagegenesis_post_type' => __( 'Add Featured Post Type Widget', 'display-featured-image-genesis' ),
 		);
-		$setting = displayfeaturedimagegenesis_get_setting();
 		foreach ( $widgets as $widget => $button_label ) {
-			if ( ! $setting['shortcode'][ $widget ] ) {
-				continue;
-			}
 			sixtenpress_shortcode_register( $widget, array(
 				'modal'  => $widget,
 				'button' => array(
 					'id'    => "{$widget}-create",
-					'class' => "{$widget}-create",
+					'class' => "{$widget} create",
 					'label' => $button_label,
 				),
 				'self'   => true,
@@ -81,10 +81,63 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 				),
 			) );
 		}
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+	}
+
+	/**
+	 * Enqueue the script needed for the term widget.
+	 */
+	public function enqueue_scripts() {
+		$screen = get_current_screen();
+		if ( 'post' !== $screen->id ) {
+			return;
+		}
+		wp_enqueue_script( 'widget_selector' );
+		wp_localize_script( 'widget_selector', 'displayfeaturedimagegenesis_ajax_object', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+		) );
+	}
+
+	/**
+	 * Opening markup to wrap all featured image buttons in one div element.
+	 *
+	 * @param $args
+	 */
+	public function button_open( $args ) {
+		if ( 'displayfeaturedimagegenesis_term' !== $args['modal'] ) {
+			return;
+		}
+		printf( '<div class="displayfeaturedimage-wrapper"><button class="button show-buttons"><span class="wp-media-buttons-icon dashicons dashicons-camera"></span> %s</button><div class="buttons-wrap">',
+			esc_html__( 'Image Shortcodes', 'display-featured-image-genesis' )
+		);
+	}
+
+	/**
+	 * Closing div tag.
+	 *
+	 * @param $args
+	 */
+	public function button_close( $args ) {
+		if ( 'displayfeaturedimagegenesis_post_type' !== $args['modal'] ) {
+			return;
+		}
+		echo '</div></div>';
+	}
+
+	/**
+	 * Add inline script/style to 6/10 Press shortcode editor.
+	 */
+	public function inline_script_style() {
+		$script = 'jQuery( \'.displayfeaturedimage-wrapper button\' ).on( \'click\', function( e ) { e.preventDefault(); jQuery( \'.displayfeaturedimage-wrapper .buttons-wrap\' ).toggle(); } );';
+		wp_add_inline_script( 'sixtenpress-shortcode-editor', $script );
+
+		$style = '.displayfeaturedimage-wrapper { display: inline-block; position: relative; } .displayfeaturedimage-wrapper .buttons-wrap { display: none; width: 200px; position: absolute; z-index: 100; left: 50%; margin-left: -100px; } .displayfeaturedimage-wrapper .button.create { width: 100%; }';
+		wp_add_inline_style( 'sixtenpress-shortcode-editor', $style );
 	}
 
 	/**
 	 * Add the widget forms to the modal.
+	 *
 	 * @param $shortcode
 	 */
 	public function do_modal( $shortcode ) {
@@ -128,6 +181,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 
 	/**
 	 * Return the shortcode output.
+	 *
 	 * @param $atts
 	 * @param $class
 	 *

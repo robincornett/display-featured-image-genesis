@@ -123,15 +123,11 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'label'    => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ),
 			),
 			array(
-				'id'       => 'shortcode',
+				'id'       => 'shortcodes',
 				'title'    => __( 'Add Shortcode Buttons', 'display-featured-image-genesis' ),
-				'callback' => 'do_checkbox_array',
+				'callback' => 'do_checkbox',
 				'section'  => 'main',
-				'options'  => array(
-					'displayfeaturedimagegenesis_term'      => __( 'Featured Term Widget', 'display-featured-image-genesis' ),
-					'displayfeaturedimagegenesis_author'    => __( 'Featured Author Widget', 'display-featured-image-genesis' ),
-					'displayfeaturedimagegenesis_post_type' => __( 'Featured Post Type Widget', 'display-featured-image-genesis' ),
-				),
+				'label'    => __( 'Add optional shortcode buttons to the post editor', 'display-featured-image-genesis' ),
 			),
 		);
 	}
