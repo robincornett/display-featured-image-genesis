@@ -152,7 +152,7 @@ class SixTenPressShortcodes {
 			return;
 		}
 		do_action( 'sixtenpress_shortcode_before_media_button', $this->shortcode_args, $id );
-		printf( '<button type="button" id="%1$s" class="button %2$s" title="%4$s" data-editor="%5$s">%3$s%4$s</button>',
+		printf( '<button type="button" id="%1$s-%5$s" class="button %2$s" title="%4$s" data-editor="%5$s">%3$s%4$s</button>',
 			esc_attr( $this->shortcode_args['button']['id'] ),
 			esc_attr( $this->shortcode_args['button']['class'] ),
 			$this->shortcode_args['button']['dashicon'] ? sprintf( '<span class="wp-media-buttons-icon dashicons %s"></span> ', esc_attr( $this->shortcode_args['button']['dashicon'] ) ) : '',
@@ -221,7 +221,7 @@ class SixTenPressShortcodes {
 	public function localization_args( $args ) {
 		$new[ $this->shortcode ] = array(
 			'modal'     => $this->shortcode_args['modal'],
-			'button'    => $this->shortcode_args['button']['id'],
+			'button'    => $this->shortcode_args['button']['class'],
 			'shortcode' => $this->shortcode,
 			'self'      => $this->shortcode_args['self'],
 			'slug'      => $this->shortcode_args['slug'],
