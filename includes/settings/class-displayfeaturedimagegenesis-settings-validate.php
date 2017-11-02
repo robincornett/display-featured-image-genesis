@@ -53,7 +53,7 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
 			} elseif ( 'do_checkbox_array' === $field['callback'] ) {
 				foreach ( $field['options'] as $option => $label ) {
-					$new_value[ $field['id'] ][ $option ] = $this->one_zero( $new_value[ $field['id'] ][ $option ] );
+					$new_value[ $field['id'] ][ $option ] = isset( $new_value[ $field['id'] ][ $option ] ) ? $this->one_zero( $new_value[ $field['id'] ][ $option ] ) : 0;
 				}
 			}
 		}
