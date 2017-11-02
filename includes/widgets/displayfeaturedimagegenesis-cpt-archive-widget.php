@@ -169,12 +169,9 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		if ( isset( $option['post_type'][ $post_type->name ] ) && $option['post_type'][ $post_type->name ] ) {
 			$image_id = displayfeaturedimagegenesis_check_image_id( $option['post_type'][ $post_type->name ] );
 		}
-		$image_src = wp_get_attachment_image_src( $image_id, $instance['image_size'] );
-		if ( $image_src ) {
-			$image = '<img src="' . $image_src[0] . '" alt="' . $title . '" />';
-		}
-
-		return $image;
+		return wp_get_attachment_image( $image_id, $instance['image_size'], array(
+			'alt' => $title,
+		) );
 	}
 
 	/**

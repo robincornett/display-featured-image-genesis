@@ -116,15 +116,13 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 * @param $instance
 	 */
 	protected function do_image( $term_id, $title, $permalink, $instance ) {
-		$image      = '';
 		$term_image = displayfeaturedimagegenesis_get_term_image( $term_id );
 		if ( ! $term_image ) {
 			return;
 		}
-		$image_src = wp_get_attachment_image_src( $term_image, $instance['image_size'] );
-		if ( $image_src ) {
-			$image = '<img src="' . esc_url( $image_src[0] ) . '" alt="' . esc_html( $title ) . '" />';
-		}
+		$image = wp_get_attachment_image( $term_image, $instance['image_size'], array(
+			'alt' => $title,
+		) );
 
 		if ( $instance['show_image'] && $image ) {
 			$role = empty( $instance['show_title'] ) ? '' : 'aria-hidden="true"';

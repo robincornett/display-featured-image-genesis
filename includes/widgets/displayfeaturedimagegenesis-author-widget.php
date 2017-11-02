@@ -79,11 +79,10 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		}
 
 		if ( $instance['show_featured_image'] ) {
-			$image_id  = get_the_author_meta( 'displayfeaturedimagegenesis', $instance['user'] );
-			$image_src = wp_get_attachment_image_src( $image_id, $instance['featured_image_size'] );
-			if ( $image_src ) {
-				echo '<img src="' . esc_url( $image_src[0] ) . '" alt="' . esc_html( get_the_author_meta( 'display_name', $instance['user'] ) ) . '" class="' . esc_attr( $instance['featured_image_alignment'] ) . '" />';
-			}
+			$image_id = get_the_author_meta( 'displayfeaturedimagegenesis', $instance['user'] );
+			echo wp_get_attachment_image( $image_id, $instance['featured_image_size'], array(
+				'alt' => get_the_author_meta( 'display_name', $instance['user'] ),
+			) );
 		}
 
 		$text = '';
