@@ -130,9 +130,6 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	public function inline_script_style() {
 		$script = 'jQuery( \'.displayfeaturedimage-wrapper button\' ).on( \'click\', function( e ) { e.preventDefault(); jQuery( \'.displayfeaturedimage-wrapper .buttons-wrap\' ).toggle(); } );';
 		wp_add_inline_script( 'sixtenpress-shortcode-editor', $script );
-
-		$style = '.displayfeaturedimage-wrapper { display: inline-block; position: relative; } .displayfeaturedimage-wrapper .buttons-wrap { display: none; width: 200px; position: absolute; z-index: 100; left: 50%; margin-left: -100px; } .displayfeaturedimage-wrapper .button.create { width: 100%; }';
-		wp_add_inline_style( 'sixtenpress-shortcode-editor', $style );
 	}
 
 	/**
@@ -162,7 +159,10 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @return string
 	 */
 	public function inline_css( $css ) {
-		return '.displayfeaturedimagegenesis_term .media-modal-content, .displayfeaturedimagegenesis_post_type .media-modal-content {max-width: 500px;max-height:475px;}
+		return $css . '.displayfeaturedimage-wrapper { display: inline-block; position: relative; }
+		.displayfeaturedimage-wrapper .buttons-wrap { display: none; width: 200px; position: absolute; z-index: 100; left: 50%; margin-left: -100px; }
+		.displayfeaturedimage-wrapper .button.create { width: 100%; }
+		.displayfeaturedimagegenesis_term .media-modal-content, .displayfeaturedimagegenesis_post_type .media-modal-content {max-width: 500px;max-height:475px;}
 		.displayfeaturedimagegenesis_author .media-modal-content {max-width: 300px;}';
 	}
 
