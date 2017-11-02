@@ -51,7 +51,7 @@
 			function _insert( e ) {
 				e.preventDefault();
 				if ( $( sixtenpress_trigger_target ).hasClass( IndividualObject.button ) ) {
-					var string = _getAttributes( inputs, IndividualObject.group ),
+					var string = _getAttributes( inputs, IndividualObject ),
 						multi  = IndividualObject.group ? _getMulti( IndividualObject.group, IndividualObject.slug ) : '',
 						output = '';
 					if ( string ) {
@@ -160,11 +160,11 @@
 	 * Get the shortcode attributes as a string.
 	 *
 	 * @param inputs
-	 * @param group
+	 * @param object
 	 * @returns {string}
 	 * @private
 	 */
-	function _getAttributes( inputs, group ) {
+	function _getAttributes( inputs, object ) {
 		var output = '';
 		$( inputs ).each( function ( index ) {
 			var original_id = $( this ).attr( 'id' ),
@@ -176,7 +176,7 @@
 					value = '';
 				}
 				if ( 'checkbox' === type ) {
-					if ( group.length && id.includes( group ) ) {
+					if ( object.group.length && id.includes( object.group ) ) {
 						value = '';
 					} else if ( $( this ).is( ':checked' ) ) {
 						var truthy  = [ 1, '1', 'on' ],
@@ -191,7 +191,7 @@
 				if ( 'button' === type ) {
 					value = '';
 				}
-				if ( 'textarea' === type ) {
+				if ( 'textarea' === type && ! object.self ) {
 					value = '';
 				}
 				if ( value || $( this ).is( ':required' ) ) {

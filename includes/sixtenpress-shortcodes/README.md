@@ -104,6 +104,7 @@ If an image ID is required, Six/Ten Press image fields in a group will work, as 
 
 #### 0.3.5
 * reverted: target shortcode buttons back to class (in case of multiples)
+* fixed: textarea inputs being skipped in self closing widgets
 
 #### 0.3.4
 * added: hooks before/after media buttons
