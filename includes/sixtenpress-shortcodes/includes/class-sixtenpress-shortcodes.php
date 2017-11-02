@@ -151,6 +151,7 @@ class SixTenPressShortcodes {
 		if ( ! $show ) {
 			return;
 		}
+		do_action( 'sixtenpress_shortcode_before_media_button', $this->shortcode_args, $id );
 		printf( '<button type="button" id="%1$s" class="button %2$s" title="%4$s" data-editor="%5$s">%3$s%4$s</button>',
 			esc_attr( $this->shortcode_args['button']['id'] ),
 			esc_attr( $this->shortcode_args['button']['class'] ),
@@ -158,6 +159,7 @@ class SixTenPressShortcodes {
 			esc_html( $this->shortcode_args['button']['label'] ),
 			esc_attr( $id )
 		);
+		do_action( 'sixtenpress_shortcode_after_media_button', $this->shortcode_args, $id );
 	}
 
 	/**
@@ -168,7 +170,7 @@ class SixTenPressShortcodes {
 			return;
 		}
 		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( 'sixtenpress-editor-script', plugin_dir_url( __FILE__ ) . "js/shortcode-editor{$minify}.js", array( 'jquery' ), SIXTENPRESSSHORTCODES_VERSION, true );
+		wp_enqueue_script( 'sixtenpress-shortcode-editor', plugin_dir_url( __FILE__ ) . "js/shortcode-editor{$minify}.js", array( 'jquery' ), SIXTENPRESSSHORTCODES_VERSION, true );
 		add_action( 'admin_print_scripts', array( $this, 'localize' ) );
 	}
 
@@ -180,11 +182,11 @@ class SixTenPressShortcodes {
 			return;
 		}
 		add_filter( 'sixtenpress_admin_style', '__return_true' );
-		wp_enqueue_style( 'sixtenpress-editor', plugin_dir_url( __FILE__ ) . 'css/sixtenpress-editor.css', array(), SIXTENPRESSSHORTCODES_VERSION, 'screen' );
+		wp_enqueue_style( 'sixtenpress-shortcode-editor', plugin_dir_url( __FILE__ ) . 'css/sixtenpress-editor.css', array(), SIXTENPRESSSHORTCODES_VERSION, 'screen' );
 
 		$css = apply_filters( 'sixtenpress_shortcode_inline_css', '' );
 		if ( $css ) {
-			wp_add_inline_style( 'sixtenpress-editor', $this->minify_css( $css ) );
+			wp_add_inline_style( 'sixtenpress-shortcode-editor', $this->minify_css( $css ) );
 		}
 	}
 
@@ -206,7 +208,7 @@ class SixTenPressShortcodes {
 	 * Get the data for the script.
 	 */
 	public function localize() {
-		wp_localize_script( 'sixtenpress-editor-script', 'SixTenShortcodes', apply_filters( 'sixtenpress_shortcode_localization', array() ) );
+		wp_localize_script( 'sixtenpress-shortcode-editor', 'SixTenShortcodes', apply_filters( 'sixtenpress_shortcode_localization', array() ) );
 	}
 
 	/**
@@ -219,7 +221,7 @@ class SixTenPressShortcodes {
 	public function localization_args( $args ) {
 		$new[ $this->shortcode ] = array(
 			'modal'     => $this->shortcode_args['modal'],
-			'button'    => $this->shortcode_args['button']['class'],
+			'button'    => $this->shortcode_args['button']['id'],
 			'shortcode' => $this->shortcode,
 			'self'      => $this->shortcode_args['self'],
 			'slug'      => $this->shortcode_args['slug'],

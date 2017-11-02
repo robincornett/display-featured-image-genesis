@@ -102,6 +102,11 @@ If an image ID is required, Six/Ten Press image fields in a group will work, as 
 
 ### Changelog
 
+#### 0.3.4
+* added: hooks before/after media buttons
+* changed: target shortcode buttons by ID instead of class
+* improved: modal insert button
+
 #### 0.3.3
 * fixed: check for script/style enqueue
 * fixed: localized scripts/inline styles output only once

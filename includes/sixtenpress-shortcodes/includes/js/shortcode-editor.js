@@ -21,8 +21,8 @@
 					inputs                     = $( '#' + IndividualObject.modal ).find( ":input" ),
 					defaults                   = _defaults( inputs );
 
-				$( '.' + IndividualObject.button ).click( _open );
-				$( '.sixtenpress-default-ui .sixtenpress-insert' ).click( _insert );
+				$( '#' + IndividualObject.button ).click( _open );
+				$( modal + '.sixtenpress-default-ui .sixtenpress-insert' ).click( _insert );
 			}
 
 			/**
@@ -49,7 +49,7 @@
 			 */
 			function _insert( e ) {
 				e.preventDefault();
-				if ( $( sixtenpress_trigger_target ).hasClass( IndividualObject.button ) ) {
+				if ( IndividualObject.button === $( sixtenpress_trigger_target ).attr( 'id' ) ) {
 					var string = _getAttributes( inputs, IndividualObject.group ),
 						multi  = IndividualObject.group ? _getMulti( IndividualObject.group, IndividualObject.slug ) : '',
 						output = '';
