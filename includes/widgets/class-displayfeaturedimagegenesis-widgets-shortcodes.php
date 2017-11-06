@@ -61,13 +61,17 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 		if ( ! $setting['shortcodes'] ) {
 			return;
 		}
-		$widgets = $this->get_widgets();
+		$widgets = array(
+			'displayfeaturedimagegenesis_term'      => __( 'Add Featured Term Widget', 'display-featured-image-genesis' ),
+			'displayfeaturedimagegenesis_author'    => __( 'Add Featured Author Widget', 'display-featured-image-genesis' ),
+			'displayfeaturedimagegenesis_post_type' => __( 'Add Featured Post Type Widget', 'display-featured-image-genesis' ),
+		);
 		foreach ( $widgets as $widget => $button_label ) {
 			sixtenpress_shortcode_register( $widget, array(
 				'modal'  => $widget,
 				'button' => array(
 					'id'    => "{$widget}-create",
-					'class' => "{$widget} create",
+					'class' => "{$widget}-create",
 					'label' => $button_label,
 				),
 				'self'   => true,
@@ -153,7 +157,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	public function inline_css( $css ) {
 		return $css . '.displayfeaturedimage-wrapper { display: inline-block; position: relative; }
 		.displayfeaturedimage-wrapper .buttons-wrap { display: none; width: 200px; position: absolute; z-index: 100; left: 50%; margin-left: -100px; }
-		.displayfeaturedimage-wrapper .button.create { width: 100%; }
+		.displayfeaturedimage-wrapper .buttons-wrap .button { width: 100%; }
 		.displayfeaturedimagegenesis_term .media-modal-content, .displayfeaturedimagegenesis_post_type .media-modal-content {max-width: 500px;max-height:475px;}
 		.displayfeaturedimagegenesis_author .media-modal-content {max-width: 400px;}';
 	}
