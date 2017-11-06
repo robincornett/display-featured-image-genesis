@@ -29,7 +29,7 @@ class DisplayFeaturedImageGenesisWidgets {
 	/**
 	 * @return array
 	 */
-	public function get_image_size() {
+	protected function get_image_size() {
 		$sizes   = genesis_get_image_sizes();
 		$options = array();
 		foreach ( (array) $sizes as $name => $size ) {
@@ -42,7 +42,7 @@ class DisplayFeaturedImageGenesisWidgets {
 	/**
 	 * @return array
 	 */
-	public function get_image_alignment() {
+	protected function get_image_alignment() {
 		return array(
 			'alignnone'   => __( 'None', 'display-featured-image-genesis' ),
 			'alignleft'   => __( 'Left', 'display-featured-image-genesis' ),
@@ -80,6 +80,41 @@ class DisplayFeaturedImageGenesisWidgets {
 				'args'   => array(
 					'id'      => 'image_alignment',
 					'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $this->get_image_alignment(),
+				),
+			),
+		);
+	}
+
+	/**
+	 * Get the image fields for the author widget.
+	 *
+	 * @return array
+	 */
+	public function get_author_image_fields() {
+		return array(
+			array(
+				'method' => 'checkbox',
+				'args'   => array(
+					'id'    => 'show_featured_image',
+					'label' => __( 'Show the user\'s featured image.', 'display-featured-image-genesis' ),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'featured_image_size',
+					'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
+					'flex'    => true,
+					'choices' => $this->get_image_size(),
+				),
+			),
+			array(
+				'method' => 'select',
+				'args'   => array(
+					'id'      => 'featured_image_alignment',
+					'label'   => __( 'Image Alignment:', 'display-featured-image-genesis' ),
 					'flex'    => true,
 					'choices' => $this->get_image_alignment(),
 				),

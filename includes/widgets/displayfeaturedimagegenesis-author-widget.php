@@ -186,16 +186,20 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$new_instance['user'] = (int) $new_instance['user'];
 		$updater              = new DisplayFeaturedImageGenesisWidgetsUpdate();
 
-		return $updater->update( $new_instance, $old_instance, $this->get_fields() );
+		return $updater->update( $new_instance, $old_instance, $this->get_fields( $new_instance ) );
 	}
 
 	/**
 	 * Get all widget fields.
+	 *
+	 * @param $new_instance
+	 *
 	 * @return array
 	 */
-	public function get_fields() {
+	public function get_fields( $new_instance ) {
+		$form = $this->get_form_class( $new_instance );
 		return array_merge(
-			$this->get_image_fields(),
+			$form->get_author_image_fields(),
 			$this->get_gravatar_fields(),
 			$this->get_description_fields(),
 			$this->get_archive_fields()
@@ -226,7 +230,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		) );
 
 		$form->do_boxes( array(
-			'author' => $this->get_image_fields(),
+			'author' => $form->get_author_image_fields(),
 		), 'genesis-widget-column-box-top' );
 
 		$form->do_boxes( array(
@@ -256,43 +260,6 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$this->form_class = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
 
 		return $this->form_class;
-	}
-
-	/**
-	 * Get the image fields (unique to this widget).
-	 *
-	 * @return array
-	 */
-	protected function get_image_fields() {
-		$form = $this->get_form_class();
-
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_featured_image',
-					'label' => __( 'Show the user\'s featured image.', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'featured_image_size',
-					'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $form->get_image_size(),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'featured_image_alignment',
-					'label'   => __( 'Image Alignment:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $form->get_image_alignment(),
-				),
-			),
-		);
 	}
 
 	/**
