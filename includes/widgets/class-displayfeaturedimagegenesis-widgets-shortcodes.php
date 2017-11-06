@@ -61,11 +61,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 		if ( ! $setting['shortcodes'] ) {
 			return;
 		}
-		$widgets = array(
-			'displayfeaturedimagegenesis_term'      => __( 'Add Featured Term Widget', 'display-featured-image-genesis' ),
-			'displayfeaturedimagegenesis_author'    => __( 'Add Featured Author Widget', 'display-featured-image-genesis' ),
-			'displayfeaturedimagegenesis_post_type' => __( 'Add Featured Post Type Widget', 'display-featured-image-genesis' ),
-		);
+		$widgets = $this->get_widgets();
 		foreach ( $widgets as $widget => $button_label ) {
 			sixtenpress_shortcode_register( $widget, array(
 				'modal'  => $widget,
@@ -138,11 +134,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @param $shortcode
 	 */
 	public function do_modal( $shortcode ) {
-		$widgets = array(
-			'displayfeaturedimagegenesis_term'      => 'Display_Featured_Image_Genesis_Widget_Taxonomy',
-			'displayfeaturedimagegenesis_author'    => 'Display_Featured_Image_Genesis_Author_Widget',
-			'displayfeaturedimagegenesis_post_type' => 'Display_Featured_Image_Genesis_Widget_CPT',
-		);
+		$widgets = $this->get_widgets();
 		foreach ( $widgets as $shortcode_text => $widget ) {
 			if ( $shortcode_text === $shortcode ) {
 				$class = new $widget();
@@ -163,7 +155,19 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 		.displayfeaturedimage-wrapper .buttons-wrap { display: none; width: 200px; position: absolute; z-index: 100; left: 50%; margin-left: -100px; }
 		.displayfeaturedimage-wrapper .button.create { width: 100%; }
 		.displayfeaturedimagegenesis_term .media-modal-content, .displayfeaturedimagegenesis_post_type .media-modal-content {max-width: 500px;max-height:475px;}
-		.displayfeaturedimagegenesis_author .media-modal-content {max-width: 300px;}';
+		.displayfeaturedimagegenesis_author .media-modal-content {max-width: 400px;}';
+	}
+
+	/**
+	 * Get the plugin widgets/class names.
+	 * @return array
+	 */
+	protected function get_widgets() {
+		return array(
+			'displayfeaturedimagegenesis_term'      => 'Display_Featured_Image_Genesis_Widget_Taxonomy',
+			'displayfeaturedimagegenesis_author'    => 'Display_Featured_Image_Genesis_Author_Widget',
+			'displayfeaturedimagegenesis_post_type' => 'Display_Featured_Image_Genesis_Widget_CPT',
+		);
 	}
 
 	/**
