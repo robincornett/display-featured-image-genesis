@@ -120,7 +120,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		if ( ! $term_image ) {
 			return;
 		}
-		$image = wp_get_attachment_image( $term_image, $instance['image_size'], array(
+		$image = wp_get_attachment_image( $term_image, $instance['image_size'], false, array(
 			'alt' => $title,
 		) );
 

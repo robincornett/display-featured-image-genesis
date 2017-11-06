@@ -177,7 +177,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	protected function get_image( $instance, $post_type, $title ) {
 		$image_id = $this->get_image_id( $instance, $post_type );
 
-		return wp_get_attachment_image( $image_id, $instance['image_size'], array(
+		return wp_get_attachment_image( $image_id, $instance['image_size'], false, array(
 			'alt' => $title,
 		) );
 	}
