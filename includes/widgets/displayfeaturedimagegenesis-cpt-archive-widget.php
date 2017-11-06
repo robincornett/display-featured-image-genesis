@@ -80,32 +80,6 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		if ( ! $post_type ) {
 			return;
 		}
-		$option   = displayfeaturedimagegenesis_get_setting();
-		$image_id = '';
-
-		if ( 'post' === $instance['post_type'] ) {
-			$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
-			$postspage       = get_option( 'page_for_posts' );
-			$postspage_image = get_post_thumbnail_id( $postspage );
-			$title           = get_post( $postspage )->post_title;
-			$permalink       = esc_url( get_the_permalink( $postspage ) );
-
-			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
-				$postspage_image = display_featured_image_genesis_get_default_image_id();
-				$title           = get_bloginfo( 'name' );
-				$permalink       = home_url();
-			}
-			$image_id = $postspage_image;
-		} else {
-			$title     = $post_type->label;
-			$permalink = esc_url( get_post_type_archive_link( $instance['post_type'] ) );
-			if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
-				$headline = genesis_get_cpt_option( 'headline', $instance['post_type'] );
-				if ( ! empty( $headline ) ) {
-					$title = $headline;
-				}
-			}
-		}
 
 		echo $args['before_widget'];
 
@@ -113,65 +87,184 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
 		}
 
-		$image = $this->get_image( $image_id, $option, $post_type, $instance, $title );
-		if ( $instance['show_image'] && $image ) {
+		$permalink = $this->get_permalink( $instance );
+		$title     = $this->get_title( $instance, $post_type );
+
+		$this->do_image( $instance, $post_type, $title, $permalink );
+		$this->do_title( $instance, $permalink, $title );
+		$this->do_intro_text( $instance );
+
+		echo $args['after_widget'];
+	}
+
+	/**
+	 * @param $instance
+	 * @param $post_type
+	 *
+	 * @return string
+	 */
+	protected function get_title( $instance, $post_type ) {
+		$title = $post_type->label;
+		if ( 'post' === $instance['post_type'] ) {
+			$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
+			$postspage = get_option( 'page_for_posts' );
+			$title     = get_post( $postspage )->post_title;
+
+			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
+				$title = get_bloginfo( 'name' );
+			}
+		} elseif ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
+			$headline = genesis_get_cpt_option( 'headline', $instance['post_type'] );
+			if ( ! empty( $headline ) ) {
+				$title = $headline;
+			}
+		}
+
+		return $title;
+	}
+
+	/**
+	 * Get the link for the post type archive.
+	 *
+	 * @param $instance
+	 *
+	 * @return mixed|string
+	 */
+	protected function get_permalink( $instance ) {
+		if ( 'post' === $instance['post_type'] ) {
+			$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
+			$postspage = get_option( 'page_for_posts' );
+			$permalink = get_the_permalink( $postspage );
+
+			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
+				$permalink = home_url();
+			}
+		} else {
+			$permalink = get_post_type_archive_link( $instance['post_type'] );
+		}
+
+		return esc_url( $permalink );
+	}
+
+	/**
+	 * Print out the image for the widget.
+	 *
+	 * @param $instance
+	 * @param $post_type
+	 * @param $title
+	 * @param $permalink
+	 */
+	protected function do_image( $instance, $post_type, $title, $permalink ) {
+		if ( ! $instance['show_image'] ) {
+			return;
+		}
+		$image = $this->get_image( $instance, $post_type, $title );
+		if ( $image ) {
 			$role = empty( $instance['show_title'] ) ? '' : 'aria-hidden="true"';
 			printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), $role, $image );
 		}
+	}
 
-		if ( $instance['show_title'] ) {
+	/**
+	 * Get the image.
+	 *
+	 * @param $instance
+	 * @param $post_type
+	 * @param $title
+	 *
+	 * @return string
+	 */
+	protected function get_image( $instance, $post_type, $title ) {
+		$image_id = $this->get_image_id( $instance, $post_type );
 
-			$title_output = sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
-			if ( genesis_html5() ) {
-				$title_output = sprintf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+		return wp_get_attachment_image( $image_id, $instance['image_size'], array(
+			'alt' => $title,
+		) );
+	}
+
+	/**
+	 * Get the image ID.
+	 *
+	 * @param $instance
+	 * @param $post_type
+	 *
+	 * @return int|string
+	 */
+	protected function get_image_id( $instance, $post_type ) {
+		$image_id = '';
+		$option   = displayfeaturedimagegenesis_get_setting();
+		if ( 'post' === $instance['post_type'] ) {
+			$frontpage       = get_option( 'show_on_front' ); // either 'posts' or 'page'
+			$postspage       = get_option( 'page_for_posts' );
+			$postspage_image = get_post_thumbnail_id( $postspage );
+
+			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
+				$postspage_image = display_featured_image_genesis_get_default_image_id();
 			}
-			echo wp_kses_post( $title_output );
-
+			$image_id = $postspage_image;
+		} elseif ( isset( $option['post_type'][ $post_type->name ] ) && $option['post_type'][ $post_type->name ] ) {
+			$image_id = displayfeaturedimagegenesis_check_image_id( $option['post_type'][ $post_type->name ] );
 		}
 
+		return $image_id;
+	}
+
+	/**
+	 * Print the title with markup.
+	 *
+	 * @param $instance
+	 * @param $permalink
+	 * @param $title
+	 */
+	protected function do_title( $instance, $permalink, $title ) {
+		if ( ! $instance['show_title'] ) {
+			return;
+		}
+
+		$title_output = sprintf( '<h2><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+		if ( genesis_html5() ) {
+			$title_output = sprintf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', $permalink, esc_html( $title ) );
+		}
+		echo wp_kses_post( $title_output );
+	}
+
+	/**
+	 * Print the intro text.
+	 *
+	 * @param $instance
+	 */
+	protected function do_intro_text( $instance ) {
+		$intro_text = $this->get_intro_text( $instance );
+		if ( ! $instance['show_content'] || ! $intro_text ) {
+			return;
+		}
+		echo genesis_html5() ? '<div class="archive-description">' : '';
+		$intro_text = apply_filters( 'display_featured_image_genesis_cpt_description', $intro_text );
+		echo wp_kses_post( wpautop( $intro_text ) );
+		echo genesis_html5() ? '</div>' : '';
+	}
+
+	/**
+	 * Get the intro text.
+	 *
+	 * @param $instance
+	 *
+	 * @return string
+	 */
+	protected function get_intro_text( $instance ) {
 		$intro_text = '';
 		if ( post_type_supports( $instance['post_type'], 'genesis-cpt-archives-settings' ) ) {
 			$intro_text = genesis_get_cpt_option( 'intro_text', $instance['post_type'] );
 		} elseif ( 'post' === $instance['post_type'] ) {
+			$frontpage  = get_option( 'show_on_front' ); // either 'posts' or 'page'
+			$postspage  = get_option( 'page_for_posts' );
 			$intro_text = get_post( $postspage )->post_excerpt;
 			if ( 'posts' === $frontpage || ( 'page' === $frontpage && ! $postspage ) ) {
 				$intro_text = get_bloginfo( 'description' );
 			}
 		}
 
-		if ( $instance['show_content'] && $intro_text ) {
-
-			echo genesis_html5() ? '<div class="archive-description">' : '';
-
-			$intro_text = apply_filters( 'display_featured_image_genesis_cpt_description', $intro_text );
-
-			echo wp_kses_post( wpautop( $intro_text ) );
-
-			echo genesis_html5() ? '</div>' : '';
-
-		}
-
-		echo $args['after_widget'];
-
-	}
-
-	/**
-	 * @param $image_id
-	 * @param $option
-	 * @param $post_type
-	 * @param $instance
-	 * @param $title
-	 *
-	 * @return string
-	 */
-	protected function get_image( $image_id, $option, $post_type, $instance, $title ) {
-		$image = '';
-		if ( isset( $option['post_type'][ $post_type->name ] ) && $option['post_type'][ $post_type->name ] ) {
-			$image_id = displayfeaturedimagegenesis_check_image_id( $option['post_type'][ $post_type->name ] );
-		}
-		return wp_get_attachment_image( $image_id, $instance['image_size'], array(
-			'alt' => $title,
-		) );
+		return $intro_text;
 	}
 
 	/**
@@ -188,7 +281,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 *
 	 * @return array Settings to save or bool false to cancel saving
 	 */
-	function update( $new_instance, $old_instance ) {
+	public function update( $new_instance, $old_instance ) {
 
 		$updater = new DisplayFeaturedImageGenesisWidgetsUpdate();
 
@@ -201,7 +294,8 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 * @return array
 	 */
 	public function get_fields( $instance = array() ) {
-		$form    = $this->get_form_class( $instance );
+		$form = $this->get_form_class( $instance );
+
 		return array_merge(
 			$this->get_post_type_fields(),
 			$form->get_text_fields(),
@@ -267,6 +361,9 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		);
 	}
 
+	/**
+	 * @return array
+	 */
 	protected function get_text_fields() {
 		return array(
 			array(
