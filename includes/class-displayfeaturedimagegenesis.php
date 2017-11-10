@@ -325,7 +325,7 @@ class Display_Featured_Image_Genesis {
 			'taxonomy'    => 'Display_Featured_Image_Genesis_Widget_Taxonomy',
 		);
 
-		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets.php';
+		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets-form.php';
 		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets-update.php';
 		foreach ( $widgets as $file => $widget ) {
 			require_once plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';

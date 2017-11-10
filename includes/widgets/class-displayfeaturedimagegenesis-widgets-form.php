@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class DisplayFeaturedImageGenesisWidgets
+ * Class DisplayFeaturedImageGenesisWidgetsForm
  */
-class DisplayFeaturedImageGenesisWidgets {
+class DisplayFeaturedImageGenesisWidgetsForm {
 
 	/**
 	 * @var

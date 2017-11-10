@@ -19,7 +19,7 @@
 class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 	/**
-	 * @var $form_class \DisplayFeaturedImageGenesisWidgets
+	 * @var $form_class \DisplayFeaturedImageGenesisWidgetsForm
 	 */
 	protected $form_class;
 
@@ -388,13 +388,13 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 *
 	 * @param array $instance
 	 *
-	 * @return \DisplayFeaturedImageGenesisWidgets
+	 * @return \DisplayFeaturedImageGenesisWidgetsForm
 	 */
 	protected function get_form_class( $instance = array() ) {
 		if ( isset( $this->form_class ) ) {
 			return $this->form_class;
 		}
-		$this->form_class = new DisplayFeaturedImageGenesisWidgets( $this, $instance );
+		$this->form_class = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
 		return $this->form_class;
 	}
