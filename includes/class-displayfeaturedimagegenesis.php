@@ -197,7 +197,6 @@ class Display_Featured_Image_Genesis {
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
 		}
-
 	}
 
 
@@ -219,55 +218,6 @@ class Display_Featured_Image_Genesis {
 		if ( $displaysetting['move_excerpts'] ) {
 			add_post_type_support( 'page', 'excerpt' );
 		}
-	}
-
-	/**
-	 * check existing settings array to see if a setting is in the array
-	 * @since  1.5.0
-	 */
-	public function check_settings() {
-
-		$displaysetting = displayfeaturedimagegenesis_get_setting();
-
-		// return early if the option doesn't exist yet
-		if ( empty( $displaysetting ) ) {
-			return;
-		}
-
-		if ( empty( $displaysetting['feed_image'] ) ) {
-			$this->update_settings( array(
-				'feed_image' => 0,
-			) );
-		}
-
-		// new setting for titles added in 2.0.0
-		if ( empty( $displaysetting['keep_titles'] ) ) {
-			$this->update_settings( array(
-				'keep_titles' => 0,
-			) );
-		}
-
-		// new setting for subsequent pages added in 2.2.0
-		if ( empty( $displaysetting['is_paged'] ) ) {
-			$this->update_settings( array(
-				'is_paged' => 0,
-			) );
-		}
-
-	}
-
-	/**
-	 * Takes an array of new settings, merges them with the old settings, and pushes them into the database.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param string|array $new     New settings. Can be a string, or an array.
-	 * @param string       $setting Optional. Settings field name. Default is displayfeaturedimagegenesis.
-	 *
-	 * @return mixed updated option
-	 */
-	protected function update_settings( $new = '', $setting = 'displayfeaturedimagegenesis' ) {
-		return update_option( $setting, wp_parse_args( $new, get_option( $setting ) ) );
 	}
 
 	/**
@@ -305,55 +255,6 @@ class Display_Featured_Image_Genesis {
 				'text' => __( 'Select Image', 'display-featured-image-genesis' ),
 			) );
 		}
-
-		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() && ! function_exists( 'genesis' ) ) {
-			return;
-		}
-
-		if ( in_array( $screen->id, array( 'widgets', 'customize' ), true ) ) {
-			wp_enqueue_script( 'widget_selector' );
-			wp_localize_script( 'widget_selector', 'displayfeaturedimagegenesis_ajax_object', array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-			) );
-		}
-
-	}
-
-	/**
-	 * Register widgets for plugin
-	 *
-	 * @since 2.0.0
-	 */
-	public function register_widgets() {
-
-		if ( function_exists( 'is_customize_preview' ) && is_customize_preview() && ! function_exists( 'genesis' ) ) {
-			return;
-		}
-
-		$widgets = array(
-			'author'      => 'Display_Featured_Image_Genesis_Author_Widget',
-			'cpt-archive' => 'Display_Featured_Image_Genesis_Widget_CPT',
-			'taxonomy'    => 'Display_Featured_Image_Genesis_Widget_Taxonomy',
-		);
-
-		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets-form.php';
-		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets-update.php';
-		foreach ( $widgets as $file => $widget ) {
-			require_once plugin_dir_path( __FILE__ ) . 'widgets/displayfeaturedimagegenesis-' . $file . '-widget.php';
-			register_widget( $widget );
-		}
-
-		require_once plugin_dir_path( __FILE__ ) . 'widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php';
-		$shortcode_class = new DisplayFeaturedImageGenesisWidgetsShortcodes();
-		foreach ( array( 'author', 'post_type', 'term' ) as $shortcode ) {
-			add_shortcode( "displayfeaturedimagegenesis_{$shortcode}", array( $shortcode_class, "shortcode_{$shortcode}" ) );
-		}
-		add_filter( 'sixtenpress_shortcode_inline_css', array( $shortcode_class, 'inline_css' ) );
-		add_action( 'sixtenpress_shortcode_init', array( $shortcode_class, 'shortcode_buttons' ) );
-		add_action( 'sixtenpress_shortcode_modal', array( $shortcode_class, 'do_modal' ) );
-		add_action( 'sixtenpress_shortcode_before_media_button', array( $shortcode_class, 'button_open' ) );
-		add_action( 'sixtenpress_shortcode_after_media_button', array( $shortcode_class, 'button_close' ) );
-		add_action( 'admin_enqueue_scripts', array( $shortcode_class, 'inline_script' ), 1000 );
 	}
 
 	/**
