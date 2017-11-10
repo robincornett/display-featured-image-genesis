@@ -57,10 +57,6 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * Add media shortcode buttons to the editor.
 	 */
 	public function shortcode_buttons() {
-		$setting = displayfeaturedimagegenesis_get_setting();
-		if ( ! $setting['shortcodes'] ) {
-			return;
-		}
 		$widgets = array(
 			'displayfeaturedimagegenesis_term'      => __( 'Add Featured Term Widget', 'display-featured-image-genesis' ),
 			'displayfeaturedimagegenesis_author'    => __( 'Add Featured Author Widget', 'display-featured-image-genesis' ),

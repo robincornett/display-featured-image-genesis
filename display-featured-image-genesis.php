@@ -46,6 +46,7 @@ function display_featured_image_genesis_require() {
 		'settings/class-displayfeaturedimagegenesis-settings',
 		'class-displayfeaturedimagegenesis-taxonomies',
 		'sixtenpress-shortcodes/sixtenpress-shortcodes',
+		'widgets/class-displayfeaturedimagegenesis-widgets',
 	);
 
 	foreach ( $files as $file ) {
@@ -67,6 +68,7 @@ $displayfeaturedimagegenesis_post_meta   = new Display_Featured_Image_Genesis_Po
 $displayfeaturedimagegenesis_rss         = new Display_Featured_Image_Genesis_RSS();
 $displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Settings();
 $displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies();
+$displayfeaturedimagegenesis_widgets     = new DisplayFeaturedImageGenesisWidgets();
 
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_admin,
@@ -79,7 +81,8 @@ $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_post_meta,
 	$displayfeaturedimagegenesis_rss,
 	$displayfeaturedimagegenesis_settings,
-	$displayfeaturedimagegenesis_taxonomies
+	$displayfeaturedimagegenesis_taxonomies,
+	$displayfeaturedimagegenesis_widgets
 );
 
 $displayfeaturedimage->run();

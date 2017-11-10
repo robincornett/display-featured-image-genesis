@@ -82,6 +82,13 @@ class Display_Featured_Image_Genesis {
 	protected $taxonomies;
 
 	/**
+	 * Register widgets and related shortcodes.
+	 *
+	 * @var \DisplayFeaturedImageGenesisWidgets
+	 */
+	protected $widgets;
+
+	/**
 	 * Display_Featured_Image_Genesis constructor.
 	 *
 	 * @param $admin
@@ -95,7 +102,7 @@ class Display_Featured_Image_Genesis {
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	function __construct( $admin, $author, $common, $customizer, $description, $helptabs, $output, $post_meta, $rss, $settings, $taxonomies ) {
+	function __construct( $admin, $author, $common, $customizer, $description, $helptabs, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
@@ -107,6 +114,7 @@ class Display_Featured_Image_Genesis {
 		$this->rss         = $rss;
 		$this->settings    = $settings;
 		$this->taxonomies  = $taxonomies;
+		$this->widgets     = $widgets;
 	}
 
 	/**
@@ -122,13 +130,17 @@ class Display_Featured_Image_Genesis {
 
 		// Plugin setup
 		add_action( 'after_setup_theme', array( $this, 'add_plugin_supports' ) );
-		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
 
 		// Admin
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+		// Widgets
+		add_action( 'widgets_init', array( $this->widgets, 'register_widgets' ) );
+		add_action( 'widgets_init', array( $this->widgets, 'register_shortcodes' ) );
+		add_action( 'admin_enqueue_scripts', array( $this->widgets, 'enqueue_scripts' ) );
 
 		// Taxonomies, Author, Post Meta
 		add_filter( 'displayfeaturedimagegenesis_get_taxonomies', array( $this->taxonomies, 'remove_post_status_terms' ) );
@@ -151,7 +163,6 @@ class Display_Featured_Image_Genesis {
 
 		// RSS
 		add_action( 'template_redirect', array( $this->rss, 'maybe_do_feed' ) );
-
 	}
 
 	/**
