@@ -366,17 +366,29 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function image_size() {
 		$image_size = 'displayfeaturedimage_backstretch';
-		$setting    = displayfeaturedimagegenesis_get_setting();
-		$post_type  = get_post_type();
+		$post_meta  = (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
+		if ( 2 === $post_meta ) {
+			return $image_size;
+		}
 		/**
 		 * Creates display_featured_image_genesis_use_large_image filter to check
 		 * whether get_post_type array should use large image instead of backstretch.
 		 * @uses is_in_array()
 		 */
-		if ( self::is_in_array( 'use_large_image' ) || ( is_singular() && isset( $setting['large'][ $post_type ] ) && $setting['large'][ $post_type ] ) ) {
+		if ( self::is_in_array( 'use_large_image' ) || self::get_singular_image_size() ) {
 			return 'large';
 		}
 
 		return apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
+	}
+
+	protected static function get_singular_image_size() {
+		if ( ! is_singular() ) {
+			return false;
+		}
+		$setting   = displayfeaturedimagegenesis_get_setting();
+		$post_type = get_post_type();
+		$post_meta = (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
+		return ( isset( $setting['large'][ $post_type ] ) && $setting['large'][ $post_type ] ) || 3 === $post_meta;
 	}
 }
