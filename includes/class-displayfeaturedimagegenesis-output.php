@@ -350,7 +350,7 @@ class Display_Featured_Image_Genesis_Output {
 		$post_type     = get_post_type();
 		$skip_singular = is_singular() && isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
 
-		if ( $this->get_skipped_posttypes() || $skip_singular || $exclude_front || 1 === (int) $this->check_post_meta( '_displayfeaturedimagegenesis_disable' ) ) {
+		if ( $this->get_skipped_posttypes() || $skip_singular || $exclude_front || 1 === (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true ) ) {
 			$disable = true;
 		}
 
