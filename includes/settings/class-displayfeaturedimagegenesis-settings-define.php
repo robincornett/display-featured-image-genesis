@@ -14,12 +14,12 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 	 */
 	public function register_sections() {
 		return array(
-			'main'     => array(
+			'main'         => array(
 				'id'    => 'main',
 				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
 				'tab'   => 'main',
 			),
-			'style'    => array(
+			'style'        => array(
 				'id'    => 'style',
 				'title' => __( 'Display Settings', 'display-featured-image-genesis' ),
 				'tab'   => 'style',
@@ -29,12 +29,12 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'title' => __( 'Sitewide Settings', 'display-featured-image-genesis' ),
 				'tab'   => 'cpt',
 			),
-			'cpt'      => array(
+			'cpt'          => array(
 				'id'    => 'cpt',
 				'title' => __( 'Featured Images for Custom Content Types', 'display-featured-image-genesis' ),
 				'tab'   => 'cpt',
 			),
-			'advanced' => array(
+			'advanced'     => array(
 				'id'    => 'advanced',
 				'title' => __( 'Advanced Plugin Settings', 'display-featured-image-genesis' ),
 				'tab'   => 'advanced',
@@ -270,10 +270,12 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback'    => 'do_select',
 				'section'     => 'advanced',
 				'options'     => array(
-					'genesis_before_loop'   => 'genesis_before_loop ' . __( '(default)', 'display-featured-image-genesis' ),
-					'genesis_before_entry'  => 'genesis_before_entry',
-					'genesis_entry_header'  => 'genesis_entry_header',
-					'genesis_entry_content' => 'genesis_entry_content',
+					'genesis_before_loop'                 => 'genesis_before_loop ' . __( '(default)', 'display-featured-image-genesis' ),
+					'genesis_after_header'                => 'genesis_after_header',
+					'genesis_before_content_sidebar_wrap' => 'genesis_before_content_sidebar_wrap',
+					'genesis_before_entry'                => 'genesis_before_entry',
+					'genesis_entry_header'                => 'genesis_entry_header',
+					'genesis_entry_content'               => 'genesis_entry_content',
 				),
 				'description' => __( 'Changing this hook only affects single post/page output, due to overlap/conflict with archive page output.', 'display-featured-image-genesis' ),
 			),
