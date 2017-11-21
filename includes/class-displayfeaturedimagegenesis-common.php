@@ -369,7 +369,9 @@ class Display_Featured_Image_Genesis_Common {
 		$image_size = $setting['image_size'];
 		$post_meta  = (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
 		if ( 2 === $post_meta ) {
-			return $image_size;
+			return 'displayfeaturedimage_backstretch';
+		} elseif ( 3 === $post_meta ) {
+			return 'large';
 		}
 		/**
 		 * Creates display_featured_image_genesis_use_large_image filter to check
