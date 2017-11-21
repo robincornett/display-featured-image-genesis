@@ -365,7 +365,8 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 2.5.0
 	 */
 	public static function image_size() {
-		$image_size = 'displayfeaturedimage_backstretch';
+		$setting    = displayfeaturedimagegenesis_get_setting();
+		$image_size = $setting['image_size'];
 		$post_meta  = (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
 		if ( 2 === $post_meta ) {
 			return $image_size;
