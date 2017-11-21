@@ -185,8 +185,9 @@ class Display_Featured_Image_Genesis {
 
 		$error = sprintf( __( 'Sorry, Display Featured Image for Genesis works only with the Genesis Framework. It has been deactivated.', 'display-featured-image-genesis' ) );
 
-		if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
+		if ( version_compare( PHP_VERSION, '5.6', '<' ) ) {
 			$error = $error . sprintf(
+				/* translators: placeholder is the user's PHP version. */
 				__( ' But since we\'re talking anyway, did you know that your server is running PHP version %1$s, which is outdated? You should ask your host to update that for you.', 'display-featured-image-genesis' ),
 				PHP_VERSION
 			);
