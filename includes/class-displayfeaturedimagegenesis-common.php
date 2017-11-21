@@ -367,11 +367,9 @@ class Display_Featured_Image_Genesis_Common {
 	public static function image_size() {
 		$setting    = displayfeaturedimagegenesis_get_setting();
 		$image_size = $setting['image_size'];
-		$post_meta  = (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
-		if ( 2 === $post_meta ) {
-			return 'displayfeaturedimage_backstretch';
-		} elseif ( 3 === $post_meta ) {
-			return 'large';
+		$post_meta  = get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
+		if ( ! is_numeric( $post_meta ) ) {
+			return $post_meta;
 		}
 		/**
 		 * Creates display_featured_image_genesis_use_large_image filter to check

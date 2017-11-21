@@ -57,13 +57,14 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 */
 	protected function get_checkboxes() {
 		$checkboxes = array();
-		$setting = displayfeaturedimagegenesis_get_setting();
+		$setting    = displayfeaturedimagegenesis_get_setting();
 		if ( ! $setting['keep_titles'] ) {
 			$checkboxes[] = array(
 				'setting' => $this->move,
 				'label'   => __( 'Don\'t move the title to overlay the backstretch featured image on this post', 'display-featured-image-genesis' ),
 			);
 		}
+
 		return $checkboxes;
 	}
 
@@ -76,10 +77,10 @@ class Display_Featured_Image_Genesis_Post_Meta {
 				'setting' => $this->disable,
 				'label'   => __( 'Featured Image Size:', 'display-featured-image-genesis' ),
 				'options' => array(
-					0 => __( 'Content type default', 'display-featured-image-genesis' ),
-					1 => __( 'Don\'t display the featured image', 'display-featured-image-genesis' ),
-					2 => __( 'Use a backstretch image if it exists', 'display-featured-image-genesis' ),
-					3 => __( 'Use a large (not backstretch) image', 'display-featured-image-genesis' ),
+					0                                  => __( 'Content type default', 'display-featured-image-genesis' ),
+					1                                  => __( 'Don\'t display the featured image', 'display-featured-image-genesis' ),
+					'displayfeaturedimage_backstretch' => __( 'Use a backstretch image if it exists', 'display-featured-image-genesis' ),
+					'large'                            => __( 'Use a large (not backstretch) image', 'display-featured-image-genesis' ),
 				),
 			),
 		);
@@ -132,6 +133,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 
 	/**
 	 * Update the post meta.
+	 *
 	 * @param $post_id
 	 */
 	public function save_meta( $post_id ) {
@@ -163,7 +165,9 @@ class Display_Featured_Image_Genesis_Post_Meta {
 
 		$select = $this->get_select();
 		foreach ( $select as $s ) {
-			update_post_meta( $post_id, $s['setting'], (int) ( $_POST[ $s['setting'] ] ) );
+			$value = sanitize_text_field( $_POST[ $s['setting'] ] );
+			$value = is_numeric( $value ) ? (int) $value : esc_attr( $value );
+			update_post_meta( $post_id, $s['setting'], $value );
 		}
 	}
 
