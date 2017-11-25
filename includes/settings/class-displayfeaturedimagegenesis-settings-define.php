@@ -279,14 +279,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'title'       => __( 'Large Image Hook', 'display-featured-image-genesis' ),
 				'callback'    => 'do_select',
 				'section'     => 'advanced',
-				'options'     => array(
-					'genesis_before_loop'                 => 'genesis_before_loop ' . __( '(default)', 'display-featured-image-genesis' ),
-					'genesis_after_header'                => 'genesis_after_header',
-					'genesis_before_content_sidebar_wrap' => 'genesis_before_content_sidebar_wrap',
-					'genesis_before_entry'                => 'genesis_before_entry',
-					'genesis_entry_header'                => 'genesis_entry_header',
-					'genesis_entry_content'               => 'genesis_entry_content',
-				),
+				'options'     => $this->large_hook_options(),
 				'description' => __( 'Changing this hook only affects single post/page output, due to overlap/conflict with archive page output.', 'display-featured-image-genesis' ),
 			),
 			array(
@@ -325,5 +318,25 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Get the hooks for the large image.
+	 * 
+	 * @return array
+	 */
+	protected function large_hook_options() {
+		$hooks = array(
+			'genesis_before_loop'                 => 'genesis_before_loop ' . __( '(default)', 'display-featured-image-genesis' ),
+			'genesis_after_header'                => 'genesis_after_header',
+			'genesis_before_content_sidebar_wrap' => 'genesis_before_content_sidebar_wrap',
+		);
+		$html5 = genesis_html5() ? array(
+			'genesis_before_entry'  => 'genesis_before_entry ' . __( '(HTML5 themes)', 'display-featured-image-genesis' ),
+			'genesis_entry_header'  => 'genesis_entry_header ' . __( '(HTML5 themes)', 'display-featured-image-genesis' ),
+			'genesis_entry_content' => 'genesis_entry_content ' . __( '(HTML5 themes)', 'display-featured-image-genesis' ),
+		) : array();
+
+		return array_merge( $hooks, $html5 );
 	}
 }
