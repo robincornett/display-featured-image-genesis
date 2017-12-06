@@ -52,13 +52,15 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 */
 	public function defaults() {
 		return array(
-			'title'           => '',
-			'post_type'       => 'post',
-			'show_image'      => 0,
-			'image_alignment' => 'alignnone',
-			'image_size'      => 'medium',
-			'show_title'      => 0,
-			'show_content'    => 0,
+			'title'             => '',
+			'post_type'         => 'post',
+			'show_image'        => 0,
+			'image_alignment'   => 'alignnone',
+			'image_size'        => 'medium',
+			'show_title'        => 0,
+			'show_content'      => 0,
+			'archive_link'      => 0,
+			'archive_link_text' => __( 'View Content Type Archive', 'display-featured-image-genesis' ),
 		);
 	}
 
@@ -93,6 +95,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		$this->do_image( $instance, $post_type, $title, $permalink );
 		$this->do_title( $instance, $permalink, $title );
 		$this->do_intro_text( $instance );
+		$this->do_archive_link( $permalink, $instance );
 
 		echo $args['after_widget'];
 	}
@@ -268,6 +271,22 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	}
 
 	/**
+	 * Echo the CPT archive link.
+	 *
+	 * @param $permalink
+	 * @param $instance
+	 */
+	protected function do_archive_link( $permalink, $instance ) {
+		if ( ! $instance['archive_link'] || ! $instance['archive_link_text'] ) {
+			return;
+		}
+		printf( '<p class="more-from-category"><a href="%s">%s</a></p>',
+			esc_url( $permalink ),
+			esc_html( $instance['archive_link_text'] )
+		);
+	}
+
+	/**
 	 * Update a particular instance.
 	 *
 	 * This function should check that $new_instance is set correctly.
@@ -299,7 +318,8 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		return array_merge(
 			$this->get_post_type_fields(),
 			$form->get_text_fields(),
-			$form->get_image_fields()
+			$form->get_image_fields(),
+			$form->get_archive_fields()
 		);
 	}
 
@@ -338,6 +358,10 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		$form->do_boxes( array(
 			'image' => $form->get_image_fields(),
 		), 'genesis-widget-column-box-top' );
+
+		$form->do_boxes( array(
+			'archive' => $form->get_archive_fields(),
+		) );
 
 		echo '</div>';
 	}

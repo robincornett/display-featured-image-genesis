@@ -53,14 +53,16 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 */
 	public function defaults() {
 		return array(
-			'title'           => '',
-			'taxonomy'        => 'category',
-			'term'            => '',
-			'show_image'      => 0,
-			'image_alignment' => '',
-			'image_size'      => 'medium',
-			'show_title'      => 0,
-			'show_content'    => 0,
+			'title'             => '',
+			'taxonomy'          => 'category',
+			'term'              => '',
+			'show_image'        => 0,
+			'image_alignment'   => '',
+			'image_size'        => 'medium',
+			'show_title'        => 0,
+			'show_content'      => 0,
+			'archive_link'      => 0,
+			'archive_link_text' => __( 'View Term Archive', 'display-featured-image-genesis' ),
 		);
 	}
 
@@ -102,6 +104,8 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		$this->do_title( $title, $permalink, $instance );
 
 		$this->do_content( $term, $instance );
+
+		$this->do_archive_link( $term, $instance );
 
 		echo $args['after_widget'];
 
@@ -177,6 +181,22 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	}
 
 	/**
+	 * Echo the term archive link.
+	 *
+	 * @param $term
+	 * @param $instance
+	 */
+	protected function do_archive_link( $term, $instance ) {
+		if ( ! $instance['archive_link'] || ! $instance['archive_link_text'] ) {
+			return;
+		}
+		printf( '<p class="more-from-category"><a href="%s">%s</a></p>',
+			esc_url( get_term_link( $term ) ),
+			esc_html( $instance['archive_link_text'] )
+		);
+	}
+
+	/**
 	 * Update a particular instance.
 	 *
 	 * This function should check that $new_instance is set correctly.
@@ -203,10 +223,12 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	 */
 	public function get_fields( $instance = array() ) {
 		$form = $this->get_form_class( $instance );
+
 		return array_merge(
 			$form->get_text_fields(),
 			$this->get_taxonomy_fields( $instance ),
-			$form->get_image_fields()
+			$form->get_image_fields(),
+			$form->get_archive_fields()
 		);
 	}
 
@@ -248,11 +270,16 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			'image' => $form->get_image_fields(),
 		), 'genesis-widget-column-box-top' );
 
+		$form->do_boxes( array(
+			'archive' => $form->get_archive_fields(),
+		) );
+
 		echo '</div>';
 	}
 
 	/**
 	 * Get the plugin widget forms class.
+	 *
 	 * @param array $instance
 	 *
 	 * @return \DisplayFeaturedImageGenesisWidgetsForm
