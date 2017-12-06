@@ -248,11 +248,10 @@
 		return output;
 	}
 
-	$( document ).ready( function () {
-		SixTenShortcodesEditor.params = typeof SixTenShortcodes === 'undefined' ? '' : SixTenShortcodes;
+	SixTenShortcodesEditor.params = typeof SixTenShortcodes === 'undefined' ? '' : SixTenShortcodes;
 
-		if ( typeof SixTenShortcodesEditor.params !== 'undefined' ) {
-			SixTenShortcodesEditor.init();
-		}
-	} );
+	if ( typeof SixTenShortcodesEditor.params !== 'undefined' ) {
+		SixTenShortcodesEditor.init();
+	}
+
 })( document, jQuery );

@@ -166,7 +166,7 @@ class SixTenPressShortcodes {
 	 * Enqueue the scripts needed for the modal.
 	 */
 	public function enqueue_script() {
-		if ( wp_script_is( 'sixtenpress-editor-script', 'enqueued' ) ) {
+		if ( wp_script_is( 'sixtenpress-shortcode-editor', 'enqueued' ) ) {
 			return;
 		}
 		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
@@ -178,7 +178,7 @@ class SixTenPressShortcodes {
 	 * Enqueue the styles needed for the modal.
 	 */
 	public function enqueue_style() {
-		if ( wp_style_is( 'sixtenpress-editor', 'enqueued' ) ) {
+		if ( wp_style_is( 'sixtenpress-shortcode-editor', 'enqueued' ) ) {
 			return;
 		}
 		add_filter( 'sixtenpress_admin_style', '__return_true' );
@@ -243,6 +243,6 @@ class SixTenPressShortcodes {
 		}
 
 		$this->loaded = true;
-		include( plugin_dir_path( __FILE__ ) . 'modal.php' );
+		include plugin_dir_path( __FILE__ ) . 'modal.php';
 	}
 }
