@@ -368,7 +368,7 @@ class Display_Featured_Image_Genesis_Common {
 		$setting    = displayfeaturedimagegenesis_get_setting();
 		$image_size = $setting['image_size'];
 		$post_meta  = get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
-		if ( ! is_numeric( $post_meta ) ) {
+		if ( $post_meta && ! is_numeric( $post_meta ) ) {
 			return $post_meta;
 		}
 		/**
