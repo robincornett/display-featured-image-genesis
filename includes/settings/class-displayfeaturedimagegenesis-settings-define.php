@@ -81,6 +81,16 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				),
 			),
 			array(
+				'id'       => 'image_size',
+				'title'    => __( 'Preferred Image Size', 'display-featured-image-genesis' ),
+				'callback' => 'do_select',
+				'section'  => 'main',
+				'options'  => apply_filters( 'displayfeaturedimagegenesis_image_size_choices', array(
+					'displayfeaturedimage_backstretch' => __( 'Backstretch (default)', 'display-featured-image-genesis' ),
+					'large'                            => __( 'Large', 'display-featured-image-genesis' ),
+				) ),
+			),
+			array(
 				'id'       => 'exclude_front',
 				'title'    => __( 'Skip Front Page', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
@@ -192,16 +202,6 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 	 */
 	protected function define_cpt_fields() {
 		$fields = array(
-			array(
-				'id'       => 'image_size',
-				'title'    => __( 'Preferred Image Size', 'display-featured-image-genesis' ),
-				'callback' => 'do_select',
-				'section'  => 'cpt_sitewide',
-				'options'  => array(
-					'displayfeaturedimage_backstretch' => __( 'Backstretch (default)', 'display-featured-image-genesis' ),
-					'large'                            => __( 'Large', 'display-featured-image-genesis' ),
-				),
-			),
 			array(
 				'id'       => 'skip',
 				'title'    => __( 'Skip Content Types', 'display-featured-image-genesis' ),
