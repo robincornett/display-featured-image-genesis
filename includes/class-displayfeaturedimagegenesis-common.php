@@ -34,8 +34,8 @@ class Display_Featured_Image_Genesis_Common {
 
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
 
-		$image_id   = self::set_image_id();
-		$image_size = self::image_size();
+		$image_id          = self::set_image_id();
+		$image_size        = self::image_size();
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
@@ -193,7 +193,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @return string
 	 * @since 2.5.0
 	 */
-	static function singular_reset_image( $image_id ) {
+	public static function singular_reset_image( $image_id ) {
 		$fullsize     = wp_get_attachment_image_src( $image_id, 'full' );
 		$post         = get_post( get_the_ID() );
 		$item_content = strpos( $post->post_content, 'src="' . $fullsize[0] );
@@ -217,7 +217,7 @@ class Display_Featured_Image_Genesis_Common {
 	/**
 	 * @param string $title
 	 *
-	 * @return mixed|void
+	 * @return string
 	 */
 	protected static function set_item_title( $title = '' ) {
 
@@ -232,7 +232,7 @@ class Display_Featured_Image_Genesis_Common {
 		} elseif ( is_category() || is_tag() || is_tax() ) {
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
 			if ( ! $term ) {
-				return;
+				return '';
 			}
 			$title = displayfeaturedimagegenesis_get_term_meta( $term, 'headline' );
 			if ( empty( $title ) && $a11ycheck ) {

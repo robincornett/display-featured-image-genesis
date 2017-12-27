@@ -21,7 +21,7 @@ function displayfeaturedimagegenesis_get_term_image( $term_id, $image_id = '' ) 
 		$image_id = get_term_meta( $term_id, 'displayfeaturedimagegenesis', true );
 	}
 	if ( ! $image_id ) {
-		$term_meta = get_option( "displayfeaturedimagegenesis_$term_id" );
+		$term_meta = get_option( "displayfeaturedimagegenesis_{$term_id}" );
 		if ( $term_meta ) {
 			$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
 		}
@@ -59,13 +59,12 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
 	}
 
 	return (int) $image_id;
-
 }
 
 /**
  * Helper function to get the term image URL.
  * @param  string $size image size
- * @return url       URL associated with the term image
+ * @return string       URL associated with the term image
  *
  * @since  2.1.0
  */
@@ -75,20 +74,21 @@ function display_featured_image_genesis_get_term_image_url( $size = 'displayfeat
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
 	return esc_url( $image_url[0] );
-
 }
 
 /**
  * Helper function to get the default image ID.
- * @return ID ID associated with the fallback/default image
+ *
+ * @param string $image_id
+ *
+ * @return int ID associated with the fallback/default image
  *
  * @since  2.1.0
  */
 function display_featured_image_genesis_get_default_image_id( $image_id = '' ) {
 
 	$displaysetting = displayfeaturedimagegenesis_get_setting();
-	$fallback       = $displaysetting['default'];
-	$image_id       = displayfeaturedimagegenesis_check_image_id( $fallback );
+	$image_id       = displayfeaturedimagegenesis_check_image_id( $displaysetting['default'] );
 
 	return (int) $image_id;
 
@@ -96,8 +96,8 @@ function display_featured_image_genesis_get_default_image_id( $image_id = '' ) {
 
 /**
  * Helper function to get the default image URL.
- * @param  image size $size image size to retrieve
- * @return URL       URL associated with the term image
+ * @param  string size $size image size to retrieve
+ * @return string       URL associated with the term image
  *
  * @since  2.1.0
  */
@@ -112,7 +112,10 @@ function display_featured_image_genesis_get_default_image_url( $size = 'displayf
 
 /**
  * Get custom post type featured image ID.
- * @return ID Gets the ID of the image assigned as the custom post type featured image.
+ *
+ * @param string $image_id
+ *
+ * @return int Gets the ID of the image assigned as the custom post type featured image.
  *
  * @since  2.1.0
  */
@@ -122,7 +125,7 @@ function display_featured_image_genesis_get_cpt_image_id( $image_id = '' ) {
 	$displaysetting = displayfeaturedimagegenesis_get_setting();
 	$object         = get_queried_object();
 	if ( ! $object || is_admin() ) {
-		return;
+		return '';
 	}
 	if ( $object->name ) { // results in post type on cpt archive
 		$post_type = $object->name;
@@ -142,7 +145,7 @@ function display_featured_image_genesis_get_cpt_image_id( $image_id = '' ) {
 /**
  * Get the custom post type featured image URL.
  * @param  string $size image size
- * @return URL       returns the image URL for the custom post type featured image
+ * @return string       returns the image URL for the custom post type featured image
  *
  * @since  2.1.0
  */
@@ -152,13 +155,13 @@ function display_featured_image_genesis_get_cpt_image_url( $size = 'displayfeatu
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
 	return esc_url( $image_url[0] );
-
 }
 
 /**
  * Add term/default image to blog/archive pages. Use:
  * add_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 );
- * @return image If a post doesn't have its own thumbnail, you can use this function to add one to archive pages.
+ *
+ * If a post doesn't have its own thumbnail, you can use this function to add one to archive pages.
  *
  * @since  2.1.0
  */
@@ -170,7 +173,7 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 		return;
 	}
 
-	$args = array(
+	$args            = array(
 		'post_mime_type' => 'image',
 		'post_parent'    => get_the_ID(),
 		'post_type'      => 'attachment',
@@ -210,7 +213,6 @@ function display_featured_image_genesis_add_archive_thumbnails() {
 		esc_url( $permalink ),
 		wp_kses_post( $image )
 	);
-
 }
 
 /**

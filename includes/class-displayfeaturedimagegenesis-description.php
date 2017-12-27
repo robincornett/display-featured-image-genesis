@@ -234,8 +234,11 @@ class Display_Featured_Image_Genesis_Description {
 
 	/**
 	 * Actually print the description for the archive page. Adds hooks for moving output.
-	 * @param $intro_text string the archive intro text.
+	 *
+	 * @param $intro_text   string the archive intro text.
 	 * @param string $class optional class for the div.
+	 *
+	 * @param string $context
 	 *
 	 * @since 2.5.0
 	 */
