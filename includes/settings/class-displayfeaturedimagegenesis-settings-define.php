@@ -67,6 +67,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'title'    => __( 'Default Featured Image', 'display-featured-image-genesis' ),
 				'callback' => 'set_default_image',
 				'section'  => 'main',
+				'type'     => 'image',
 			),
 			array(
 				'id'          => 'always_default',
@@ -79,16 +80,18 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 					esc_html__( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 					absint( $large + 1 )
 				),
+				'type'        => 'checkbox',
 			),
 			array(
 				'id'       => 'image_size',
 				'title'    => __( 'Preferred Image Size', 'display-featured-image-genesis' ),
 				'callback' => 'do_select',
 				'section'  => 'main',
-				'options'  => apply_filters( 'displayfeaturedimagegenesis_image_size_choices', array(
+				'choices'  => apply_filters( 'displayfeaturedimagegenesis_image_size_choices', array(
 					'displayfeaturedimage_backstretch' => __( 'Backstretch (default)', 'display-featured-image-genesis' ),
 					'large'                            => __( 'Large', 'display-featured-image-genesis' ),
 				) ),
+				'type'     => 'select',
 			),
 			array(
 				'id'       => 'exclude_front',
@@ -96,6 +99,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'label'    => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),
+				'type'     => 'checkbox',
 			),
 			array(
 				'id'       => 'keep_titles',
@@ -103,6 +107,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'label'    => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
+				'type'     => 'checkbox',
 			),
 			array(
 				'id'       => 'move_excerpts',
@@ -110,6 +115,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'label'    => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ),
+				'type'     => 'checkbox',
 			),
 			array(
 				'id'       => 'is_paged',
@@ -117,6 +123,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'label'    => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ),
+				'type'     => 'checkbox',
 			),
 			array(
 				'id'       => 'feed_image',
@@ -124,6 +131,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'label'    => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ),
+				'type'     => 'checkbox',
 			),
 			array(
 				'id'       => 'thumbnails',
@@ -131,6 +139,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'label'    => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ),
+				'type'     => 'checkbox',
 			),
 			array(
 				'id'       => 'shortcodes',
@@ -138,6 +147,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox',
 				'section'  => 'main',
 				'label'    => __( 'Add optional shortcode buttons to the post editor', 'display-featured-image-genesis' ),
+				'skip'     => true,
 			),
 		);
 	}
@@ -157,6 +167,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'min'         => 0,
 				'max'         => 400,
 				'description' => __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' ),
+				'type'        => 'number',
 			),
 			array(
 				'id'          => 'max_height',
@@ -167,22 +178,25 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'min'         => 100,
 				'max'         => 1000,
 				'description' => __( 'Optionally, set a max-height value for the header image; it will be added to your CSS.', 'display-featured-image-genesis' ),
+				'type'        => 'number',
 			),
 			array(
 				'id'       => 'centeredX',
 				'title'    => __( 'Center Horizontally', 'display-featured-image-genesis' ),
 				'callback' => 'do_radio_buttons',
 				'section'  => 'style',
-				'buttons'  => $this->pick_center(),
+				'choices'  => $this->pick_center(),
 				'legend'   => __( 'Center the backstretch image on the horizontal axis?', 'display-featured-image-genesis' ),
+				'type'     => 'radio',
 			),
 			array(
 				'id'       => 'centeredY',
 				'title'    => __( 'Center Vertically', 'display-featured-image-genesis' ),
 				'callback' => 'do_radio_buttons',
 				'section'  => 'style',
-				'buttons'  => $this->pick_center(),
+				'choices'  => $this->pick_center(),
 				'legend'   => __( 'Center the backstretch image on the vertical axis?', 'display-featured-image-genesis' ),
+				'type'     => 'radio',
 			),
 			array(
 				'id'       => 'fade',
@@ -192,6 +206,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'label'    => __( 'milliseconds', 'display-featured-image-genesis' ),
 				'min'      => 0,
 				'max'      => 20000,
+				'type'     => 'number',
 			),
 		);
 	}
@@ -208,6 +223,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'do_checkbox_array',
 				'section'  => 'cpt_sitewide',
 				'options'  => $this->get_post_types(),
+				'skip'     => true,
 			),
 			array(
 				'id'          => 'fallback',
@@ -216,6 +232,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'section'     => 'cpt_sitewide',
 				'options'     => $this->get_post_types(),
 				'description' => __( 'Select content types which should always use a fallback image, even if a featured image has been set.', 'display-featured-image-genesis' ),
+				'skip'        => true,
 			),
 			array(
 				'id'          => 'large',
@@ -224,6 +241,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'section'     => 'cpt_sitewide',
 				'options'     => $this->get_post_types(),
 				'description' => __( 'Select content types which should always prefer to use the large image size instead of the backstretch, even if a backstretch size image is available (singular posts/pages, not archives).', 'display-featured-image-genesis' ),
+				'skip'        => true,
 			),
 		);
 
@@ -238,6 +256,8 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'title'    => esc_attr( $label ),
 				'callback' => 'set_cpt_image',
 				'section'  => 'cpt',
+				'type'     => 'image',
+				'skip'     => true,
 			);
 		}
 
@@ -256,13 +276,14 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'title'    => __( 'Backstretch Image Hook', 'display-featured-image-genesis' ),
 				'callback' => 'do_select',
 				'section'  => 'advanced',
-				'options'  => array(
+				'choices'  => array(
 					'genesis_before_header'               => 'genesis_before_header',
 					'genesis_header'                      => 'genesis_header',
 					'genesis_after_header'                => 'genesis_after_header ' . __( '(default)', 'display-featured-image-genesis' ),
 					'genesis_before_content_sidebar_wrap' => 'genesis_before_content_sidebar_wrap',
 					'genesis_before_content'              => 'genesis_before_content',
 				),
+				'type'     => 'select',
 			),
 			array(
 				'id'          => 'backstretch_priority',
@@ -273,14 +294,16 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'min'         => 1,
 				'max'         => 100,
 				'description' => __( 'Default: 10', 'display-featured-image-genesis' ),
+				'type'        => 'number',
 			),
 			array(
 				'id'          => 'large_hook',
 				'title'       => __( 'Large Image Hook', 'display-featured-image-genesis' ),
 				'callback'    => 'do_select',
 				'section'     => 'advanced',
-				'options'     => $this->large_hook_options(),
+				'choices'     => $this->large_hook_options(),
 				'description' => __( 'Changing this hook only affects single post/page output, due to overlap/conflict with archive page output.', 'display-featured-image-genesis' ),
+				'type'        => 'select',
 			),
 			array(
 				'id'          => 'large_priority',
@@ -291,6 +314,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'min'         => 1,
 				'max'         => 100,
 				'description' => __( 'Default: 12', 'display-featured-image-genesis' ),
+				'type'        => 'number',
 			),
 		);
 	}
@@ -322,7 +346,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 
 	/**
 	 * Get the hooks for the large image.
-	 * 
+	 *
 	 * @return array
 	 */
 	protected function large_hook_options() {

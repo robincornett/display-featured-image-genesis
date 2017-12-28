@@ -165,7 +165,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		$id    = $this->get_field_id( $args );
 		$value = $this->get_field_value( $args );
 		printf( '<legend class="screen-reader-text">%s</legend>', esc_html( $args['legend'] ) );
-		foreach ( $args['buttons'] as $choice => $label ) {
+		foreach ( $args['choices'] as $choice => $label ) {
 			printf( '<label for="%1$s-%2$s" style="margin-right:12px !important;"><input type="radio" id="%1$s-%2$s" name="%5$s" value="%2$s"%3$s />%4$s</label>  ',
 				esc_attr( $id ),
 				esc_attr( $choice ),
@@ -188,7 +188,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			esc_attr( $this->get_field_id( $args ) ),
 			esc_attr( $this->get_field_name( $args ) )
 		);
-		foreach ( (array) $args['options'] as $option => $label ) {
+		foreach ( (array) $args['choices'] as $option => $label ) {
 			printf( '<option value="%s" %s>%s</option>',
 				esc_attr( $option ),
 				selected( $option, $value, false ),

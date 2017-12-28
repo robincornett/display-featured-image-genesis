@@ -125,7 +125,7 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 	 * @return string            New or previous value, depending on allowed image size.
 	 * @since  1.2.2
 	 */
-	protected function validate_image( $new_value, $old_value, $label, $size_to_check ) {
+	public function validate_image( $new_value, $old_value, $label, $size_to_check ) {
 
 		// ok for field to be empty
 		if ( ! $new_value ) {
