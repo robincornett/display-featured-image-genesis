@@ -3,10 +3,10 @@
 /**
  * Class to add customizer settings.
  * Class Display_Featured_Image_Genesis_Customizer
- * @package Display_Featured_Image_Genesis
+ * @package   Display_Featured_Image_Genesis
  * @copyright 2016 Robin Cornett
  */
-class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Helper {
+class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Settings_Define {
 
 	/**
 	 * Section for the Customizer.
@@ -33,9 +33,16 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	protected $setting;
 
 	/**
+	 * @var \Display_Featured_Image_Genesis_Settings_Validate
+	 */
+	protected $validation;
+
+	/**
 	 * Adds the individual sections, settings, and controls to the theme customizer
+	 *
 	 * @param $wp_customize WP_Customize_Manager
-	 * @uses add_section() adds a section to the customizer
+	 *
+	 * @uses  add_section() adds a section to the customizer
 	 * @since 2.6.0
 	 */
 	public function customizer( $wp_customize ) {
@@ -45,195 +52,66 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 		if ( ! $this->setting ) {
 			add_option( 'displayfeaturedimagegenesis', $this->defaults );
 		}
-		$wp_customize->add_section(
-			$this->section,
+		$wp_customize->add_panel( $this->section, array(
+			'priority'       => 90,
+			'capability'     => 'edit_theme_options',
+			'theme_supports' => '',
+			'title'          => __( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
+			'description'    => __( 'Only general settings are available in the Customizer; more can be found on the Display Featured Image for Genesis settings page.', 'display-featured-image-genesis' ),
+		) );
+
+		$sections = array(
 			array(
-				'title'       => __( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
-				'description' => __( 'Only general settings are available in the Customizer; more can be found on the Display Featured Image for Genesis settings page.', 'display-featured-image-genesis' ),
-				'priority'    => 90,
-			)
+				'id'     => 'main',
+				'title'  => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
+				'fields' => $this->define_main_fields(),
+			),
+			array(
+				'id'     => 'backstretch',
+				'title'  => __( 'Display Settings', 'display-featured-image-genesis' ),
+				'fields' => $this->define_style_fields(),
+			),
+			array(
+				'id'     => 'cpt',
+				'title'  => __( 'Sitewide Settings', 'display-featured-image-genesis' ),
+				'fields' => $this->define_cpt_fields(),
+			),
+			array(
+				'id'     => 'advanced',
+				'title'  => __( 'Advanced Plugin Settings', 'display-featured-image-genesis' ),
+				'fields' => $this->define_advanced_fields(),
+			),
 		);
-
-		$this->build_fields( $wp_customize );
-	}
-
-	/**
-	 * Build the Display Featured Image for Genesis Customizer settings panel.
-	 * @param $wp_customize
-	 * @since 2.6.0
-	 */
-	protected function build_fields( $wp_customize ) {
-
-		$this->do_image_setting( $wp_customize, $this->default_image() );
-
-		$checkboxes = $this->main_fields();
-		foreach ( $checkboxes as $checkbox ) {
-			$checkbox['sanitize_callback'] = array( $this, 'one_zero' );
-			$checkbox['type']              = 'checkbox';
-			$this->add_control( $wp_customize, $checkbox );
+		foreach ( $sections as $section ) {
+			$wp_customize->add_section( $this->section . '_' . $section['id'], array(
+				'title' => $section['title'],
+				'panel' => $this->section,
+			) );
+			$this->add_section_controls( $wp_customize, $section['fields'], $this->section . '_' . $section['id'] );
 		}
 
-		$numbers = $this->height_fields();
-		foreach ( $numbers as $field ) {
-			$field['sanitize_callback'] = 'absint';
-			$field['type']              = 'number';
-			$this->add_control( $wp_customize, $field );
-		}
-
-		$radios = $this->radio_fields();
-		foreach ( $radios as $radio ) {
-			$radio['type']              = 'radio';
-			$radio['choices']           = $this->pick_center();
-			$radio['sanitize_callback'] = 'absint';
-			$this->add_control( $wp_customize, $radio );
-		}
-
-		$this->add_control( $wp_customize, $this->fade() );
-	}
-
-	/**
-	 * Define the number fields (height, max-height) for the customizer.
-	 * @return array
-	 * @since 2.6.0
-	 */
-	function height_fields() {
-		return array(
-			array(
-				'setting'     => 'less_header',
-				'label'       => __( 'Height', 'display-featured-image-genesis' ),
-				'description' => __( 'Changing this number will reduce the backstretch image height by this number of pixels. Default is zero.', 'display-featured-image-genesis' ),
-				'input_attrs' => array(
-					'min'   => 0,
-					'max'   => 400,
-				),
-			),
-			array(
-				'setting'     => 'max_height',
-				'label'       => __( 'Maximum Height', 'display-featured-image-genesis' ),
-				'description' => __( 'Optionally, set a max-height value for the header image; it will be added to your CSS.', 'display-featured-image-genesis' ),
-				'input_attrs' => array(
-					'min'   => 100,
-					'max'   => 1000,
-				),
-			),
-		);
-	}
-
-	/**
-	 * Define the fade field for the customizer.
-	 * @return array
-	 */
-	protected function fade() {
-		return array(
-			'setting'           => 'fade',
-			'label'             => __( 'Fade', 'display-featured-image-genesis' ),
-			'description'       => __( 'Time (in milliseconds) it will take for the backstretch image to appear.', 'display-featured-image-genesis' ),
-			'input_attrs'       => array(
-				'min' => 0,
-				'max' => 10000,
-			),
-			'sanitize_callback' => 'absint',
-		);
-	}
-
-	/**
-	 * Define all the checkbox fields for the customizer.
-	 * @return array
-	 * @since 2.6.0
-	 */
-	protected function main_fields() {
-		return array(
-			array(
-				'setting'     => 'always_default',
-				'label'       => __( 'Always Use Default', 'display-featured-image-genesis' ),
-				'description' => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ),
-			),
-			array(
-				'setting'     => 'exclude_front',
-				'label'       => __( 'Skip Front Page', 'display-featured-image-genesis' ),
-				'description' => __( 'Do not show the Featured Image on the Front Page of the site.', 'display-featured-image-genesis' ),
-			),
-			array(
-				'setting'     => 'keep_titles',
-				'label'       => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
-				'description' => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
-			),
-			array(
-				'setting'     => 'move_excerpts',
-				'label'       => __( 'Move Excerpts/Archive Descriptions', 'display-featured-image-genesis' ),
-				'description' => __( 'Move excerpts (if used) on single pages and move archive/taxonomy descriptions to overlay the Featured Image.', 'display-featured-image-genesis' ),
-			),
-			array(
-				'setting'     => 'thumbnails',
-				'label'       => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
-				'description' => __( 'Use term/post type fallback images for content archive thumbnails?', 'display-featured-image-genesis' ),
-			),
-		);
-	}
-
-	/**
-	 * Define the radio/centering fields for the customizer.
-	 * @return array
-	 */
-	protected function radio_fields() {
-		return array(
-			array(
-				'setting'     => 'centeredX',
-				'label'       => __( 'Center Horizontally', 'display-featured-image-genesis' ),
-				'description' => __( 'Center the backstretch image on the horizontal axis?', 'display-featured-image-genesis' ),
-			),
-			array(
-				'setting'     => 'centeredY',
-				'label'       => __( 'Center Vertically', 'display-featured-image-genesis' ),
-				'description' => __( 'Center the backstretch image on the vertical axis?', 'display-featured-image-genesis' ),
-			),
-		);
-	}
-
-	/**
-	 * Define the choices for the centering settings.
-	 * @return array
-	 */
-	protected function pick_center() {
-		return array(
-			1 => __( 'Center', 'display-featured-image-genesis' ),
-			0 => __( 'Do Not Center', 'display-featured-image-genesis' ),
-		);
-	}
-
-	/**
-	 * Define the control setting for the default image.
-	 * @return array
-	 * @since 2.6.0
-	 */
-	protected function default_image() {
-		$common = new Display_Featured_Image_Genesis_Common();
-		$size   = $common->minimum_backstretch_width();
-
-		return array(
-			'setting'           => 'default',
-			'description'       => sprintf( __( 'If you would like to use a default image for the featured image, upload it here. Must be at least %1$s pixels wide.', 'display-featured-image-genesis' ), absint( $size + 1 ) ),
-			'label'             => __( 'Default Image', 'display-featured-image-genesis' ),
-			'sanitize_callback' => array( $this, 'send_image_to_validator' ),
-		);
 	}
 
 	/**
 	 * @param $wp_customize WP_Customize_Manager
 	 * @param $setting
+	 *
+	 * @param string $section
+	 *
 	 * @since 2.6.0
 	 */
-	protected function do_image_setting( $wp_customize, $setting ) {
+	protected function do_image_setting( $wp_customize, $setting, $section = 'main' ) {
 		$this->add_setting( $wp_customize, $setting );
+		$image = 'default' === $setting['id'] ? $this->section . '[' . $setting['id'] . ']' : $this->section . '[post_type][' . $setting['id'] . ']';
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
-				$this->section . '[' . $setting['setting'] . ']',
+				$this->section . '[' . $setting['id'] . ']',
 				array(
-					'label'       => $setting['label'],
-					'section'     => $this->section,
-					'settings'    => $this->section . '[' . $setting['setting'] . ']',
-					'description' => isset( $setting['description'] ) ? $setting['description'] : '',
+					'label'       => $setting['title'],
+					'section'     => $section,
+					'settings'    => $image,
+					'description' => isset( $setting['label'] ) ? $setting['label'] : '',
 				)
 			)
 		);
@@ -241,36 +119,61 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 
 	/**
 	 * @param $wp_customize WP_Customize_Manager
-	 * @param $setting
-	 * @since 2.6.0
+	 * @param $fields
+	 *
+	 * @param $section
+	 *
+	 * @since 2.7.0
 	 */
-	protected function add_control( $wp_customize, $setting ) {
-		$this->add_setting( $wp_customize, $setting );
-		$wp_customize->add_control(
-			$this->section . '[' . $setting['setting'] . ']',
-			array(
-				'label'       => $setting['label'],
-				'section'     => $this->section,
-				'type'        => isset( $setting['type'] ) ? $setting['type'] : '',
-				'description' => isset( $setting['description'] ) ? $setting['description'] : '',
-				'choices'     => isset( $setting['choices'] ) ? $setting['choices'] : array(),
-				'input_attrs' => isset( $setting['input_attrs'] ) ? $setting['input_attrs'] : array(),
-			)
-		);
+	protected function add_section_controls( $wp_customize, $fields, $section ) {
+		foreach ( $fields as $setting ) {
+			if ( isset( $setting['skip'] ) && $setting['skip'] ) {
+				continue;
+			}
+			if ( 'image' === $setting['type'] ) {
+				$this->do_image_setting( $wp_customize, $setting, $section );
+				continue;
+			}
+			$this->add_setting( $wp_customize, $setting );
+			$wp_customize->add_control(
+				$this->section . '[' . $setting['id'] . ']',
+				array(
+					'label'       => $setting['title'],
+					'section'     => $section,
+					'type'        => isset( $setting['type'] ) ? $setting['type'] : '',
+					'description' => isset( $setting['label'] ) ? $setting['label'] : '',
+					'choices'     => isset( $setting['choices'] ) ? $setting['choices'] : array(),
+					'input_attrs' => isset( $setting['input_attrs'] ) ? $setting['input_attrs'] : array(),
+				)
+			);
+		}
 	}
 
 	/**
 	 * @param $wp_customize WP_Customize_Manager
 	 * @param $setting
+	 *
 	 * @since 2.6.0
 	 */
 	protected function add_setting( $wp_customize, $setting ) {
+		$validation        = $this->validation_class();
+		$default           = isset( $this->defaults[ $setting['id'] ] ) ? $this->defaults[ $setting['id'] ] : '';
+		$sanitize_callback = '';
+		if ( 'checkbox' === $setting['type'] ) {
+			$sanitize_callback = array( $validation, 'one_zero' );
+		} elseif ( 'number' === $setting['type'] ) {
+			$sanitize_callback = 'absint';
+		} elseif ( 'image' === $setting['type'] ) {
+			$sanitize_callback = array( $this, 'send_image_to_validator' );
+		} elseif ( isset( $setting['sanitize_callback'] ) && $setting['sanitize_callback'] ) {
+			$sanitize_callback = array( $this, $setting['sanitize_callback'] );
+		}
 		$wp_customize->add_setting(
-			$this->section . '[' . $setting['setting'] . ']',
+			$this->section . '[' . $setting['id'] . ']',
 			array(
 				'capability'        => 'manage_options',
-				'default'           => $this->defaults[ $setting['setting'] ],
-				'sanitize_callback' => isset( $setting['sanitize_callback'] ) ? $setting['sanitize_callback'] : '',
+				'default'           => $default,
+				'sanitize_callback' => $sanitize_callback,
 				'type'              => 'option',
 				'transport'         => isset( $setting['transport'] ) ? $setting['transport'] : 'refresh',
 			)
@@ -279,15 +182,33 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 
 	/**
 	 * Custom validation function for the default image--ensure image is appropriately sized.
+	 *
 	 * @param $new_value
+	 *
+	 * @param $setting
 	 *
 	 * @return string
 	 * @since 2.6.0
 	 */
-	public function send_image_to_validator( $new_value ) {
-		$common    = new Display_Featured_Image_Genesis_Common();
-		$size      = $common->minimum_backstretch_width();
-		$new_value = $this->validate_image( $new_value, $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size );
-		return $new_value;
+	public function send_image_to_validator( $new_value, $setting ) {
+		$common     = new Display_Featured_Image_Genesis_Common();
+		$size       = $common->minimum_backstretch_width();
+		$validation = $this->validation_class();
+
+		return $validation->validate_image( $new_value, $setting->id, __( 'Default', 'display-featured-image-genesis' ), $size );
+	}
+
+	/**
+	 * Get the settings validation class.
+	 * @return \Display_Featured_Image_Genesis_Settings_Validate
+	 */
+	protected function validation_class() {
+		if ( isset( $this->validation ) ) {
+			return $this->validation;
+		}
+		include_once plugin_dir_path( __FILE__ ) . 'settings/class-displayfeaturedimagegenesis-settings-validate.php';
+		$this->validation = new Display_Featured_Image_Genesis_Settings_Validate( array(), $this->setting );
+
+		return $this->validation;
 	}
 }

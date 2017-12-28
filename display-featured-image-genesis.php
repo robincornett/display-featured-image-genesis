@@ -34,6 +34,7 @@ function display_featured_image_genesis_require() {
 		'class-displayfeaturedimagegenesis',
 		'settings/class-displayfeaturedimagegenesis-getsetting',
 		'settings/class-displayfeaturedimagegenesis-helper',
+		'settings/class-displayfeaturedimagegenesis-settings-define',
 		'class-displayfeaturedimagegenesis-admin',
 		'class-displayfeaturedimagegenesis-author',
 		'class-displayfeaturedimagegenesis-common',
