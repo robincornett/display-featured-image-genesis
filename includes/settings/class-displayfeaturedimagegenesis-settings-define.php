@@ -257,7 +257,6 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'callback' => 'set_cpt_image',
 				'section'  => 'cpt',
 				'type'     => 'image',
-				'skip'     => true,
 			);
 		}
 

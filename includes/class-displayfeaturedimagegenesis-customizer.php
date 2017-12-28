@@ -156,6 +156,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 * @since 2.6.0
 	 */
 	protected function add_setting( $wp_customize, $setting ) {
+		$id                = $this->section . '[' . $setting['id'] . ']';
 		$validation        = $this->validation_class();
 		$default           = isset( $this->defaults[ $setting['id'] ] ) ? $this->defaults[ $setting['id'] ] : '';
 		$sanitize_callback = '';
@@ -165,11 +166,14 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 			$sanitize_callback = 'absint';
 		} elseif ( 'image' === $setting['type'] ) {
 			$sanitize_callback = array( $this, 'send_image_to_validator' );
+			if ( 'default' !== $setting['id'] ) {
+				$id = $this->section . '[post_type][' . $setting['id'] . ']';
+			}
 		} elseif ( isset( $setting['sanitize_callback'] ) && $setting['sanitize_callback'] ) {
 			$sanitize_callback = array( $this, $setting['sanitize_callback'] );
 		}
 		$wp_customize->add_setting(
-			$this->section . '[' . $setting['id'] . ']',
+			$id,
 			array(
 				'capability'        => 'manage_options',
 				'default'           => $default,
