@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Display Featured Image for Genesis 2.7.0\n"
-"POT-Creation-Date: 2017-10-31 17:23-0400\n"
+"POT-Creation-Date: 2017-12-27 14:44-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Robin Cornett <hello@robincornett.com>\n"
 "Language-Team: Robin Cornett <hello@robincornett.com>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Revision-Date: 2014-11-22 21:07-0500\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.5\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
@@ -31,7 +31,7 @@ msgstr ""
 #: ../includes/class-displayfeaturedimagegenesis-author.php:47
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:64
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:87
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:238
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:215
 msgid "Featured Image"
 msgstr ""
 
@@ -40,23 +40,23 @@ msgid "Upload an image to use as your author page featured image."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-author.php:75
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:277
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:305
 msgid "Something unexpected happened. Please try again."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-author.php:123
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:182
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:175
 #, php-format
 msgid " The %s Featured Image has been reset to the last valid setting."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-author.php:124
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:177
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:170
 msgid "Sorry, your image is too small."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-author.php:127
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:179
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:172
 msgid "Sorry, that is an invalid file type."
 msgstr ""
 
@@ -74,24 +74,24 @@ msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:103
 #: ../includes/settings/class-displayfeaturedimagegenesis-helptabs.php:47
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:134
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:153
 msgid "Height"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:104
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:140
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:159
 msgid ""
 "Changing this number will reduce the backstretch image height by this number "
 "of pixels. Default is zero."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:112
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:144
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:163
 msgid "Maximum Height"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:113
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:150
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:169
 msgid ""
 "Optionally, set a max-height value for the header image; it will be added to "
 "your CSS."
@@ -99,7 +99,7 @@ msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:129
 #: ../includes/settings/class-displayfeaturedimagegenesis-helptabs.php:57
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:170
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:189
 msgid "Fade"
 msgstr ""
 
@@ -109,44 +109,44 @@ msgid ""
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:148
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:60
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:73
 msgid "Always Use Default"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:149
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:63
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:76
 msgid "Always use the default image, even if a featured image is set."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:153
 #: ../includes/settings/class-displayfeaturedimagegenesis-helptabs.php:99
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:72
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:95
 msgid "Skip Front Page"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:154
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:75
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:98
 msgid "Do not show the Featured Image on the Front Page of the site."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:158
 #: ../includes/settings/class-displayfeaturedimagegenesis-helptabs.php:104
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:79
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:102
 msgid "Do Not Move Titles"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:159
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:82
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:105
 msgid "Do not move the titles to overlay the backstretch Featured Image."
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:163
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:86
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:109
 msgid "Move Excerpts/Archive Descriptions"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:164
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:89
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:112
 msgid ""
 "Move excerpts (if used) on single pages and move archive/taxonomy "
 "descriptions to overlay the Featured Image."
@@ -154,7 +154,7 @@ msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:168
 #: ../includes/settings/class-displayfeaturedimagegenesis-helptabs.php:124
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:107
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:130
 msgid "Archive Thumbnails"
 msgstr ""
 
@@ -163,38 +163,38 @@ msgid "Use term/post type fallback images for content archive thumbnails?"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:182
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:154
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:173
 msgid "Center Horizontally"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:183
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:158
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:177
 msgid "Center the backstretch image on the horizontal axis?"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:187
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:162
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:181
 msgid "Center Vertically"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:188
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:166
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:185
 msgid "Center the backstretch image on the vertical axis?"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:199
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:222
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:50
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:303
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:50
 msgid "Center"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:200
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:223
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:304
 msgid "Do Not Center"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-customizer.php:215
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:66
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:79
 #, php-format
 msgid ""
 "If you would like to use a default image for the featured image, upload it "
@@ -210,23 +210,39 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:49
-msgid "Don't show the featured image on this post"
-msgstr ""
-
-#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:56
+#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:64
 msgid ""
 "Don't move the title to overlay the backstretch featured image on this post"
 msgstr ""
 
+#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:78
+msgid "Featured Image Size:"
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:80
+msgid "Content type default"
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:81
+msgid "Don't display the featured image"
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:82
+msgid "Use a backstretch image if it exists"
+msgstr ""
+
+#: ../includes/class-displayfeaturedimagegenesis-postmeta.php:83
+msgid "Use a large (not backstretch) image"
+msgstr ""
+
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:66
-#: ../includes/class-displayfeaturedimagegenesis.php:294
-#: ../includes/settings/class-displayfeaturedimagegenesis-helper.php:238
+#: ../includes/class-displayfeaturedimagegenesis.php:256
+#: ../includes/settings/class-displayfeaturedimagegenesis-helper.php:258
 msgid "Select Image"
 msgstr ""
 
 #: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:67
-#: ../includes/settings/class-displayfeaturedimagegenesis-helper.php:242
+#: ../includes/settings/class-displayfeaturedimagegenesis-helper.php:262
 msgid "Delete Image"
 msgstr ""
 
@@ -239,24 +255,24 @@ msgstr ""
 msgid "Set Featured Image for %1$s."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:233
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:210
 msgid "Set Featured Image"
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:234
+#: ../includes/class-displayfeaturedimagegenesis-taxonomies.php:211
 msgid ""
 "You may set a featured image for your terms. This image will be used on the "
 "term archive page, and as a fallback image on a single post page if it does "
 "not have a featured image of its own."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:175
+#: ../includes/class-displayfeaturedimagegenesis.php:186
 msgid ""
 "Sorry, Display Featured Image for Genesis works only with the Genesis "
 "Framework. It has been deactivated."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:179
+#: ../includes/class-displayfeaturedimagegenesis.php:191
 #, php-format
 msgid ""
 " But since we're talking anyway, did you know that your server is running "
@@ -264,11 +280,11 @@ msgid ""
 "for you."
 msgstr ""
 
-#: ../includes/class-displayfeaturedimagegenesis.php:353
+#: ../includes/class-displayfeaturedimagegenesis.php:269
 msgid "Settings"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-helper.php:218
+#: ../includes/settings/class-displayfeaturedimagegenesis-helper.php:238
 #, php-format
 msgid "%s featured image"
 msgstr ""
@@ -282,7 +298,7 @@ msgid "Special Pages"
 msgstr ""
 
 #: ../includes/settings/class-displayfeaturedimagegenesis-helptabs.php:72
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:188
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:207
 msgid "Skip Content Types"
 msgstr ""
 
@@ -295,7 +311,7 @@ msgid "Custom Content Types"
 msgstr ""
 
 #: ../includes/settings/class-displayfeaturedimagegenesis-helptabs.php:94
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:54
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:67
 msgid "Default Featured Image"
 msgstr ""
 
@@ -493,70 +509,145 @@ msgstr ""
 msgid "Optional Sitewide Settings"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:23
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:24
 msgid "Display Settings"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:27
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:29
+msgid "Sitewide Settings"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:34
 msgid "Featured Images for Custom Content Types"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:93
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:39
+msgid "Advanced Plugin Settings"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:85
+msgid "Preferred Image Size"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:89
+msgid "Backstretch (default)"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:90
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:401
+msgid "Large"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:116
 msgid "Show Featured Image on Subsequent Blog Pages"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:96
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:119
 msgid "Show featured image on pages 2+ of blogs and archives."
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:100
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:123
 msgid "Add Featured Image to Feed?"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:103
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:126
 msgid "Optionally, add the featured image to your RSS feed."
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:110
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:133
 msgid "Use term/post type fallback images for content archives?"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:114
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:137
 msgid "Add Shortcode Buttons"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:118
-msgid "Featured Term Widget"
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:140
+msgid "Add optional shortcode buttons to the post editor"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:119
-msgid "Featured Author Widget"
-msgstr ""
-
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:120
-msgid "Featured Post Type Widget"
-msgstr ""
-
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:137
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:156
 msgid "pixels to remove"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:147
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:166
 msgid "pixels"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:173
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:192
 msgid "milliseconds"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:196
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:214
+msgid "Prefer Fallback Images"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:218
+msgid ""
+"Select content types which should always use a fallback image, even if a "
+"featured image has been set."
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:222
+msgid "Force Large Images"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:226
+msgid ""
+"Select content types which should always prefer to use the large image size "
+"instead of the backstretch, even if a backstretch size image is available "
+"(singular posts/pages, not archives)."
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:231
 #: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:73
 msgid "Search Results"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:197
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:232
 #: ../includes/settings/class-displayfeaturedimagegenesis-settings-validate.php:77
 msgid "404 Page"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:256
+msgid "Backstretch Image Hook"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:262
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:330
+msgid "(default)"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:269
+msgid "Backstretch Image Priority"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:275
+msgid "Default: 10"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:279
+msgid "Large Image Hook"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:283
+msgid ""
+"Changing this hook only affects single post/page output, due to overlap/"
+"conflict with archive page output."
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:287
+msgid "Large Image Priority"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:293
+msgid "Default: 12"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:335
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:336
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings-define.php:337
+msgid "(HTML5 themes)"
 msgstr ""
 
 #: ../includes/settings/class-displayfeaturedimagegenesis-settings-terms.php:60
@@ -611,35 +702,48 @@ msgstr ""
 msgid "Content Types"
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:175
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:168
+msgid "Advanced"
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:179
 msgid ""
 "Use these settings to modify the plugin behavior throughout your site. Check "
 "the Help tab for more information. "
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:182
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:186
 msgid ""
 "These settings modify the output style/methods for the backstretch image."
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:191
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:195
 msgid ""
 "Optional: set a custom image for search results and 404 (no results found) "
 "pages."
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:195
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:199
 msgid ""
 " Additionally, since you have custom post types with archives, you might "
 "like to set a featured image for each of them."
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:238
-#, php-format
-msgid "Always use a fallback image for %s."
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:211
+msgid ""
+"Optionally, change the hook location and priority of the featured image "
+"output. Use with caution. Note: this will change the hook/priority of the "
+"featured image sitewide. If you need to make changes based on content type, "
+"check the readme for code examples."
 msgstr ""
 
-#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:255
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:261
+#, php-format
+msgid ""
+"You may set a fallback image for Posts on your <a href=\"%s\">posts page</a>."
+msgstr ""
+
+#: ../includes/settings/class-displayfeaturedimagegenesis-settings.php:283
 #, php-format
 msgid "View your <a href=\"%1$s\" target=\"_blank\">%2$s</a> archive."
 msgstr ""
@@ -664,6 +768,60 @@ msgstr ""
 msgid "Insert"
 msgstr ""
 
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:47
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:295
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:318
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:423
+msgid "None"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:48
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:296
+msgid "Left"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:49
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:297
+msgid "Right"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:66
+msgid "Show Featured Image"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:73
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:108
+msgid "Image Size:"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:82
+msgid "Image Alignment"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:101
+msgid "Show the user's featured image."
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:117
+msgid "Image Alignment:"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:136
+msgid "Show Term Title"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:143
+msgid "Show Term Intro Text"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:160
+msgid "Show Archive Link"
+msgstr ""
+
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:167
+msgid "Archive Link Text"
+msgstr ""
+
 #: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php:61
 msgid "Add Featured Term Widget"
 msgstr ""
@@ -676,50 +834,16 @@ msgstr ""
 msgid "Add Featured Post Type Widget"
 msgstr ""
 
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php:79
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php:75
 msgid "Create Widget"
 msgstr ""
 
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php:80
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php:76
 msgid "Insert Widget"
 msgstr ""
 
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:47
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:279
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:302
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:407
-msgid "None"
-msgstr ""
-
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:48
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:280
-msgid "Left"
-msgstr ""
-
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:49
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:281
-msgid "Right"
-msgstr ""
-
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:66
-msgid "Show Featured Image"
-msgstr ""
-
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:73
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:232
-msgid "Image Size:"
-msgstr ""
-
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:82
-msgid "Image Alignment"
-msgstr ""
-
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:101
-msgid "Show Term Title"
-msgstr ""
-
-#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets.php:108
-msgid "Show Term Intro Text"
+#: ../includes/widgets/class-displayfeaturedimagegenesis-widgets-shortcodes.php:107
+msgid "Image Shortcodes"
 msgstr ""
 
 #: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:26
@@ -738,89 +862,77 @@ msgstr ""
 msgid "View My Blog Posts"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:170
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:230
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:232
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:222
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:341
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:252
 msgid "Title:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:175
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:227
 msgid ""
 "Select a user. The email address for this account will be used to pull the "
 "Gravatar image."
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:225
-msgid "Show the user's featured image."
-msgstr ""
-
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:241
-msgid "Image Alignment:"
-msgstr ""
-
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:260
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:276
 msgid "Show the user's gravatar."
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:267
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:283
 msgid "Gravatar Size:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:276
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:292
 msgid "Gravatar Alignment:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:299
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:315
 msgid "Text to use as the author description:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:303
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:319
 msgid "Author Bio (from profile)"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:304
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:320
 msgid "Custom Text (below)"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:312
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:328
 msgid "Custom Text Content"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:331
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:347
 msgid ""
 "Choose your extended \"About Me\" page from the list below. This will be the "
 "page linked to at the end of the author description."
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:339
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:355
 msgid "Extended page link text"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:346
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:362
 msgid "Show Author Archive Link?"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:353
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:369
 msgid "Link Text:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:383
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:399
 msgid "Small"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:384
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:400
 msgid "Medium"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:385
-msgid "Large"
-msgstr ""
-
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:386
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:402
 msgid "Extra Large"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:409
+#: ../includes/widgets/displayfeaturedimagegenesis-author-widget.php:425
 msgid " (no title)"
 msgstr ""
 
@@ -832,19 +944,23 @@ msgstr ""
 msgid "Display Featured Post Type Archive Image"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:265
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:63
+msgid "View Content Type Archive"
+msgstr ""
+
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:380
 msgid "Post Type:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:279
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:397
 msgid "Show Archive Title"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:286
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:404
 msgid "Show Archive Intro Text"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:322
+#: ../includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:440
 msgid "Posts"
 msgstr ""
 
@@ -856,10 +972,14 @@ msgstr ""
 msgid "Display Featured Term Image"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:282
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:65
+msgid "View Term Archive"
+msgstr ""
+
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:307
 msgid "Taxonomy:"
 msgstr ""
 
-#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:292
+#: ../includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:317
 msgid "Term:"
 msgstr ""

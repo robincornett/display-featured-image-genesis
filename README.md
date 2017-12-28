@@ -235,6 +235,10 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 ## Changelog
 
 ### 2.7.0
+* added: preferred image size (set to backstretch or large for the entire site)
+* added: setting to prefer fallback/large images per content type
+* added: setting on individual posts/pages to change the image size for each post
+* added: advanced settings for changing featured image hooks without code
 * added: shortcodes for outputting featured image widgets anywhere
 * added: optional media buttons to make shortcode creation easier
 * improved: widgets have been tidied up and refactored
