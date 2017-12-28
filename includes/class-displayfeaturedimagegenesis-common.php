@@ -376,10 +376,25 @@ class Display_Featured_Image_Genesis_Common {
 		 * whether get_post_type array should use large image instead of backstretch.
 		 * @uses is_in_array()
 		 */
-		if ( self::is_in_array( 'use_large_image' ) ) {
+		if ( self::is_in_array( 'use_large_image' ) || self::use_large_image_singular( $setting ) ) {
 			return 'large';
 		}
 
 		return apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
+	}
+
+	/**
+	 * Determine if a singular post/page should use a large image instead of backstretch.
+	 *
+	 * @param $setting
+	 *
+	 * @return bool
+	 */
+	protected static function use_large_image_singular( $setting ) {
+		if ( ! is_singular() ) {
+			return false;
+		}
+		$post_type = get_post_type();
+		return ( isset( $setting['large'][ $post_type ] ) && $setting['large'][ $post_type ] );
 	}
 }
