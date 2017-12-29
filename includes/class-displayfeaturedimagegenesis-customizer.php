@@ -63,29 +63,31 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 		$sections = array(
 			array(
 				'id'     => 'main',
-				'title'  => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
+				'title'  => __( 'Main', 'display-featured-image-genesis' ),
 				'fields' => $this->define_main_fields(),
 			),
 			array(
 				'id'     => 'backstretch',
-				'title'  => __( 'Display Settings', 'display-featured-image-genesis' ),
+				'title'  => __( 'Backstretch Output', 'display-featured-image-genesis' ),
 				'fields' => $this->define_style_fields(),
 			),
 			array(
-				'id'     => 'cpt',
-				'title'  => __( 'Sitewide Settings', 'display-featured-image-genesis' ),
-				'fields' => $this->define_cpt_fields(),
+				'id'          => 'cpt',
+				'title'       => __( 'Content Types', 'display-featured-image-genesis' ),
+				'fields'      => $this->define_cpt_fields(),
+				'description' => __( 'Optional: set a custom image for search results and 404 (no results found) pages, as well as content types.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'     => 'advanced',
-				'title'  => __( 'Advanced Plugin Settings', 'display-featured-image-genesis' ),
+				'title'  => __( 'Advanced', 'display-featured-image-genesis' ),
 				'fields' => $this->define_advanced_fields(),
 			),
 		);
 		foreach ( $sections as $section ) {
 			$wp_customize->add_section( $this->section . '_' . $section['id'], array(
-				'title' => $section['title'],
-				'panel' => $this->section,
+				'title'       => $section['title'],
+				'panel'       => $this->section,
+				'description' => isset( $section['description'] ) ? $section['description'] : '',
 			) );
 			$this->add_section_controls( $wp_customize, $section['fields'], $this->section . '_' . $section['id'] );
 		}
