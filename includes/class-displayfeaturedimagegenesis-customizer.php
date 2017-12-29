@@ -101,20 +101,45 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 * @since 2.6.0
 	 */
 	protected function do_image_setting( $wp_customize, $setting, $section = 'main' ) {
-		$this->add_setting( $wp_customize, $setting );
 		$image = 'default' === $setting['id'] ? $this->section . '[' . $setting['id'] . ']' : $this->section . '[post_type][' . $setting['id'] . ']';
 		$wp_customize->add_control(
 			new WP_Customize_Image_Control(
 				$wp_customize,
-				$this->section . '[' . $setting['id'] . ']',
+				$setting['id'],
 				array(
-					'label'       => $setting['title'],
-					'section'     => $section,
-					'settings'    => $image,
-					'description' => isset( $setting['label'] ) ? $setting['label'] : '',
+					'label'           => $setting['title'],
+					'section'         => $section,
+					'settings'        => $image,
+					'description'     => isset( $setting['label'] ) ? $setting['label'] : '',
+					'active_callback' => array( $this, 'check_post_type' ),
 				)
 			)
 		);
+	}
+
+	/**
+	 * Check whether an image control should show (content type images will
+	 * only show on their related content type).
+	 * @param $control \WP_Customize_Image_Control
+	 *
+	 * @return bool
+	 */
+	public function check_post_type( $control ) {
+		$always_show = array( 'default', 'fourohfour', 'search' );
+		if ( in_array( $control->id, $always_show, true ) ) {
+			return true;
+		}
+		$post_type = get_post_type();
+		if ( $post_type === $control->id ) {
+			if ( 'post' === $control->id ) {
+				$show_on_front = get_option( 'show_on_front' );
+				$posts_page    = get_option( 'page_for_posts' );
+				return 'page' === $show_on_front && $posts_page ? false : true;
+			}
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -130,11 +155,11 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 			if ( isset( $setting['skip'] ) && $setting['skip'] ) {
 				continue;
 			}
+			$this->add_setting( $wp_customize, $setting );
 			if ( 'image' === $setting['type'] ) {
 				$this->do_image_setting( $wp_customize, $setting, $section );
 				continue;
 			}
-			$this->add_setting( $wp_customize, $setting );
 			$wp_customize->add_control(
 				$this->section . '[' . $setting['id'] . ']',
 				array(
