@@ -283,6 +283,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 					'genesis_before_content'              => 'genesis_before_content',
 				),
 				'type'     => 'select',
+				'skip'     => true,
 			),
 			array(
 				'id'          => 'backstretch_priority',
@@ -294,6 +295,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'max'         => 100,
 				'description' => __( 'Default: 10', 'display-featured-image-genesis' ),
 				'type'        => 'number',
+				'skip'        => true,
 			),
 			array(
 				'id'          => 'large_hook',
@@ -303,6 +305,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'choices'     => $this->large_hook_options(),
 				'description' => __( 'Changing this hook only affects single post/page output, due to overlap/conflict with archive page output.', 'display-featured-image-genesis' ),
 				'type'        => 'select',
+				'skip'        => true,
 			),
 			array(
 				'id'          => 'large_priority',
@@ -314,6 +317,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'max'         => 100,
 				'description' => __( 'Default: 12', 'display-featured-image-genesis' ),
 				'type'        => 'number',
+				'skip'        => true,
 			),
 		);
 	}
