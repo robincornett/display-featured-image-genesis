@@ -172,8 +172,13 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 			$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
 		}
 
-		/* translators: the placeholder is the name of the featured image; eg. default, search, or the name of a content type. */
-		$message .= sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
+		if ( is_customize_preview() ) {
+			/* translators: the placeholder is the name of the featured image; eg. default, search, or the name of a content type. */
+			$message .= sprintf( __( ' The %s Featured Image must be changed to a valid, well sized image file.', 'display-featured-image-genesis' ), $label );
+		} else {
+			/* translators: the placeholder is the name of the featured image; eg. default, search, or the name of a content type. */
+			$message .= sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
+		}
 
 		return $message;
 	}
