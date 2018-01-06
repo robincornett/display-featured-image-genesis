@@ -11,6 +11,12 @@
 class Display_Featured_Image_Genesis_Post_Meta {
 
 	/**
+	 * ID for our new metabox.
+	 * @var string
+	 */
+	protected $metabox = 'displayfeaturedimagegenesis';
+
+	/**
 	 * Post meta key to disable buttons
 	 * @var string
 	 */
@@ -23,6 +29,41 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	protected $move = '_displayfeaturedimagegenesis_move';
 
 	/**
+	 * For Gutenberg, add a new metabox, since the thumbnail hooks are no longer present.
+	 * Should eventually be replaced with a block.
+	 *
+	 * @since 2.7.0
+	 * @param $post_type
+	 * @param $post
+	 */
+	public function add_metabox( $post_type, $post ) {
+		if ( ! post_type_supports( $post_type, 'thumbnail' ) ) {
+			return;
+		}
+		$classic_editor = filter_input( INPUT_GET, 'classic-editor', FILTER_VALIDATE_BOOLEAN );
+		if ( null !== $classic_editor ) {
+			return;
+		}
+		add_meta_box(
+			$this->metabox,
+			__( 'Display Featured Image', 'display-featured-image-genesis' ),
+			array( $this, 'do_metabox' ),
+			$post_type,
+			'side',
+			'low'
+		);
+	}
+
+	/**
+	 * Output the metabox.
+	 * @param $post
+	 * @param $args
+	 */
+	public function do_metabox( $post, $args ) {
+		echo $this->get_metabox_content( $post->ID );
+	}
+
+	/**
 	 * Build the metabox with the checkbox setting.
 	 * @since 2.5.0
 	 *
@@ -32,7 +73,17 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * @return string
 	 */
 	public function meta_box( $content, $post_id ) {
+		return $this->get_metabox_content( $post_id ) . $content;
+	}
 
+	/**
+	 * Get the metabox content/fields.
+	 *
+	 * @param $post_id
+	 *
+	 * @return string
+	 */
+	protected function get_metabox_content( $post_id ) {
 		$output = wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce', true, false );
 		$select = $this->get_select();
 		if ( $select ) {
@@ -47,7 +98,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 			}
 		}
 
-		return $output . $content;
+		return $output;
 	}
 
 	/**

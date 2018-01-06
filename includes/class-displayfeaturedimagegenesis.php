@@ -102,7 +102,7 @@ class Display_Featured_Image_Genesis {
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	function __construct( $admin, $author, $common, $customizer, $description, $helptabs, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
+	public function __construct( $admin, $author, $common, $customizer, $description, $helptabs, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
@@ -142,10 +142,13 @@ class Display_Featured_Image_Genesis {
 		add_action( 'widgets_init', array( $this->widgets, 'register_shortcodes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this->widgets, 'enqueue_scripts' ) );
 
-		// Taxonomies, Author, Post Meta
+		// Taxonomies, Authors
 		add_filter( 'displayfeaturedimagegenesis_get_taxonomies', array( $this->taxonomies, 'remove_post_status_terms' ) );
 		add_action( 'admin_init', array( $this->taxonomies, 'set_taxonomy_meta' ) );
 		add_action( 'admin_init', array( $this->author, 'set_author_meta' ) );
+
+		// Post Meta
+		add_action( 'add_meta_boxes', array( $this->post_meta, 'add_metabox' ), 10, 2 );
 		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ), 10, 2 );
 		add_action( 'save_post', array( $this->post_meta, 'save_meta' ) );
 
