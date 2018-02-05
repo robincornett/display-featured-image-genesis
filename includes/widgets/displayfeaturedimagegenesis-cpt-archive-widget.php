@@ -54,6 +54,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			'image_size'        => 'medium',
 			'show_title'        => 0,
 			'show_content'      => 0,
+			'custom_content'    => '',
 			'archive_link'      => 0,
 			'archive_link_text' => __( 'View Content Type Archive', 'display-featured-image-genesis' ),
 		);
@@ -262,6 +263,10 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			}
 		}
 
+		if ( 'custom' === $instance['show_content'] ) {
+			$intro_text = $instance['custom_content'];
+		}
+
 		return $intro_text;
 	}
 
@@ -345,7 +350,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		), 'genesis-widget-column-box-top' );
 
 		$form->do_boxes( array(
-			'words' => $this->get_text_fields(),
+			'words' => $form->get_text_fields(),
 		) );
 
 		$form->do_boxes( array(
@@ -371,28 +376,6 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 					'label'   => __( 'Post Type:', 'display-featured-image-genesis' ),
 					'flex'    => true,
 					'choices' => $this->get_post_types(),
-				),
-			),
-		);
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function get_text_fields() {
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_title',
-					'label' => __( 'Show Archive Title', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_content',
-					'label' => __( 'Show Archive Intro Text', 'display-featured-image-genesis' ),
 				),
 			),
 		);

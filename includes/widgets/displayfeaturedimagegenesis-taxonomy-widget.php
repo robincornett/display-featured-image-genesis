@@ -56,6 +56,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			'image_size'        => 'medium',
 			'show_title'        => 0,
 			'show_content'      => 0,
+			'custom_content'    => '',
 			'archive_link'      => 0,
 			'archive_link_text' => __( 'View Term Archive', 'display-featured-image-genesis' ),
 		);
@@ -168,6 +169,10 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $intro_text );
 		if ( ! $intro_text ) {
 			$intro_text = $term->description;
+		}
+
+		if ( 'custom' === $instance['show_content'] ) {
+			$intro_text = $instance['custom_content'];
 		}
 
 		echo wp_kses_post( wpautop( $intro_text ) );

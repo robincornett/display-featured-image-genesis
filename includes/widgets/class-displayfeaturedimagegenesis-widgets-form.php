@@ -128,19 +128,32 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	 * @return array
 	 */
 	public function get_text_fields() {
+		$label = 'featured-taxonomy' === $this->parent->id_base ? __( 'Term', 'display-featured-image-genesis' ) : __( 'Archive', 'display-featured-image-genesis' );
 		return array(
 			array(
 				'method' => 'checkbox',
 				'args'   => array(
 					'id'    => 'show_title',
-					'label' => __( 'Show Term Title', 'display-featured-image-genesis' ),
+					'label' => sprintf( __( 'Show %s Title', 'display-featured-image-genesis' ), $label ),
 				),
 			),
 			array(
-				'method' => 'checkbox',
+				'method' => 'select',
 				'args'   => array(
-					'id'    => 'show_content',
-					'label' => __( 'Show Term Intro Text', 'display-featured-image-genesis' ),
+					'id'      => 'show_content',
+					'label'   => sprintf( __( 'Show %s Intro Text', 'display-featured-image-genesis' ), $label ),
+					'choices' => array(
+						''       => __( 'None', 'display-featured-image-genesis' ),
+						1        => __( 'Intro Text', 'display-featured-image-genesis' ),
+						'custom' => __( 'Custom Text (below)', 'display-featured-image-genesis' ),
+					),
+				),
+			),
+			array(
+				'method' => 'textarea',
+				'args'   => array(
+					'id'    => 'custom_content',
+					'label' => __( 'Custom Intro Text', 'display-featured-image-genesis' ),
 				),
 			),
 		);
