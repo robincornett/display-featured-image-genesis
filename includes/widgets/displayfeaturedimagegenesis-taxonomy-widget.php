@@ -33,7 +33,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 		$control_ops = array(
 			'id_base' => 'featured-taxonomy',
-			'width'   => 505,
+			'width'   => 200,
 			'height'  => 350,
 		);
 
@@ -251,8 +251,6 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			'class' => 'widefat',
 		) );
 
-		echo '<div class="genesis-widget-column">';
-
 		$form->do_boxes( array(
 			'taxonomy' => $this->get_taxonomy_fields( $instance ),
 		), 'genesis-widget-column-box-top' );
@@ -261,9 +259,6 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			'words' => $form->get_text_fields(),
 		) );
 
-		echo '</div>';
-		echo '<div class="genesis-widget-column genesis-widget-column-right">';
-
 		$form->do_boxes( array(
 			'image' => $form->get_image_fields(),
 		), 'genesis-widget-column-box-top' );
@@ -271,8 +266,6 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		$form->do_boxes( array(
 			'archive' => $form->get_archive_fields(),
 		) );
-
-		echo '</div>';
 	}
 
 	/**

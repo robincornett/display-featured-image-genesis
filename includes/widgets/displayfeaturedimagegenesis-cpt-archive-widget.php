@@ -33,7 +33,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 		$control_ops = array(
 			'id_base' => 'featured-posttype',
-			'width'   => 505,
+			'width'   => 200,
 			'height'  => 350,
 		);
 
@@ -340,8 +340,6 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			'class' => 'widefat',
 		) );
 
-		echo '<div class="genesis-widget-column">';
-
 		$form->do_boxes( array(
 			'post_type' => $this->get_post_type_fields(),
 		), 'genesis-widget-column-box-top' );
@@ -350,18 +348,13 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			'words' => $this->get_text_fields(),
 		) );
 
-		echo '</div>';
-		echo '<div class="genesis-widget-column genesis-widget-column-right">';
-
 		$form->do_boxes( array(
 			'image' => $form->get_image_fields(),
-		), 'genesis-widget-column-box-top' );
+		) );
 
 		$form->do_boxes( array(
 			'archive' => $form->get_archive_fields(),
 		) );
-
-		echo '</div>';
 	}
 
 	/**
