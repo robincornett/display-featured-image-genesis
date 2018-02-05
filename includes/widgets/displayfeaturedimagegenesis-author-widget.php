@@ -12,11 +12,6 @@
 class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 	/**
-	 * @var $form_class \DisplayFeaturedImageGenesisWidgetsForm
-	 */
-	protected $form_class;
-
-	/**
 	 * Constructor. Set the default widget options and create widget.
 	 */
 	public function __construct() {
@@ -197,7 +192,8 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 * @return array
 	 */
 	public function get_fields( $new_instance ) {
-		$form = $this->get_form_class( $new_instance );
+		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $new_instance );
+
 		return array_merge(
 			$form->get_author_image_fields(),
 			$this->get_gravatar_fields(),
@@ -215,7 +211,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults() );
-		$form     = $this->get_form_class( $instance );
+		$form     = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
 		$form->do_text( $instance, array(
 			'id'    => 'title',
@@ -244,22 +240,6 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$form->do_boxes( array(
 			'archive' => $this->get_archive_fields(),
 		) );
-	}
-
-	/**
-	 * Get the plugin widget forms class.
-	 *
-	 * @param array $instance
-	 *
-	 * @return \DisplayFeaturedImageGenesisWidgetsForm
-	 */
-	protected function get_form_class( $instance = array() ) {
-		if ( isset( $this->form_class ) ) {
-			return $this->form_class;
-		}
-		$this->form_class = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
-
-		return $this->form_class;
 	}
 
 	/**

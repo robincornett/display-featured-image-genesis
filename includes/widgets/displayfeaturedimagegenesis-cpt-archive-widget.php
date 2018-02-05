@@ -19,11 +19,6 @@
 class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 	/**
-	 * @var $form_class \DisplayFeaturedImageGenesisWidgetsForm
-	 */
-	protected $form_class;
-
-	/**
 	 * Constructor. Set the default widget options and create widget.
 	 *
 	 * @since 2.0.0
@@ -310,10 +305,13 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 	/**
 	 * Get all widget fields.
+	 *
+	 * @param array $instance
+	 *
 	 * @return array
 	 */
 	public function get_fields( $instance = array() ) {
-		$form = $this->get_form_class( $instance );
+		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
 		return array_merge(
 			$this->get_post_type_fields(),
@@ -334,7 +332,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults() );
-		$form     = $this->get_form_class( $instance );
+		$form     = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
 		$form->do_text( $instance, array(
 			'id'    => 'title',
@@ -405,22 +403,6 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 				),
 			),
 		);
-	}
-
-	/**
-	 * Get the plugin widget forms class.
-	 *
-	 * @param array $instance
-	 *
-	 * @return \DisplayFeaturedImageGenesisWidgetsForm
-	 */
-	protected function get_form_class( $instance = array() ) {
-		if ( isset( $this->form_class ) ) {
-			return $this->form_class;
-		}
-		$this->form_class = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
-
-		return $this->form_class;
 	}
 
 	/**
