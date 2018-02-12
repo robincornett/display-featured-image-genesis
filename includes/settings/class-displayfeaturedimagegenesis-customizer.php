@@ -95,8 +95,8 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	}
 
 	/**
-	 * @param $wp_customize WP_Customize_Manager
-	 * @param $setting
+	 * @param        $wp_customize WP_Customize_Manager
+	 * @param        $setting
 	 *
 	 * @param string $section
 	 *
@@ -122,6 +122,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	/**
 	 * Check whether an image control should show (content type images will
 	 * only show on their related content type).
+	 *
 	 * @param $control \WP_Customize_Image_Control
 	 *
 	 * @return bool
@@ -136,8 +137,10 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 			if ( 'post' === $control->id ) {
 				$show_on_front = get_option( 'show_on_front' );
 				$posts_page    = get_option( 'page_for_posts' );
+
 				return 'page' === $show_on_front && $posts_page ? false : true;
 			}
+
 			return true;
 		}
 
@@ -183,32 +186,67 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 * @since 2.6.0
 	 */
 	protected function add_setting( $wp_customize, $setting ) {
-		$id                = $this->section . '[' . $setting['id'] . ']';
-		$validation        = $this->validation_class();
-		$default           = isset( $this->defaults[ $setting['id'] ] ) ? $this->defaults[ $setting['id'] ] : '';
-		$sanitize_callback = '';
-		if ( 'checkbox' === $setting['type'] ) {
-			$sanitize_callback = array( $validation, 'one_zero' );
-		} elseif ( 'number' === $setting['type'] ) {
-			$sanitize_callback = 'absint';
-		} elseif ( 'image' === $setting['type'] ) {
-			$sanitize_callback = array( $this, 'send_image_to_validator' );
-			if ( 'default' !== $setting['id'] ) {
-				$id = $this->section . '[post_type][' . $setting['id'] . ']';
-			}
-		} elseif ( isset( $setting['sanitize_callback'] ) && $setting['sanitize_callback'] ) {
-			$sanitize_callback = array( $this, $setting['sanitize_callback'] );
+		$id      = $this->section . '[' . $setting['id'] . ']';
+		$default = isset( $this->defaults[ $setting['id'] ] ) ? $this->defaults[ $setting['id'] ] : '';
+		if ( 'image' === $setting['type'] && 'default' !== $setting['id'] ) {
+			$id = $this->section . '[post_type][' . $setting['id'] . ']';
 		}
 		$wp_customize->add_setting(
 			$id,
 			array(
 				'capability'        => 'manage_options',
 				'default'           => $default,
-				'sanitize_callback' => $sanitize_callback,
+				'sanitize_callback' => $this->get_sanitize_callback( $setting['type'], $setting ),
 				'type'              => 'option',
 				'transport'         => isset( $setting['transport'] ) ? $setting['transport'] : 'refresh',
 			)
 		);
+	}
+
+	/**
+	 * Get the appropriate sanitization callback for each setting.
+	 * @param $type
+	 * @param $setting
+	 *
+	 * @return array|string
+	 */
+	protected function get_sanitize_callback( $type, $setting ) {
+		$validation = $this->validation_class();
+		switch ( $type ) {
+			case 'checkbox':
+				$function = array( $validation, 'one_zero' );
+				break;
+
+			case 'number':
+				$function = 'absint';
+				break;
+
+			case 'text':
+				$function = 'sanitize_text_field';
+				break;
+
+			case 'color':
+				$function = 'sanitize_hex_color';
+				break;
+
+			case 'radio':
+				$function = 'esc_attr';
+				break;
+
+			case 'image':
+				$function = array( $this, 'send_image_to_validator' );
+				break;
+
+			default:
+				$function = 'esc_attr';
+				break;
+		}
+
+		if ( isset( $setting['sanitize_callback'] ) && $setting['sanitize_callback'] ) {
+			$function = array( $this, $setting['sanitize_callback'] );
+		}
+
+		return $function;
 	}
 
 	/**
@@ -237,7 +275,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 		if ( isset( $this->validation ) ) {
 			return $this->validation;
 		}
-		include_once plugin_dir_path( __FILE__ ) . 'settings/class-displayfeaturedimagegenesis-settings-validate.php';
+		include_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-settings-validate.php';
 		$this->validation = new Display_Featured_Image_Genesis_Settings_Validate( array(), $this->setting );
 
 		return $this->validation;

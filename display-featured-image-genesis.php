@@ -38,7 +38,7 @@ function display_featured_image_genesis_require() {
 		'class-displayfeaturedimagegenesis-admin',
 		'class-displayfeaturedimagegenesis-author',
 		'class-displayfeaturedimagegenesis-common',
-		'class-displayfeaturedimagegenesis-customizer',
+		'settings/class-displayfeaturedimagegenesis-customizer',
 		'class-displayfeaturedimagegenesis-description',
 		'settings/class-displayfeaturedimagegenesis-helptabs',
 		'class-displayfeaturedimagegenesis-output',
