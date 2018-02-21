@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 2.7.0beta
+Stable tag: 2.7.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -194,6 +194,8 @@ This will follow the settings you choose in the Genesis Theme Settings.
 * added: advanced settings for changing featured image hooks without code
 * added: shortcodes for outputting featured image widgets anywhere
 * added: optional media buttons to make shortcode creation easier
+* added: optional custom text for content type, term widgets
+* added: optional link to term archive on widget
 * improved: widgets have been tidied up and refactored
 * improved: settings pages have been tidied up and refactored
 * changed: new minimum WP version is 4.4

@@ -241,6 +241,8 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 * added: advanced settings for changing featured image hooks without code
 * added: shortcodes for outputting featured image widgets anywhere
 * added: optional media buttons to make shortcode creation easier
+* added: optional custom text for content type, term widgets
+* added: optional link to term archive on widget
 * improved: widgets have been tidied up and refactored
 * improved: settings pages have been tidied up and refactored
 * changed: new minimum WP version is 4.4
