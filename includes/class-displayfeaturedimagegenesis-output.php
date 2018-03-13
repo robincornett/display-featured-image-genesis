@@ -268,7 +268,7 @@ class Display_Featured_Image_Genesis_Output {
 		$attr['alt']   = $this->get_image_alt_text( $image_id );
 		$image_size    = apply_filters( 'display_featured_image_large_image_size', Display_Featured_Image_Genesis_Common::image_size() );
 		$image         = wp_get_attachment_image( $image_id, $image_size, false, $attr );
-		$image         = apply_filters( 'display_featured_image_genesis_large_image_output', $image );
+		$image         = apply_filters( 'display_featured_image_genesis_large_image_output', $image, $image_id );
 		echo wp_kses_post( $image );
 	}
 
