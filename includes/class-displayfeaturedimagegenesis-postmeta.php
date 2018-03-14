@@ -42,6 +42,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * Should eventually be replaced with a block.
 	 *
 	 * @since 2.7.0
+	 *
 	 * @param $post_type
 	 * @param $post
 	 */
@@ -61,6 +62,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 
 	/**
 	 * Output the metabox.
+	 *
 	 * @param $post
 	 * @param $args
 	 */
@@ -128,16 +130,20 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * @return array
 	 */
 	protected function get_select() {
+		$options     = array(
+			0 => __( 'Content type default', 'display-featured-image-genesis' ),
+			1 => __( 'Don\'t display the featured image', 'display-featured-image-genesis' ),
+		);
+		$image_sizes = apply_filters( 'displayfeaturedimagegenesis_image_size_choices', array(
+			'displayfeaturedimage_backstretch' => __( 'Use a backstretch image if it exists', 'display-featured-image-genesis' ),
+			'large'                            => __( 'Use a large (not backstretch) image', 'display-featured-image-genesis' ),
+		) );
+
 		return array(
 			array(
 				'setting' => $this->disable,
 				'label'   => __( 'Featured Image Size:', 'display-featured-image-genesis' ),
-				'options' => array(
-					0                                  => __( 'Content type default', 'display-featured-image-genesis' ),
-					1                                  => __( 'Don\'t display the featured image', 'display-featured-image-genesis' ),
-					'displayfeaturedimage_backstretch' => __( 'Use a backstretch image if it exists', 'display-featured-image-genesis' ),
-					'large'                            => __( 'Use a large (not backstretch) image', 'display-featured-image-genesis' ),
-				),
+				'options' => array_merge( $options, $image_sizes ),
 			),
 		);
 	}
