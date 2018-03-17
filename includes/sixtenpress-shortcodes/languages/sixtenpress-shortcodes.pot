@@ -1,4 +1,4 @@
-# Copyright (C) 2017 A drop in class for adding shortcode buttons to the editor.
+# Copyright (C) 2018 A drop in class for adding shortcode buttons to the editor.
 # This file is distributed under the same license as the A drop in class for adding shortcode buttons to the editor. package.
 msgid ""
 msgstr ""

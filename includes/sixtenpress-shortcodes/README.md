@@ -102,6 +102,9 @@ If an image ID is required, Six/Ten Press image fields in a group will work, as 
 
 ### Changelog
 
+#### 0.3.8
+* fixed: content now copies to editor with formatting
+
 #### 0.3.7
 * removed: document ready from JS
 

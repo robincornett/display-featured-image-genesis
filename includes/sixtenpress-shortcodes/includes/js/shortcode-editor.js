@@ -218,7 +218,7 @@
 		if ( ! content ) {
 			var editor = $id.find( "textarea[id*='" + slug + "']" ).attr( 'id' );
 			if ( editor !== 'undefined' && editor.length ) {
-				content = tinymce.get( editor ).getContent( {format: 'text'} );
+				content = tinymce.get( editor ).getContent( {format: 'raw'} );
 			}
 		}
 		return content;
