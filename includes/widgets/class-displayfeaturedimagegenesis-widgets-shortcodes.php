@@ -13,12 +13,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @return string
 	 */
 	public function shortcode_author( $atts ) {
-		$class    = 'Display_Featured_Image_Genesis_Author_Widget';
-		$defaults = $this->get_defaults( $class );
-		$atts     = shortcode_atts( $defaults, $atts, 'displayfeaturedimagegenesis_author' );
-		$atts     = $this->validate_shortcode( $atts, $class );
-
-		return $this->do_shortcode( $atts, $class );
+		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_author', 'Display_Featured_Image_Genesis_Author_Widget' );
 	}
 
 	/**
@@ -29,12 +24,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @return string
 	 */
 	public function shortcode_post_type( $atts ) {
-		$class    = 'Display_Featured_Image_Genesis_Widget_CPT';
-		$defaults = $this->get_defaults( $class );
-		$atts     = shortcode_atts( $defaults, $atts, 'displayfeaturedimagegenesis_post_type' );
-		$atts     = $this->validate_shortcode( $atts, $class );
-
-		return $this->do_shortcode( $atts, $class );
+		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_post_type', 'Display_Featured_Image_Genesis_Widget_CPT' );
 	}
 
 	/**
@@ -45,21 +35,24 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @return string
 	 */
 	public function shortcode_term( $atts ) {
-		$class    = 'Display_Featured_Image_Genesis_Widget_Taxonomy';
-		$defaults = $this->get_defaults( $class );
-		$atts     = shortcode_atts( $defaults, $atts, 'displayfeaturedimagegenesis_term' );
-		$atts     = $this->validate_shortcode( $atts, $class );
-
-		return $this->do_shortcode( $atts, $class );
+		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_term', 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
 	}
 
 	/**
+	 * Helper function to build and return the shortcode.
 	 *
+	 * @param $atts
 	 * @param $shortcode
+	 * @param $class
 	 *
 	 * @return string
 	 */
+	protected function build_shortcode( $atts, $shortcode, $class ) {
+		$defaults = $this->get_defaults( $class );
+		$atts     = shortcode_atts( $defaults, $atts, $shortcode );
+		$atts     = $this->validate_shortcode( $atts, $class );
 
+		return $this->do_shortcode( $atts, $class );
 	}
 
 	/**
