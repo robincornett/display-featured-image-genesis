@@ -195,10 +195,10 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $new_instance );
 
 		return array_merge(
-			$form->get_author_image_fields(),
-			$this->get_gravatar_fields(),
-			$this->get_description_fields(),
-			$this->get_archive_fields()
+			include 'fields/author-image.php',
+			include 'fields/author-gravatar.php',
+			include 'fields/author-description.php',
+			include 'fields/author-archive.php'
 		);
 	}
 
@@ -226,130 +226,20 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		) );
 
 		$form->do_boxes( array(
-			'author' => $form->get_author_image_fields(),
+			'author' => include 'fields/author-image.php',
 		), 'genesis-widget-column-box-top' );
 
 		$form->do_boxes( array(
-			'gravatar' => $this->get_gravatar_fields(),
+			'gravatar' => include 'fields/author-gravatar.php',
 		) );
 
 		$form->do_boxes( array(
-			'description' => $this->get_description_fields(),
+			'description' => include 'fields/author-description.php',
 		) );
 
 		$form->do_boxes( array(
-			'archive' => $this->get_archive_fields(),
+			'archive' => include 'fields/author-archive.php',
 		) );
-	}
-
-	/**
-	 * Get the gravatar fields.
-	 *
-	 * @return array
-	 */
-	protected function get_gravatar_fields() {
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_gravatar',
-					'label' => __( 'Show the user\'s gravatar.', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'size',
-					'label'   => __( 'Gravatar Size:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $this->get_gravatar_sizes(),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'gravatar_alignment',
-					'label'   => __( 'Gravatar Alignment:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => array(
-						''      => __( 'None', 'display-featured-image-genesis' ),
-						'left'  => __( 'Left', 'display-featured-image-genesis' ),
-						'right' => __( 'Right', 'display-featured-image-genesis' ),
-					),
-				),
-			),
-		);
-	}
-
-	/**
-	 * Get the author description fields.
-	 *
-	 * @return array
-	 */
-	protected function get_description_fields() {
-		return array(
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'author_info',
-					'label'   => __( 'Text to use as the author description:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => array(
-						''     => __( 'None', 'display-featured-image-genesis' ),
-						'bio'  => __( 'Author Bio (from profile)', 'display-featured-image-genesis' ),
-						'text' => __( 'Custom Text (below)', 'display-featured-image-genesis' ),
-					),
-				),
-			),
-			array(
-				'method' => 'textarea',
-				'args'   => array(
-					'id'    => 'bio_text',
-					'label' => __( 'Custom Text Content', 'display-featured-image-genesis' ),
-					'flex'  => true,
-					'rows'  => 6,
-				),
-			),
-		);
-	}
-
-	/**
-	 * Get the archive fields.
-	 *
-	 * @return array
-	 */
-	protected function get_archive_fields() {
-		return array(
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'page',
-					'label'   => __( 'Choose your extended "About Me" page from the list below. This will be the page linked to at the end of the author description.', 'display-featured-image-genesis' ),
-					'choices' => $this->get_pages(),
-				),
-			),
-			array(
-				'method' => 'text',
-				'args'   => array(
-					'id'    => 'page_link_text',
-					'label' => __( 'Extended page link text', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'posts_link',
-					'label' => __( 'Show Author Archive Link?', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'text',
-				'args'   => array(
-					'id'    => 'link_text',
-					'label' => __( 'Link Text:', 'display-featured-image-genesis' ),
-				),
-			),
-		);
 	}
 
 	/**

@@ -29,7 +29,7 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	/**
 	 * @return array
 	 */
-	protected function get_image_size() {
+	public function get_image_size() {
 		$sizes   = genesis_get_image_sizes();
 		$options = array();
 		foreach ( (array) $sizes as $name => $size ) {
@@ -42,144 +42,12 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	/**
 	 * @return array
 	 */
-	protected function get_image_alignment() {
+	public function get_image_alignment() {
 		return array(
 			'alignnone'   => __( 'None', 'display-featured-image-genesis' ),
 			'alignleft'   => __( 'Left', 'display-featured-image-genesis' ),
 			'alignright'  => __( 'Right', 'display-featured-image-genesis' ),
 			'aligncenter' => __( 'Center', 'display-featured-image-genesis' ),
-		);
-	}
-
-
-	/**
-	 * Get image fields (used in CPT and term).
-	 *
-	 * @return array
-	 */
-	public function get_image_fields() {
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_image',
-					'label' => __( 'Show Featured Image', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'image_size',
-					'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $this->get_image_size(),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'image_alignment',
-					'label'   => __( 'Image Alignment', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $this->get_image_alignment(),
-				),
-			),
-		);
-	}
-
-	/**
-	 * Get the image fields for the author widget.
-	 *
-	 * @return array
-	 */
-	public function get_author_image_fields() {
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_featured_image',
-					'label' => __( 'Show the user\'s featured image.', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'featured_image_size',
-					'label'   => __( 'Image Size:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $this->get_image_size(),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'featured_image_alignment',
-					'label'   => __( 'Image Alignment:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $this->get_image_alignment(),
-				),
-			),
-		);
-	}
-
-	/**
-	 * Get the text fields (used in CPT and term).
-	 *
-	 * @return array
-	 */
-	public function get_text_fields() {
-		$label = 'featured-taxonomy' === $this->parent->id_base ? __( 'Term', 'display-featured-image-genesis' ) : __( 'Archive', 'display-featured-image-genesis' );
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'show_title',
-					'label' => sprintf( __( 'Show %s Title', 'display-featured-image-genesis' ), $label ),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'show_content',
-					'label'   => sprintf( __( 'Show %s Intro Text', 'display-featured-image-genesis' ), $label ),
-					'choices' => array(
-						''       => __( 'None', 'display-featured-image-genesis' ),
-						1        => __( 'Intro Text', 'display-featured-image-genesis' ),
-						'custom' => __( 'Custom Text (below)', 'display-featured-image-genesis' ),
-					),
-				),
-			),
-			array(
-				'method' => 'textarea',
-				'args'   => array(
-					'id'    => 'custom_content',
-					'label' => __( 'Custom Intro Text', 'display-featured-image-genesis' ),
-				),
-			),
-		);
-	}
-
-	/**
-	 * Get the archive fields (used in term and CPT widgets).
-	 *
-	 * @return array
-	 */
-	public function get_archive_fields() {
-		return array(
-			array(
-				'method' => 'checkbox',
-				'args'   => array(
-					'id'    => 'archive_link',
-					'label' => __( 'Show Archive Link', 'display-featured-image-genesis' ),
-				),
-			),
-			array(
-				'method' => 'text',
-				'args'   => array(
-					'id'    => 'archive_link_text',
-					'label' => __( 'Archive Link Text', 'display-featured-image-genesis' ),
-				),
-			),
 		);
 	}
 
@@ -223,10 +91,8 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	 */
 	public function do_fields( $instance, $fields ) {
 		foreach ( $fields as $field ) {
-			$method = "do_{$field['method']}";
-			if ( method_exists( $this, $method ) ) {
-				$this->$method( $instance, $field['args'] );
-			}
+			$args = $field['args'];
+			include $this->path( $field['method'] );
 		}
 	}
 
@@ -248,36 +114,6 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	 */
 	public function do_select( $instance, $args ) {
 		include $this->path( 'select' );
-	}
-
-	/**
-	 * Generic function to build a number input.
-	 *
-	 * @param $instance
-	 * @param $args
-	 */
-	public function do_number( $instance, $args ) {
-		include $this->path( 'number' );
-	}
-
-	/**
-	 * Generic function to build a checkbox input.
-	 *
-	 * @param $instance
-	 * @param $args
-	 */
-	public function do_checkbox( $instance, $args ) {
-		include $this->path( 'checkbox' );
-	}
-
-	/**
-	 * Generic function to build a textarea input
-	 *
-	 * @param $instance
-	 * @param $args
-	 */
-	public function do_textarea( $instance, $args ) {
-		include $this->path( 'textarea' );
 	}
 
 	/**

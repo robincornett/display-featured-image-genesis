@@ -319,10 +319,10 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
 		return array_merge(
-			$this->get_post_type_fields(),
-			$form->get_text_fields(),
-			$form->get_image_fields(),
-			$form->get_archive_fields()
+			include 'fields/cpt-post_type.php',
+			include 'fields/text.php',
+			include 'fields/image.php',
+			include 'fields/archive.php'
 		);
 	}
 
@@ -346,39 +346,21 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		) );
 
 		$form->do_boxes( array(
-			'post_type' => $this->get_post_type_fields(),
+			'post_type' => include 'fields/cpt-post_type.php',
 		), 'genesis-widget-column-box-top' );
 
+		$label = __( 'Archive', 'display-featured-image-genesis' );
 		$form->do_boxes( array(
-			'words' => $form->get_text_fields(),
+			'words' => include 'fields/text.php',
 		) );
 
 		$form->do_boxes( array(
-			'image' => $form->get_image_fields(),
+			'image' => include 'fields/image.php',
 		) );
 
 		$form->do_boxes( array(
-			'archive' => $form->get_archive_fields(),
+			'archive' => include 'fields/archive.php',
 		) );
-	}
-
-	/**
-	 * Get the post type fields.
-	 *
-	 * @return array
-	 */
-	protected function get_post_type_fields() {
-		return array(
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'post_type',
-					'label'   => __( 'Post Type:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $this->get_post_types(),
-				),
-			),
-		);
 	}
 
 	/**

@@ -228,10 +228,10 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
 		return array_merge(
-			$form->get_text_fields(),
-			$this->get_taxonomy_fields( $instance ),
-			$form->get_image_fields(),
-			$form->get_archive_fields()
+			include 'fields/text.php',
+			include 'fields/term-taxonomy.php',
+			include 'fields/image.php',
+			include 'fields/archive.php'
 		);
 	}
 
@@ -257,49 +257,21 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		) );
 
 		$form->do_boxes( array(
-			'taxonomy' => $this->get_taxonomy_fields( $instance ),
+			'taxonomy' => include 'fields/term-taxonomy.php',
 		), 'genesis-widget-column-box-top' );
 
+		$label = __( 'Term', 'display-featured-image-genesis' );
 		$form->do_boxes( array(
-			'words' => $form->get_text_fields(),
+			'words' => include 'fields/text.php',
 		) );
 
 		$form->do_boxes( array(
-			'image' => $form->get_image_fields(),
+			'image' => include 'fields/image.php',
 		), 'genesis-widget-column-box-top' );
 
 		$form->do_boxes( array(
-			'archive' => $form->get_archive_fields(),
+			'archive' => include 'fields/archive.php',
 		) );
-	}
-
-	/**
-	 * @param $instance
-	 *
-	 * @return array
-	 */
-	protected function get_taxonomy_fields( $instance ) {
-		return array(
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'       => 'taxonomy',
-					'label'    => __( 'Taxonomy:', 'display-featured-image-genesis' ),
-					'flex'     => true,
-					'onchange' => sprintf( 'term_postback(\'%s\', this.value );', esc_attr( $this->get_field_id( 'term' ) ) ),
-					'choices'  => $this->get_taxonomies(),
-				),
-			),
-			array(
-				'method' => 'select',
-				'args'   => array(
-					'id'      => 'term',
-					'label'   => __( 'Term:', 'display-featured-image-genesis' ),
-					'flex'    => true,
-					'choices' => $this->get_term_lists( $instance, false ),
-				),
-			),
-		);
 	}
 
 	/**
