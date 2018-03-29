@@ -40,12 +40,11 @@ class DisplayFeaturedImageGenesisWidgets {
 		if ( ! $setting['shortcodes'] ) {
 			return;
 		}
-		add_filter( 'sixtenpress_shortcode_inline_css', array( $shortcode_class, 'inline_css' ) );
-		add_action( 'sixtenpress_shortcode_init', array( $shortcode_class, 'shortcode_buttons' ) );
-		add_action( 'sixtenpress_shortcode_modal', array( $shortcode_class, 'do_modal' ) );
-		add_action( 'sixtenpress_shortcode_before_media_button', array( $shortcode_class, 'button_open' ) );
-		add_action( 'sixtenpress_shortcode_after_media_button', array( $shortcode_class, 'button_close' ) );
-		add_action( 'admin_enqueue_scripts', array( $shortcode_class, 'inline_script' ), 1000 );
+		require_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-widgets-shortcodes-editor.php';
+		$editor = new DisplayFeaturedImageGenesisWidgetsShortcodesEditor();
+		add_filter( 'sixtenpress_shortcode_inline_css', array( $editor, 'inline_css' ) );
+		add_action( 'sixtenpress_shortcode_init', array( $editor, 'shortcode_buttons' ) );
+		add_action( 'sixtenpress_shortcode_modal', array( $editor, 'do_modal' ) );
 	}
 
 	/**
