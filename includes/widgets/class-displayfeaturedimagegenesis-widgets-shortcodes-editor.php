@@ -38,7 +38,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodesEditor {
 	 */
 	public function enqueue_scripts() {
 		$screen = get_current_screen();
-		if ( 'post' !== $screen->id ) {
+		if ( 'post' !== $screen->base ) {
 			return;
 		}
 		wp_enqueue_script( 'widget_selector' );
@@ -79,9 +79,9 @@ class DisplayFeaturedImageGenesisWidgetsShortcodesEditor {
 	 */
 	public function inline_css( $css ) {
 		return $css . '.displayfeaturedimage-wrapper { display: inline-block; position: relative; }
-		.displayfeaturedimage-wrapper .displayfeaturedimage-buttons-wrap { display: none; width: 200px; position: absolute; z-index: 100; left: 50%; margin-left: -100px; }
-		.displayfeaturedimage-wrapper .displayfeaturedimage-buttons-wrap .button { width: 100%; }
-		.displayfeaturedimagegenesis_term .media-modal-content, .displayfeaturedimagegenesis_post_type .media-modal-content {max-width: 500px;max-height:475px;}
+		.displayfeaturedimage-buttons-wrap { display: none; width: 200px; position: absolute; z-index: 100; left: 50%; margin-left: -100px; }
+		.displayfeaturedimage-buttons-wrap .button { width: 100%; }
+		.displayfeaturedimagegenesis_term .media-modal-content, .displayfeaturedimagegenesis_post_type .media-modal-content {max-width: 500px;}
 		.displayfeaturedimagegenesis_author .media-modal-content {max-width: 400px;}';
 	}
 
