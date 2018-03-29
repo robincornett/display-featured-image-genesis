@@ -95,7 +95,8 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		}
 		$image_id = get_the_author_meta( 'displayfeaturedimagegenesis', $instance['user'] );
 		echo wp_get_attachment_image( $image_id, $instance['featured_image_size'], false, array(
-			'alt' => get_the_author_meta( 'display_name', $instance['user'] ),
+			'alt'   => get_the_author_meta( 'display_name', $instance['user'] ),
+			'class' => $instance['featured_image_alignment'],
 		) );
 	}
 
