@@ -108,21 +108,16 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 * @return string
 	 */
 	protected function get_gravatar( $instance ) {
-		$text = '';
 		if ( ! $instance['show_gravatar'] ) {
-			return $text;
-		}
-		if ( ! empty( $instance['gravatar_alignment'] ) ) {
-			$text .= '<span class="align' . esc_attr( $instance['gravatar_alignment'] ) . '">';
+			return '';
 		}
 
-		$text .= get_avatar( $instance['user'], $instance['size'] );
-
-		if ( ! empty( $instance['gravatar_alignment'] ) ) {
-			$text .= '</span>';
+		$gravatar = get_avatar( $instance['user'], $instance['size'] );
+		if ( empty( $instance['gravatar_alignment'] ) ) {
+			return $gravatar;
 		}
 
-		return $text;
+		return '<span class="align' . esc_attr( $instance['gravatar_alignment'] ) . '">' . $gravatar . '</span>';
 	}
 
 	/**
