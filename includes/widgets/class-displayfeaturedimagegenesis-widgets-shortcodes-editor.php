@@ -49,8 +49,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodesEditor {
 		if ( ! wp_script_is( 'sixtenpress-shortcode-editor', 'enqueued' ) ) {
 			return;
 		}
-		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( 'displayfeaturedimagegenesis-editor', plugin_dir_url( dirname( __FILE__ ) ) . "js/editor{$minify}.js", array( 'sixtenpress-shortcode-editor' ), '0.1.0beta', true );
+		wp_enqueue_script( 'displayfeaturedimagegenesis-editor', plugin_dir_url( dirname( __FILE__ ) ) . 'js/editor.js', array( 'sixtenpress-shortcode-editor' ), '0.1.0beta', true );
 		wp_localize_script( 'displayfeaturedimagegenesis-editor', 'DisplayFeaturedImageVar', array(
 			'text' => __( 'Image Shortcodes', 'display-featured-image-genesis' ),
 		) );
