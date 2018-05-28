@@ -61,23 +61,40 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 
 == Frequently Asked Questions ==
 
-= What is term metadata and why does it matter to me? =
-
-*Update for version 2.5:* Genesis 2.3, when it is released, will change how term archive headlines/descriptions will be pulled from the database. __Display Featured Image for Genesis__ has been using the old, inefficient method for getting the Genesis term information, which will no longer be supported in Genesis 2.3. Version 2.5 will use the new, better method to retrieve the Genesis term metadata (for archive headlines and intro text). Please make sure that your plugin is up to date so that you do not get unexpected behavior. (see [StudioPress](http://www.studiopress.com/important-announcement-for-genesis-plugin-developers/) for more information)
-
-Term metadata is a new feature introduced in WordPress 4.4, which allows us to add custom data to each term (categories, tags, etc.) on a site. Version 2.4 of __Display Featured Image for Genesis__ will use the new term metadata.
-
-If you have been using __Display Featured Image for Genesis__ and have already added featured images to your terms, when you visit the main plugin settings page, you'll be prompted to allow the plugin to update all terms with featured images, or given the information to allow you to do it yourself. This _should_ be a simple, pain-free process, but make sure your database is backed up, and please check your terms after the update.
-
-If you have not yet updated your site to WordPress 4.4, fear not: for the time being, __Display Featured Image for Genesis__ will still work just as it has in the past. A future release of the plugin will require a minimum version of WordPress to properly support term images.
-
 = Does this work with any Genesis child theme? =
 
 Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout, the output may be unexpected, and require some tweaking. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
 
+= Can I add a Display Featured Image widget to my post or page content? =
+
+Yes. As of version 3.0.0, shortcodes for each widget have been added to the plugin. Shortcodes include:
+
+* displayfeaturedimagegenesis_author
+* displayfeaturedimagegenesis_term
+* displayfeaturedimagegenesis_post_type
+
+The parameters/attributes for these mirror the widget options, so you can explore the code (or inspect the widget form) to find the shortcode attributes.
+
+Alternatively, the much easier method entails visiting the settings page (under Appearance) and enabling the shortcode buttons for the post editor. With the shortcode buttons enabled, you can use the familiar widget form to build the shortcode and add it anywhere you like.
+
+= What is term metadata and why does it matter to me? =
+
+*Update for version 2.5:* Genesis 2.3 changed  how term archive headlines/descriptions are pulled from the database. As of version 2.5, __Display Featured Image for Genesis__ uses the new, better method to retrieve the Genesis term metadata (for archive headlines and intro text). Please make sure that your plugin is up to date so that you do not get unexpected behavior. (see [StudioPress](http://www.studiopress.com/important-announcement-for-genesis-plugin-developers/) for more information)
+
+Term metadata is a new feature which was introduced in WordPress 4.4, which allows us to add custom data to each term (categories, tags, etc.) on a site. Version 2.4 of __Display Featured Image for Genesis__ will use the new term metadata.
+
+If you have been using __Display Featured Image for Genesis__ and have already added featured images to your terms, when you visit the main plugin settings page, you'll be prompted to allow the plugin to update all terms with featured images, or given the information to allow you to do it yourself. This _should_ be a simple, pain-free process, but make sure your database is backed up, and please check your terms after the update.
+
 = How can I change how the plugin works? =
 
-*Update for version 2.5:* quite a few new settings have been added to the plugin, some of which make options available which were previously limited to these filters.
+Check the settings page before digging into filters. As of version 3.0.0, most questions/support requests have been implemented as options on the settings pages, including:
+
+* setting a sitewide preferred image size
+* setting a preferred image size per content/post type
+* setting preferred fallback images for content types, search results, and 404 pages
+* changing the default hooks/priorities the plugin uses for image output
+
+Additionally, some of these can be overridden on any individual post, page, or content type, which can be set to use the default image size, not show a featured image at all, or force a large/backstretch image for that post only.
 
 There are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a later one.
 
@@ -131,13 +148,19 @@ If you're needing to have a little more control than just specifying which post 
 		return $disable;
 	}
 
+= If a post does not have a featured image of its own, can the term, post type, or default featured image show in the archives? =
+
+Please see the plugin settings page. If you were using the old method (`display_featured_image_genesis_add_archive_thumbnails`) to do this, the plugin will attempt to remove that from your output, but you may want to double check your archives.
+
+This will follow the settings you choose in the Genesis Theme Settings.
+
 = The backstretch image takes up too much room on the screen. =
 
 If you do not want the height of the backstretch image to be quite the height of the user's browser window, which is the standard, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter the window will be calculated to be. Feel free to experiment, as no images are harmed by changing this number.
 
 _Note:_ __Display Featured Image for Genesis__ determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window, which is partly why you cannot set this to more than 400.
 
-If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet:
+If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet, or the additional CSS panel in the Customizer:
 
 	.big-leader {
 		max-height: 700px;
@@ -152,8 +175,9 @@ If you need to control the size of the backstretch Featured Image output with mo
 
 _Note:_ if your theme has CSS like this in it already, and you change the Maximum Height setting, it will (most likely) override your theme's styling, due to the order in which stylesheets load.
 
-
 = My (large) Featured Image is above my post/page title, and I want it to show below it instead. =
+
+As of version 3.0.0, you can change the hook/location of the large featured image without code by going to Appearance > Display Featured Image for Genesis, and then the Advanced tab.
 
 There is a filter for this, too. By default, the large (as opposed to backstretch) image is added before the Genesis loop, which places it above your post or page title. You can add this filter to your theme's functions.php file to move the image below your post/page title:
 
@@ -169,12 +193,6 @@ Similar hooks:
 * `display_featured_image_genesis_move_large_image_priority`: change the priority of the large featured image output
 * `display_featured_image_move_backstretch_image`: change the hook of the backstretch featured image output
 * `display_featured_image_move_backstretch_image_priority`: change the priority of the backstretch featured image output
-
-= If a post does not have a featured image of its own, can the term, post type, or default featured image show in the archives? =
-
-Yes! This is a new setting, added in version 2.5. Please see the plugin settings page. If you were using the old method (`display_featured_image_genesis_add_archive_thumbnails`) to do this, the plugin will attempt to remove that from your output, but you may want to double check your archives.
-
-This will follow the settings you choose in the Genesis Theme Settings.
 
 == Screenshots ==
 1. Screenshot of a page using the Backstretch Featured Image
