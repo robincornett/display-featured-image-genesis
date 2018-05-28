@@ -233,7 +233,6 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			return '';
 		}
 
-		$id = displayfeaturedimagegenesis_check_image_id( $id );
 		/* translators: the placeholder refers to which featured image */
 		$alt_text = sprintf( __( '%s featured image', 'display-featured-image-genesis' ), esc_attr( $alt ) );
 		$preview  = wp_get_attachment_image_src( (int) $id, 'medium' );
@@ -250,7 +249,6 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @since 2.3.0
 	 */
 	public function render_buttons( $id, $name ) {
-		$id = displayfeaturedimagegenesis_check_image_id( $id );
 		$id = $id ? (int) $id : '';
 		printf( '<input type="hidden" class="upload_image_id" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
 		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',

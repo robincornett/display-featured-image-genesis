@@ -202,7 +202,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			}
 			$image_id = $postspage_image;
 		} elseif ( isset( $option['post_type'][ $post_type->name ] ) && $option['post_type'][ $post_type->name ] ) {
-			$image_id = displayfeaturedimagegenesis_check_image_id( $option['post_type'][ $post_type->name ] );
+			$image_id = $option['post_type'][ $post_type->name ];
 		}
 
 		return $image_id;

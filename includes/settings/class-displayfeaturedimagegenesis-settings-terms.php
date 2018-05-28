@@ -114,7 +114,7 @@ class Display_Featured_Image_Genesis_Settings_Terms {
 				$option  = get_option( esc_attr( $option_key ), false );
 				$term    = get_term( (int) $term_id );
 				if ( ! is_wp_error( $term ) && ! is_null( $term ) ) {
-					$image_id = (int) displayfeaturedimagegenesis_check_image_id( $option['term_image'] );
+					$image_id = (int) $option['term_image'];
 					update_term_meta( $term_id, 'displayfeaturedimagegenesis', $image_id );
 				}
 				if ( false !== $option ) {

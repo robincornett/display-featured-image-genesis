@@ -23,7 +23,7 @@ function displayfeaturedimagegenesis_get_term_image( $term_id, $image_id = '' ) 
 	if ( ! $image_id ) {
 		$term_meta = get_option( "displayfeaturedimagegenesis_{$term_id}" );
 		if ( $term_meta ) {
-			$image_id = displayfeaturedimagegenesis_check_image_id( $term_meta['term_image'] );
+			$image_id = $term_meta['term_image'];
 		}
 	}
 	return $image_id;
@@ -88,10 +88,8 @@ function display_featured_image_genesis_get_term_image_url( $size = 'displayfeat
 function display_featured_image_genesis_get_default_image_id( $image_id = '' ) {
 
 	$displaysetting = displayfeaturedimagegenesis_get_setting();
-	$image_id       = displayfeaturedimagegenesis_check_image_id( $displaysetting['default'] );
 
-	return (int) $image_id;
-
+	return (int) $displaysetting['default'];
 }
 
 /**
@@ -136,7 +134,7 @@ function display_featured_image_genesis_get_cpt_image_id( $image_id = '' ) {
 		$post_type = $object->post_type;
 	}
 	if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
-		$image_id = displayfeaturedimagegenesis_check_image_id( $displaysetting['post_type'][ $post_type ] );
+		$image_id = $displaysetting['post_type'][ $post_type ];
 	}
 
 	return (int) $image_id;

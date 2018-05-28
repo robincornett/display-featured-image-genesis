@@ -110,9 +110,7 @@ class Display_Featured_Image_Genesis_Admin {
 
 		$taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
 		$taxonomy = ! is_null( $taxonomy ) ? $taxonomy : get_current_screen()->taxonomy;
-		$image_id = displayfeaturedimagegenesis_check_image_id( $image_id );
-
-		$args = array(
+		$args     = array(
 			'image_id' => $image_id,
 			'context'  => 'term',
 			'alt'      => get_term( $term_id, $taxonomy )->name,

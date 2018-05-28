@@ -132,11 +132,9 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 			return '';
 		}
 
-		$new_value = displayfeaturedimagegenesis_check_image_id( $new_value );
-		$old_value = displayfeaturedimagegenesis_check_image_id( $old_value );
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = (bool) $this->is_valid_img_ext( $source[0] );
-		$width     = $source[1];
+		$source = wp_get_attachment_image_src( $new_value, 'full' );
+		$valid  = (bool) $this->is_valid_img_ext( $source[0] );
+		$width  = $source[1];
 
 		if ( $valid && $width > $size_to_check ) {
 			return (int) $new_value;

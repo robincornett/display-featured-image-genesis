@@ -69,8 +69,7 @@ class Display_Featured_Image_Genesis_Common {
 	public static function set_image_id( $image_id = '' ) {
 
 		$setting     = displayfeaturedimagegenesis_get_setting();
-		$fallback    = $setting['default'];
-		$fallback_id = displayfeaturedimagegenesis_check_image_id( $fallback );
+		$fallback_id = $setting['default'];
 
 		// set here with fallback preemptively, if it exists
 		if ( ! empty( $fallback ) ) {
@@ -102,7 +101,7 @@ class Display_Featured_Image_Genesis_Common {
 			 * whether get_post_type array should use the post type image.
 			 * @uses is_in_array()
 			 */
-			$image_id = displayfeaturedimagegenesis_check_image_id( $setting['post_type'][ $post_type ] );
+			$image_id = $setting['post_type'][ $post_type ];
 			if ( self::is_in_array( 'use_post_type_image' ) ) {
 				return (int) $image_id;
 			}
