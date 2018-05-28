@@ -31,7 +31,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	/**
 	 * Add a new metabox only on Gutenberg screens.
 	 *
-	 * @since 2.7.0
+	 * @since 3.0.0
 	 */
 	public function maybe_add_metabox() {
 		add_action( 'add_meta_boxes', array( $this, 'add_metabox' ), 10, 2 );
@@ -41,7 +41,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * For Gutenberg, add a new metabox, since the thumbnail hooks are no longer present.
 	 * Should eventually be replaced with a block.
 	 *
-	 * @since 2.7.0
+	 * @since 3.0.0
 	 *
 	 * @param $post_type
 	 * @param $post

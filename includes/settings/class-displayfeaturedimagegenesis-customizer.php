@@ -153,7 +153,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 *
 	 * @param $section
 	 *
-	 * @since 2.7.0
+	 * @since 3.0.0
 	 */
 	protected function add_section_controls( $wp_customize, $fields, $section ) {
 		foreach ( $fields as $setting ) {

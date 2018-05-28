@@ -234,7 +234,7 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 
 ## Changelog
 
-### 2.7.0
+### 3.0.0
 * added: preferred image size (set to backstretch or large for the entire site)
 * added: setting to prefer fallback/large images per content type
 * added: setting on individual posts/pages to change the image size for each post
@@ -243,6 +243,9 @@ to a convenient location, such as your functions.php file. Otherwise, the page t
 * added: optional media buttons to make shortcode creation easier
 * added: optional custom text for content type, term widgets
 * added: optional link to term archive on widget
+* added: support for Gutenberg editor
+* removed: all use of displayfeaturedimagegenesis_check_image_id helper function (images must be saved by ID, not URL, as determined in 2.2.0)
+* updated: Backstretch 2.1.16
 * improved: widgets have been tidied up and refactored
 * improved: settings pages have been tidied up and refactored
 * changed: new minimum WP version is 4.4

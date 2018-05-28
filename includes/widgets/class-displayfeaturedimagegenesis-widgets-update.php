@@ -11,7 +11,7 @@ class DisplayFeaturedImageGenesisWidgetsUpdate {
 	 * The newly calculated value of $instance should be returned.
 	 * If "false" is returned, the instance won't be saved/updated.
 	 *
-	 * @since 2.7.0
+	 * @since 3.0.0
 	 *
 	 * @param array $new_instance New settings for this instance as input by the user via form()
 	 * @param $old_instance

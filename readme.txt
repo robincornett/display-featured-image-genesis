@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 2.7.0
+Stable tag: 3.0.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -183,11 +183,11 @@ This will follow the settings you choose in the Genesis Theme Settings.
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-2.7.0: new minimum WP version supported is 4.4! Also, widgets have been updated, shortcodes introduced, and new settings for more image control.
+3.0.0: potential breaking changes. new minimum WP version supported is 4.4! Also, widgets have been updated, shortcodes introduced, and new  and post meta for more image control.
 
 == Changelog ==
 
-= 2.7.0 =
+= 3.0.0 =
 * added: preferred image size (set to backstretch or large for the entire site)
 * added: setting to prefer fallback/large images per content type
 * added: setting on individual posts/pages to change the image size for each post
@@ -196,6 +196,9 @@ This will follow the settings you choose in the Genesis Theme Settings.
 * added: optional media buttons to make shortcode creation easier
 * added: optional custom text for content type, term widgets
 * added: optional link to term archive on widget
+* added: support for Gutenberg editor
+* removed: all use of displayfeaturedimagegenesis_check_image_id helper function (images must be saved by ID, not URL, as determined in 2.2.0)
+* updated: Backstretch 2.1.16
 * improved: widgets have been tidied up and refactored
 * improved: settings pages have been tidied up and refactored
 * changed: new minimum WP version is 4.4
