@@ -72,7 +72,7 @@ class Display_Featured_Image_Genesis_Common {
 		$fallback_id = $setting['default'];
 
 		// set here with fallback preemptively, if it exists
-		if ( ! empty( $fallback ) ) {
+		if ( ! empty( $fallback_id ) ) {
 			/**
 			 * Creates display_featured_image_genesis_use_default filter to check
 			 * whether get_post_type array should use default image.
