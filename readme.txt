@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 3.0.0
+Stable tag: 3.0.1
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -76,6 +76,12 @@ Yes. As of version 3.0.0, shortcodes for each widget have been added to the plug
 The parameters/attributes for these mirror the widget options, so you can explore the code (or inspect the widget form) to find the shortcode attributes.
 
 Alternatively, the much easier method entails visiting the settings page (under Appearance) and enabling the shortcode buttons for the post editor. With the shortcode buttons enabled, you can use the familiar widget form to build the shortcode and add it anywhere you like.
+
+= What happened to my default/post type featured image? =
+
+If these images were saved to your database prior to version 2.2.0 of this plugin and you've never updated the plugin settings since then, these images may have effectively disappeared in version 3.0.0. To fix this, visit the plugin settings page, reselect your default/post type image(s), and save.
+
+Prior to version 2.2.0 of the plugin, these images were saved to the database as URL strings, rather than as ID numbers, which was hugely inefficient. This was changed in version 2.2.0, with backwards compatible helper functions to ease the transition, but the helper functions are no longer used as of version 3.0.0.
 
 = What is term metadata and why does it matter to me? =
 
@@ -201,9 +207,14 @@ Similar hooks:
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-3.0.0: potential breaking changes. new minimum WP version supported is 4.4! Also, widgets have been updated, shortcodes introduced, and new  and post meta for more image control.
+3.0.1: fixed default image not being included in image selection
+
+3.0.0: potential breaking changes. new minimum WP version supported is 4.4! Also, widgets have been updated, shortcodes introduced, and new settings/post meta for more image control.
 
 == Changelog ==
+
+= 3.0.1 =
+* fixed: check for default featured image
 
 = 3.0.0 =
 * added: preferred image size (set to backstretch or large for the entire site)
