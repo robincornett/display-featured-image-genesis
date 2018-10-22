@@ -102,6 +102,22 @@ If an image ID is required, Six/Ten Press image fields in a group will work, as 
 
 ### Changelog
 
+#### 0.6.0
+* added: custom enqueue hook `sixtenpress_shortcodes_enqueue` to allow loading dependent scripts without having to check if we're on a block editor page
+* changed: enqueue scripts/styles for shortcode button only if not in the block editor
+
+#### 0.5.1
+* changed: block helper enqueue method
+
+#### 0.5.0
+* added: abstract block helper class
+
+#### 0.4.0
+* added: hook just after editor initialization (currently load-post.php and load-post-new.php)
+
+#### 0.3.9
+* fixed: disappearing values if a field type changed (via ajax)
+
 #### 0.3.8
 * fixed: content now copies to editor with formatting
 

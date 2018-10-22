@@ -168,7 +168,7 @@
 		var output = '';
 		$( inputs ).each( function ( index ) {
 			var original_id = $( this ).attr( 'id' ),
-				value       = $( this ).val(),
+			    value       = $( '#' + original_id ).val(),
 				type        = this.type;
 			if ( original_id ) {
 				var id = original_id.substr( original_id.lastIndexOf( '-' ) + 1 );

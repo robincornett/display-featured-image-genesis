@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2017 Robin Cornett
+ * Copyright (c) 2017-2018 Robin Cornett
  */
 
 /**
@@ -130,12 +130,24 @@ class SixTenPressShortcodes {
 	 * Load all needful functions for the editor.
 	 */
 	public function start_editor() {
-		add_filter( 'sixtenpress_shortcode_localization', array( $this, 'localization_args' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_script' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'media_buttons', array( $this, 'media_buttons' ), 98 );
 		add_action( 'admin_footer', array( $this, 'widget_builder_modal' ) );
 		add_filter( 'sixtenpress_admin_color_picker', '__return_true' );
+		do_action( 'sixtenpress_shortcode_load' );
+	}
+
+	/**
+	 * Do not enqueue scripts if we're on a block editor page.
+	 */
+	public function enqueue() {
+		if ( ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) || ( function_exists( 'is_block_editor' ) && is_block_editor() ) ) {
+			return;
+		}
+		do_action( 'sixtenpress_shortcode_enqueue' );
+		add_filter( 'sixtenpress_shortcode_localization', array( $this, 'localization_args' ) );
+		$this->enqueue_script();
+		$this->enqueue_style();
 	}
 
 	/**
@@ -152,7 +164,8 @@ class SixTenPressShortcodes {
 			return;
 		}
 		do_action( 'sixtenpress_shortcode_before_media_button', $this->shortcode_args, $id );
-		printf( '<button type="button" id="%1$s-%5$s" class="button %2$s" title="%4$s" data-editor="%5$s">%3$s%4$s</button>',
+		printf(
+			'<button type="button" id="%1$s-%5$s" class="button %2$s" title="%4$s" data-editor="%5$s">%3$s%4$s</button>',
 			esc_attr( $this->shortcode_args['button']['id'] ),
 			esc_attr( $this->shortcode_args['button']['class'] ),
 			$this->shortcode_args['button']['dashicon'] ? sprintf( '<span class="wp-media-buttons-icon dashicons %s"></span> ', esc_attr( $this->shortcode_args['button']['dashicon'] ) ) : '',
@@ -201,7 +214,7 @@ class SixTenPressShortcodes {
 		$css = str_replace( "\t", '', $css );
 		$css = str_replace( array( "\n", "\r" ), ' ', $css );
 
-		return sanitize_text_field( strip_tags( $css ) );
+		return sanitize_text_field( wp_strip_all_tags( $css ) );
 	}
 
 	/**

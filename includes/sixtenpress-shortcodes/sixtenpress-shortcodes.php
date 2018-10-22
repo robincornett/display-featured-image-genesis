@@ -8,15 +8,15 @@
  * @category  WordPressLibrary
  * @package   SixTenPressShortcodes
  * @author    Robin Cornett <hello@robincornett.com>
- * @copyright 2016 Robin Cornett <hello@robincornett.com>
+ * @copyright 2017-2018 Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
- * @version   0.3.8
+ * @version   0.6.0
  * @link      https://gitlab.com/robincornett/sixtenpress-shortcodes
  * @since     0.1.0
  */
 
 /**
- * Copyright (c) 2017 Robin Cornett (email : hello@robincornett.com)
+ * Copyright (c) 2017-2018 Robin Cornett (email : hello@robincornett.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -37,7 +37,7 @@
  * Loader versioning: http://jtsternberg.github.io/wp-lib-loader/
  */
 
-if ( ! class_exists( 'SixTenPressShortcodes_038', false ) ) {
+if ( ! class_exists( 'SixTenPressShortcodes_060', false ) ) {
 
 	/**
 	 * Versioned loader class-name
@@ -48,18 +48,18 @@ if ( ! class_exists( 'SixTenPressShortcodes_038', false ) ) {
 	 * @package  SixTenPressShortcodes
 	 * @author   Robin Cornett <hello@robincornett.com>
 	 * @license  GPL-2.0+
-	 * @version  0.3.8
+	 * @version  0.6.0
 	 * @link     https://gitlab.com/robincornett/sixtenpress-shortcodes
 	 * @since    0.1.0
 	 */
-	class SixTenPressShortcodes_038 {
+	class SixTenPressShortcodes_060 {
 
 		/**
 		 * SixTenPressShortcodes version number
 		 * @var   string
 		 * @since 0.1.0
 		 */
-		const VERSION = '0.3.8';
+		const VERSION = '0.6.0';
 
 		/**
 		 * Current version hook priority.
@@ -68,7 +68,7 @@ if ( ! class_exists( 'SixTenPressShortcodes_038', false ) ) {
 		 * @var   int
 		 * @since 0.1.0
 		 */
-		const PRIORITY = 9986;
+		const PRIORITY = 9981;
 
 		/**
 		 * Starts the version checking process.
@@ -147,10 +147,14 @@ if ( ! class_exists( 'SixTenPressShortcodes_038', false ) ) {
 
 			// Include and initiate SixTenPressShortcodes.
 			require_once SIXTENPRESSSHORTCODES_DIR . 'includes/class-sixtenpress-shortcodes.php';
+
+			if ( function_exists( 'register_block_type' ) ) {
+				require_once SIXTENPRESSSHORTCODES_DIR . 'includes/class-sixtenpress-blocks.php';
+			}
 		}
 
 	}
 
 	// Kick it off.
-	new SixTenPressShortcodes_038();
+	new SixTenPressShortcodes_060();
 }
