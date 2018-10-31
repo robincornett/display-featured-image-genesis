@@ -148,7 +148,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'admin_init', array( $this->author, 'set_author_meta' ) );
 
 		// Post Meta
-		add_action( 'enqueue_block_assets', array( $this->post_meta, 'maybe_add_metabox' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this->post_meta, 'maybe_add_metabox' ) );
 		add_filter( 'admin_post_thumbnail_html', array( $this->post_meta, 'meta_box' ), 10, 2 );
 		add_action( 'save_post', array( $this->post_meta, 'save_meta' ) );
 
