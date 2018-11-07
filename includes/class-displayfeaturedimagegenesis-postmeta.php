@@ -29,15 +29,6 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	protected $move = '_displayfeaturedimagegenesis_move';
 
 	/**
-	 * Add a new metabox only on Gutenberg screens.
-	 *
-	 * @since 3.0.0
-	 */
-	public function maybe_add_metabox() {
-		add_action( 'add_meta_boxes', array( $this, 'add_metabox' ), 10, 2 );
-	}
-
-	/**
 	 * For Gutenberg, add a new metabox, since the thumbnail hooks are no longer present.
 	 * Should eventually be replaced with a block.
 	 *
@@ -47,6 +38,9 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * @param $post
 	 */
 	public function add_metabox( $post_type, $post ) {
+		if ( ! $this->is_block_editor() ) {
+			return;
+		}
 		if ( ! post_type_supports( $post_type, 'thumbnail' ) ) {
 			return;
 		}
@@ -191,6 +185,23 @@ class Display_Featured_Image_Genesis_Post_Meta {
 		$output .= '</select></p>';
 
 		return $output;
+	}
+
+	/**
+	 * Check whether we are on a block editor/Gutenberg screen.
+	 *
+	 * @return bool
+	 */
+	private function is_block_editor() {
+		if ( ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) ) {
+			return true;
+		}
+		$screen = get_current_screen();
+		if ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
