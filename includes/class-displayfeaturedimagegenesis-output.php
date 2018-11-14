@@ -84,7 +84,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function add_inline_style() {
 		$css = sprintf( '.big-leader { max-height: %spx; }', $this->setting['max_height'] );
-		wp_add_inline_style( 'displayfeaturedimage-style', strip_tags( $css ) );
+		wp_add_inline_style( 'displayfeaturedimage-style', wp_strip_all_tags( $css ) );
 	}
 
 	/**
