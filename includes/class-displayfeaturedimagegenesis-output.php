@@ -128,6 +128,14 @@ class Display_Featured_Image_Genesis_Output {
 		), $common->version, true );
 
 		add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
+		$this->launch_backstretch_image();
+	}
+
+	/**
+	 * Actually output the backstretch/banner image and title markup at the designated hook.
+	 * @since 3.1.0
+	 */
+	protected function launch_backstretch_image() {
 		$location = $this->get_hooks();
 		add_action( esc_attr( $location['backstretch']['hook'] ), array( $this, 'do_backstretch_image_title' ), $location['backstretch']['priority'] );
 	}
