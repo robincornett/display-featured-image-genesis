@@ -130,10 +130,7 @@ class SixTenPressShortcodes {
 	 * Load all needful functions for the editor.
 	 */
 	public function start_editor() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
-		add_action( 'media_buttons', array( $this, 'media_buttons' ), 98 );
-		add_action( 'admin_footer', array( $this, 'widget_builder_modal' ) );
-		add_filter( 'sixtenpress_admin_color_picker', '__return_true' );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ), 4 );
 		do_action( 'sixtenpress_shortcode_load' );
 	}
 
@@ -141,9 +138,12 @@ class SixTenPressShortcodes {
 	 * Do not enqueue scripts if we're on a block editor page.
 	 */
 	public function enqueue() {
-		if ( ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) || ( function_exists( 'is_block_editor' ) && is_block_editor() ) ) {
+		if ( $this->quit() ) {
 			return;
 		}
+		add_action( 'media_buttons', array( $this, 'media_buttons' ), 98 );
+		add_action( 'admin_footer', array( $this, 'widget_builder_modal' ) );
+		add_filter( 'sixtenpress_admin_color_picker', '__return_true' );
 		do_action( 'sixtenpress_shortcode_enqueue' );
 		add_filter( 'sixtenpress_shortcode_localization', array( $this, 'localization_args' ) );
 		$this->enqueue_script();
@@ -257,5 +257,23 @@ class SixTenPressShortcodes {
 
 		$this->loaded = true;
 		include plugin_dir_path( __FILE__ ) . 'modal.php';
+	}
+
+	/**
+	 * Check if we are on a Gutenberg/block editor screen.
+	 * @since 0.7.0
+	 *
+	 * @return bool
+	 */
+	private function quit() {
+		if ( ( function_exists( 'is_gutenberg_page' ) && is_gutenberg_page() ) ) {
+			return true;
+		}
+		$screen = get_current_screen();
+		if ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) {
+			return true;
+		}
+
+		return false;
 	}
 }

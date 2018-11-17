@@ -102,6 +102,9 @@ If an image ID is required, Six/Ten Press image fields in a group will work, as 
 
 ### Changelog
 
+#### 0.7.0
+* changed: moved all actions past a block editor/Gutenberg check to prevent media button scripts/modals loading when they shouldn't
+
 #### 0.6.0
 * added: custom enqueue hook `sixtenpress_shortcodes_enqueue` to allow loading dependent scripts without having to check if we're on a block editor page
 * changed: enqueue scripts/styles for shortcode button only if not in the block editor
