@@ -19,6 +19,16 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'title' => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
 				'tab'   => 'main',
 			),
+			'archives'     => array(
+				'id'    => 'archives',
+				'title' => __( 'Optional Archive Settings', 'display-featured-image-genesis' ),
+				'tab'   => 'main',
+			),
+			'default'      => array(
+				'id'    => 'default',
+				'title' => __( 'Optional Default Image', 'display-featured-image-genesis' ),
+				'tab'   => 'main',
+			),
 			'style'        => array(
 				'id'    => 'style',
 				'title' => __( 'Display Settings', 'display-featured-image-genesis' ),
@@ -66,14 +76,14 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'id'       => 'default',
 				'title'    => __( 'Default Featured Image', 'display-featured-image-genesis' ),
 				'callback' => 'set_default_image',
-				'section'  => 'main',
+				'section'  => 'default',
 				'type'     => 'image',
 			),
 			array(
 				'id'          => 'always_default',
 				'title'       => __( 'Always Use Default', 'display-featured-image-genesis' ),
 				'callback'    => 'do_checkbox',
-				'section'     => 'main',
+				'section'     => 'default',
 				'label'       => __( 'Always use the default image, even if a featured image is set.', 'display-featured-image-genesis' ),
 				'description' => sprintf(
 					/* translators: placeholder is a number equivalent to the width of the site's Large image (Settings > Media) */
@@ -87,10 +97,13 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'title'    => __( 'Preferred Image Size', 'display-featured-image-genesis' ),
 				'callback' => 'do_select',
 				'section'  => 'main',
-				'choices'  => apply_filters( 'displayfeaturedimagegenesis_image_size_choices', array(
-					'displayfeaturedimage_backstretch' => __( 'Backstretch (default)', 'display-featured-image-genesis' ),
-					'large'                            => __( 'Large', 'display-featured-image-genesis' ),
-				) ),
+				'choices'  => apply_filters(
+					'displayfeaturedimagegenesis_image_size_choices',
+					array(
+						'displayfeaturedimage_backstretch' => __( 'Backstretch (default)', 'display-featured-image-genesis' ),
+						'large'                            => __( 'Large', 'display-featured-image-genesis' ),
+					)
+				),
 				'type'     => 'select',
 			),
 			array(
@@ -121,7 +134,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'id'       => 'is_paged',
 				'title'    => __( 'Show Featured Image on Subsequent Blog Pages', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => 'main',
+				'section'  => 'archives',
 				'label'    => __( 'Show featured image on pages 2+ of blogs and archives.', 'display-featured-image-genesis' ),
 				'type'     => 'checkbox',
 			),
@@ -129,7 +142,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'id'       => 'feed_image',
 				'title'    => __( 'Add Featured Image to Feed?', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => 'main',
+				'section'  => 'archives',
 				'label'    => __( 'Optionally, add the featured image to your RSS feed.', 'display-featured-image-genesis' ),
 				'type'     => 'checkbox',
 			),
@@ -137,7 +150,7 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'id'       => 'thumbnails',
 				'title'    => __( 'Archive Thumbnails', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
-				'section'  => 'main',
+				'section'  => 'archives',
 				'label'    => __( 'Use term/post type fallback images for content archives?', 'display-featured-image-genesis' ),
 				'type'     => 'checkbox',
 			),
