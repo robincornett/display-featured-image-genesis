@@ -1,7 +1,7 @@
 {
   "name": "display-featured-image-genesis",
   "description": "Display Featured Image for Genesis",
-  "version": "3.1.0",
+  "version": "3.0.2",
   "private": true,
   "license": "GPL-2.0",
   "devDependencies": {

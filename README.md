@@ -249,6 +249,10 @@ Similar hooks:
 
 ## Changelog
 
+### 3.0.2
+* fixed: metabox now properly shows in the block editor (WordPress 5.0)
+* changed: settings page organization
+
 ### 3.0.1
 * fixed: check for default featured image
 

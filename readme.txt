@@ -4,8 +4,8 @@ Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: backstretch, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 4.4
-Tested up to: 4.9
-Stable tag: 3.0.1
+Tested up to: 5.0
+Stable tag: 3.0.2
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -207,11 +207,16 @@ Similar hooks:
 4. Quickly see the featured image assigned to each post or term.
 
 == Upgrade Notice ==
-3.0.1: fixed default image not being included in image selection
 
+3.0.2: fixed plugin metabox not showing in the block editor (WordPress 5.0)
+3.0.1: fixed default image not being included in image selection
 3.0.0: potential breaking changes. new minimum WP version supported is 4.4! Also, widgets have been updated, shortcodes introduced, and new settings/post meta for more image control.
 
 == Changelog ==
+
+= 3.0.2 =
+* fixed: metabox now properly shows in the block editor (WordPress 5.0)
+* changed: settings page organization
 
 = 3.0.1 =
 * fixed: check for default featured image
