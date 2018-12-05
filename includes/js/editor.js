@@ -25,7 +25,6 @@
 	function _addToggleButton() {
 		var $this = $( this ),
 		buttons = $( '.' + classes.buttons );
-		console.log( buttons );
 		if ( 3 > $this.find( buttons ).length ) {
 			return;
 		}
