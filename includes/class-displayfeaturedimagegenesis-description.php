@@ -33,7 +33,7 @@ class Display_Featured_Image_Genesis_Description {
 			$itemprop = ' itemprop="headline"';
 		}
 
-		$setting  = displayfeaturedimagegenesis_get_setting();
+		$setting = displayfeaturedimagegenesis_get_setting();
 		if ( ! $setting['keep_titles'] ) {
 			$headline = sprintf( '<h1 class="entry-title"%s>%s</h1>', $itemprop, get_the_title() );
 		}

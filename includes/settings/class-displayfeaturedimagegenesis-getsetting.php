@@ -45,6 +45,7 @@ class DisplayFeaturedImageGenesisGetSetting {
 				'large_priority'       => 12,
 				'large'                => array(),
 				'image_size'           => 'displayfeaturedimage_backstretch',
+				'scriptless'           => 0,
 			)
 		);
 	}

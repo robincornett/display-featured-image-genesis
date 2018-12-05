@@ -71,7 +71,12 @@ class Display_Featured_Image_Genesis_Output {
 		 * @uses is_in_array()
 		 */
 		if ( $width > $large || Display_Featured_Image_Genesis_Common::is_in_array( 'force_backstretch' ) ) {
-			$this->do_backstretch_image_things();
+			$setting = displayfeaturedimagegenesis_get_setting();
+			if ( $setting['scriptless'] ) {
+				$this->launch_backstretch_image();
+			} else {
+				$this->do_backstretch_image_things();
+			}
 		} else {
 			$this->do_large_image_things();
 		}
@@ -192,12 +197,17 @@ class Display_Featured_Image_Genesis_Output {
 	public function do_backstretch_image_title() {
 
 		$this->description = new Display_Featured_Image_Genesis_Description();
+		$setting           = displayfeaturedimagegenesis_get_setting();
 
 		if ( $this->move_title() ) {
 			$this->remove_title_descriptions();
 		}
 
-		echo '<div class="big-leader">';
+		$class = 'big-leader';
+		if ( $setting['scriptless'] ) {
+			$class .= ' big-leader--scriptless';
+		}
+		echo '<div class="' . esc_attr( $class ) . '">';
 		echo '<div class="wrap">';
 
 		do_action( 'display_featured_image_genesis_before_title' );
@@ -219,19 +229,37 @@ class Display_Featured_Image_Genesis_Output {
 		// close wrap
 		echo '</div>';
 
-		// if javascript not enabled, do a fallback featured image
-		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
-		$image    = wp_get_attachment_image( $image_id, 'displayfeaturedimage_backstretch', false, array(
-			'alt'         => $this->get_image_alt_text( $image_id ),
-			'class'       => 'post-image',
-			'aria-hidden' => 'true',
-		) );
-		printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
+		$image = $this->get_banner_image();
+		if ( $setting['scriptless'] ) {
+			printf( '<div class="big-leader__image">%s</div>', $image );
+		} else {
+			printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
+		}
 
 		// close big-leader
 		echo '</div>';
 
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_false' );
+	}
+
+	/**
+	 * Get the banner/noscript image.
+	 * @since 3.1.0
+	 *
+	 * @return string
+	 */
+	protected function get_banner_image() {
+		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		return wp_get_attachment_image(
+			$image_id,
+			'displayfeaturedimage_backstretch',
+			false,
+			array(
+				'alt'         => $this->get_image_alt_text( $image_id ),
+				'class'       => 'post-image',
+				'aria-hidden' => 'true',
+			)
+		);
 	}
 
 	/**
@@ -509,6 +537,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	protected function get_minimum_backstretch_width() {
 		$common = $this->get_common_class();
+
 		return $common->minimum_backstretch_width();
 	}
 

@@ -92,7 +92,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 					array(
 						'id'      => $this->id . 'sitewide',
 						'title'   => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
-						'content' => $this->image_size() . $this->skip_front() . $this->keep_titles() . $this->excerpts(),
+						'content' => $this->image_size() . $this->javascript() . $this->skip_front() . $this->keep_titles() . $this->excerpts(),
 					),
 					array(
 						'id'      => $this->id . 'archives',
@@ -293,6 +293,18 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	protected function image_size() {
 		$help  = '<h3>' . __( 'Preferred Image Size', 'display-featured-image-genesis' ) . '</h3>';
 		$help .= '<p>' . __( 'Set the default image size you would like to use sitewide. This can be overridden per content type, or on an individual post.', 'display-featured-image-genesis' ) . '</p>';
+
+		return $help;
+	}
+
+	/**
+	 * Help text for the disable JavaScript setting.
+	 * @since 3.1.0
+	 * @return string
+	 */
+	protected function javascript() {
+		$help  = '<h3>' . __( 'Disable JavaScript', 'display-featured-image-genesis' ) . '</h3>';
+		$help .= '<p>' . __( 'Optionally disable JavaScript for your backstretch images. The output will mostly be similar, although some behavior will change. For example, without the backstretch script, images will always display full width, regardless of screen size (with backstretch, you\'ll often only see the center of the image on small screens.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}

@@ -107,6 +107,14 @@ class Display_Featured_Image_Genesis_Settings_Define extends Display_Featured_Im
 				'type'     => 'select',
 			),
 			array(
+				'id'       => 'scriptless',
+				'title'    => __( 'Disable JavaScript', 'display-featured-image-genesis' ),
+				'callback' => 'do_checkbox',
+				'type'     => 'checkbox',
+				'section'  => 'main',
+				'label'    => __( 'Instead of using the Backstretch featured image, use a banner image which relies only on CSS.', 'display-featured-image-genesis' ),
+			),
+			array(
 				'id'       => 'exclude_front',
 				'title'    => __( 'Skip Front Page', 'display-featured-image-genesis' ),
 				'callback' => 'do_checkbox',
