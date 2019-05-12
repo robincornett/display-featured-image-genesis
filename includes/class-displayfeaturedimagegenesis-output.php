@@ -210,6 +210,7 @@ class Display_Featured_Image_Genesis_Output {
 		echo '<div class="' . esc_attr( $class ) . '">';
 		$image = $this->get_banner_image();
 		if ( $setting['scriptless'] ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $image;
 		}
 		echo '<div class="wrap">';
