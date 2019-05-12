@@ -7,14 +7,6 @@
 	max-height: 600px;
 	position: relative;
 
-	&.--scriptless {
-		height: auto;
-	}
-
-	&__image img {
-		object-fit: cover;
-	}
-
 	.wrap {
 		position: absolute;
 		right: 0;
@@ -24,10 +16,21 @@
 		z-index: 1;
 	}
 
-	.entry-title.featured-image-overlay,
-	.archive-title.featured-image-overlay {
-		color: #fff;
-		text-align: center;
+	&--scriptless {
+		height: auto;
+
+		img {
+			display: block;
+			object-fit: cover;
+		}
+	}
+
+	.entry-title,
+	.archive-title {
+		&.featured-image-overlay {
+			color: #fff;
+			text-align: center;
+		}
 	}
 
 	.excerpt,
@@ -69,11 +72,8 @@ img.featured {
 @media only screen and (max-width: 768px) {
 
 	.big-leader,
+	.big-leader--scriptless,
 	.backstretch.no-js {
 		max-height: 300px;
-
-		&--scriptless {
-			height: auto;
-		}
 	}
 }

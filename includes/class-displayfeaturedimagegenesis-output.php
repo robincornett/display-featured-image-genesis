@@ -88,7 +88,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.6.0
 	 */
 	public function add_inline_style() {
-		$css = sprintf( '.big-leader, .big-leader__image img { max-height: %spx; }', $this->setting['max_height'] );
+		$css = sprintf( '.big-leader, .big-leader--scriptless img { max-height: %spx; }', $this->setting['max_height'] );
 		wp_add_inline_style( 'displayfeaturedimage-style', wp_strip_all_tags( $css ) );
 	}
 
@@ -208,6 +208,10 @@ class Display_Featured_Image_Genesis_Output {
 			$class .= ' big-leader--scriptless';
 		}
 		echo '<div class="' . esc_attr( $class ) . '">';
+		$image = $this->get_banner_image();
+		if ( $setting['scriptless'] ) {
+			echo $image;
+		}
 		echo '<div class="wrap">';
 
 		do_action( 'display_featured_image_genesis_before_title' );
@@ -229,10 +233,7 @@ class Display_Featured_Image_Genesis_Output {
 		// close wrap
 		echo '</div>';
 
-		$image = $this->get_banner_image();
-		if ( $setting['scriptless'] ) {
-			printf( '<div class="big-leader__image">%s</div>', $image );
-		} else {
+		if ( ! $setting['scriptless'] ) {
 			printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
 		}
 
