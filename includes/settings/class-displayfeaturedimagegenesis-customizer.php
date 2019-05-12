@@ -6,7 +6,7 @@
  * @package   Display_Featured_Image_Genesis
  * @copyright 2016 Robin Cornett
  */
-class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Settings_Define {
+class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Settings {
 
 	/**
 	 * Section for the Customizer.

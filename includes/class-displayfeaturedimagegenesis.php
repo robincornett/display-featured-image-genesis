@@ -46,12 +46,6 @@ class Display_Featured_Image_Genesis {
 	protected $description;
 
 	/**
-	 * Manages help tabs for settings page.
-	 * @var $helptabs Display_Featured_Image_Genesis_HelpTabs
-	 */
-	protected $helptabs;
-
-	/**
 	 * Handles all image output functionality
 	 * @var Display_Featured_Image_Genesis_Output $output
 	 */
@@ -96,19 +90,17 @@ class Display_Featured_Image_Genesis {
 	 * @param $common
 	 * @param $customizer
 	 * @param $description
-	 * @param $helptabs
 	 * @param $output
 	 * @param $rss
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	public function __construct( $admin, $author, $common, $customizer, $description, $helptabs, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
+	public function __construct( $admin, $author, $common, $customizer, $description, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
 		$this->customizer  = $customizer;
 		$this->description = $description;
-		$this->helptabs    = $helptabs;
 		$this->output      = $output;
 		$this->post_meta   = $post_meta;
 		$this->rss         = $rss;
@@ -155,7 +147,6 @@ class Display_Featured_Image_Genesis {
 		// Settings
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
-		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this->helptabs, 'help' ) );
 
 		// Customizer
 		add_action( 'customize_register', array( $this->customizer, 'customizer' ) );
