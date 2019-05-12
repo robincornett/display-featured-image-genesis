@@ -118,13 +118,28 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 2.5.0
 	 */
 	protected function do_tabs( $active_tab ) {
-		$tabs    = $this->define_tabs();
+		$tabs    = include 'tabs.php';
 		$output  = '<div class="nav-tab-wrapper">';
 		$output .= sprintf( '<h2 id="settings-tabs" class="screen-reader-text">%s</h2>', __( 'Settings Tabs', 'display-featured-image-genesis' ) );
 		$output .= '<ul>';
 		foreach ( $tabs as $tab ) {
-			$class   = $active_tab === $tab['id'] ? ' nav-tab-active' : '';
-			$output .= sprintf( '<li><a href="themes.php?page=%s&tab=%s" class="nav-tab%s">%s</a></li>', $this->page, $tab['id'], $class, $tab['tab'] );
+			$class = 'nav-tab';
+			if ( $active_tab === $tab['id'] ) {
+				$class .= ' nav-tab-active';
+			}
+			$query   = add_query_arg(
+				array(
+					'page' => $this->page,
+					'tab'  => $tab['id'],
+				),
+				'themes.php'
+			);
+			$output .= sprintf(
+				'<li><a href="%s" class="%s">%s</a></li>',
+				esc_url( $query ),
+				$class,
+				$tab['tab']
+			);
 		}
 		$output .= '</ul>';
 		$output .= '</div>';
@@ -138,36 +153,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 1.1.0
 	 */
 	public function register_settings() {
-		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array(
-			$this,
-			'do_validation_things',
-		) );
-	}
-
-	/**
-	 * Define tabs for the settings page.
-	 * @return array
-	 * @since 2.6.0
-	 */
-	protected function define_tabs() {
-		return array(
-			'main'     => array(
-				'id'  => 'main',
-				'tab' => __( 'Main', 'display-featured-image-genesis' ),
-			),
-			'style'    => array(
-				'id'  => 'style',
-				'tab' => __( 'Backstretch Output', 'display-featured-image-genesis' ),
-			),
-			'cpt'      => array(
-				'id'  => 'cpt',
-				'tab' => __( 'Content Types', 'display-featured-image-genesis' ),
-			),
-			'advanced' => array(
-				'id'  => 'advanced',
-				'tab' => __( 'Advanced', 'display-featured-image-genesis' ),
-			),
-		);
+		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
 	}
 
 	/**
