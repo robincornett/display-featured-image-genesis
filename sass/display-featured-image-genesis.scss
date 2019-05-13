@@ -4,7 +4,7 @@
 
 .big-leader {
 	overflow: hidden;
-	max-height: 600px;
+	max-height: 100vh;
 	position: relative;
 
 	.wrap {
@@ -67,13 +67,4 @@
 
 img.featured {
 	max-width: 100%;
-}
-
-@media only screen and (max-width: 768px) {
-
-	.big-leader,
-	.big-leader--scriptless,
-	.backstretch.no-js {
-		max-height: 300px;
-	}
 }

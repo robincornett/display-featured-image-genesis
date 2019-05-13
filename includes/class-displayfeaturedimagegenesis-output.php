@@ -87,8 +87,29 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.6.0
 	 */
 	public function add_inline_style() {
-		$css = sprintf( '.big-leader, .big-leader--scriptless img { max-height: %spx; }', $this->setting['max_height'] );
+		$css  = sprintf( '.big-leader, .big-leader--scriptless img { max-height: %spx; }', $this->get_setting('max_height' ) );
+		$css .= $this->get_object_position();
 		wp_add_inline_style( 'displayfeaturedimage-style', wp_strip_all_tags( $css ) );
+	}
+
+	/**
+	 * Add object-position to scriptless banner if needed.
+	 *
+	 * @return string
+	 * @since 3.1.0
+	 */
+	private function get_object_position() {
+		$setting = displayfeaturedimagegenesis_get_setting();
+		if ( ! $setting['scriptless'] ) {
+			return '';
+		}
+		if ( $setting['centeredX'] && $setting['centeredY'] ) {
+			return '';
+		}
+		$x = $setting['centeredX'] ? '50%' : '0';
+		$y = $setting['centeredY'] ? '50%' : '0';
+
+		return ".big-leader--scriptless img {object-position: {$x} {$y};}";
 	}
 
 	/**
