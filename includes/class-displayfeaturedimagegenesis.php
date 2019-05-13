@@ -209,8 +209,8 @@ class Display_Featured_Image_Genesis {
 		) );
 		add_image_size( 'displayfeaturedimage_backstretch', (int) $args['width'], (int) $args['height'], (bool) $args['crop'] );
 
-		$displaysetting = displayfeaturedimagegenesis_get_setting();
-		if ( $displaysetting['move_excerpts'] ) {
+		$move_excerpts = displayfeaturedimagegenesis_get_setting( 'move_excerpts' );
+		if ( $move_excerpts ) {
 			add_post_type_support( 'page', 'excerpt' );
 		}
 	}

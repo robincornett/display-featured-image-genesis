@@ -71,8 +71,8 @@ class Display_Featured_Image_Genesis_Output {
 		 * @uses is_in_array()
 		 */
 		if ( $width > $large || Display_Featured_Image_Genesis_Common::is_in_array( 'force_backstretch' ) ) {
-			$setting = displayfeaturedimagegenesis_get_setting();
-			if ( $setting['scriptless'] ) {
+			$scriptless = displayfeaturedimagegenesis_get_setting( 'scriptless' );
+			if ( $scriptless ) {
 				$this->launch_backstretch_image();
 			} else {
 				$this->do_backstretch_image_things();
@@ -197,19 +197,19 @@ class Display_Featured_Image_Genesis_Output {
 	public function do_backstretch_image_title() {
 
 		$this->description = new Display_Featured_Image_Genesis_Description();
-		$setting           = displayfeaturedimagegenesis_get_setting();
+		$scriptless        = displayfeaturedimagegenesis_get_setting( 'scriptless' );
 
 		if ( $this->move_title() ) {
 			$this->remove_title_descriptions();
 		}
 
 		$class = 'big-leader';
-		if ( $setting['scriptless'] ) {
+		if ( $scriptless ) {
 			$class .= ' big-leader--scriptless';
 		}
 		echo '<div class="' . esc_attr( $class ) . '">';
 		$image = $this->get_banner_image();
-		if ( $setting['scriptless'] ) {
+		if ( $scriptless ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $image;
 		}
@@ -234,7 +234,7 @@ class Display_Featured_Image_Genesis_Output {
 		// close wrap
 		echo '</div>';
 
-		if ( ! $setting['scriptless'] ) {
+		if ( ! $scriptless ) {
 			printf( '<noscript><div class="backstretch no-js">%s</div></noscript>', $image );
 		}
 

@@ -8,12 +8,6 @@
 class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisGetSetting {
 
 	/**
-	 * Variable for the plugin setting.
-	 * @var $setting
-	 */
-	protected $setting;
-
-	/**
 	 * Base id/slug for the settings page.
 	 * @var string $page
 	 */

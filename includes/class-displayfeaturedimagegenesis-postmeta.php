@@ -109,8 +109,8 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 */
 	protected function get_checkboxes() {
 		$checkboxes = array();
-		$setting    = displayfeaturedimagegenesis_get_setting();
-		if ( ! $setting['keep_titles'] ) {
+		$setting    = displayfeaturedimagegenesis_get_setting( 'keep_titles' );
+		if ( ! $setting ) {
 			$checkboxes[] = array(
 				'setting' => $this->move,
 				'label'   => __( 'Don\'t move the title to overlay the backstretch featured image on this post', 'display-featured-image-genesis' ),
