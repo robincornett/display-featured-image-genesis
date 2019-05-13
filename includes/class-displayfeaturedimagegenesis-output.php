@@ -216,15 +216,12 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_backstretch_image_title() {
-
-		$this->description = new Display_Featured_Image_Genesis_Description();
-		$scriptless        = displayfeaturedimagegenesis_get_setting( 'scriptless' );
-
 		if ( $this->move_title() ) {
 			$this->remove_title_descriptions();
 		}
 
-		$class = 'big-leader';
+		$class      = 'big-leader';
+		$scriptless = displayfeaturedimagegenesis_get_setting( 'scriptless' );
 		if ( $scriptless ) {
 			$class .= ' big-leader--scriptless';
 		}
@@ -339,7 +336,8 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.1
 	 */
 	protected function do_the_title() {
-		if ( is_front_page() && ! $this->description->show_front_page_title() ) {
+		$description = $this->get_description_class();
+		if ( is_front_page() && ! $description->show_front_page_title() ) {
 			return '';
 		}
 		$class        = is_singular() ? 'entry-title' : 'archive-title';
@@ -359,10 +357,10 @@ class Display_Featured_Image_Genesis_Output {
 	 *
 	 */
 	public function add_descriptions() {
-
-		$this->description->do_tax_description();
-		$this->description->do_author_description();
-		$this->description->do_cpt_archive_description();
+		$description = $this->get_description_class();
+		$description->do_tax_description();
+		$description->do_author_description();
+		$description->do_cpt_archive_description();
 
 	}
 
@@ -372,8 +370,9 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.1
 	 */
 	protected function do_title_descriptions() {
-		$this->description->do_front_blog_excerpt();
-		$this->description->do_excerpt();
+		$description = $this->get_description_class();
+		$description->do_front_blog_excerpt();
+		$description->do_excerpt();
 		genesis_do_taxonomy_title_description();
 		genesis_do_author_title_description();
 		genesis_do_cpt_archive_title_description();
@@ -539,6 +538,21 @@ class Display_Featured_Image_Genesis_Output {
 		$this->common = new Display_Featured_Image_Genesis_Common();
 
 		return $this->common;
+	}
+
+	/**
+	 * Instantiate the description class as needed.
+	 * @return \Display_Featured_Image_Genesis_Description
+	 * @since 3.1.0
+	 */
+	protected function get_description_class() {
+		if ( isset( $this->description ) ) {
+			return $this->description;
+		}
+		include_once 'class-displayfeaturedimagegenesis-description.php';
+		$this->description = new Display_Featured_Image_Genesis_Description();
+
+		return $this->description;
 	}
 
 	/**

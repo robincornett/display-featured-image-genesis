@@ -89,18 +89,16 @@ class Display_Featured_Image_Genesis {
 	 * @param $author
 	 * @param $common
 	 * @param $customizer
-	 * @param $description
 	 * @param $output
 	 * @param $rss
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	public function __construct( $admin, $author, $common, $customizer, $description, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
+	public function __construct( $admin, $author, $common, $customizer, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
 		$this->customizer  = $customizer;
-		$this->description = $description;
 		$this->output      = $output;
 		$this->post_meta   = $post_meta;
 		$this->rss         = $rss;
