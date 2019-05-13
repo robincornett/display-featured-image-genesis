@@ -36,7 +36,6 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function manage_output() {
 
-		$this->setting = displayfeaturedimagegenesis_get_setting();
 		if ( $this->quit_now() ) {
 			return;
 		}
@@ -57,7 +56,7 @@ class Display_Featured_Image_Genesis_Output {
 		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
 		$common   = $this->get_common_class();
 		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $common->version );
-		if ( $this->setting['max_height'] ) {
+		if ( $this->get_setting( 'max_height' ) ) {
 			$this->add_inline_style();
 		}
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
@@ -151,11 +150,12 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.3.0
 	 */
 	public function localize_scripts() {
+		$setting = $this->get_setting();
 		// backstretch settings which can be filtered
 		$backstretch_vars = apply_filters( 'display_featured_image_genesis_backstretch_variables', array(
-			'centeredX' => $this->setting['centeredX'] ? 'center' : 'left',
-			'centeredY' => $this->setting['centeredY'] ? 'center' : 'top',
-			'fade'      => $this->setting['fade'],
+			'centeredX' => $setting['centeredX'] ? 'center' : 'left',
+			'centeredY' => $setting['centeredY'] ? 'center' : 'top',
+			'fade'      => $setting['fade'],
 		) );
 
 		$image_id     = Display_Featured_Image_Genesis_Common::set_image_id();
@@ -179,7 +179,7 @@ class Display_Featured_Image_Genesis_Output {
 				'large'        => $large[3] ? $large[2] : '',
 				'medium_large' => $medium_large[3] ? $medium_large[2] : '',
 			),
-			'height'       => (int) $this->setting['less_header'],
+			'height'       => (int) $setting['less_header'],
 			'alignX'       => $backstretch_vars['centeredX'],
 			'alignY'       => $backstretch_vars['centeredY'],
 			'fade'         => (int) $backstretch_vars['fade'],
@@ -384,10 +384,11 @@ class Display_Featured_Image_Genesis_Output {
 	 * @return bool
 	 */
 	protected function quit_now() {
+		$setting       = $this->get_setting();
 		$disable       = false;
-		$exclude_front = is_front_page() && $this->setting['exclude_front'];
+		$exclude_front = is_front_page() && $setting['exclude_front'];
 		$post_type     = get_post_type();
-		$skip_singular = is_singular() && isset( $this->setting['skip'][ $post_type ] ) && $this->setting['skip'][ $post_type ] ? true : false;
+		$skip_singular = is_singular() && isset( $setting['skip'][ $post_type ] ) && $setting['skip'][ $post_type ] ? true : false;
 
 		if ( $this->get_skipped_posttypes() || $skip_singular || $exclude_front || 1 === (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true ) ) {
 			$disable = true;
@@ -424,7 +425,7 @@ class Display_Featured_Image_Genesis_Output {
 		$width  = (int) $item->backstretch[1];
 
 		// check if they have enabled display on subsequent pages
-		$is_paged = ! empty( $this->setting['is_paged'] ) ? $this->setting['is_paged'] : 0;
+		$is_paged = $this->get_setting( 'is_paged' );
 		// if there is no backstretch image set, or it is too small, or the image is in the content, or it's page 2+ and they didn't change the setting, die
 		if ( empty( $item->backstretch ) || $width <= $medium || ( is_paged() && ! $is_paged ) || ( is_singular() && false !== $item->content ) ) {
 			$can_do = false;
@@ -439,7 +440,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  2.0.0 (deprecated old function from 1.3.3)
 	 */
 	protected function move_excerpts() {
-		$move_excerpts = $this->setting['move_excerpts'];
+		$move_excerpts = $this->get_setting( 'move_excerpts' );
 		/**
 		 * Creates display_featured_image_genesis_omit_excerpt filter to check
 		 * whether get_post_type array should not move excerpts for this post type.
@@ -458,7 +459,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.2.0
 	 */
 	protected function move_title() {
-		$keep_titles = $this->setting['keep_titles'];
+		$keep_titles = $this->get_setting( 'keep_titles' );
 		/**
 		 * Creates display_featured_image_genesis_do_not_move_titles filter to check
 		 * whether get_post_type array should not move titles to overlay the featured image.
@@ -481,7 +482,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since 2.5.0
 	 */
 	public function change_thumbnail_fallback( $defaults ) {
-		if ( ! isset( $this->setting['thumbnails'] ) || ! $this->setting['thumbnails'] ) {
+		if ( ! $this->get_setting( 'thumbnails' ) ) {
 			return $defaults;
 		}
 		remove_action( 'genesis_entry_content', 'display_featured_image_genesis_add_archive_thumbnails', 5 );
@@ -583,5 +584,21 @@ class Display_Featured_Image_Genesis_Output {
 		$post_meta = (bool) get_post_meta( $post_id, $meta_key, true );
 
 		return (bool) ( is_home() || is_singular() ) && $post_meta;
+	}
+
+	/**
+	 * Get the plugin setting.
+	 * @param string $key
+	 *
+	 * @return mixed
+	 */
+	private function get_setting( $key = '' ) {
+		if ( isset( $this->setting ) ) {
+			return $key ? $this->setting[ $key ] : $this->setting;
+		}
+
+		$this->setting = displayfeaturedimagegenesis_get_setting();
+
+		return $key ? $this->setting[ $key ] : $this->setting;
 	}
 }
