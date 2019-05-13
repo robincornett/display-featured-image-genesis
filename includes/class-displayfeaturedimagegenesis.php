@@ -234,8 +234,8 @@ class Display_Featured_Image_Genesis {
 		$version = $this->common->version;
 		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_register_script( 'widget_selector', plugins_url( '/includes/js/widget-selector.js', dirname( __FILE__ ) ), array( 'jquery' ), $version );
 		wp_register_script( 'displayfeaturedimage-upload', plugins_url( "/includes/js/settings-upload{$minify}.js", dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version, true );
+		wp_register_script( 'widget_selector', plugins_url( "/includes/js/widget-selector{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 
 		$screen     = get_current_screen();
 		$screen_ids = array(

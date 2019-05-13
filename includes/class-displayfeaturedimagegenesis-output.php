@@ -127,7 +127,7 @@ class Display_Featured_Image_Genesis_Output {
 		$common = $this->get_common_class();
 		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script( 'backstretch', plugins_url( "/includes/js/backstretch{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), '2.1.16', true );
-		wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( '/includes/js/backstretch-set.js', dirname( __FILE__ ) ), array(
+		wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( "/includes/js/backstretch-set{$minify}.js", dirname( __FILE__ ) ), array(
 			'jquery',
 			'backstretch',
 		), $common->version, true );
