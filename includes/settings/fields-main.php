@@ -32,7 +32,7 @@ return array(
 		'choices'  => apply_filters(
 			'displayfeaturedimagegenesis_image_size_choices',
 			array(
-				'displayfeaturedimage_backstretch' => __( 'Backstretch (default)', 'display-featured-image-genesis' ),
+				'displayfeaturedimage_backstretch' => __( 'Banner (default)', 'display-featured-image-genesis' ),
 				'large'                            => __( 'Large', 'display-featured-image-genesis' ),
 			)
 		),
@@ -51,7 +51,7 @@ return array(
 		'title'    => __( 'Do Not Move Titles', 'display-featured-image-genesis' ),
 		'callback' => 'do_checkbox',
 		'section'  => 'main',
-		'label'    => __( 'Do not move the titles to overlay the backstretch Featured Image.', 'display-featured-image-genesis' ),
+		'label'    => __( 'Do not move the titles to overlay the banner featured image.', 'display-featured-image-genesis' ),
 		'type'     => 'checkbox',
 	),
 	array(

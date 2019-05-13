@@ -128,10 +128,13 @@ class Display_Featured_Image_Genesis_Post_Meta {
 			0 => __( 'Content type default', 'display-featured-image-genesis' ),
 			1 => __( 'Don\'t display the featured image', 'display-featured-image-genesis' ),
 		);
-		$image_sizes = apply_filters( 'displayfeaturedimagegenesis_image_size_choices', array(
-			'displayfeaturedimage_backstretch' => __( 'Use a backstretch image if it exists', 'display-featured-image-genesis' ),
-			'large'                            => __( 'Use a large (not backstretch) image', 'display-featured-image-genesis' ),
-		) );
+		$image_sizes = apply_filters(
+			'displayfeaturedimagegenesis_image_size_choices',
+			array(
+				'displayfeaturedimage_backstretch' => __( 'Use a banner image if it exists', 'display-featured-image-genesis' ),
+				'large'                            => __( 'Use a large (not banner) image', 'display-featured-image-genesis' ),
+			)
+		);
 
 		return array(
 			array(

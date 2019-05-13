@@ -24,7 +24,7 @@ $fields = array(
 		'callback'    => 'do_checkbox_array',
 		'section'     => 'cpt_sitewide',
 		'options'     => $this->get_post_types(),
-		'description' => __( 'Select content types which should always prefer to use the large image size instead of the backstretch, even if a backstretch size image is available (singular posts/pages, not archives).', 'display-featured-image-genesis' ),
+		'description' => __( 'Select content types which should always prefer to use the large image size instead of the banner, even if a banner size image is available (singular posts/pages, not archives).', 'display-featured-image-genesis' ),
 		'skip'        => true,
 	),
 );
