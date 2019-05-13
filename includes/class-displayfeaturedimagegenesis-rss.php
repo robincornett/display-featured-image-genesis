@@ -12,13 +12,11 @@ class Display_Featured_Image_Genesis_RSS {
 	/**
 	 * Decide whether or not to add the featured image to the feed or the feed excerpt
 	 *
-	 * @return filter the_excerpt_rss (if summaries) or the_content_feed (full text)
 	 * @since  1.5.0
 	 */
 	public function maybe_do_feed() {
 
-		$displaysetting = displayfeaturedimagegenesis_get_setting();
-		$feed_image     = $displaysetting['feed_image'];
+		$feed_image = displayfeaturedimagegenesis_get_setting( 'feed_image' );
 
 		// if the user isn't sending images to the feed, we're done
 		if ( ! $feed_image || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes' ) ) {
@@ -42,7 +40,8 @@ class Display_Featured_Image_Genesis_RSS {
 	 * add the featured image to the feed, unless it already exists
 	 * includes allowances for Send Images to RSS plugin, which processes before this
 	 *
-	 * @param return $content
+	 * @param $content
+	 * @return string
 	 * @since  1.5.0
 	 */
 	public function add_image_to_feed( $content ) {

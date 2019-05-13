@@ -45,25 +45,27 @@ class DisplayFeaturedImageGenesisGetSetting {
 				'large_priority'       => 12,
 				'large'                => array(),
 				'image_size'           => 'displayfeaturedimage_backstretch',
+				'scriptless'           => 0,
 			)
 		);
 	}
 
 	/**
 	 * Retrieve plugin setting.
-	 * @return array All plugin settings.
 	 *
+	 * @param string $key optional setting key
+	 * @return array All plugin settings.
 	 * @since 2.3.0
 	 */
-	public function get_display_setting() {
+	public function get_display_setting( $key = '' ) {
 		if ( isset( $this->setting ) ) {
-			return $this->setting;
+			return $key ? $this->setting[ $key ] : $this->setting;
 		}
 		$defaults = $this->defaults();
 		$setting  = get_option( 'displayfeaturedimagegenesis', $defaults );
 
 		$this->setting = wp_parse_args( $setting, $defaults );
 
-		return $this->setting;
+		return $key ? $this->setting[ $key ] : $this->setting;
 	}
 }

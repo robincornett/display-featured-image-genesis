@@ -46,12 +46,6 @@ class Display_Featured_Image_Genesis {
 	protected $description;
 
 	/**
-	 * Manages help tabs for settings page.
-	 * @var $helptabs Display_Featured_Image_Genesis_HelpTabs
-	 */
-	protected $helptabs;
-
-	/**
 	 * Handles all image output functionality
 	 * @var Display_Featured_Image_Genesis_Output $output
 	 */
@@ -95,20 +89,16 @@ class Display_Featured_Image_Genesis {
 	 * @param $author
 	 * @param $common
 	 * @param $customizer
-	 * @param $description
-	 * @param $helptabs
 	 * @param $output
 	 * @param $rss
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	public function __construct( $admin, $author, $common, $customizer, $description, $helptabs, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
+	public function __construct( $admin, $author, $common, $customizer, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
 		$this->admin       = $admin;
 		$this->author      = $author;
 		$this->common      = $common;
 		$this->customizer  = $customizer;
-		$this->description = $description;
-		$this->helptabs    = $helptabs;
 		$this->output      = $output;
 		$this->post_meta   = $post_meta;
 		$this->rss         = $rss;
@@ -155,7 +145,6 @@ class Display_Featured_Image_Genesis {
 		// Settings
 		add_action( 'admin_menu', array( $this->settings, 'do_submenu_page' ) );
 		add_filter( 'displayfeaturedimagegenesis_get_setting', array( $this->settings, 'get_display_setting' ) );
-		add_action( 'load-appearance_page_displayfeaturedimagegenesis', array( $this->helptabs, 'help' ) );
 
 		// Customizer
 		add_action( 'customize_register', array( $this->customizer, 'customizer' ) );
@@ -218,8 +207,8 @@ class Display_Featured_Image_Genesis {
 		) );
 		add_image_size( 'displayfeaturedimage_backstretch', (int) $args['width'], (int) $args['height'], (bool) $args['crop'] );
 
-		$displaysetting = displayfeaturedimagegenesis_get_setting();
-		if ( $displaysetting['move_excerpts'] ) {
+		$move_excerpts = displayfeaturedimagegenesis_get_setting( 'move_excerpts' );
+		if ( $move_excerpts ) {
 			add_post_type_support( 'page', 'excerpt' );
 		}
 	}
@@ -241,9 +230,10 @@ class Display_Featured_Image_Genesis {
 	public function enqueue_scripts() {
 
 		$version = $this->common->version;
+		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-		wp_register_script( 'displayfeaturedimage-upload', plugins_url( '/includes/js/settings-upload.js', dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version );
-		wp_register_script( 'widget_selector', plugins_url( '/includes/js/widget-selector.js', dirname( __FILE__ ) ), array( 'jquery' ), $version );
+		wp_register_script( 'displayfeaturedimage-upload', plugins_url( "/includes/js/settings-upload{$minify}.js", dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version, true );
+		wp_register_script( 'widget_selector', plugins_url( "/includes/js/widget-selector{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), $version, true );
 
 		$screen     = get_current_screen();
 		$screen_ids = array(
@@ -255,9 +245,13 @@ class Display_Featured_Image_Genesis {
 		if ( in_array( $screen->id, $screen_ids, true ) || ! empty( $screen->taxonomy ) ) {
 			wp_enqueue_media();
 			wp_enqueue_script( 'displayfeaturedimage-upload' );
-			wp_localize_script( 'displayfeaturedimage-upload', 'objectL10n', array(
-				'text' => __( 'Select Image', 'display-featured-image-genesis' ),
-			) );
+			wp_localize_script(
+				'displayfeaturedimage-upload',
+				'DisplayFeaturedImageGenesis',
+				array(
+					'text' => __( 'Select Image', 'display-featured-image-genesis' ),
+				)
+			);
 		}
 	}
 

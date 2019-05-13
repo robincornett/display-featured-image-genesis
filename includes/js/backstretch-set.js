@@ -50,13 +50,9 @@
 		return source;
 	}
 
-	$( document ).ready( function () {
-		plugin.params = typeof BackStretchVars === 'undefined' ? '' : BackStretchVars;
-
-		if ( typeof plugin.params === 'undefined' ) {
-			return;
-		}
+	plugin.params = typeof BackStretchVars === 'undefined' ? '' : BackStretchVars;
+	if ( typeof plugin.params !== 'undefined' ) {
 		plugin.init();
-	} );
+	}
 
 })( document, jQuery );

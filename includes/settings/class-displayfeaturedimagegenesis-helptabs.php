@@ -92,7 +92,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 					array(
 						'id'      => $this->id . 'sitewide',
 						'title'   => __( 'Optional Sitewide Settings', 'display-featured-image-genesis' ),
-						'content' => $this->image_size() . $this->skip_front() . $this->keep_titles() . $this->excerpts(),
+						'content' => $this->image_size() . $this->javascript() . $this->skip_front() . $this->keep_titles() . $this->excerpts(),
 					),
 					array(
 						'id'      => $this->id . 'archives',
@@ -117,9 +117,9 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * @since 2.6.0
 	 */
 	protected function height() {
-		$help  = '<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your backstretch image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the backstretch image, making it shorter.', 'display-featured-image-genesis' ) . '</p>';
-		$help .= '<p>' . __( 'The plugin determines the size of your backstretch image based on the size of the user\'s browser window. Changing the "Height" setting tells the plugin to subtract that number of pixels from the measured height of the user\'s window, regardless of the size of that window.', 'display-featured-image-genesis' ) . '</p>';
-		$help .= '<p>' . __( 'If you need to control the size of the backstretch Featured Image output with more attention to the user\'s screen size, add a Maximum Height number, which affects the CSS.', 'display-featured-image-genesis' ) . '</p>';
+		$help  = '<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your backstretch banner image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the backstretch banner image, making it shorter.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'The plugin determines the size of your backstretch banner image based on the size of the user\'s browser window. Changing the "Height" setting tells the plugin to subtract that number of pixels from the measured height of the user\'s window, regardless of the size of that window.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'If you need to control the size of the backstretch banner image output with more attention to the user\'s screen size, add a Maximum Height number, which affects the CSS.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}
@@ -165,7 +165,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 */
 	protected function keep_titles() {
 		$help  = '<h3>' . __( 'Do Not Move Titles', 'display-featured-image-genesis' ) . '</h3>';
-		$help .= '<p>' . __( 'This setting applies to the backstretch Featured Image only. It allows you to keep the post/page titles in their original location, instead of overlaying the new image.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'This setting applies to the banner Featured Image only. It allows you to keep the post/page titles in their original location, instead of overlaying the new image.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}
@@ -293,6 +293,18 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	protected function image_size() {
 		$help  = '<h3>' . __( 'Preferred Image Size', 'display-featured-image-genesis' ) . '</h3>';
 		$help .= '<p>' . __( 'Set the default image size you would like to use sitewide. This can be overridden per content type, or on an individual post.', 'display-featured-image-genesis' ) . '</p>';
+
+		return $help;
+	}
+
+	/**
+	 * Help text for the disable JavaScript setting.
+	 * @since 3.1.0
+	 * @return string
+	 */
+	protected function javascript() {
+		$help  = '<h3>' . __( 'Disable JavaScript', 'display-featured-image-genesis' ) . '</h3>';
+		$help .= '<p>' . __( 'Optionally disable JavaScript for your banner images. The output will mostly be similar, although some behavior will change. For example, without the backstretch script, images will always display full width, regardless of screen size (with backstretch, you\'ll often only see the center of the image on small screens.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}

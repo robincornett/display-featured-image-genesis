@@ -6,7 +6,7 @@
  * @package   Display_Featured_Image_Genesis
  * @copyright 2016 Robin Cornett
  */
-class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Settings_Define {
+class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Settings {
 
 	/**
 	 * Section for the Customizer.
@@ -64,23 +64,23 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 			array(
 				'id'     => 'main',
 				'title'  => __( 'Main', 'display-featured-image-genesis' ),
-				'fields' => $this->define_main_fields(),
+				'fields' => include 'fields-main.php',
 			),
 			array(
 				'id'     => 'backstretch',
 				'title'  => __( 'Backstretch Output', 'display-featured-image-genesis' ),
-				'fields' => $this->define_style_fields(),
+				'fields' => include 'fields-style.php',
 			),
 			array(
 				'id'          => 'cpt',
 				'title'       => __( 'Content Types', 'display-featured-image-genesis' ),
-				'fields'      => $this->define_cpt_fields(),
+				'fields'      => include 'fields-cpt.php',
 				'description' => __( 'Optional: set a custom image for search results and 404 (no results found) pages, as well as content types.', 'display-featured-image-genesis' ),
 			),
 			array(
 				'id'     => 'advanced',
 				'title'  => __( 'Advanced', 'display-featured-image-genesis' ),
-				'fields' => $this->define_advanced_fields(),
+				'fields' => include 'fields-advanced.php',
 			),
 		);
 		foreach ( $sections as $section ) {

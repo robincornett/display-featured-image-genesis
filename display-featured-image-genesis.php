@@ -34,17 +34,14 @@ function display_featured_image_genesis_require() {
 		'class-displayfeaturedimagegenesis',
 		'settings/class-displayfeaturedimagegenesis-getsetting',
 		'settings/class-displayfeaturedimagegenesis-helper',
-		'settings/class-displayfeaturedimagegenesis-settings-define',
 		'class-displayfeaturedimagegenesis-admin',
 		'class-displayfeaturedimagegenesis-author',
 		'class-displayfeaturedimagegenesis-common',
-		'settings/class-displayfeaturedimagegenesis-customizer',
-		'class-displayfeaturedimagegenesis-description',
-		'settings/class-displayfeaturedimagegenesis-helptabs',
 		'class-displayfeaturedimagegenesis-output',
 		'class-displayfeaturedimagegenesis-postmeta',
 		'class-displayfeaturedimagegenesis-rss',
 		'settings/class-displayfeaturedimagegenesis-settings',
+		'settings/class-displayfeaturedimagegenesis-customizer',
 		'class-displayfeaturedimagegenesis-taxonomies',
 		'sixtenpress-shortcodes/sixtenpress-shortcodes',
 		'widgets/class-displayfeaturedimagegenesis-widgets',
@@ -57,27 +54,23 @@ function display_featured_image_genesis_require() {
 display_featured_image_genesis_require();
 
 // Instantiate dependent classes
-$displayfeaturedimagegenesis_helper      = new Display_Featured_Image_Genesis_Helper();
-$displayfeaturedimagegenesis_admin       = new Display_Featured_Image_Genesis_Admin();
-$displayfeaturedimagegenesis_author      = new Display_Featured_Image_Genesis_Author();
-$displayfeaturedimagegenesis_common      = new Display_Featured_Image_Genesis_Common();
-$displayfeaturedimagegenesis_customizer  = new Display_Featured_Image_Genesis_Customizer();
-$displayfeaturedimagegenesis_description = new Display_Featured_Image_Genesis_Description();
-$displayfeaturedimagegenesis_helptabs    = new Display_Featured_Image_Genesis_HelpTabs();
-$displayfeaturedimagegenesis_output      = new Display_Featured_Image_Genesis_Output();
-$displayfeaturedimagegenesis_post_meta   = new Display_Featured_Image_Genesis_Post_Meta();
-$displayfeaturedimagegenesis_rss         = new Display_Featured_Image_Genesis_RSS();
-$displayfeaturedimagegenesis_settings    = new Display_Featured_Image_Genesis_Settings();
-$displayfeaturedimagegenesis_taxonomies  = new Display_Featured_Image_Genesis_Taxonomies();
-$displayfeaturedimagegenesis_widgets     = new DisplayFeaturedImageGenesisWidgets();
+$displayfeaturedimagegenesis_helper     = new Display_Featured_Image_Genesis_Helper();
+$displayfeaturedimagegenesis_admin      = new Display_Featured_Image_Genesis_Admin();
+$displayfeaturedimagegenesis_author     = new Display_Featured_Image_Genesis_Author();
+$displayfeaturedimagegenesis_common     = new Display_Featured_Image_Genesis_Common();
+$displayfeaturedimagegenesis_customizer = new Display_Featured_Image_Genesis_Customizer();
+$displayfeaturedimagegenesis_output     = new Display_Featured_Image_Genesis_Output();
+$displayfeaturedimagegenesis_post_meta  = new Display_Featured_Image_Genesis_Post_Meta();
+$displayfeaturedimagegenesis_rss        = new Display_Featured_Image_Genesis_RSS();
+$displayfeaturedimagegenesis_settings   = new Display_Featured_Image_Genesis_Settings();
+$displayfeaturedimagegenesis_taxonomies = new Display_Featured_Image_Genesis_Taxonomies();
+$displayfeaturedimagegenesis_widgets    = new DisplayFeaturedImageGenesisWidgets();
 
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_admin,
 	$displayfeaturedimagegenesis_author,
 	$displayfeaturedimagegenesis_common,
 	$displayfeaturedimagegenesis_customizer,
-	$displayfeaturedimagegenesis_description,
-	$displayfeaturedimagegenesis_helptabs,
 	$displayfeaturedimagegenesis_output,
 	$displayfeaturedimagegenesis_post_meta,
 	$displayfeaturedimagegenesis_rss,

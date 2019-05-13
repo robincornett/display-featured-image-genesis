@@ -8,12 +8,6 @@
 class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Genesis_Helper {
 
 	/**
-	 * The common plugin class.
-	 * @var $common \Display_Featured_Image_Genesis_Common
-	 */
-	protected $common;
-
-	/**
 	 * The plugin admin page.
 	 * @var $page string
 	 */
@@ -37,7 +31,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 */
 	public function do_submenu_page() {
 
-		$this->common  = new Display_Featured_Image_Genesis_Common();
 		$this->setting = $this->get_display_setting();
 
 		add_theme_page(
@@ -56,12 +49,27 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * Build out the settings page sections/fields.
 	 */
 	public function build_settings_page() {
-		include_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-settings-define.php';
-		$definitions  = new Display_Featured_Image_Genesis_Settings_Define();
-		$sections     = $definitions->register_sections();
-		$this->fields = $definitions->register_fields();
+		$sections     = include 'sections.php';
+		$this->fields = $this->get_fields();
 		$this->add_sections( $sections );
 		$this->add_fields( $this->fields, $sections );
+
+		include_once 'class-displayfeaturedimagegenesis-helptabs.php';
+		$help = new Display_Featured_Image_Genesis_HelpTabs();
+		$help->help();
+	}
+
+	/**
+	 * Get the settings fields.
+	 * @return array
+	 */
+	protected function get_fields() {
+		$main     = include 'fields-main.php';
+		$style    = include 'fields-style.php';
+		$cpt      = include 'fields-cpt.php';
+		$advanced = include 'fields-advanced.php';
+
+		return array_merge( $main, $style, $cpt, $advanced );
 	}
 
 	/**
@@ -118,13 +126,28 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 2.5.0
 	 */
 	protected function do_tabs( $active_tab ) {
-		$tabs    = $this->define_tabs();
+		$tabs    = include 'tabs.php';
 		$output  = '<div class="nav-tab-wrapper">';
 		$output .= sprintf( '<h2 id="settings-tabs" class="screen-reader-text">%s</h2>', __( 'Settings Tabs', 'display-featured-image-genesis' ) );
 		$output .= '<ul>';
 		foreach ( $tabs as $tab ) {
-			$class   = $active_tab === $tab['id'] ? ' nav-tab-active' : '';
-			$output .= sprintf( '<li><a href="themes.php?page=%s&tab=%s" class="nav-tab%s">%s</a></li>', $this->page, $tab['id'], $class, $tab['tab'] );
+			$class = 'nav-tab';
+			if ( $active_tab === $tab['id'] ) {
+				$class .= ' nav-tab-active';
+			}
+			$query   = add_query_arg(
+				array(
+					'page' => $this->page,
+					'tab'  => $tab['id'],
+				),
+				'themes.php'
+			);
+			$output .= sprintf(
+				'<li><a href="%s" class="%s">%s</a></li>',
+				esc_url( $query ),
+				$class,
+				$tab['tab']
+			);
 		}
 		$output .= '</ul>';
 		$output .= '</div>';
@@ -138,36 +161,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 1.1.0
 	 */
 	public function register_settings() {
-		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array(
-			$this,
-			'do_validation_things',
-		) );
-	}
-
-	/**
-	 * Define tabs for the settings page.
-	 * @return array
-	 * @since 2.6.0
-	 */
-	protected function define_tabs() {
-		return array(
-			'main'     => array(
-				'id'  => 'main',
-				'tab' => __( 'Main', 'display-featured-image-genesis' ),
-			),
-			'style'    => array(
-				'id'  => 'style',
-				'tab' => __( 'Backstretch Output', 'display-featured-image-genesis' ),
-			),
-			'cpt'      => array(
-				'id'  => 'cpt',
-				'tab' => __( 'Content Types', 'display-featured-image-genesis' ),
-			),
-			'advanced' => array(
-				'id'  => 'advanced',
-				'tab' => __( 'Advanced', 'display-featured-image-genesis' ),
-			),
-		);
+		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
 	}
 
 	/**
@@ -183,7 +177,15 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * Style section description
 	 */
 	public function style_section_description() {
-		return __( 'These settings modify the output style/methods for the backstretch image.', 'display-featured-image-genesis' );
+		return __( 'These settings modify the output style/methods for the banner image.', 'display-featured-image-genesis' );
+	}
+
+	/**
+	 * Backtretch section description
+	 * @return string
+	 */
+	public function backstretch_section_description() {
+		return __( 'These settings apply only to the backstretch (script) banner image.', 'display-featured-image-genesis' );
 	}
 
 	/**
@@ -288,6 +290,51 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
+	 * @return array
+	 */
+	public function pick_center() {
+		return array(
+			1 => __( 'Center', 'display-featured-image-genesis' ),
+			0 => __( 'Do Not Center', 'display-featured-image-genesis' ),
+		);
+	}
+
+	/**
+	 * Get the post types as options.
+	 * @return array
+	 */
+	protected function get_post_types() {
+		$post_types = $this->get_content_types_built_in();
+		$options    = array();
+		foreach ( $post_types as $post_type ) {
+			$object                = get_post_type_object( $post_type );
+			$options[ $post_type ] = $object->label;
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Get the hooks for the large image.
+	 *
+	 * @return array
+	 */
+	protected function large_hook_options() {
+		$hooks = array(
+			'genesis_before_loop'                 => 'genesis_before_loop ' . __( '(default)', 'display-featured-image-genesis' ),
+			'genesis_after_header'                => 'genesis_after_header',
+			'genesis_before_content_sidebar_wrap' => 'genesis_before_content_sidebar_wrap',
+		);
+		$html5 = genesis_html5() ? array(
+			'genesis_before_entry'  => 'genesis_before_entry ' . __( '(HTML5 themes)', 'display-featured-image-genesis' ),
+			'genesis_entry_header'  => 'genesis_entry_header ' . __( '(HTML5 themes)', 'display-featured-image-genesis' ),
+			'genesis_entry_content' => 'genesis_entry_content ' . __( '(HTML5 themes)', 'display-featured-image-genesis' ),
+		) : array();
+
+		return array_merge( $hooks, $html5 );
+	}
+
+	/**
 	 * validate all inputs
 	 *
 	 * @param $new_value array
@@ -308,11 +355,8 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		check_admin_referer( $action, $nonce );
 		$new_value = array_merge( $this->setting, $new_value );
 
-		foreach ( array( 'define', 'validate' ) as $file ) {
-			include_once plugin_dir_path( __FILE__ ) . "class-displayfeaturedimagegenesis-settings-{$file}.php";
-		}
-		$definitions = new Display_Featured_Image_Genesis_Settings_Define();
-		$validation  = new Display_Featured_Image_Genesis_Settings_Validate( $definitions->register_fields(), $this->setting );
+		include_once 'class-displayfeaturedimagegenesis-settings-validate.php';
+		$validation = new Display_Featured_Image_Genesis_Settings_Validate( $this->get_fields(), $this->setting );
 
 		return $validation->validate( $new_value );
 	}

@@ -120,7 +120,7 @@ function display_featured_image_genesis_get_default_image_url( $size = 'displayf
 function display_featured_image_genesis_get_cpt_image_id( $image_id = '' ) {
 
 	$post_type      = '';
-	$displaysetting = displayfeaturedimagegenesis_get_setting();
+	$displaysetting = displayfeaturedimagegenesis_get_setting( 'post_type' );
 	$object         = get_queried_object();
 	if ( ! $object || is_admin() ) {
 		return '';
@@ -133,8 +133,8 @@ function display_featured_image_genesis_get_cpt_image_id( $image_id = '' ) {
 	} elseif ( $object->post_type ) { // on singular
 		$post_type = $object->post_type;
 	}
-	if ( ! empty( $displaysetting['post_type'][ $post_type ] ) ) {
-		$image_id = $displaysetting['post_type'][ $post_type ];
+	if ( ! empty( $displaysetting[ $post_type ] ) ) {
+		$image_id = $displaysetting[ $post_type ];
 	}
 
 	return (int) $image_id;
@@ -226,12 +226,14 @@ function displayfeaturedimagegenesis_check_image_id( $image_id = '' ) {
 
 /**
  * Helper function to get the plugin settings.
+ *
+ * @param string $key
  * @return mixed
  *
  * @since 2.4.2
  */
-function displayfeaturedimagegenesis_get_setting() {
-	return apply_filters( 'displayfeaturedimagegenesis_get_setting', false );
+function displayfeaturedimagegenesis_get_setting( $key = '' ) {
+	return apply_filters( 'displayfeaturedimagegenesis_get_setting', $key );
 }
 
 /**

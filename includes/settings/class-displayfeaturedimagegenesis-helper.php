@@ -8,12 +8,6 @@
 class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisGetSetting {
 
 	/**
-	 * Variable for the plugin setting.
-	 * @var $setting
-	 */
-	protected $setting;
-
-	/**
 	 * Base id/slug for the settings page.
 	 * @var string $page
 	 */
@@ -237,7 +231,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		$alt_text = sprintf( __( '%s featured image', 'display-featured-image-genesis' ), esc_attr( $alt ) );
 		$preview  = wp_get_attachment_image_src( (int) $id, 'medium' );
 
-		return sprintf( '<div class="upload_logo_preview"><img src="%s" alt="%s" /></div>', esc_url( $preview[0] ), esc_attr( $alt_text ) );
+		return sprintf( '<div class="upload-image-preview"><img src="%s" alt="%s" /></div>', esc_url( $preview[0] ), esc_attr( $alt_text ) );
 	}
 
 	/**
@@ -250,16 +244,17 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 */
 	public function render_buttons( $id, $name ) {
 		$id = $id ? (int) $id : '';
-		printf( '<input type="hidden" class="upload_image_id" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
-		printf( '<input id="%s" type="button" class="upload_default_image button-secondary" value="%s" />',
+		printf( '<input type="hidden" class="upload-image-id" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
+		printf(
+			'<button id="%s" class="upload-image button-secondary">%s</button>',
 			esc_attr( $name ),
 			esc_attr__( 'Select Image', 'display-featured-image-genesis' )
 		);
-		if ( ! empty( $id ) ) {
-			printf( ' <input type="button" class="delete_image button-secondary" value="%s" />',
-				esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
-			);
-		}
+		printf(
+			' <button class="delete-image button-secondary"%s>%s</button>',
+			empty( $id ) ? 'style="display:none;"' : '',
+			esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
+		);
 	}
 
 	/**
