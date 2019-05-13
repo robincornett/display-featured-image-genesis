@@ -62,9 +62,9 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		<div class="form-field term-image-wrap">
 			<?php wp_nonce_field( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis' ); ?>
 			<label for="displayfeaturedimagegenesis[term_image]"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
-			<input type="hidden" class="upload_image_id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />
-			<input id="upload_default_image" type="button" class="upload_default_image button-secondary" value="<?php esc_attr_e( 'Select Image', 'display-featured-image-genesis' ); ?>" />
-			<input type="button" class="delete_image button-secondary" value="<?php esc_attr_e( 'Delete Image', 'display-featured-image-genesis' ); ?>" />
+			<input type="hidden" class="upload-image-id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />
+			<button id="upload_default_image" type="button" class="upload-image button-secondary"><?php esc_attr_e( 'Select Image', 'display-featured-image-genesis' ); ?></button>
+			<button class="delete-image button-secondary"><?php esc_attr_e( 'Delete Image', 'display-featured-image-genesis' ); ?></button>
 			<p class="description"><?php esc_attr_e( 'Set Featured Image for new term.', 'display-featured-image-genesis' ); ?></p>
 		</div>
 	<?php

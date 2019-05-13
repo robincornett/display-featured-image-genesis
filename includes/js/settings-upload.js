@@ -10,7 +10,7 @@
 	DFIG.upload = function () {
 		$( '.upload-image' ).on( 'click.upload', _uploadMedia );
 		$( '.delete-image' ).on( 'click.delete', _deleteMedia );
-		$( '#submit' ).on( 'click.term', _termImages );
+		$( '#addtag #submit' ).on( 'click.term', _termImages );
 
 		function _uploadMedia( e ) {
 			e.preventDefault();
