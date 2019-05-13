@@ -13,15 +13,16 @@
  */
 class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_Genesis_Helper {
 
-	protected $settings;
-
 	/**
 	 * set up all actions for adding featured images to taxonomies
 	 * @since  2.0.0
 	 */
 	public function set_taxonomy_meta() {
+		if ( ! function_exists( 'get_term_meta' ) ) {
+			return;
+		}
 
-		register_meta( 'term', 'displayfeaturedimagegenesis', array( $this, 'validate_taxonomy_image' ) );
+		register_meta( 'term', $this->page, array( $this, 'validate_taxonomy_image' ) );
 
 		$args       = array(
 			'public' => true,
@@ -60,15 +61,12 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 		?>
 		<div class="form-field term-image-wrap">
-			<?php wp_nonce_field( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis' ); ?>
-			<label for="displayfeaturedimagegenesis[term_image]"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
-			<input type="hidden" class="upload-image-id" id="term_image_id" name="displayfeaturedimagegenesis[term_image]" />
-			<button id="upload_default_image" type="button" class="upload-image button-secondary"><?php esc_attr_e( 'Select Image', 'display-featured-image-genesis' ); ?></button>
-			<button class="delete-image button-secondary"><?php esc_attr_e( 'Delete Image', 'display-featured-image-genesis' ); ?></button>
+			<?php wp_nonce_field( $this->page, $this->page ); ?>
+			<label for="<?php echo esc_attr( $this->page ); ?>[term_image]"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
+			<?php $this->render_buttons( false, "{$this->page}[term_image]" ); ?>
 			<p class="description"><?php esc_attr_e( 'Set Featured Image for new term.', 'display-featured-image-genesis' ); ?></p>
 		</div>
-	<?php
-
+		<?php
 	}
 
 	/**
@@ -83,22 +81,25 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		$image_id = displayfeaturedimagegenesis_get_term_image( $term_id );
 
 		echo '<tr class="form-field term-image-wrap">';
-			printf( '<th scope="row" valign="top"><label for="displayfeaturedimagegenesis[term_image]">%s</label></th>',
-				esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
-			);
-			echo '<td>';
-				$name = 'displayfeaturedimagegenesis[term_image]';
-				if ( $image_id ) {
-					echo wp_kses_post( $this->render_image_preview( $image_id, $term->name ) );
-				}
-				$this->render_buttons( $image_id, $name );
-				echo '<p class="description">';
-				printf(
-					esc_attr__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
-					esc_attr( $term->name )
-				);
-				echo '</p>';
-			echo '</td>';
+		printf(
+			'<th scope="row" ><label for="%s[term_image]">%s</label></th>',
+			esc_attr( $this->page ),
+			esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
+		);
+		echo '<td>';
+		$name = "{$this->page}[term_image]";
+		if ( $image_id ) {
+			echo wp_kses_post( $this->render_image_preview( $image_id, $term->name ) );
+		}
+		$this->render_buttons( $image_id, $name );
+		echo '<p class="description">';
+		printf(
+			/* translators: name of the term */
+			esc_attr__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
+			esc_attr( $term->name )
+		);
+		echo '</p>';
+		echo '</td>';
 		echo '</tr>';
 	}
 
@@ -109,20 +110,20 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 * @since 2.0.0
 	 */
 	public function save_taxonomy_custom_meta( $term_id ) {
-
-		if ( ! isset( $_POST['displayfeaturedimagegenesis'] ) ) {
+		$input = filter_input( INPUT_POST, $this->page, FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		if ( ! $input ) {
 			return;
 		}
-		$input          = $_POST['displayfeaturedimagegenesis'];
-		$displaysetting = get_option( "displayfeaturedimagegenesis_$term_id", false );
-		$action         = function_exists( 'get_term_meta' ) ? 'update_term_meta' : 'update_options_meta';
-		$this->$action( $term_id, $input, $displaysetting );
+		$displaysetting = get_option( "{$this->page}_{$term_id}", false );
+		$this->update_term_meta( $term_id, $input, $displaysetting );
 	}
 
 	/**
 	 * update/delete term meta
-	 * @param  int $term_id        term id
-	 * @param  array $displaysetting old option, if it exists
+	 *
+	 * @param int   $term_id        term id
+	 * @param       $input
+	 * @param array $displaysetting old option, if it exists
 	 *
 	 * @since 2.4.0
 	 */
@@ -130,17 +131,17 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		$new_image = $this->validate_taxonomy_image( $input['term_image'] );
 		if ( null === $new_image ) {
 			// if the new image is empty, delete term_meta and old option
-			delete_term_meta( $term_id, 'displayfeaturedimagegenesis' );
-			delete_option( "displayfeaturedimagegenesis_$term_id" );
+			delete_term_meta( $term_id, $this->page );
+			delete_option( "{$this->page}_{$term_id}" );
 		} elseif ( false !== $new_image ) {
 			// if the new image is different from the existing term meta
-			$current_setting = get_term_meta( $term_id, 'displayfeaturedimagegenesis' );
+			$current_setting = get_term_meta( $term_id, $this->page );
 			if ( $current_setting !== $new_image ) {
-				update_term_meta( $term_id, 'displayfeaturedimagegenesis', (int) $new_image );
+				update_term_meta( $term_id, $this->page, (int) $new_image );
 			}
 			// if there is a valid image, and the old setting exists
 			if ( $displaysetting ) {
-				delete_option( "displayfeaturedimagegenesis_$term_id" );
+				delete_option( "{$this->page}_{$term_id}" );
 			}
 		}
 	}
@@ -153,6 +154,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 * @since 2.4.0
 	 */
 	protected function update_options_meta( $term_id, $input, $displaysetting ) {
+		_deprecated_function( __FUNCTION__, '3.1.0' );
 		$cat_keys   = array_keys( $input );
 		$is_updated = false;
 		foreach ( $cat_keys as $key ) {
@@ -163,7 +165,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 				}
 				$displaysetting[ $key ] = $this->validate_taxonomy_image( $input[ $key ] );
 				if ( null === $displaysetting[ $key ] ) {
-					delete_option( "displayfeaturedimagegenesis_$term_id" );
+					delete_option( "{$this->page}_{$term_id}" );
 				} elseif ( false !== $displaysetting[ $key ] ) {
 					$is_updated = true;
 				}
@@ -171,7 +173,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		}
 		// Save the option array.
 		if ( $is_updated ) {
-			update_option( "displayfeaturedimagegenesis_$term_id", $displaysetting );
+			update_option( "{$this->page}_{$term_id}", $displaysetting );
 		}
 	}
 
@@ -210,12 +212,13 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		$term_help  = '<h3>' . __( 'Set Featured Image', 'display-featured-image-genesis' ) . '</h3>';
 		$term_help .= '<p>' . __( 'You may set a featured image for your terms. This image will be used on the term archive page, and as a fallback image on a single post page if it does not have a featured image of its own.', 'display-featured-image-genesis' ) . '</p>';
 
-		$screen->add_help_tab( array(
-			'id'      => 'displayfeaturedimage_term-help',
-			'title'   => __( 'Featured Image', 'display-featured-image-genesis' ),
-			'content' => $term_help,
-		) );
-
+		$screen->add_help_tab(
+			array(
+				'id'      => 'displayfeaturedimage_term-help',
+				'title'   => __( 'Featured Image', 'display-featured-image-genesis' ),
+				'content' => $term_help,
+			)
+		);
 	}
 
 	/**
@@ -231,8 +234,8 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 */
 	public function split_shared_term( $old_term_id, $new_term_id ) {
 
-		$old_setting = get_option( "displayfeaturedimagegenesis_$old_term_id" );
-		$new_setting = get_option( "displayfeaturedimagegenesis_$new_term_id" );
+		$old_setting = get_option( "{$this->page}_{$old_term_id}" );
+		$new_setting = get_option( "{$this->page}_{$new_term_id}" );
 
 		if ( ! isset( $old_setting ) ) {
 			return;
@@ -240,7 +243,6 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 		$new_setting = $old_setting;
 
-		update_option( "displayfeaturedimagegenesis_$new_term_id", $new_setting );
-
+		update_option( "{$this->page}_{$new_term_id}", $new_setting );
 	}
 }
