@@ -19,10 +19,10 @@ class DisplayFeaturedImageGenesisWidgets {
 			'taxonomy'    => 'Display_Featured_Image_Genesis_Widget_Taxonomy',
 		);
 
-		require_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-widgets-form.php';
-		require_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-widgets-update.php';
+		require_once 'class-displayfeaturedimagegenesis-widgets-form.php';
+		require_once 'class-displayfeaturedimagegenesis-widgets-update.php';
 		foreach ( $widgets as $file => $widget ) {
-			require_once plugin_dir_path( __FILE__ ) . 'displayfeaturedimagegenesis-' . $file . '-widget.php';
+			require_once 'displayfeaturedimagegenesis-' . $file . '-widget.php';
 			register_widget( $widget );
 		}
 	}
@@ -31,16 +31,16 @@ class DisplayFeaturedImageGenesisWidgets {
 	 * Register widget shortcodes.
 	 */
 	public function register_shortcodes() {
-		require_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-widgets-shortcodes.php';
+		require_once 'class-displayfeaturedimagegenesis-widgets-shortcodes.php';
 		$shortcode_class = new DisplayFeaturedImageGenesisWidgetsShortcodes();
 		foreach ( array( 'author', 'post_type', 'term' ) as $shortcode ) {
 			add_shortcode( "displayfeaturedimagegenesis_{$shortcode}", array( $shortcode_class, "shortcode_{$shortcode}" ) );
 		}
-		$setting = displayfeaturedimagegenesis_get_setting();
-		if ( ! $setting['shortcodes'] ) {
+		$setting = displayfeaturedimagegenesis_get_setting( 'shortcodes' );
+		if ( ! $setting ) {
 			return;
 		}
-		require_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-widgets-shortcodes-editor.php';
+		require_once 'class-displayfeaturedimagegenesis-widgets-shortcodes-editor.php';
 		$editor = new DisplayFeaturedImageGenesisWidgetsShortcodesEditor();
 		add_filter( 'sixtenpress_shortcode_inline_css', array( $editor, 'inline_css' ) );
 		add_action( 'sixtenpress_shortcode_init', array( $editor, 'shortcode_buttons' ) );
