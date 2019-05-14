@@ -117,9 +117,9 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * @since 2.6.0
 	 */
 	protected function height() {
-		$help  = '<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your backstretch banner image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the backstretch banner image, making it shorter.', 'display-featured-image-genesis' ) . '</p>';
-		$help .= '<p>' . __( 'The plugin determines the size of your backstretch banner image based on the size of the user\'s browser window. Changing the "Height" setting tells the plugin to subtract that number of pixels from the measured height of the user\'s window, regardless of the size of that window.', 'display-featured-image-genesis' ) . '</p>';
-		$help .= '<p>' . __( 'If you need to control the size of the backstretch banner image output with more attention to the user\'s screen size, add a Maximum Height number, which affects the CSS.', 'display-featured-image-genesis' ) . '</p>';
+		$help  = '<p>' . __( 'Depending on how your header/nav are set up, or if you just do not want your banner image to extend to the bottom of the user screen, you may want to change this number. It will raise the bottom line of the banner image, making it shorter.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'The plugin determines the size of your banner image based on the size of the user\'s browser window. Changing the "Height" setting tells the plugin to subtract that number of pixels from the measured height of the user\'s window, regardless of the size of that window.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'If you need to control the size of the banner image output with more attention to the user\'s screen size, add a Maximum Height number, which affects the CSS.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}
@@ -130,13 +130,13 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * @since 2.6.0
 	 */
 	protected function default_image() {
-		$help   = '<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives.', 'display-featured-image-genesis' ) . '</p>';
-		$help  .= '<p>' . sprintf(
 		$large = displayfeaturedimagegenesis_get()->minimum_backstretch_width();
+		$help  = '<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . sprintf(
 			__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $large + 1 )
 		) . '</p>';
-		$help  .= '<p>' . __( 'If you choose "Always Use Default", your default image will be used site wide, no matter what content types/posts/etc. have featured images set.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'If you choose "Always Use Default", your default image will be used site wide, no matter what content types/posts/etc. have featured images set.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}
@@ -149,10 +149,6 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	protected function skip_front() {
 		$help  = '<h3>' . __( 'Skip Front Page', 'display-featured-image-genesis' ) . '</h3>';
 		$help .= '<p>' . __( 'If you set a Default Featured Image, it will show on every post/page of your site. This may not be desirable on child themes with a front page constructed with widgets, so you can select this option to prevent the Featured Image from showing on the front page. Checking this will prevent the Featured Image from showing on the Front Page, even if you have set an image for that page individually.', 'display-featured-image-genesis' ) . '</p>';
-		$help .= '<p>' . sprintf(
-			__( 'If you want to prevent entire groups of posts from not using the Featured Image, you will want to <a href="%s" target="_blank">add a filter</a> to your theme functions.php file.', 'display-featured-image-genesis' ),
-			esc_url( 'https://github.com/robincornett/display-featured-image-genesis#how-do-i-stop-the-featured-image-action-from-showing-on-my-custom-post-types' )
-		) . '</p>';
 
 		return $help;
 	}
@@ -269,7 +265,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * @since 2.6.0
 	 */
 	protected function centering() {
-		$help  = '<p>' . __( 'By default, backstretch images are centered both vertically and horizontally. If centering is disabled horizontally, the image will start at left edge of the screen; if vertically, the top of the image will align with the top of the screen.', 'display-featured-image-genesis' ) . '</p>';
+		$help  = '<p>' . __( 'By default, banner images are centered both vertically and horizontally. If centering is disabled horizontally, the image will start at left edge of the screen; if vertically, the top of the image will align with the top of the screen.', 'display-featured-image-genesis' ) . '</p>';
 		$help .= '<p>' . __( 'Depending on the screen size and orientation, this can make a significant difference in the output of the image. Please note that although not all images will center well, not all images will <em>not</em> center well, either.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
@@ -281,7 +277,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * @since 2.6.0
 	 */
 	protected function fade() {
-		return '<p>' . __( 'By default, the backstretch image takes 750 milliseconds to fade in once the image has loaded into the browser. You can make the image fade in more quickly or slowly, as you prefer.', 'display-featured-image-genesis' ) . '</p>';
+		return '<p>' . __( 'By default, the banner image takes 750 milliseconds to fade in once the image has loaded into the browser. You can make the image fade in more quickly or slowly, as you prefer.', 'display-featured-image-genesis' ) . '</p>';
 	}
 
 	/**
@@ -303,7 +299,7 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 */
 	protected function javascript() {
 		$help  = '<h3>' . __( 'Disable JavaScript', 'display-featured-image-genesis' ) . '</h3>';
-		$help .= '<p>' . __( 'Optionally disable JavaScript for your banner images. The output will mostly be similar, although some behavior will change. For example, without the backstretch script, images will always display full width, regardless of screen size (with backstretch, you\'ll often only see the center of the image on small screens.', 'display-featured-image-genesis' ) . '</p>';
+		$help .= '<p>' . __( 'Optionally disable JavaScript for your banner images. The output will mostly be similar, although some behavior may be slightly different. Without JavaScript, banner image styles will be easier to override with your own CSS.', 'display-featured-image-genesis' ) . '</p>';
 
 		return $help;
 	}

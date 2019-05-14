@@ -21,11 +21,6 @@ return array(
 		'title' => __( 'Display Settings', 'display-featured-image-genesis' ),
 		'tab'   => 'style',
 	),
-	'backstretch'  => array(
-		'id'    => 'backstretch',
-		'title' => __( 'Backstretch Settings', 'display-featured-image-genesis' ),
-		'tab'   => 'style',
-	),
 	'cpt_sitewide' => array(
 		'id'    => 'cpt_sitewide',
 		'title' => __( 'Sitewide Settings', 'display-featured-image-genesis' ),
