@@ -4,15 +4,10 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      https://robincornett.com
- * @copyright 2014-2017 Robin Cornett Creative, LLC
+ * @copyright 2014-2019 Robin Cornett Creative, LLC
  */
 
 class Display_Featured_Image_Genesis_Output {
-
-	/**
-	 * @var Display_Featured_Image_Genesis_Common $common
-	 */
-	protected $common;
 
 	/**
 	 * @var Display_Featured_Image_Genesis_Description $description
@@ -55,8 +50,7 @@ class Display_Featured_Image_Genesis_Output {
 		}
 
 		include_once 'class-displayfeaturedimagegenesis-enqueue.php';
-		$common  = $this->get_common_class();
-		$enqueue = new DisplayFeaturedImageGenesisEnqueue( $this->get_setting(), $this->get_item(), $common->version );
+		$enqueue = new DisplayFeaturedImageGenesisEnqueue( $this->get_setting(), $this->get_item() );
 		$enqueue->enqueue_style();
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
@@ -68,7 +62,7 @@ class Display_Featured_Image_Genesis_Output {
 		 * whether get_post_type array should force the backstretch effect for this post type.
 		 * @uses is_in_array()
 		 */
-		if ( $width > $large || Display_Featured_Image_Genesis_Common::is_in_array( 'force_backstretch' ) ) {
+		if ( $width > $large || displayfeaturedimagegenesis_get()->is_in_array( 'force_backstretch' ) ) {
 			$scriptless = displayfeaturedimagegenesis_get_setting( 'scriptless' );
 			if ( ! $scriptless ) {
 				$enqueue->enqueue_scripts();
@@ -174,7 +168,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @return string
 	 */
 	protected function get_banner_image() {
-		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		$image_id = displayfeaturedimagegenesis_get()->set_image_id();
 		return wp_get_attachment_image(
 			$image_id,
 			'displayfeaturedimage_backstretch',
@@ -225,10 +219,10 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_large_image() {
-		$image_id      = Display_Featured_Image_Genesis_Common::set_image_id();
+		$image_id      = displayfeaturedimagegenesis_get()->set_image_id();
 		$attr['class'] = 'aligncenter featured';
 		$attr['alt']   = $this->get_image_alt_text( $image_id );
-		$image_size    = apply_filters( 'display_featured_image_large_image_size', Display_Featured_Image_Genesis_Common::image_size() );
+		$image_size    = apply_filters( 'display_featured_image_large_image_size', displayfeaturedimagegenesis_get()->image_size() );
 		$image         = wp_get_attachment_image( $image_id, $image_size, false, $attr );
 		$image         = apply_filters( 'display_featured_image_genesis_large_image_output', $image, $image_id );
 		echo wp_kses_post( $image );
@@ -334,7 +328,7 @@ class Display_Featured_Image_Genesis_Output {
 	protected function get_skipped_posttypes() {
 		$post_types = array( 'attachment', 'revision', 'nav_menu_item' );
 
-		return Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes', $post_types );
+		return displayfeaturedimagegenesis_get()->is_in_array( 'skipped_posttypes', $post_types );
 	}
 
 	/**
@@ -371,7 +365,7 @@ class Display_Featured_Image_Genesis_Output {
 		 * whether get_post_type array should not move excerpts for this post type.
 		 * @uses is_in_array()
 		 */
-		if ( $move_excerpts && ! Display_Featured_Image_Genesis_Common::is_in_array( 'omit_excerpt' ) ) {
+		if ( $move_excerpts && ! displayfeaturedimagegenesis_get()->is_in_array( 'omit_excerpt' ) ) {
 			return true;
 		}
 
@@ -390,7 +384,7 @@ class Display_Featured_Image_Genesis_Output {
 		 * whether get_post_type array should not move titles to overlay the featured image.
 		 * @uses is_in_array()
 		 */
-		if ( $keep_titles || Display_Featured_Image_Genesis_Common::is_in_array( 'do_not_move_titles' ) || $this->check_post_meta( '_displayfeaturedimagegenesis_move' ) ) {
+		if ( $keep_titles || displayfeaturedimagegenesis_get()->is_in_array( 'do_not_move_titles' ) || $this->check_post_meta( '_displayfeaturedimagegenesis_move' ) ) {
 			return false;
 		}
 
@@ -432,20 +426,6 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
-	 * Get the plugin's common class.
-	 *
-	 * @return \Display_Featured_Image_Genesis_Common
-	 */
-	protected function get_common_class() {
-		if ( isset( $this->common ) ) {
-			return $this->common;
-		}
-		$this->common = new Display_Featured_Image_Genesis_Common();
-
-		return $this->common;
-	}
-
-	/**
 	 * Instantiate the description class as needed.
 	 * @return \Display_Featured_Image_Genesis_Description
 	 * @since 3.1.0
@@ -468,7 +448,7 @@ class Display_Featured_Image_Genesis_Output {
 		if ( isset( $this->item ) ) {
 			return $this->item;
 		}
-		$this->item = Display_Featured_Image_Genesis_Common::get_image_variables();
+		$this->item = displayfeaturedimagegenesis_get()->get_image_variables();
 
 		return $this->item;
 	}
@@ -479,9 +459,7 @@ class Display_Featured_Image_Genesis_Output {
 	 * @return int
 	 */
 	protected function get_minimum_backstretch_width() {
-		$common = $this->get_common_class();
-
-		return $common->minimum_backstretch_width();
+		return displayfeaturedimagegenesis_get()->minimum_backstretch_width();
 	}
 
 	/**

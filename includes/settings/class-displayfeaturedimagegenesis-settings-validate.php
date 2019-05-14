@@ -59,8 +59,7 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 		}
 
 		// extra variables to pass through to image validation
-		$common        = new Display_Featured_Image_Genesis_Common();
-		$size_to_check = $common->minimum_backstretch_width();
+		$size_to_check = displayfeaturedimagegenesis_get()->minimum_backstretch_width();
 
 		// validate default image
 		$new_value['default'] = $this->validate_image( $new_value['default'], $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size_to_check );

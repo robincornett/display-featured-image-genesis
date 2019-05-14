@@ -1,7 +1,6 @@
 <?php
 
-$common = new Display_Featured_Image_Genesis_Common();
-$large  = $common->minimum_backstretch_width();
+$large = displayfeaturedimagegenesis_get()->minimum_backstretch_width();
 
 return array(
 	array(

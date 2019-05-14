@@ -21,6 +21,23 @@ class Display_Featured_Image_Genesis_Common {
 	public $version = '3.0.2';
 
 	/**
+	 * @var $instance
+	 */
+	private static $instance;
+
+	/**
+	 * Class Instance.
+	 * @return Display_Featured_Image_Genesis_Common
+	 */
+	public static function instance() {
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Display_Featured_Image_Genesis_Common ) ) {
+			self::$instance = new Display_Featured_Image_Genesis_Common();
+		}
+
+		return self::$instance;
+	}
+
+	/**
 	 * set and retrieve variables for the featured image.
 	 * @return \stdClass $item
 	 *
@@ -396,3 +413,13 @@ class Display_Featured_Image_Genesis_Common {
 		return ( isset( $setting['large'][ $post_type ] ) && $setting['large'][ $post_type ] );
 	}
 }
+
+/**
+ * Helper function to return an instance of the common class.
+ * @return \Display_Featured_Image_Genesis_Common
+ */
+function displayfeaturedimagegenesis_get() {
+	return Display_Featured_Image_Genesis_Common::instance();
+}
+
+displayfeaturedimagegenesis_get();

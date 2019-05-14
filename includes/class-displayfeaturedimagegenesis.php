@@ -29,12 +29,6 @@ class Display_Featured_Image_Genesis {
 	protected $author;
 
 	/**
-	 * Common class: sets image ID, post title, handles database query
-	 * @var Display_Featured_Image_Genesis_Common $common
-	 */
-	protected $common;
-
-	/**
 	 * @var $customizer Display_Featured_Image_Genesis_Customizer
 	 */
 	protected $customizer;
@@ -87,24 +81,22 @@ class Display_Featured_Image_Genesis {
 	 *
 	 * @param $admin
 	 * @param $author
-	 * @param $common
 	 * @param $customizer
 	 * @param $output
 	 * @param $rss
 	 * @param $settings
 	 * @param $taxonomies
 	 */
-	public function __construct( $admin, $author, $common, $customizer, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
-		$this->admin       = $admin;
-		$this->author      = $author;
-		$this->common      = $common;
-		$this->customizer  = $customizer;
-		$this->output      = $output;
-		$this->post_meta   = $post_meta;
-		$this->rss         = $rss;
-		$this->settings    = $settings;
-		$this->taxonomies  = $taxonomies;
-		$this->widgets     = $widgets;
+	public function __construct( $admin, $author, $customizer, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
+		$this->admin      = $admin;
+		$this->author     = $author;
+		$this->customizer = $customizer;
+		$this->output     = $output;
+		$this->post_meta  = $post_meta;
+		$this->rss        = $rss;
+		$this->settings   = $settings;
+		$this->taxonomies = $taxonomies;
+		$this->widgets    = $widgets;
 	}
 
 	/**
@@ -229,7 +221,7 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function enqueue_scripts() {
 
-		$version = $this->common->version;
+		$version = displayfeaturedimagegenesis_get()->version;
 		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_register_script( 'displayfeaturedimage-upload', plugins_url( "/includes/js/settings-upload{$minify}.js", dirname( __FILE__ ) ), array( 'jquery', 'media-upload', 'thickbox' ), $version, true );

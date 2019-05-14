@@ -57,7 +57,6 @@ display_featured_image_genesis_require();
 $displayfeaturedimagegenesis_helper     = new Display_Featured_Image_Genesis_Helper();
 $displayfeaturedimagegenesis_admin      = new Display_Featured_Image_Genesis_Admin();
 $displayfeaturedimagegenesis_author     = new Display_Featured_Image_Genesis_Author();
-$displayfeaturedimagegenesis_common     = new Display_Featured_Image_Genesis_Common();
 $displayfeaturedimagegenesis_customizer = new Display_Featured_Image_Genesis_Customizer();
 $displayfeaturedimagegenesis_output     = new Display_Featured_Image_Genesis_Output();
 $displayfeaturedimagegenesis_post_meta  = new Display_Featured_Image_Genesis_Post_Meta();
@@ -69,7 +68,6 @@ $displayfeaturedimagegenesis_widgets    = new DisplayFeaturedImageGenesisWidgets
 $displayfeaturedimage = new Display_Featured_Image_Genesis(
 	$displayfeaturedimagegenesis_admin,
 	$displayfeaturedimagegenesis_author,
-	$displayfeaturedimagegenesis_common,
 	$displayfeaturedimagegenesis_customizer,
 	$displayfeaturedimagegenesis_output,
 	$displayfeaturedimagegenesis_post_meta,

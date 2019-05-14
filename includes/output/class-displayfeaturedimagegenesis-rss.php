@@ -19,7 +19,7 @@ class Display_Featured_Image_Genesis_RSS {
 		$feed_image = displayfeaturedimagegenesis_get_setting( 'feed_image' );
 
 		// if the user isn't sending images to the feed, we're done
-		if ( ! $feed_image || Display_Featured_Image_Genesis_Common::is_in_array( 'skipped_posttypes' ) ) {
+		if ( ! $feed_image || displayfeaturedimagegenesis_get()->is_in_array( 'skipped_posttypes' ) ) {
 			return;
 		}
 

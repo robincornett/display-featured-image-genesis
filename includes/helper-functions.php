@@ -221,7 +221,7 @@ function display_featured_image_genesis_add_archive_thumbnails() {
  * @since 2.3.0
  */
 function displayfeaturedimagegenesis_check_image_id( $image_id = '' ) {
-	return is_numeric( $image_id ) || ! $image_id ? $image_id : Display_Featured_Image_Genesis_Common::get_image_id( $image_id );
+	return is_numeric( $image_id ) || ! $image_id ? $image_id : displayfeaturedimagegenesis_get()->get_image_id( $image_id );
 }
 
 /**

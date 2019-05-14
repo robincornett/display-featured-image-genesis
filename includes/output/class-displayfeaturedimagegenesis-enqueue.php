@@ -31,12 +31,11 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 *
 	 * @param $setting
 	 * @param $item
-	 * @param $version
 	 */
-	public function __construct( $setting, $item, $version ) {
+	public function __construct( $setting, $item ) {
 		$this->setting = $setting;
 		$this->item    = $item;
-		$this->version = $version;
+		$this->version = displayfeaturedimagegenesis_get()->version;
 	}
 
 	/**
@@ -88,7 +87,7 @@ class DisplayFeaturedImageGenesisEnqueue {
 			)
 		);
 
-		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		$image_id = displayfeaturedimagegenesis_get()->set_image_id();
 		$output   = array(
 			'height' => (int) $this->setting['less_header'],
 			'alignX' => $backstretch_vars['centeredX'],
@@ -106,7 +105,7 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 * @since 3.1.0
 	 */
 	private function localize_sizes() {
-		$image_id     = Display_Featured_Image_Genesis_Common::set_image_id();
+		$image_id     = displayfeaturedimagegenesis_get()->get_image_id();
 		$large        = wp_get_attachment_image_src( $image_id, 'large' );
 		$medium_large = wp_get_attachment_image_src( $image_id, 'medium_large' );
 		$responsive   = apply_filters( 'displayfeaturedimagegenesis_responsive_backstretch', true );

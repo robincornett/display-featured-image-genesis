@@ -260,8 +260,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 	 * @since 2.6.0
 	 */
 	public function send_image_to_validator( $new_value, $setting ) {
-		$common     = new Display_Featured_Image_Genesis_Common();
-		$size       = $common->minimum_backstretch_width();
+		$size       = displayfeaturedimagegenesis_get()->minimum_backstretch_width();
 		$validation = $this->validation_class();
 
 		return $validation->validate_image( $new_value, $setting->id, __( 'Default', 'display-featured-image-genesis' ), $size );

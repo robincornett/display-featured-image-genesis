@@ -130,10 +130,9 @@ class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Gen
 	 * @since 2.6.0
 	 */
 	protected function default_image() {
-		$common = new Display_Featured_Image_Genesis_Common();
-		$large  = $common->minimum_backstretch_width();
 		$help   = '<p>' . __( 'You may set a large image to be used sitewide if a featured image is not available. This image will show on posts, pages, and archives.', 'display-featured-image-genesis' ) . '</p>';
 		$help  .= '<p>' . sprintf(
+		$large = displayfeaturedimagegenesis_get()->minimum_backstretch_width();
 			__( 'Supported file types are: jpg, jpeg, png, and gif. The image must be at least %1$s pixels wide.', 'display-featured-image-genesis' ),
 			absint( $large + 1 )
 		) . '</p>';
