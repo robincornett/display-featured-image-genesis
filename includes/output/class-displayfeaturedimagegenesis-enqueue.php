@@ -177,8 +177,11 @@ class DisplayFeaturedImageGenesisEnqueue {
 		if ( $this->setting['less_header'] ) {
 			$css .= "height: calc( 100vh - {$this->setting['less_header']}px );";
 		}
+		if ( $this->setting['max_height'] ) {
+			$css .= "max-height: {$this->setting['max_height']}px;";
+		}
 		if ( $this->setting['fade'] ) {
-			$css .= "animation: fadein {$this->setting['fade']}ms;";
+			$css .= "animation: dfig-fadein {$this->setting['fade']}ms;";
 		}
 		if ( $css ) {
 			$css = ".big-leader__image { {$css} }";

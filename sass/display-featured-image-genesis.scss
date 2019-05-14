@@ -16,10 +16,6 @@
 		z-index: 1;
 	}
 
-	&--scriptless {
-		height: auto;
-	}
-
 	&__image {
 		display: block;
 		height: 100vh;
@@ -28,12 +24,9 @@
 		width: 100vw;
 	}
 
-	.entry-title,
-	.archive-title {
-		&.featured-image-overlay {
-			color: #fff;
-			text-align: center;
-		}
+	.featured-image-overlay {
+		color: #fff;
+		text-align: center;
 	}
 
 	.excerpt,
@@ -64,7 +57,7 @@
 	}
 }
 
-@keyframes fadein {
+@keyframes dfig-fadein {
 	from { opacity: 0; }
 	to   { opacity: 1; }
 }
