@@ -21,7 +21,10 @@
 
 		img {
 			display: block;
+			height: 100vh;
+			max-width: none;
 			object-fit: cover;
+			width: 100vw;
 		}
 	}
 
