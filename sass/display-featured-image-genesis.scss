@@ -18,14 +18,14 @@
 
 	&--scriptless {
 		height: auto;
+	}
 
-		img {
-			display: block;
-			height: 100vh;
-			max-width: none;
-			object-fit: cover;
-			width: 100vw;
-		}
+	&__image {
+		display: block;
+		height: 100vh;
+		max-width: none;
+		object-fit: cover;
+		width: 100vw;
 	}
 
 	.entry-title,

@@ -181,7 +181,7 @@ class DisplayFeaturedImageGenesisEnqueue {
 			$css .= "animation: fadein {$this->setting['fade']}ms;";
 		}
 		if ( $css ) {
-			$css = ".big-leader--scriptless img { {$css} }";
+			$css = ".big-leader__image { {$css} }";
 		}
 
 		return $css;

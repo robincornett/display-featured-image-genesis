@@ -175,7 +175,7 @@ class Display_Featured_Image_Genesis_Output {
 			false,
 			array(
 				'alt'         => $this->get_image_alt_text( $image_id ),
-				'class'       => 'post-image',
+				'class'       => 'big-leader__image post-image',
 				'aria-hidden' => 'true',
 			)
 		);
