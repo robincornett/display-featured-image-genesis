@@ -6,7 +6,7 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      https://robincornett.com
- * @copyright 2014-2017 Robin Cornett Creative, LLC
+ * @copyright 2014-2019 Robin Cornett Creative, LLC
  */
 
 class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genesis_Helper {
@@ -15,7 +15,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	 * The key for the plugin user meta.
 	 * @var string $name
 	 */
-	protected $name;
+	protected $name = 'displayfeaturedimagegenesis';
 
 	/**
 	 * Set new profile field for authors
@@ -24,7 +24,6 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	 */
 	public function set_author_meta() {
 
-		$this->name = 'displayfeaturedimagegenesis';
 		// current user
 		add_action( 'profile_personal_options', array( $this, 'do_author_fields' ) );
 		add_action( 'personal_options_update', array( $this, 'save_profile_fields' ) );
@@ -43,18 +42,18 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 
 		echo '<table class="form-table">';
 
-			echo '<tr class="user-featured-image-wrap">';
-				printf( '<th scope="row"><label for="%s">%s</label></th>', esc_attr( $this->name ), __( 'Featured Image', 'display-featured-image-genesis' ) );
+		echo '<tr class="user-featured-image-wrap">';
+		printf( '<th scope="row"><label for="%s">%s</label></th>', esc_attr( $this->name ), esc_html__( 'Featured Image', 'display-featured-image-genesis' ) );
 
-				echo '<td>';
-				if ( $id ) {
-					echo wp_kses_post( $this->render_image_preview( $id, $user->display_name ) );
-				}
+		echo '<td>';
+		if ( $id ) {
+			echo wp_kses_post( $this->render_image_preview( $id, $user->display_name ) );
+		}
 
-				$this->render_buttons( $id, $this->name );
-				printf( '<p class="description">%s</p>', __( 'Upload an image to use as your author page featured image.', 'display-featured-image-genesis' ) );
-				echo '</td>';
-			echo '</tr>';
+		$this->render_buttons( $id, $this->name );
+		printf( '<p class="description">%s</p>', esc_html__( 'Upload an image to use as your author page featured image.', 'display-featured-image-genesis' ) );
+		echo '</td>';
+		echo '</tr>';
 
 		echo '</table>';
 	}
@@ -63,7 +62,6 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	 * Update the user meta.
 	 * @param $user_id int The user being updated
 	 *
-	 * @return bool
 	 */
 	public function save_profile_fields( $user_id ) {
 
@@ -71,11 +69,11 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 			return false;
 		}
 
-		if ( empty( $_POST['_wpnonce'] ) ) {
+		if ( ! filter_input( INPUT_POST, '_wpnonce', FILTER_DEFAULT ) ) {
 			wp_die( esc_attr__( 'Something unexpected happened. Please try again.', 'display-featured-image-genesis' ) );
 		}
 
-		$new_value = $_POST[ $this->name ];
+		$new_value = filter_input( INPUT_POST, $this->name, FILTER_DEFAULT );
 		$old_value = get_the_author_meta( $this->name, $user_id );
 		if ( $old_value !== $new_value ) {
 			$new_value = $this->validate_author_image( $new_value, $old_value );
@@ -109,10 +107,10 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 
 	/**
 	 * User profile error message
-	 * @param  var $errors error message depending on what's wrong
-	 * @param  var $update whether or not to update
+	 *
+	 * @param object  $errors error message depending on what's wrong
+	 * @param bool    $update whether or not to update
 	 * @param  object $user   user being updated
-	 * @return error message
 	 *
 	 * @since 2.3.0
 	 */

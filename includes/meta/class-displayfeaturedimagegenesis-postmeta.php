@@ -6,7 +6,7 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      https://robincornett.com
- * @copyright 2014-2017 Robin Cornett Creative, LLC
+ * @copyright 2014-2019 Robin Cornett Creative, LLC
  */
 class Display_Featured_Image_Genesis_Post_Meta {
 
@@ -232,7 +232,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 		$checkboxes = $this->get_checkboxes();
 
 		foreach ( $checkboxes as $checkbox ) {
-			if ( isset( $_POST[ $checkbox['setting'] ] ) ) {
+			if ( filter_input( INPUT_POST, $checkbox['setting'], FILTER_DEFAULT ) ) {
 				update_post_meta( $post_id, $checkbox['setting'], 1 );
 			} else {
 				delete_post_meta( $post_id, $checkbox['setting'] );
@@ -241,7 +241,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 
 		$select = $this->get_select();
 		foreach ( $select as $s ) {
-			$value = sanitize_text_field( $_POST[ $s['setting'] ] );
+			$value = filter_input( INPUT_POST, $s['setting'], FILTER_DEFAULT );
 			$value = is_numeric( $value ) ? (int) $value : esc_attr( $value );
 			update_post_meta( $post_id, $s['setting'], $value );
 		}
