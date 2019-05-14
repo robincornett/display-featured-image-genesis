@@ -86,11 +86,30 @@ class DisplayFeaturedImageGenesisEnqueue {
 			)
 		);
 
+		$image_id = Display_Featured_Image_Genesis_Common::set_image_id();
+		$output   = array(
+			'height' => (int) $this->setting['less_header'],
+			'alignX' => $backstretch_vars['centeredX'],
+			'alignY' => $backstretch_vars['centeredY'],
+			'fade'   => (int) $backstretch_vars['fade'],
+			'title'  => esc_attr( $this->get_image_alt_text( $image_id ) ),
+		);
+
+		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array_merge( $this->localize_sizes(), $output ) );
+	}
+
+	/**
+	 * Get the size related localization data.
+	 * @return array
+	 * @since 3.1.0
+	 */
+	private function localize_sizes() {
 		$image_id     = Display_Featured_Image_Genesis_Common::set_image_id();
 		$large        = wp_get_attachment_image_src( $image_id, 'large' );
 		$medium_large = wp_get_attachment_image_src( $image_id, 'medium_large' );
 		$responsive   = apply_filters( 'displayfeaturedimagegenesis_responsive_backstretch', true );
-		$output       = array(
+
+		return array(
 			'source'       => array(
 				'backstretch'  => esc_url( $this->item->backstretch[0] ),
 				'large'        => $large[3] && $responsive ? esc_url( $large[0] ) : '',
@@ -106,14 +125,7 @@ class DisplayFeaturedImageGenesisEnqueue {
 				'large'        => $large[3] ? $large[2] : '',
 				'medium_large' => $medium_large[3] ? $medium_large[2] : '',
 			),
-			'height'       => (int) $this->setting['less_header'],
-			'alignX'       => $backstretch_vars['centeredX'],
-			'alignY'       => $backstretch_vars['centeredY'],
-			'fade'         => (int) $backstretch_vars['fade'],
-			'title'        => esc_attr( $this->get_image_alt_text( $image_id ) ),
 		);
-
-		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
 	}
 
 	/**
