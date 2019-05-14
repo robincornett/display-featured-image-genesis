@@ -44,8 +44,10 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 * @since 3.1.0
 	 */
 	public function enqueue_style() {
-		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
-		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $this->version );
+		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( dirname( __FILE__ ) ) . 'css/display-featured-image-genesis.css' );
+		if ( $css_file ) {
+			wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $this->version );
+		}
 		$this->add_inline_style();
 	}
 
@@ -55,10 +57,10 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 */
 	public function enqueue_scripts() {
 		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( 'backstretch', plugins_url( "/includes/js/backstretch{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), '2.1.16', true );
+		wp_register_script( 'backstretch', plugins_url( "/js/backstretch{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), '2.1.16', true );
 		wp_enqueue_script(
 			'displayfeaturedimage-backstretch-set',
-			plugins_url( "/includes/js/backstretch-set{$minify}.js", dirname( __FILE__ ) ),
+			plugins_url( "/js/backstretch-set{$minify}.js", dirname( __FILE__ ) ),
 			array(
 				'jquery',
 				'backstretch',
@@ -172,10 +174,12 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 * @return string
 	 */
 	private function get_image_css() {
-		$css    = $this->get_object_position();
-		$height = $this->setting['less_header'];
-		if ( $height ) {
-			$css .= "height: calc( 100vh - {$height}px );";
+		$css = $this->get_object_position();
+		if ( $this->setting['less_header'] ) {
+			$css .= "height: calc( 100vh - {$this->setting['less_header']}px );";
+		}
+		if ( $this->setting['fade'] ) {
+			$css .= "animation: fadein {$this->setting['fade']}ms;";
 		}
 		if ( $css ) {
 			$css = ".big-leader--scriptless img { {$css} }";

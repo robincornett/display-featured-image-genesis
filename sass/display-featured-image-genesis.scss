@@ -64,6 +64,11 @@
 	}
 }
 
+@keyframes fadein {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
 .backstretch.no-js {
 	max-height: 600px;
 }
