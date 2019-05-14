@@ -53,12 +53,11 @@ class Display_Featured_Image_Genesis_Output {
 		if ( ! $this->can_do_things() ) {
 			return;
 		}
-		$css_file = apply_filters( 'display_featured_image_genesis_css_file', plugin_dir_url( __FILE__ ) . 'css/display-featured-image-genesis.css' );
-		$common   = $this->get_common_class();
-		wp_enqueue_style( 'displayfeaturedimage-style', esc_url( $css_file ), array(), $common->version );
-		if ( $this->get_setting( 'max_height' ) ) {
-			$this->add_inline_style();
-		}
+
+		include_once 'class-displayfeaturedimagegenesis-enqueue.php';
+		$common  = $this->get_common_class();
+		$enqueue = new DisplayFeaturedImageGenesisEnqueue( $this->get_setting(), $this->get_item(), $common->version );
+		$enqueue->enqueue_style();
 		add_filter( 'body_class', array( $this, 'add_body_class' ) );
 
 		$large = $this->get_minimum_backstretch_width();
@@ -71,45 +70,13 @@ class Display_Featured_Image_Genesis_Output {
 		 */
 		if ( $width > $large || Display_Featured_Image_Genesis_Common::is_in_array( 'force_backstretch' ) ) {
 			$scriptless = displayfeaturedimagegenesis_get_setting( 'scriptless' );
-			if ( $scriptless ) {
-				$this->launch_backstretch_image();
-			} else {
-				$this->do_backstretch_image_things();
+			if ( ! $scriptless ) {
+				$enqueue->enqueue_scripts();
 			}
+			$this->launch_backstretch_image();
 		} else {
 			$this->do_large_image_things();
 		}
-	}
-
-	/**
-	 * Add max_height to output via inline style.
-	 *
-	 * @since 2.6.0
-	 */
-	public function add_inline_style() {
-		$css  = sprintf( '.big-leader, .big-leader--scriptless img { max-height: %spx; }', $this->get_setting('max_height' ) );
-		$css .= $this->get_object_position();
-		wp_add_inline_style( 'displayfeaturedimage-style', wp_strip_all_tags( $css ) );
-	}
-
-	/**
-	 * Add object-position to scriptless banner if needed.
-	 *
-	 * @return string
-	 * @since 3.1.0
-	 */
-	private function get_object_position() {
-		$setting = displayfeaturedimagegenesis_get_setting();
-		if ( ! $setting['scriptless'] ) {
-			return '';
-		}
-		if ( $setting['centeredX'] && $setting['centeredY'] ) {
-			return '';
-		}
-		$x = $setting['centeredX'] ? '50%' : '0';
-		$y = $setting['centeredY'] ? '50%' : '0';
-
-		return ".big-leader--scriptless img {object-position: {$x} {$y};}";
 	}
 
 	/**
@@ -140,74 +107,12 @@ class Display_Featured_Image_Genesis_Output {
 	}
 
 	/**
-	 * All actions required to output the backstretch image
-	 * @since 2.3.4
-	 */
-	protected function do_backstretch_image_things() {
-		$common = $this->get_common_class();
-		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( 'backstretch', plugins_url( "/includes/js/backstretch{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), '2.1.16', true );
-		wp_enqueue_script( 'displayfeaturedimage-backstretch-set', plugins_url( "/includes/js/backstretch-set{$minify}.js", dirname( __FILE__ ) ), array(
-			'jquery',
-			'backstretch',
-		), $common->version, true );
-
-		add_action( 'wp_print_scripts', array( $this, 'localize_scripts' ) );
-		$this->launch_backstretch_image();
-	}
-
-	/**
 	 * Actually output the backstretch/banner image and title markup at the designated hook.
 	 * @since 3.1.0
 	 */
 	protected function launch_backstretch_image() {
 		$location = $this->get_hooks();
 		add_action( esc_attr( $location['backstretch']['hook'] ), array( $this, 'do_backstretch_image_title' ), $location['backstretch']['priority'] );
-	}
-
-	/**
-	 * Pass variables through to our js
-	 *
-	 * @since 2.3.0
-	 */
-	public function localize_scripts() {
-		$setting = $this->get_setting();
-		// backstretch settings which can be filtered
-		$backstretch_vars = apply_filters( 'display_featured_image_genesis_backstretch_variables', array(
-			'centeredX' => $setting['centeredX'] ? 'center' : 'left',
-			'centeredY' => $setting['centeredY'] ? 'center' : 'top',
-			'fade'      => $setting['fade'],
-		) );
-
-		$image_id     = Display_Featured_Image_Genesis_Common::set_image_id();
-		$large        = wp_get_attachment_image_src( $image_id, 'large' );
-		$medium_large = wp_get_attachment_image_src( $image_id, 'medium_large' );
-		$responsive   = apply_filters( 'displayfeaturedimagegenesis_responsive_backstretch', true );
-		$item         = $this->get_item();
-		$output       = array(
-			'source'       => array(
-				'backstretch'  => esc_url( $item->backstretch[0] ),
-				'large'        => $large[3] && $responsive ? esc_url( $large[0] ) : '',
-				'medium_large' => $medium_large[3] && $responsive ? esc_url( $medium_large[0] ) : '',
-			),
-			'width'        => array(
-				'backstretch'  => $item->backstretch[1],
-				'large'        => $large[3] ? $large[1] : '',
-				'medium_large' => $medium_large[3] ? $medium_large[1] : '',
-			),
-			'image_height' => array(
-				'backstretch'  => $item->backstretch[2],
-				'large'        => $large[3] ? $large[2] : '',
-				'medium_large' => $medium_large[3] ? $medium_large[2] : '',
-			),
-			'height'       => (int) $setting['less_header'],
-			'alignX'       => $backstretch_vars['centeredX'],
-			'alignY'       => $backstretch_vars['centeredY'],
-			'fade'         => (int) $backstretch_vars['fade'],
-			'title'        => esc_attr( $this->get_image_alt_text( $image_id ) ),
-		);
-
-		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $output );
 	}
 
 	/**
