@@ -115,7 +115,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 
 				// Sanitize text fields
 				case 'text':
-					$atts[ $value ] = strip_tags( $atts[ $value ] );
+					$atts[ $value ] = wp_strip_all_tags( $atts[ $value ] );
 					break;
 
 				// Escape select options
@@ -136,8 +136,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 					$atts[ $value ] = esc_attr( $atts[ $value ] );
 					break;
 			}
-		} // End foreach().
-		$atts['title'] = strip_tags( $atts['title'] );
+		}
+		$atts['title'] = wp_strip_all_tags( $atts['title'] );
 
 		return $atts;
 	}
