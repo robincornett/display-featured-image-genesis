@@ -1,20 +1,20 @@
 # Display Featured Image for Genesis
 
-This plugin works within the Genesis Framework, to display featured images in new and fun ways. It should work with either HTML5 or XHTML themes, but older themes may have a width set on elements which may not allow the full backstretch experience.
+This plugin works within the Genesis Framework, to display featured images in new and fun ways. It should work with either HTML5 or XHTML themes, but older themes may have a width set on elements which may not allow the full banner experience.
 
 ## Description
 
 This plugin takes a different approach to how we use and display featured images for posts and pages. Instead of simply reusing an image which already exists in the post/page content, the plugin anticipates that you will want to use lovely large images for your featured images, but to do so intelligently. Depending on what you upload, the plugin will:
 
-* display the image as a _backstretch_ (screen width) image if the image is wider than your site's Large Media Setting.
+* display the image as a _banner_ (screen width) image if the image is wider than your site's Large Media Setting.
 * display the image above your post/page content, centered and up to the width of the content, if your image is larger than your Medium Media Setting, and less than or equal to your Large Media Setting.
 * display _nothing_ if your featured image width is less than or equal to your Medium Media Setting.
 * display _nothing_ if your featured image is already displayed in your content (the original image, not a resized version).
-* display a _default featured image_ as a backstretch image if one is uploaded.
+* display a _default featured image_ as a banner image if one is uploaded.
 
 More words at [my site](https://robincornett.com/downloads/display-featured-image-genesis/).
 
-_Note: although this plugin requires the [Genesis Framework by StudioPress](http://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress._
+_Note: although this plugin requires the [Genesis Framework by StudioPress](https://studiopress.com/) or child themes, it is not an official plugin for this framework and is neither endorsed nor supported by StudioPress._
 
 #### An Image for Every Page
 
@@ -37,16 +37,16 @@ _If you are already inserting your Featured Image into your feed through another
 
 #### Simple Styling
 
-__Display Featured Image for Genesis__ has some styling built in but I have intentionally tried to keep it minimal. All styling is for the backstretch image options, as the large options seem pretty straightforward. Stying for titles are largely inherited from your theme--for example, the title will use the same size and font for your page titles, whether you are using a Featured Image or not. Some styles you can incorporate into your own theme:
+__Display Featured Image for Genesis__ has some styling built in but I have intentionally tried to keep it minimal. All styling is for the banner image options, as the large options seem pretty straightforward. Stying for titles are largely inherited from your theme--for example, the title will use the same size and font for your page titles, whether you are using a Featured Image or not. Some styles you can incorporate into your own theme:
 
-* `.has-leader` applies to any page using a leader/backstretch image. Applies to the whole page.
-* `.big-leader` the container which holds the leader/backstretch image and the post/page Title and excerpt or description.
+* `.has-leader` applies to any page using a leader/banner image. Applies to the whole page.
+* `.big-leader` the container which holds the leader/banner image and the post/page Title and excerpt or description.
 * `.featured-image-overlay` style appended to the post/page title if Move Excerpts option _is not_ selected (default).
 * `.excerpt` (for single posts/pages) and `.archive-description` (for archives) are styled as a unit. These are the containers for the post/page/archive/taxonomy title and description if the Move Excerpts option _is_ selected.
 * `.featured` is appended to the large image output directly above the post/page content.
 
 ## Requirements
-* WordPress 4.1, tested up to 4.5
+* WordPress 4.4, tested up to 5.2
 * the Genesis Framework
 
 ## Installation
@@ -94,6 +94,10 @@ _Quickly see which posts and terms have been assigned a Featured Image._
 
 Yes and no. Technically, it does, even older (XHTML) themes. However, depending on other factors such as the individual theme's styling and layout, the output may be unexpected, and require some tweaking. Not recommended for themes such as Sixteen Nine Pro, or The 411 Pro due to layout, and not for Ambiance Pro or Minimum Pro without changing some theme functionality.
 
+### I'm not a huge fan of adding more JavaScript to my website.
+
+As of version 3.1.0, you can choose to display even banner images completely with WordPress' native responsive images and CSS. No JavaScript required. Just visit the settings page (the Banner Output tab) and check the "Disable JavaScript" option. If you have previously used the banner (backstretch) featured image, you may notice that the output is slightly different, but it should be very close to the same, and easier to override with pure CSS if you need to.
+
 ### Can I add a Display Featured Image widget to my post or page content?
 
 Yes. As of version 3.0.0, shortcodes for each widget have been added to the plugin. Shortcodes include:
@@ -110,17 +114,7 @@ Alternatively, the much easier method entails visiting the settings page (under 
 
 If these images were saved to your database prior to version 2.2.0 of this plugin and you've never updated the plugin settings since then, these images may have effectively disappeared in version 3.0.0. To fix this, visit the plugin settings page, reselect your default/post type image(s), and save.
 
-Prior to version 2.2.0 of the plugin, these images were saved to the database as URL strings, rather than as ID numbers, which was hugely inefficient. This was changed in version 2.2.0, with backwards compatible helper functions to ease the transition, but the helper functions are no longer used as of version 3.0.0.  
-
-### What is term metadata and why does it matter to me?
-
-*Update for version 2.5:* Genesis 2.3 changed how term archive headlines/descriptions will be pulled from the database. __Display Featured Image for Genesis__ has been using the old, inefficient method for getting the Genesis term information, which is no longer supported in Genesis. Version 2.5 uses the new, better method to retrieve the Genesis term metadata (for archive headlines and intro text). Please make sure that your plugin is up to date so that you do not get unexpected behavior. (see [StudioPress](http://www.studiopress.com/important-announcement-for-genesis-plugin-developers/) for more information)
-
-Term metadata is a feature which was introduced in WordPress 4.4, which allows us to add custom data to each term (categories, tags, etc.) on a site. Version 2.4 of __Display Featured Image for Genesis__ began using the term metadata.
-
-If you have been using __Display Featured Image for Genesis__ and have already added featured images to your terms, when you visit the main plugin settings page, you'll be prompted to allow the plugin to update all terms with featured images, or given the information to allow you to do it yourself. This _should_ be a simple, pain-free process, but make sure your database is backed up, and please check your terms after the update.
-
-If you have not yet updated your site to WordPress 4.4, fear not: for the time being, __Display Featured Image for Genesis__ will still work just as it has in the past. A future release of the plugin will require a minimum version of WordPress to properly support term images.
+Prior to version 2.2.0 of the plugin, these images were saved to the database as URL strings, rather than as ID numbers, which was hugely inefficient. This was changed in version 2.2.0, with backwards compatible helper functions to ease the transition, but the helper functions are no longer used as of version 3.0.0.
 
 ### How can I change how the plugin works?
 
@@ -131,7 +125,7 @@ Check the settings page before digging into filters. As of version 3.0.0, most q
 * setting preferred fallback images for content types, search results, and 404 pages
 * changing the default hooks/priorities the plugin uses for image output
 
-Additionally, some of these can be overridden on any individual post, page, or content type, which can be set to use the default image size, not show a featured image at all, or force a large/backstretch image for that post only.
+Additionally, some of these can be overridden on any individual post, page, or content type, which can be set to use the default image size, not show a featured image at all, or force a large/banner image for that post only.
 
 If you like to code, there are several filters built into Display Featured Image for Genesis, to give developers more control over the output. Several of them are very similar, and are applied in a specific order, so an earlier filter will take precedence over a later one.
 
@@ -142,7 +136,7 @@ Available filters include, but are not limited to:
 * `displayfeaturedimagegenesis_use_post_type_image`: force post type(s) to use the image assigned as the custom post type featured image (if one is set), regardless of what is set as the individual post's featured image
 * `display_featured_image_genesis_use_taxonomy`: force post type(s) to use a taxonomy term's image (if one is set) for the featured image effect, regardless of what is set as the individual post's featured image
 __Note: as of version 2.5, you can set any post type to use a fallback image without using one of the above filters. It will use the images in this order as they exist: term, content type, default.__
-* `display_featured_image_genesis_use_large_image`: force post type(s) to output the featured image as a large image above the post content, and to not use the backstretch effect at all
+* `display_featured_image_genesis_use_large_image`: force post type(s) to output the featured image as a large image above the post content, and to not use the banner effect at all
 * `display_featured_image_genesis_omit_excerpt`: force post type(s) to not move the excerpt to overlay the featured image, even if the "Move Excerpts/Archive Descriptions" setting is selected
 
 These filters all work the same way, so using any one in your theme will all follow the same pattern. For example, to prevent the featured image effect on the `listing` or `staff` post types, you would add the following to your theme's functions.php file:
@@ -199,13 +193,13 @@ Yes! This is a new setting, added in version 2.5. Please see the plugin settings
 
 This will follow the settings you choose in the Genesis Theme Settings.
 
-### The backstretch image takes up too much room on the screen.
+### The banner image takes up too much room on the screen.
 
-If you do not want the height of the backstretch image to be quite the height of the user's browser window, which is the standard, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter the window will be calculated to be. Feel free to experiment, as no images are harmed by changing this number.
+If you do not want the height of the banner image to be quite the height of the user's browser window, which is the standard, you can reduce it by just a hair. Go to Appearance > Display Featured Image Settings and change the 'Height' number from the default of 0. The higher this number is, the shorter the window will be calculated to be. Feel free to experiment, as no images are harmed by changing this number.
 
-_Note:_ __Display Featured Image for Genesis__ determines the size of your backstretch image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window, which is partly why you cannot set this to more than 400.
+_Note:_ __Display Featured Image for Genesis__ determines the size of your banner image based on the size of the user's browser window. Changing the "Height/Pixels to Remove" setting tells the plugin to subtract that number of pixels from the measured height of the user's window, regardless of the size of that window, which is partly why you cannot set this to more than 400.
 
-If you need to control the size of the backstretch Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet, or the additional CSS panel in the Customizer:
+If you need to control the size of the banner Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet, or the additional CSS panel in the Customizer:
 
 ```css
 .big-leader {
@@ -226,7 +220,7 @@ _Note:_ if your theme has CSS like this in it already, and you change the Maximu
 
 As of version 3.0.0, you can change the hook/location of the large featured image without code by going to Appearance > Display Featured Image for Genesis, and then the Advanced tab.
 
-There is a filter for this, too. By default, the large (as opposed to backstretch) image is added before the Genesis loop, which places it above your post or page title. You can add this filter to your theme's functions.php file to move the image below your post/page title:
+There is a filter for this, too. By default, the large (as opposed to banner) image is added before the Genesis loop, which places it above your post or page title. You can add this filter to your theme's functions.php file to move the image below your post/page title:
 
 ```php
 add_filter( 'display_featured_image_genesis_move_large_image', 'prefix_move_image' );
@@ -240,14 +234,21 @@ _Note:_ because the entry header applies to all posts on a page, on archive page
 Similar hooks:
 
 * `display_featured_image_genesis_move_large_image_priority`: change the priority of the large featured image output
-* `display_featured_image_move_backstretch_image`: change the hook of the backstretch featured image output
-* `display_featured_image_move_backstretch_image_priority`: change the priority of the backstretch featured image output
+* `display_featured_image_move_backstretch_image`: change the hook of the banner featured image output
+* `display_featured_image_move_backstretch_image_priority`: change the priority of the banner featured image output
 
 ## Credits
 
 * Built by [Robin Cornett](https://robincornett.com/)
 
 ## Changelog
+
+### 3.1.0
+* added: option to display the banner image using only CSS and responsive images, instead of JavaScript
+* changed: CSS, mostly related to the CSS-only banner image, but also made entry title CSS less specific
+* changed: rearranged a lot of code because I like organization
+* changed: improved the settings/meta image uploader
+* changed: the plugin now serves minified CSS/JS files
 
 ### 3.0.2
 * fixed: metabox now properly shows in the block editor (WordPress 5.0)
