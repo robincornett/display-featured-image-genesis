@@ -245,8 +245,34 @@ class Display_Featured_Image_Genesis_Description {
 	protected function print_description( $intro_text, $class = '', $context = 'archive_intro' ) {
 		printf( '<div class="%s">', esc_html( $class ) );
 		do_action( "displayfeaturedimagegenesis_before_{$context}" );
-		echo wp_kses_post( wpautop( $intro_text ) );
+		$intro_text = $this->get_content( $intro_text );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $intro_text;
 		do_action( "displayfeaturedimagegenesis_after_{$context}" );
 		echo '</div>';
+	}
+
+	/**
+	 * Run the intro text (content) through standard filters.
+	 *
+	 * @param $content
+	 *
+	 * @return string
+	 * @since 3.1.0
+	 */
+	private function get_content( $content ) {
+		global $wp_embed;
+		$original = $content;
+		$content  = trim( $content );
+		$content  = wptexturize( $content );
+		$content  = wpautop( $content );
+		$content  = shortcode_unautop( $content );
+		$content  = prepend_attachment( $content );
+		$content  = convert_smilies( $content );
+		$content  = wp_make_content_images_responsive( $content );
+		$content  = $wp_embed->autoembed( $content );
+		$content  = do_shortcode( $content );
+
+		return apply_filters( 'displayfeaturedimagegenesis_intro_text', $content, $original );
 	}
 }
