@@ -115,8 +115,9 @@ class Display_Featured_Image_Genesis_Output {
 	 * @since  1.0.0
 	 */
 	public function do_backstretch_image_title() {
+		$description = $this->get_description_class();
 		if ( $this->move_title() ) {
-			$this->remove_title_descriptions();
+			$description->remove_title_descriptions();
 		}
 
 		$class      = 'big-leader';
@@ -136,13 +137,13 @@ class Display_Featured_Image_Genesis_Output {
 
 		if ( $this->move_title() ) {
 			if ( $this->move_excerpts() ) {
-				$this->do_title_descriptions();
+				$description->do_title_descriptions();
 			} else {
 				$item = $this->get_item();
 				if ( ! empty( $item->title ) && $this->do_the_title() ) {
 					echo $this->do_the_title();
 				}
-				add_action( 'genesis_before_loop', array( $this, 'add_descriptions' ) );
+				add_action( 'genesis_before_loop', array( $description, 'add_descriptions' ) );
 			}
 		}
 
@@ -246,55 +247,6 @@ class Display_Featured_Image_Genesis_Output {
 		$title_output = sprintf( '<h1 class="%s featured-image-overlay" %s>%s</h1>', $class, $itemprop, $title );
 
 		return apply_filters( 'display_featured_image_genesis_modify_title_overlay', $title_output, esc_attr( $class ), esc_attr( $itemprop ), $title );
-	}
-
-	/**
-	 * Separate archive titles from descriptions. Titles show in leader image
-	 * area; descriptions show before loop.
-	 *
-	 * @since  1.3.0
-	 *
-	 */
-	public function add_descriptions() {
-		$description = $this->get_description_class();
-		$description->do_tax_description();
-		$description->do_author_description();
-		$description->do_cpt_archive_description();
-
-	}
-
-	/**
-	 * Do title and description together (for excerpt output)
-	 *
-	 * @since 2.3.1
-	 */
-	protected function do_title_descriptions() {
-		$description = $this->get_description_class();
-		$description->do_front_blog_excerpt();
-		$description->do_excerpt();
-		genesis_do_taxonomy_title_description();
-		genesis_do_author_title_description();
-		genesis_do_cpt_archive_title_description();
-	}
-
-	/**
-	 * Remove Genesis titles/descriptions
-	 * @since 2.3.1
-	 */
-	protected function remove_title_descriptions() {
-		if ( is_singular() && ! is_page_template( 'page_blog.php' ) ) {
-			remove_action( 'genesis_entry_header', 'genesis_do_post_title' ); // HTML5
-			remove_action( 'genesis_post_title', 'genesis_do_post_title' ); // XHTML
-			if ( ! post_type_supports( get_post_type( get_the_ID() ), 'genesis-entry-meta-before-content' ) && apply_filters( 'displayfeaturedimagegenesis_remove_entry_header', true ) ) {
-				remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_open', 5 );
-				remove_action( 'genesis_entry_header', 'genesis_entry_header_markup_close', 15 );
-			}
-		}
-		remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
-		remove_action( 'genesis_before_loop', 'genesis_do_author_title_description', 15 );
-		remove_action( 'genesis_before_loop', 'genesis_do_cpt_archive_title_description' );
-		remove_action( 'genesis_before_loop', 'genesis_do_blog_template_heading' );
-		remove_action( 'genesis_before_loop', 'genesis_do_posts_page_heading' );
 	}
 
 	/**
