@@ -8,18 +8,6 @@
 class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Genesis_Helper {
 
 	/**
-	 * The plugin admin page.
-	 * @var $page string
-	 */
-	protected $page = 'displayfeaturedimagegenesis';
-
-	/**
-	 * The plugin setting.
-	 * @var $setting array
-	 */
-	protected $setting;
-
-	/**
 	 * The plugin settings fields.
 	 * @var $fields array
 	 */
@@ -30,9 +18,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since  1.4.0
 	 */
 	public function do_submenu_page() {
-
-		$this->setting = $this->get_display_setting();
-
 		add_theme_page(
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
 			__( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
