@@ -64,12 +64,18 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @return array
 	 */
 	protected function get_fields() {
-		$main     = include 'fields-main.php';
-		$style    = include 'fields-style.php';
-		$cpt      = include 'fields-cpt.php';
-		$advanced = include 'fields-advanced.php';
+		$fields = array();
+		$files  = array(
+			'main',
+			'style',
+			'cpt',
+			'advanced',
+		);
+		foreach ( $files as $file ) {
+			$fields = array_merge( $fields, include "fields-{$file}.php" );
+		}
 
-		return array_merge( $main, $style, $cpt, $advanced );
+		return $fields;
 	}
 
 	/**
