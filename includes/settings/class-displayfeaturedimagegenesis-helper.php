@@ -121,7 +121,8 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @param $args
 	 */
 	public function do_number( $args ) {
-		printf( '<input type="number" step="1" min="%1$s" max="%2$s" id="%3$s" name="%5$s" value="%4$s" class="small-text" />%6$s',
+		printf(
+			'<input type="number" step="1" min="%1$s" max="%2$s" id="%3$s" name="%5$s" value="%4$s" class="small-text" />%6$s',
 			(int) $args['min'],
 			(int) $args['max'],
 			esc_attr( $this->get_field_id( $args ) ),
@@ -129,8 +130,6 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			esc_attr( $this->get_field_name( $args ) ),
 			esc_attr( $args['label'] )
 		);
-		$this->do_description( $args );
-
 	}
 
 	/**
@@ -144,13 +143,13 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		$name  = $this->get_field_name( $args );
 		$value = $this->get_field_value( $args );
 		printf( '<input type="hidden" name="%s" value="0" />', esc_attr( $name ) );
-		printf( '<label for="%1$s"><input type="checkbox" name="%4$s" id="%1$s" value="1" %2$s class="code" />%3$s</label>',
+		printf(
+			'<label for="%1$s"><input type="checkbox" name="%4$s" id="%1$s" value="1" %2$s class="code" />%3$s</label>',
 			esc_attr( $this->get_field_id( $args ) ),
 			checked( 1, esc_attr( $value ), false ),
 			esc_attr( $args['label'] ),
 			esc_attr( $name )
 		);
-		$this->do_description( $args );
 	}
 
 	/**
@@ -165,11 +164,13 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		$value = $this->get_field_value( $args );
 		foreach ( $args['options'] as $choice => $label ) {
 			$check = isset( $value[ $choice ] ) ? $value[ $choice ] : 0;
-			printf( '<input type="hidden" name="%s[%s]" value="0" />',
+			printf(
+				'<input type="hidden" name="%s[%s]" value="0" />',
 				esc_attr( $name ),
 				esc_attr( $choice )
 			);
-			printf( '<label for="%5$s-%1$s" style="margin-right:12px !important;"><input type="checkbox" name="%4$s[%1$s]" id="%5$s-%1$s" value="1"%2$s class="code" aria-labelledby="%5$s" />%3$s</label>',
+			printf(
+				'<label for="%5$s-%1$s" style="margin-right:12px !important;"><input type="checkbox" name="%4$s[%1$s]" id="%5$s-%1$s" value="1"%2$s class="code" aria-labelledby="%5$s" />%3$s</label>',
 				esc_attr( $choice ),
 				checked( 1, $check, false ),
 				esc_html( $label ),
@@ -178,7 +179,6 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			);
 		}
 		echo '</fieldset>';
-		$this->do_description( $args );
 	}
 
 	/**
@@ -187,14 +187,15 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 *
 	 * @param $args
 	 */
-	public function do_radio_buttons( $args ) {
+	public function do_radio( $args ) {
 		echo '<fieldset>';
 		$name  = $this->get_field_name( $args );
 		$id    = $this->get_field_id( $args );
 		$value = $this->get_field_value( $args );
 		printf( '<legend class="screen-reader-text">%s</legend>', esc_html( $args['legend'] ) );
 		foreach ( $args['choices'] as $choice => $label ) {
-			printf( '<label for="%1$s-%2$s" style="margin-right:12px !important;"><input type="radio" id="%1$s-%2$s" name="%5$s" value="%2$s"%3$s />%4$s</label>  ',
+			printf(
+				'<label for="%1$s-%2$s" style="margin-right:12px !important;"><input type="radio" id="%1$s-%2$s" name="%5$s" value="%2$s"%3$s />%4$s</label>  ',
 				esc_attr( $id ),
 				esc_attr( $choice ),
 				checked( $choice, $value, false ),
@@ -212,19 +213,20 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 */
 	public function do_select( $args ) {
 		$value = $this->get_field_value( $args );
-		printf( '<select id="%1$s" name="%2$s">',
+		printf(
+			'<select id="%1$s" name="%2$s">',
 			esc_attr( $this->get_field_id( $args ) ),
 			esc_attr( $this->get_field_name( $args ) )
 		);
 		foreach ( (array) $args['choices'] as $option => $label ) {
-			printf( '<option value="%s" %s>%s</option>',
+			printf(
+				'<option value="%s" %s>%s</option>',
 				esc_attr( $option ),
 				selected( $option, $value, false ),
 				esc_attr( $label )
 			);
 		}
 		echo '</select>';
-		$this->do_description( $args );
 	}
 
 	/**

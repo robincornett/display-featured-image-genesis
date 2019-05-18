@@ -83,9 +83,11 @@ class Display_Featured_Image_Genesis {
 	 * @param $author
 	 * @param $customizer
 	 * @param $output
+	 * @param $post_meta
 	 * @param $rss
 	 * @param $settings
 	 * @param $taxonomies
+	 * @param $widgets
 	 */
 	public function __construct( $admin, $author, $customizer, $output, $post_meta, $rss, $settings, $taxonomies, $widgets ) {
 		$this->admin      = $admin;
