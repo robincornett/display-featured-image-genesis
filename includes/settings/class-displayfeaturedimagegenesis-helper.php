@@ -45,12 +45,46 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			add_settings_field(
 				$field['id'],
 				sprintf( '<label for="%s-%s">%s</label>', $this->page, $field['id'], $field['title'] ),
-				array( $this, $field['callback'] ),
+				array( $this, 'do_field' ),
 				$this->page . '_' . $sections[ $field['section'] ]['tab'],
 				$this->page . '_' . $sections[ $field['section'] ]['id'],
 				$field
 			);
 		}
+	}
+
+	/**
+	 * Generic field method.
+	 *
+	 * @param $field
+	 */
+	public function do_field( $field ) {
+		$callback = $this->get_callback( $field );
+		if ( is_callable( $callback ) ) {
+			call_user_func( $callback, $field );
+		}
+		if ( ! empty( $field['description'] ) ) {
+			$this->do_description( $field );
+		}
+	}
+
+	/**
+	 * Get the correct method to output the field.
+	 *
+	 * @param $field
+	 *
+	 * @return array|bool
+	 * @since 3.1.0
+	 */
+	private function get_callback( $field ) {
+		$callback = false;
+		if ( ! empty( $field['type'] ) ) {
+			$callback = "do_{$field['type']}";
+		} elseif ( ! empty( $field['callback'] ) ) {
+			$callback = $field['callback'];
+		}
+
+		return $callback ? array( $this, $callback ) : false;
 	}
 
 	/**

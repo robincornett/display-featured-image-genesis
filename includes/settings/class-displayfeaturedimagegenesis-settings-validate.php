@@ -6,7 +6,7 @@
  * @link      https://robincornett.com
  * @copyright 2017 Robin Cornett Creative, LLC
  */
-class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_Image_Genesis_Helper {
+class Display_Featured_Image_Genesis_Settings_Validate {
 
 	/**
 	 * @var
@@ -39,62 +39,91 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 	 * @since  1.4.0
 	 */
 	public function validate( $new_value ) {
-
-		// validate all checkbox fields
 		foreach ( $this->fields as $field ) {
-			if ( 'do_checkbox' === $field['callback'] ) {
-				$new_value[ $field['id'] ] = $this->one_zero( $new_value[ $field['id'] ] );
-			} elseif ( 'do_number' === $field['callback'] ) {
-				if ( 'max_height' === $field['id'] && empty( $new_value[ $field['id'] ] ) ) {
-					continue;
+			if ( empty( $field['type'] ) ) {
+				$new_value[ $field['id'] ] = null;
+			} elseif ( 'image' === $field['type'] ) {
+				if ( 'default' === $field['id'] ) {
+					$new_value[ $field['id'] ] = $this->validate_single_image( $new_value[ $field['id'] ], $field );
+				} elseif ( isset( $new_value['post_type'][ $field['id'] ] ) ) {
+					$new_value['post_type'][ $field['id'] ] = $this->validate_post_type_images( $new_value['post_type'][ $field['id'] ], $field );
 				}
-				$new_value[ $field['id'] ] = $this->check_value( $new_value[ $field['id'] ], $this->setting[ $field['id'] ], $field['min'], $field['max'] );
-			} elseif ( 'do_radio_buttons' === $field['callback'] ) {
-				$new_value[ $field['id'] ] = absint( $new_value[ $field['id'] ] );
-			} elseif ( 'do_checkbox_array' === $field['callback'] ) {
-				foreach ( $field['options'] as $option => $label ) {
-					$new_value[ $field['id'] ][ $option ] = isset( $new_value[ $field['id'] ][ $option ] ) ? $this->one_zero( $new_value[ $field['id'] ][ $option ] ) : 0;
-				}
-			}
-		}
-
-		// extra variables to pass through to image validation
-		$size_to_check = displayfeaturedimagegenesis_get()->minimum_backstretch_width();
-
-		// validate default image
-		$new_value['default'] = $this->validate_image( $new_value['default'], $this->setting['default'], __( 'Default', 'display-featured-image-genesis' ), $size_to_check );
-
-		// search/404
-		$size_to_check = get_option( 'medium_size_w' );
-		$custom_pages  = array(
-			array(
-				'id'    => 'search',
-				'label' => __( 'Search Results', 'display-featured-image-genesis' ),
-			),
-			array(
-				'id'    => 'fourohfour',
-				'label' => __( '404 Page', 'display-featured-image-genesis' ),
-			),
-		);
-		foreach ( $custom_pages as $page ) {
-			$setting_to_check = isset( $this->setting['post_type'][ $page['id'] ] ) ? $this->setting['post_type'][ $page['id'] ] : '';
-			if ( isset( $new_value['post_type'][ $page ['id'] ] ) ) {
-				$new_value['post_type'][ $page ['id'] ] = $this->validate_image( $new_value['post_type'][ $page['id'] ], $setting_to_check, $page['label'], $size_to_check );
-			}
-		}
-
-		foreach ( $this->get_content_types_built_in() as $post_type ) {
-
-			$object    = get_post_type_object( $post_type );
-			$old_value = isset( $this->setting['post_type'][ $object->name ] ) ? $this->setting['post_type'][ $object->name ] : '';
-			$label     = $object->label;
-
-			if ( isset( $new_value['post_type'][ $post_type ] ) ) {
-				$new_value['post_type'][ $post_type ] = $this->validate_image( $new_value['post_type'][ $post_type ], $old_value, $label, $size_to_check );
+			} else {
+				$new_value[ $field['id'] ] = $this->type_switcher( $new_value[ $field['id'] ], $field );
 			}
 		}
 
 		return $new_value;
+	}
+
+	/**
+	 * Cycle through field types and validate accordingly.
+	 *
+	 * @param $new_value
+	 * @param $field
+	 *
+	 * @return int|string|void
+	 * @since 3.1.0
+	 *
+	 */
+	private function type_switcher( $new_value, $field ) {
+		switch ( $field['type'] ) {
+			case 'number':
+				if ( 'max_height' === $field['id'] && empty( $new_value ) ) {
+					continue;
+				}
+				$new_value = $this->check_value( $new_value, $this->setting[ $field['id'] ], $field['min'], $field['max'] );
+				break;
+
+			case 'checkbox':
+				$new_value = $this->one_zero( $new_value );
+				break;
+
+			case 'radio':
+				$new_value = absint( $new_value );
+				break;
+
+			case 'checkbox_array':
+				foreach ( $field['options'] as $option => $label ) {
+					$new_value[ $option ] = isset( $new_value[ $option ] ) ? $this->one_zero( $new_value[ $option ] ) : 0;
+				}
+				break;
+
+			default:
+				$new_value = is_numeric( $new_value ) ? (int) $new_value : esc_attr( $new_value );
+		}
+
+		return $new_value;
+	}
+
+	/**
+	 * Validate a single image.
+	 *
+	 * @param $new_value
+	 * @param $field
+	 *
+	 * @return string
+	 * @since 3.1.0
+	 */
+	private function validate_single_image( $new_value, $field ) {
+		return $this->validate_image( $new_value, $this->setting[ $field['id'] ], $field['title'], displayfeaturedimagegenesis_get()->minimum_backstretch_width() );
+	}
+
+	/**
+	 * Validate all post type images.
+	 *
+	 * @param $new_value
+	 * @param $field
+	 *
+	 * @return string
+	 * @since 3.1.0
+	 *
+	 */
+	private function validate_post_type_images( $new_value, $field ) {
+		$size_to_check = get_option( 'medium_size_w' );
+		$old_value     = isset( $this->setting['post_type'][ $field['id'] ] ) ? $this->setting['post_type'][ $field['id'] ] : '';
+
+		return $this->validate_image( $new_value, $old_value, $field['title'], $size_to_check );
 	}
 
 	/**
@@ -193,5 +222,28 @@ class Display_Featured_Image_Genesis_Settings_Validate extends Display_Featured_
 	 */
 	public function one_zero( $new_value ) {
 		return (int) (bool) $new_value;
+	}
+
+	/**
+	 * check if file type is image. updated to use WP function.
+	 * @return bool
+	 * @since  1.2.2
+	 * @since  2.5.0
+	 */
+	protected function is_valid_img_ext( $file ) {
+		$valid = wp_check_filetype( $file );
+
+		return (bool) in_array( $valid['ext'], $this->allowed_file_types(), true );
+	}
+
+	/**
+	 * Define the array of allowed image/file types.
+	 * @return array
+	 * @since 2.5.0
+	 */
+	protected function allowed_file_types() {
+		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
+
+		return is_array( $allowed ) ? $allowed : explode( ',', $allowed );
 	}
 }

@@ -4,7 +4,6 @@ return array(
 	array(
 		'id'       => 'scriptless',
 		'title'    => __( 'Disable JavaScript', 'display-featured-image-genesis' ),
-		'callback' => 'do_checkbox',
 		'type'     => 'checkbox',
 		'section'  => 'style',
 		'label'    => __( 'Use a banner image which relies only on CSS.', 'display-featured-image-genesis' ),
@@ -12,7 +11,6 @@ return array(
 	array(
 		'id'          => 'less_header',
 		'title'       => __( 'Height', 'display-featured-image-genesis' ),
-		'callback'    => 'do_number',
 		'section'     => 'style',
 		'label'       => __( 'pixels to remove', 'display-featured-image-genesis' ),
 		'min'         => 0,
@@ -23,7 +21,6 @@ return array(
 	array(
 		'id'          => 'max_height',
 		'title'       => __( 'Maximum Height', 'display-featured-image-genesis' ),
-		'callback'    => 'do_number',
 		'section'     => 'style',
 		'label'       => __( 'pixels', 'display-featured-image-genesis' ),
 		'min'         => 100,
@@ -34,7 +31,6 @@ return array(
 	array(
 		'id'       => 'centeredX',
 		'title'    => __( 'Center Horizontally', 'display-featured-image-genesis' ),
-		'callback' => 'do_radio_buttons',
 		'section'  => 'style',
 		'choices'  => $this->pick_center(),
 		'legend'   => __( 'Center the banner image on the horizontal axis?', 'display-featured-image-genesis' ),
@@ -43,7 +39,6 @@ return array(
 	array(
 		'id'       => 'centeredY',
 		'title'    => __( 'Center Vertically', 'display-featured-image-genesis' ),
-		'callback' => 'do_radio_buttons',
 		'section'  => 'style',
 		'choices'  => $this->pick_center(),
 		'legend'   => __( 'Center the banner image on the vertical axis?', 'display-featured-image-genesis' ),
@@ -52,7 +47,6 @@ return array(
 	array(
 		'id'       => 'fade',
 		'title'    => __( 'Fade', 'display-featured-image-genesis' ),
-		'callback' => 'do_number',
 		'section'  => 'style',
 		'label'    => __( 'milliseconds', 'display-featured-image-genesis' ),
 		'min'      => 0,
