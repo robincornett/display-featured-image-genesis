@@ -14,6 +14,12 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	protected $page = 'displayfeaturedimagegenesis';
 
 	/**
+	 * The image settings class.
+	 * @var $images \DisplayFeaturedImageGenesisSettingsImages
+	 */
+	private $images;
+
+	/**
 	 * Generic function to add settings sections
 	 *
 	 * @since 2.4.0
@@ -230,6 +236,21 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	}
 
 	/**
+	 * Maybe instantiate the image settings class and do the image field.
+	 *
+	 * @param $args
+	 *
+	 * @since 3.1.0
+	 */
+	protected function do_image( $args ) {
+		if ( ! isset( $this->images ) ) {
+			include_once 'class-displayfeaturedimagegenesis-settings-images.php';
+			$this->images = new DisplayFeaturedImageGenesisSettingsImages( $this->setting );
+		}
+		$this->images->do_image( $args );
+	}
+
+	/**
 	 * Generic callback to display a field description.
 	 *
 	 * @param  $args array
@@ -246,51 +267,6 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 			return;
 		}
 		printf( '<p class="description">%s</p>', wp_kses_post( $description ) );
-	}
-
-	/**
-	 * display image preview
-	 *
-	 * @param  int $id featured image ID
-	 * @param $alt     string description for alt text
-	 *
-	 * @return string
-	 *
-	 * @since 2.3.0
-	 */
-	public function render_image_preview( $id, $alt = '' ) {
-		if ( empty( $id ) ) {
-			return '';
-		}
-
-		/* translators: the placeholder refers to which featured image */
-		$alt_text = sprintf( __( '%s featured image', 'display-featured-image-genesis' ), esc_attr( $alt ) );
-		$preview  = wp_get_attachment_image_src( (int) $id, 'medium' );
-
-		return sprintf( '<div class="upload-image-preview"><img src="%s" alt="%s" /></div>', esc_url( $preview[0] ), esc_attr( $alt_text ) );
-	}
-
-	/**
-	 * show image select/delete buttons
-	 *
-	 * @param  int $id      image ID
-	 * @param  string $name name for value/ID/class
-	 *
-	 * @since 2.3.0
-	 */
-	public function render_buttons( $id, $name ) {
-		$id = $id ? (int) $id : '';
-		printf( '<input type="hidden" class="upload-image-id" name="%1$s" value="%2$s" />', esc_attr( $name ), esc_attr( $id ) );
-		printf(
-			'<button id="%s" class="upload-image button-secondary">%s</button>',
-			esc_attr( $name ),
-			esc_attr__( 'Select Image', 'display-featured-image-genesis' )
-		);
-		printf(
-			' <button class="delete-image button-secondary"%s>%s</button>',
-			empty( $id ) ? 'style="display:none;"' : '',
-			esc_attr__( 'Delete Image', 'display-featured-image-genesis' )
-		);
 	}
 
 	/**
@@ -363,29 +339,6 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		}
 
 		return $value;
-	}
-
-	/**
-	 * check if file type is image. updated to use WP function.
-	 * @return bool
-	 * @since  1.2.2
-	 * @since  2.5.0
-	 */
-	protected function is_valid_img_ext( $file ) {
-		$valid = wp_check_filetype( $file );
-
-		return (bool) in_array( $valid['ext'], $this->allowed_file_types(), true );
-	}
-
-	/**
-	 * Define the array of allowed image/file types.
-	 * @return array
-	 * @since 2.5.0
-	 */
-	protected function allowed_file_types() {
-		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
-
-		return is_array( $allowed ) ? $allowed : explode( ',', $allowed );
 	}
 
 	/**
