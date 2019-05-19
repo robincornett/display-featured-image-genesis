@@ -33,9 +33,9 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		foreach ( $taxonomies as $taxonomy ) {
 			add_action( "{$taxonomy}_add_form_fields", array( $this, 'add_taxonomy_meta_fields' ), 5, 2 );
 			add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edit_taxonomy_meta_fields' ), 5, 2 );
-			add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
-			add_action( "create_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
-			add_action( "edit_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ) );
+			add_action( "edited_{$taxonomy}", array( $this, 'save_term_meta' ) );
+			add_action( "create_{$taxonomy}", array( $this, 'save_term_meta' ) );
+			add_action( "edit_{$taxonomy}", array( $this, 'save_term_meta' ) );
 			add_action( 'load-edit-tags.php', array( $this, 'help' ) );
 		}
 
@@ -115,7 +115,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 *
 	 * @since 2.0.0
 	 */
-	public function save_taxonomy_custom_meta( $term_id ) {
+	public function save_term_meta( $term_id ) {
 		if ( ! $this->user_can_save( "{$this->page}_save-settings", "{$this->page}_nonce" ) ) {
 			return;
 		}
@@ -123,63 +123,38 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		if ( ! $input ) {
 			return;
 		}
-		$displaysetting = get_option( "{$this->page}_{$term_id}", false );
-		$this->update_term_meta( $term_id, $input, $displaysetting );
-	}
 
-	/**
-	 * update/delete term meta
-	 *
-	 * @param int   $term_id        term id
-	 * @param       $input
-	 * @param string $displaysetting old option, if it exists
-	 *
-	 * @since 2.4.0
-	 */
-	protected function update_term_meta( $term_id, $input, $displaysetting ) {
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'settings/class-displayfeaturedimagegenesis-settings-validate-image.php';
-		$medium    = get_option( 'medium_size_w' );
-		$validator = new DisplayFeaturedImageGenesisSettingsValidateImage();
-		if ( null === $new_image ) {
+		$medium          = get_option( 'medium_size_w' );
+		$validator       = new DisplayFeaturedImageGenesisSettingsValidateImage();
+		$current_setting = $this->get_current_term_setting( $term_id );
 		$new_image       = $validator->validate_image( $input, $current_setting, 'term name', $medium );
-			// if the new image is empty, delete term_meta and old option
+		if ( $new_image ) {
+			update_term_meta( $term_id, $this->page, $new_image );
+		} else {
 			delete_term_meta( $term_id, $this->page );
-			delete_option( "{$this->page}_{$term_id}" );
-		} elseif ( false !== $new_image ) {
-			// if the new image is different from the existing term meta
-			$current_setting = get_term_meta( $term_id, $this->page );
-			if ( $current_setting !== $new_image ) {
-				update_term_meta( $term_id, $this->page, (int) $new_image );
-			}
-			// if there is a valid image, and the old setting exists
-			if ( $displaysetting ) {
-				delete_option( "{$this->page}_{$term_id}" );
-			}
 		}
 	}
 
 	/**
-	 * Returns false value for image if not correct file type/size
-	 * @param  string $new_value New value
-	 * @return string            New value or false, depending on allowed image size.
-	 * @since  2.0.0
+	 * Get the current term meta or option, if it exists.
+	 *
+	 * @param $term_id
+	 *
+	 * @return mixed|void
+	 * @since 3.1.0
 	 */
-	protected function validate_taxonomy_image( $new_value ) {
-
-		if ( ! $new_value ) {
-			return null;
+	private function get_current_term_setting( $term_id ) {
+		$meta = get_term_meta( $term_id, $this->page, true );
+		if ( $meta ) {
+			return $meta;
+		}
+		$setting = get_option( "{$this->page}_{$term_id}", false );
+		if ( $setting ) {
+			delete_option( "{$this->page}_{$term_id}" );
 		}
 
-		$medium = get_option( 'medium_size_w' );
-		$source = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid  = false;
-		$width  = $source[1];
-
-		if ( $valid && $width > $medium ) {
-			return (int) $new_value;
-		}
-
-		return false;
+		return $setting;
 	}
 
 	/**
