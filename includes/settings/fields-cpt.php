@@ -36,10 +36,10 @@ $custom_pages = array(
 $post_types   = array_merge( $custom_pages, $this->get_post_types() );
 foreach ( $post_types as $post_type => $label ) {
 	$fields[] = array(
-		'id'       => esc_attr( $post_type ),
-		'title'    => esc_attr( $label ),
-		'section'  => 'cpt',
-		'type'     => 'image',
+		'id'      => $post_type,
+		'title'   => esc_attr( $label ),
+		'section' => 'cpt',
+		'type'    => 'image',
 	);
 }
 
