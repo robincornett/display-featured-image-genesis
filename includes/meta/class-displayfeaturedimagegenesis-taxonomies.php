@@ -83,7 +83,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		$term_id  = $term->term_id;
 		$image_id = displayfeaturedimagegenesis_get_term_image( $term_id );
 
-		wp_nonce_field( $this->page . '_save-settings', $this->page . '_nonce', false );
+		wp_nonce_field( "{$this->page}_save-settings", "{$this->page}_nonce", false );
 		echo '<tr class="form-field term-image-wrap">';
 		printf(
 			'<th scope="row" ><label for="%s">%s</label></th>',
@@ -116,7 +116,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 * @since 2.0.0
 	 */
 	public function save_taxonomy_custom_meta( $term_id ) {
-		if ( ! $this->user_can_save( $this->page . '_save-settings', $this->page . '_nonce' ) ) {
+		if ( ! $this->user_can_save( "{$this->page}_save-settings", "{$this->page}_nonce" ) ) {
 			return;
 		}
 		$input = filter_input( INPUT_POST, $this->page, FILTER_DEFAULT );
