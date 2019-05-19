@@ -63,7 +63,10 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		<div class="form-field term-image-wrap">
 			<?php wp_nonce_field( $this->page, $this->page ); ?>
 			<label for="<?php echo esc_attr( $this->page ); ?>[term_image]"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
-			<?php $this->render_buttons( false, "{$this->page}[term_image]" ); ?>
+			<?php
+			$images = $this->get_images_class();
+			$images->render_buttons( false, "{$this->page}[term_image]" );
+			?>
 			<p class="description"><?php esc_attr_e( 'Set Featured Image for new term.', 'display-featured-image-genesis' ); ?></p>
 		</div>
 		<?php
@@ -87,11 +90,12 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 			esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
 		);
 		echo '<td>';
-		$name = "{$this->page}[term_image]";
+		$name   = "{$this->page}[term_image]";
+		$images = $this->get_images_class();
 		if ( $image_id ) {
-			echo wp_kses_post( $this->render_image_preview( $image_id, $term->name ) );
+			echo wp_kses_post( $images->render_image_preview( $image_id, $term->name ) );
 		}
-		$this->render_buttons( $image_id, $name );
+		$images->render_buttons( $image_id, $name );
 		echo '<p class="description">';
 		printf(
 			/* translators: name of the term */
@@ -123,12 +127,15 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 *
 	 * @param int   $term_id        term id
 	 * @param       $input
-	 * @param array $displaysetting old option, if it exists
+	 * @param string $displaysetting old option, if it exists
 	 *
 	 * @since 2.4.0
 	 */
 	protected function update_term_meta( $term_id, $input, $displaysetting ) {
-		$new_image = $this->validate_taxonomy_image( $input['term_image'] );
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'settings/class-displayfeaturedimagegenesis-settings-validate-image.php';
+		$medium    = get_option( 'medium_size_w' );
+		$validator = new DisplayFeaturedImageGenesisSettingsValidateImage();
+		$new_image = $validator->validate_image( $input['term_image'], $displaysetting, 'term name', $medium );
 		if ( null === $new_image ) {
 			// if the new image is empty, delete term_meta and old option
 			delete_term_meta( $term_id, $this->page );
@@ -147,37 +154,6 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	}
 
 	/**
-	 * update term option (for sites running WP below 4.4)
-	 * @param  int $term_id        term id
-	 * @param  array $displaysetting previous option, if it exists
-	 *
-	 * @since 2.4.0
-	 */
-	protected function update_options_meta( $term_id, $input, $displaysetting ) {
-		_deprecated_function( __FUNCTION__, '3.1.0' );
-		$cat_keys   = array_keys( $input );
-		$is_updated = false;
-		foreach ( $cat_keys as $key ) {
-			if ( isset( $input[ $key ] ) ) {
-				$displaysetting[ $key ] = $input[ $key ];
-				if ( $input['term_image'] !== $displaysetting[ $key ] ) {
-					break;
-				}
-				$displaysetting[ $key ] = $this->validate_taxonomy_image( $input[ $key ] );
-				if ( null === $displaysetting[ $key ] ) {
-					delete_option( "{$this->page}_{$term_id}" );
-				} elseif ( false !== $displaysetting[ $key ] ) {
-					$is_updated = true;
-				}
-			}
-		}
-		// Save the option array.
-		if ( $is_updated ) {
-			update_option( "{$this->page}_{$term_id}", $displaysetting );
-		}
-	}
-
-	/**
 	 * Returns false value for image if not correct file type/size
 	 * @param  string $new_value New value
 	 * @return string            New value or false, depending on allowed image size.
@@ -191,7 +167,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 
 		$medium = get_option( 'medium_size_w' );
 		$source = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid  = $this->is_valid_img_ext( $source[0] );
+		$valid  = false;
 		$width  = $source[1];
 
 		if ( $valid && $width > $medium ) {

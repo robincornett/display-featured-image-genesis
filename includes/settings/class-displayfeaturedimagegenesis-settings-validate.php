@@ -19,6 +19,11 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 	protected $setting;
 
 	/**
+	 * @var \DisplayFeaturedImageGenesisSettingsValidateImage
+	 */
+	private $validator;
+
+	/**
 	 * Display_Featured_Image_Genesis_Settings_Validate constructor.
 	 *
 	 * @param $fields
@@ -106,7 +111,9 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 	 * @since 3.1.0
 	 */
 	private function validate_single_image( $new_value, $field ) {
-		return $this->validate_image( $new_value, $this->setting[ $field['id'] ], $field['title'], displayfeaturedimagegenesis_get()->minimum_backstretch_width() );
+		$validator = $this->get_image_validator();
+
+		return $validator->validate_image( $new_value, $this->setting[ $field['id'] ], $field['title'], displayfeaturedimagegenesis_get()->minimum_backstretch_width() );
 	}
 
 	/**
@@ -122,8 +129,22 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 	private function validate_post_type_images( $new_value, $field ) {
 		$size_to_check = get_option( 'medium_size_w' );
 		$old_value     = isset( $this->setting['post_type'][ $field['id'] ] ) ? $this->setting['post_type'][ $field['id'] ] : '';
+		$validator     = $this->get_image_validator();
 
-		return $this->validate_image( $new_value, $old_value, $field['title'], $size_to_check );
+		return $validator->validate_image( $new_value, $old_value, $field['title'], $size_to_check );
+	}
+
+	/**
+	 * @return \DisplayFeaturedImageGenesisSettingsValidateImage
+	 */
+	private function get_image_validator() {
+		if ( isset( $this->validator ) ) {
+			return $this->validator;
+		}
+		include_once 'class-displayfeaturedimagegenesis-settings-validate-image.php';
+		$this->validator = new DisplayFeaturedImageGenesisSettingsValidateImage();
+
+		return $this->validator;
 	}
 
 	/**
@@ -146,70 +167,6 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 	}
 
 	/**
-	 * Returns previous value for image if not correct file type/size
-	 *
-	 * @param  string $new_value New value
-	 *
-	 * @return string            New or previous value, depending on allowed image size.
-	 * @since  1.2.2
-	 */
-	public function validate_image( $new_value, $old_value, $label, $size_to_check ) {
-
-		// ok for field to be empty
-		if ( ! $new_value ) {
-			return '';
-		}
-
-		$source = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid  = (bool) $this->is_valid_img_ext( $source[0] );
-		$width  = $source[1];
-
-		if ( $valid && $width > $size_to_check ) {
-			return (int) $new_value;
-		}
-
-		$class   = 'invalid';
-		$message = $this->image_validation_message( $valid, $label );
-		if ( ! is_customize_preview() ) {
-			add_settings_error(
-				$old_value,
-				esc_attr( $class ),
-				esc_attr( $message ),
-				'error'
-			);
-		} elseif ( method_exists( 'WP_Customize_Setting', 'validate' ) ) {
-			return new WP_Error( esc_attr( $class ), esc_attr( $message ) );
-		}
-
-		return (int) $old_value;
-	}
-
-	/**
-	 * Define the error message for invalid images.
-	 *
-	 * @param $valid bool false if the filetype is invalid.
-	 * @param $label string which context the image is from.
-	 *
-	 * @return string
-	 */
-	protected function image_validation_message( $valid, $label ) {
-		$message = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
-		if ( ! $valid && ! is_customize_preview() ) {
-			$message = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-		}
-
-		if ( is_customize_preview() ) {
-			/* translators: the placeholder is the name of the featured image; eg. default, search, or the name of a content type. */
-			$message .= sprintf( __( ' The %s Featured Image must be changed to a valid, well sized image file.', 'display-featured-image-genesis' ), $label );
-		} else {
-			/* translators: the placeholder is the name of the featured image; eg. default, search, or the name of a content type. */
-			$message .= sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $label );
-		}
-
-		return $message;
-	}
-
-	/**
 	 * Returns a 1 or 0, for all truthy / falsy values.
 	 *
 	 * Uses double casting. First, we cast to bool, then to integer.
@@ -222,28 +179,5 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 	 */
 	public function one_zero( $new_value ) {
 		return (int) (bool) $new_value;
-	}
-
-	/**
-	 * check if file type is image. updated to use WP function.
-	 * @return bool
-	 * @since  1.2.2
-	 * @since  2.5.0
-	 */
-	protected function is_valid_img_ext( $file ) {
-		$valid = wp_check_filetype( $file );
-
-		return (bool) in_array( $valid['ext'], $this->allowed_file_types(), true );
-	}
-
-	/**
-	 * Define the array of allowed image/file types.
-	 * @return array
-	 * @since 2.5.0
-	 */
-	protected function allowed_file_types() {
-		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
-
-		return is_array( $allowed ) ? $allowed : explode( ',', $allowed );
 	}
 }

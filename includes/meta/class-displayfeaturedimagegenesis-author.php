@@ -46,11 +46,12 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 		printf( '<th scope="row"><label for="%s">%s</label></th>', esc_attr( $this->name ), esc_html__( 'Featured Image', 'display-featured-image-genesis' ) );
 
 		echo '<td>';
+		$images = $this->get_images_class();
 		if ( $id ) {
-			echo wp_kses_post( $this->render_image_preview( $id, $user->display_name ) );
+			echo wp_kses_post( $images->render_image_preview( $id, $user->display_name ) );
 		}
 
-		$this->render_buttons( $id, $this->name );
+		$images->render_buttons( $id, $this->name );
 		printf( '<p class="description">%s</p>', esc_html__( 'Upload an image to use as your author page featured image.', 'display-featured-image-genesis' ) );
 		echo '</td>';
 		echo '</tr>';
@@ -66,7 +67,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	public function save_profile_fields( $user_id ) {
 
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			return false;
+			return;
 		}
 
 		if ( ! filter_input( INPUT_POST, '_wpnonce', FILTER_DEFAULT ) ) {
@@ -76,33 +77,16 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 		$new_value = filter_input( INPUT_POST, $this->name, FILTER_DEFAULT );
 		$old_value = get_the_author_meta( $this->name, $user_id );
 		if ( $old_value !== $new_value ) {
-			$new_value = $this->validate_author_image( $new_value, $old_value );
+			$user_object = get_userdata( $user_id );
+			$medium      = get_option( 'medium_size_w' );
+			include_once plugin_dir_path( dirname( __FILE__ ) ) . 'settings/class-displayfeaturedimagegenesis-settings-validate-image.php';
+			$validator = new DisplayFeaturedImageGenesisSettingsValidateImage();
+			$new_value = $validator->validate_image( $new_value, $old_value, $user_object->display_name, $medium );
 
+			//TODO: check if this is set to fire
+			add_filter( 'user_profile_update_errors', array( $this, 'user_profile_error_message' ), 10, 3 );
 			update_user_meta( $user_id, $this->name, $new_value );
 		}
-	}
-
-	/**
-	 * Returns old value for author image if not correct file type/size
-	 * @param  string $new_value New value
-	 * @return string            New value or old, depending on allowed image size.
-	 * @since  2.3.0
-	 */
-	public function validate_author_image( $new_value, $old_value ) {
-
-		$medium = get_option( 'medium_size_w' );
-		$source = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid  = $this->is_valid_img_ext( $source[0] );
-		$width  = $source[1];
-
-		if ( ! $new_value || ( $new_value && $valid && $width > $medium ) ) {
-			return $new_value;
-		}
-
-		add_filter( 'user_profile_update_errors', array( $this, 'user_profile_error_message' ), 10, 3 );
-
-		return $old_value;
-
 	}
 
 	/**
@@ -115,15 +99,9 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 	 * @since 2.3.0
 	 */
 	public function user_profile_error_message( $errors, $update, $user ) {
-		$new_value = (int) $_POST['displayfeaturedimagegenesis'];
-		$source    = wp_get_attachment_image_src( $new_value, 'full' );
-		$valid     = $this->is_valid_img_ext( $source[0] );
-		$reset     = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $user->display_name );
-		$error     = __( 'Sorry, your image is too small.', 'display-featured-image-genesis' );
+		/* translators: the user display name */
+		$reset = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $user->display_name );
 
-		if ( ! $valid ) {
-			$error = __( 'Sorry, that is an invalid file type.', 'display-featured-image-genesis' );
-		}
-		$errors->add( 'profile_error', $error . $reset );
+		$errors->add( 'profile_error', $reset );
 	}
 }

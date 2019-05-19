@@ -243,11 +243,8 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @since 3.1.0
 	 */
 	protected function do_image( $args ) {
-		if ( ! isset( $this->images ) ) {
-			include_once 'class-displayfeaturedimagegenesis-settings-images.php';
-			$this->images = new DisplayFeaturedImageGenesisSettingsImages( $this->setting );
-		}
-		$this->images->do_image( $args );
+		$images = $this->get_images_class();
+		$images->do_image( $args );
 	}
 
 	/**
@@ -339,6 +336,22 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Get the images settings class.
+	 * @return \DisplayFeaturedImageGenesisSettingsImages
+	 * @since 3.1.0
+	 */
+	protected function get_images_class() {
+		if ( isset( $this->images ) ) {
+			return $this->images;
+		}
+
+		include_once 'class-displayfeaturedimagegenesis-settings-images.php';
+		$this->images = new DisplayFeaturedImageGenesisSettingsImages( $this->setting );
+
+		return $this->images;
 	}
 
 	/**
