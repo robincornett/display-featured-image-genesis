@@ -59,17 +59,20 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 	 */
 	public function add_taxonomy_meta_fields() {
 
-		?>
-		<div class="form-field term-image-wrap">
-			<?php wp_nonce_field( $this->page, $this->page ); ?>
-			<label for="<?php echo esc_attr( $this->page ); ?>"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
-			<?php
-			$images = $this->get_images_class();
-			$images->render_buttons( false, $this->page );
-			?>
-			<p class="description"><?php esc_attr_e( 'Set Featured Image for new term.', 'display-featured-image-genesis' ); ?></p>
-		</div>
-		<?php
+		echo '<div class="form-field term-image-wrap">';
+		wp_nonce_field( "{$this->page}_save-settings", "{$this->page}_nonce", false );
+		printf(
+			'<label for="%s">%s</label>',
+			esc_attr( $this->page ),
+			esc_attr( 'Featured Image', 'display-featured-image-genesis' )
+		);
+		$images = $this->get_images_class();
+		$images->render_buttons( false, $this->page );
+		printf(
+			'<p class="description">%s</p>',
+			esc_attr( 'Set Featured Image for new term.', 'display-featured-image-genesis' )
+		);
+		echo '</div>';
 	}
 
 	/**
