@@ -41,7 +41,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 		$id = get_the_author_meta( $this->name, $user->ID );
 
 		echo '<table class="form-table">';
-
+		wp_nonce_field( "{$this->page}_save-settings", "{$this->page}_nonce", false );
 		echo '<tr class="user-featured-image-wrap">';
 		printf( '<th scope="row"><label for="%s">%s</label></th>', esc_attr( $this->name ), esc_html__( 'Featured Image', 'display-featured-image-genesis' ) );
 
@@ -70,7 +70,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 			return;
 		}
 
-		if ( ! filter_input( INPUT_POST, '_wpnonce', FILTER_DEFAULT ) ) {
+		if ( ! $this->user_can_save( "{$this->page}_save-settings", "{$this->page}_nonce" ) ) {
 			wp_die( esc_attr__( 'Something unexpected happened. Please try again.', 'display-featured-image-genesis' ) );
 		}
 
@@ -83,7 +83,11 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 			$validator = new DisplayFeaturedImageGenesisSettingsValidateImage();
 			$new_value = $validator->validate_image( $new_value, $old_value, $user_object->display_name, $medium );
 
-			update_user_meta( $user_id, $this->name, $new_value );
+			if ( $new_value ) {
+				update_user_meta( $user_id, $this->name, $new_value );
+			} else {
+				delete_user_meta( $user_id, $this->name );
+			}
 		}
 	}
 }
