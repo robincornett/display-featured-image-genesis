@@ -22,7 +22,13 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 			return;
 		}
 
-		register_meta( 'term', $this->page, array( $this, 'validate_taxonomy_image' ) );
+		register_meta(
+			'term',
+			$this->page,
+			array(
+				'sanitize_callback' => array( $this, 'save_taxonomy_custom_meta' ),
+			)
+		);
 
 		$args       = array(
 			'public' => true,
