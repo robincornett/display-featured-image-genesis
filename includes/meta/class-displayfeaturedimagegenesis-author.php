@@ -83,25 +83,7 @@ class Display_Featured_Image_Genesis_Author extends Display_Featured_Image_Genes
 			$validator = new DisplayFeaturedImageGenesisSettingsValidateImage();
 			$new_value = $validator->validate_image( $new_value, $old_value, $user_object->display_name, $medium );
 
-			//TODO: check if this is set to fire
-			add_filter( 'user_profile_update_errors', array( $this, 'user_profile_error_message' ), 10, 3 );
 			update_user_meta( $user_id, $this->name, $new_value );
 		}
-	}
-
-	/**
-	 * User profile error message
-	 *
-	 * @param object  $errors error message depending on what's wrong
-	 * @param bool    $update whether or not to update
-	 * @param  object $user   user being updated
-	 *
-	 * @since 2.3.0
-	 */
-	public function user_profile_error_message( $errors, $update, $user ) {
-		/* translators: the user display name */
-		$reset = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $user->display_name );
-
-		$errors->add( 'profile_error', $reset );
 	}
 }

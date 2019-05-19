@@ -42,6 +42,7 @@ class DisplayFeaturedImageGenesisSettingsValidateImage {
 				esc_attr( $message ),
 				'error'
 			);
+			add_filter( 'user_profile_update_errors', array( $this, 'user_profile_error_message' ), 10, 3 );
 		} elseif ( method_exists( 'WP_Customize_Setting', 'validate' ) ) {
 			return new WP_Error( esc_attr( $class ), esc_attr( $message ) );
 		}
@@ -72,6 +73,22 @@ class DisplayFeaturedImageGenesisSettingsValidateImage {
 		}
 
 		return $message;
+	}
+
+	/**
+	 * User profile error message
+	 *
+	 * @param object  $errors        error message depending on what's wrong
+	 * @param bool    $existing_user existing user
+	 * @param object  $user          user being updated
+	 *
+	 * @since 2.3.0
+	 */
+	public function user_profile_error_message( $errors, $existing_user, $user ) {
+		/* translators: the user display name */
+		$reset = sprintf( __( ' The %s Featured Image has been reset to the last valid setting.', 'display-featured-image-genesis' ), $user->display_name );
+
+		$errors->add( 'profile_error', $reset );
 	}
 
 	/**
