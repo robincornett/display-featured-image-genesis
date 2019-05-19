@@ -47,7 +47,7 @@ class DisplayFeaturedImageGenesisSettingsImages {
 		}
 		$this->render_buttons( $value, $name );
 
-		if ( empty( $id ) || in_array( $args['id'], array( 'default', 'search', 'fourohfour', 'post' ), true ) ) {
+		if ( empty( $value ) || in_array( $args['id'], array( 'default', 'search', 'fourohfour', 'post' ), true ) ) {
 			return;
 		}
 		$this->do_cpt_description( $args );
