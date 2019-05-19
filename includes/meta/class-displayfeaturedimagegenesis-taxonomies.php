@@ -62,10 +62,10 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		?>
 		<div class="form-field term-image-wrap">
 			<?php wp_nonce_field( $this->page, $this->page ); ?>
-			<label for="<?php echo esc_attr( $this->page ); ?>[term_image]"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
+			<label for="<?php echo esc_attr( $this->page ); ?>"><?php esc_attr_e( 'Featured Image', 'display-featured-image-genesis' ); ?></label>
 			<?php
 			$images = $this->get_images_class();
-			$images->render_buttons( false, "{$this->page}[term_image]" );
+			$images->render_buttons( false, $this->page );
 			?>
 			<p class="description"><?php esc_attr_e( 'Set Featured Image for new term.', 'display-featured-image-genesis' ); ?></p>
 		</div>
@@ -86,22 +86,23 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		wp_nonce_field( $this->page . '_save-settings', $this->page . '_nonce', false );
 		echo '<tr class="form-field term-image-wrap">';
 		printf(
-			'<th scope="row" ><label for="%s[term_image]">%s</label></th>',
+			'<th scope="row" ><label for="%s">%s</label></th>',
 			esc_attr( $this->page ),
 			esc_attr__( 'Featured Image', 'display-featured-image-genesis' )
 		);
 		echo '<td>';
-		$name   = "{$this->page}[term_image]";
 		$images = $this->get_images_class();
 		if ( $image_id ) {
 			echo wp_kses_post( $images->render_image_preview( $image_id, $term->name ) );
 		}
-		$images->render_buttons( $image_id, $name );
+		$images->render_buttons( $image_id, $this->page );
 		echo '<p class="description">';
+		$width = get_option( 'medium_size_w' ) + 1;
 		printf(
-			/* translators: name of the term */
-			esc_attr__( 'Set Featured Image for %1$s.', 'display-featured-image-genesis' ),
-			esc_attr( $term->name )
+			/* translators: 1. name of the term */
+			esc_attr__( 'Set Featured Image for %1$s. It must be at least %2$s pixels wide.', 'display-featured-image-genesis' ),
+			esc_attr( $term->name ),
+			esc_attr( $width )
 		);
 		echo '</p>';
 		echo '</td>';
@@ -118,7 +119,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		if ( ! $this->user_can_save( $this->page . '_save-settings', $this->page . '_nonce' ) ) {
 			return;
 		}
-		$input = filter_input( INPUT_POST, $this->page, FILTER_DEFAULT, FILTER_FORCE_ARRAY );
+		$input = filter_input( INPUT_POST, $this->page, FILTER_DEFAULT );
 		if ( ! $input ) {
 			return;
 		}
@@ -139,8 +140,8 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'settings/class-displayfeaturedimagegenesis-settings-validate-image.php';
 		$medium    = get_option( 'medium_size_w' );
 		$validator = new DisplayFeaturedImageGenesisSettingsValidateImage();
-		$new_image = $validator->validate_image( $input['term_image'], $displaysetting, 'term name', $medium );
 		if ( null === $new_image ) {
+		$new_image       = $validator->validate_image( $input, $current_setting, 'term name', $medium );
 			// if the new image is empty, delete term_meta and old option
 			delete_term_meta( $term_id, $this->page );
 			delete_option( "{$this->page}_{$term_id}" );
