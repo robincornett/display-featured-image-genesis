@@ -40,9 +40,8 @@
 				    previewImage = $( '<div />', {
 					    class: previewClass
 				    } ).append( $( '<img/>', {
-					    style: 'max-width:100%;',
-					    width: '300px',
-					    src: attachment.url,
+					    style: 'max-width:300px;',
+					    src: _getImageURL( attachment ),
 					    alt: ''
 				    } ) );
 				$( target_input ).val( attachment.id );
@@ -55,7 +54,16 @@
 
 			//Open the uploader dialog
 			custom_uploader.open();
+		}
 
+		/**
+		 * Get the medium size image, if it exists.
+		 * @param image
+		 * @return {*}
+		 * @private
+		 */
+		function _getImageURL( image ) {
+			return image.sizes.medium ? image.sizes.medium.url : image.url;
 		}
 
 		function _deleteMedia( e ) {
