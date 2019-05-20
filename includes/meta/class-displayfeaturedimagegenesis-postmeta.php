@@ -85,7 +85,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * @return string
 	 */
 	protected function get_metabox_content( $post_id ) {
-		$output = wp_nonce_field( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce', true, false );
+		$output = wp_nonce_field( "{$this->metabox}_post_save", "{$this->metabox}_post_nonce", true, false );
 		$select = $this->get_select();
 		if ( $select ) {
 			foreach ( $select as $s ) {
@@ -220,7 +220,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 		}
 
 		// if our nonce isn't there, or we can't verify it, bail
-		if ( ! $this->user_can_save( 'displayfeaturedimagegenesis_post_save', 'displayfeaturedimagegenesis_post_nonce' ) ) {
+		if ( ! $this->user_can_save( "{$this->metabox}_post_save", "{$this->metabox}_post_nonce" ) ) {
 			return;
 		}
 
