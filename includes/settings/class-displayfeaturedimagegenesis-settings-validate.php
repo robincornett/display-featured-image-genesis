@@ -111,9 +111,7 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 	 * @since 3.1.0
 	 */
 	private function validate_single_image( $new_value, $field ) {
-		$validator = $this->get_image_validator();
-
-		return $validator->validate_image( $new_value, $this->setting[ $field['id'] ], $field['title'], displayfeaturedimagegenesis_get()->minimum_backstretch_width() );
+		return $this->validate_image( $new_value, $this->setting[ $field['id'] ], $field['title'], displayfeaturedimagegenesis_get()->minimum_backstretch_width() );
 	}
 
 	/**
@@ -129,9 +127,26 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 	private function validate_post_type_images( $new_value, $field ) {
 		$size_to_check = get_option( 'medium_size_w' );
 		$old_value     = isset( $this->setting['post_type'][ $field['id'] ] ) ? $this->setting['post_type'][ $field['id'] ] : '';
-		$validator     = $this->get_image_validator();
 
-		return $validator->validate_image( $new_value, $old_value, $field['title'], $size_to_check );
+		return $this->validate_image( $new_value, $old_value, $field['title'], $size_to_check );
+	}
+
+	/**
+	 * Public function to initialize the image validator class and validate any image.
+	 *
+	 * @param $new_value
+	 * @param $old_value
+	 * @param $title
+	 * @param $size_to_check
+	 *
+	 * @return int|mixed
+	 * @since 3.1.0
+	 *
+	 */
+	public function validate_image( $new_value, $old_value, $title, $size_to_check ) {
+		$validator = $this->get_image_validator();
+
+		return $validator->validate_image( $new_value, $old_value, $title, $size_to_check );
 	}
 
 	/**

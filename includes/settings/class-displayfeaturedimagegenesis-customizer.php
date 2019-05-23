@@ -274,7 +274,7 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 		if ( isset( $this->validation ) ) {
 			return $this->validation;
 		}
-		include_once plugin_dir_path( __FILE__ ) . 'class-displayfeaturedimagegenesis-settings-validate.php';
+		include_once 'class-displayfeaturedimagegenesis-settings-validate.php';
 		$this->validation = new Display_Featured_Image_Genesis_Settings_Validate( array(), $this->setting );
 
 		return $this->validation;
