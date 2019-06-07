@@ -103,9 +103,8 @@ class Display_Featured_Image_Genesis_Common {
 
 		// outlier: if it's a home page with a static front page, and there is a featured image set on the home page
 		// also provisionally sets featured image for posts, similar to CPT archives
-		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage = get_option( 'page_for_posts' );
-		if ( 'page' === $frontpage && $postspage ) {
+		if ( self::has_static_front_page() && $postspage ) {
 			$postspage_image              = get_post_thumbnail_id( $postspage );
 			$setting['post_type']['post'] = (int) $postspage_image;
 		}
@@ -237,13 +236,12 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	protected static function set_item_title( $title = '' ) {
 
-		$frontpage = get_option( 'show_on_front' ); // either 'posts' or 'page'
 		$postspage = get_option( 'page_for_posts' );
 		$a11ycheck = current_theme_supports( 'genesis-accessibility', array( 'headings' ) );
 
 		if ( is_singular() ) {
 			$title = get_the_title();
-		} elseif ( is_home() && 'page' === $frontpage ) {
+		} elseif ( is_home() && self::has_static_front_page() ) {
 			$title = get_post( $postspage )->post_title;
 		} elseif ( is_category() || is_tag() || is_tax() ) {
 			$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : get_queried_object();
@@ -411,6 +409,17 @@ class Display_Featured_Image_Genesis_Common {
 		}
 		$post_type = get_post_type();
 		return ( isset( $setting['large'][ $post_type ] ) && $setting['large'][ $post_type ] );
+	}
+
+	/**
+	 * Does the site have a static front page?
+	 * @return bool
+	 * @since 3.1.0
+	 */
+	private static function has_static_front_page() {
+		$frontpage = get_option( 'show_on_front' );
+
+		return (bool) 'page' === $frontpage;
 	}
 }
 
