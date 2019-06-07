@@ -110,8 +110,8 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		// if a post type image exists, it takes priority over the fallback. check that next.
-		$post_type = get_post_type();
-		if ( isset( $setting['post_type'][ $post_type ] ) && $setting['post_type'][ $post_type ] ) {
+		$post_type = self::get_post_type();
+		if ( ! empty( $setting['post_type'][ $post_type ] ) ) {
 			/**
 			 * Creates display_featured_image_genesis_use_post_type_image filter to check
 			 * whether get_post_type array should use the post type image.
@@ -161,6 +161,20 @@ class Display_Featured_Image_Genesis_Common {
 		$image_id = is_numeric( $image_id ) ? (int) $image_id : '';
 
 		return $image_id;
+	}
+
+	/**
+	 * Get the current post type.
+	 * @return false|object|string
+	 */
+	private static function get_post_type() {
+		$post_type = get_post_type();
+		if ( ! is_post_type_archive() ) {
+			return $post_type;
+		}
+		$post_type = get_queried_object();
+
+		return $post_type->name;
 	}
 
 	/**
