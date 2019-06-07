@@ -59,8 +59,8 @@ class Display_Featured_Image_Genesis_Common {
 		$item->content = false;
 		// declare this last so that $item->backstretch is set.
 		if ( ! is_admin() && is_singular() ) {
-			$post          = get_post();
-			$item->content = strpos( $post->post_content, 'src="' . $item->backstretch[0] );
+			$post_content  = get_post_field( 'post_content' );
+			$item->content = strpos( $post_content, 'src="' . $item->backstretch[0] );
 		}
 
 		// $title is set by new title function
