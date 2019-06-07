@@ -263,8 +263,8 @@ class Display_Featured_Image_Genesis_Common {
 				$title = post_type_archive_title( '', false );
 			}
 		}
-		return apply_filters( 'display_featured_image_genesis_title_text', $title );
 
+		return apply_filters( 'display_featured_image_genesis_title_text', $title );
 	}
 
 	/**
@@ -307,10 +307,10 @@ class Display_Featured_Image_Genesis_Common {
 			$attachment_url = str_replace( $base_url . '/', '', $attachment_url );
 
 			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
-			$url_stripped   = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
+			$url_stripped = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
 
 			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
-			$attachment_id  = self::fetch_image_id_query( $url_stripped, $attachment_url );
+			$attachment_id = self::fetch_image_id_query( $url_stripped, $attachment_url );
 
 		}
 
@@ -355,6 +355,8 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function is_in_array( $value, $post_types = array() ) {
 		$post_types = apply_filters( "display_featured_image_genesis_{$value}", $post_types );
+
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 		return in_array( get_post_type(), $post_types );
 	}
 
