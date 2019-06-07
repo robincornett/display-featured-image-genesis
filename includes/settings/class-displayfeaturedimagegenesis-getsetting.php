@@ -30,7 +30,7 @@ class DisplayFeaturedImageGenesisGetSetting {
 				'is_paged'             => 0,
 				'feed_image'           => 0,
 				'thumbnails'           => 0,
-				'post_types'           => array(),
+				'post_type'            => array(),
 				'skip'                 => array(),
 				'fallback'             => array(),
 				'max_height'           => '',
