@@ -281,12 +281,14 @@ class Display_Featured_Image_Genesis_Common {
 	 */
 	public static function get_image_id( $attachment_url = '' ) {
 
-		$attachment_id = false;
-
+		_deprecated_function( __FUNCTION__, '3.1.0' );
 		// as of 2.2.0, if a (new) image id is passed to the function, or if it's empty, return it as is.
 		if ( is_numeric( $attachment_url ) || '' === $attachment_url ) {
 			return $attachment_url;
 		}
+
+		_deprecated_function( __FUNCTION__, '3.1.0' );
+		$attachment_id = false;
 
 		// if we're running 4.0 or later, we can do this all using a new core function.
 		if ( function_exists( 'attachment_url_to_postid' ) ) {
