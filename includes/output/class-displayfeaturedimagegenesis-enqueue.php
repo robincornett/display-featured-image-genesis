@@ -105,7 +105,7 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 * @since 3.1.0
 	 */
 	private function localize_sizes() {
-		$image_id     = displayfeaturedimagegenesis_get()->get_image_id();
+		$image_id     = displayfeaturedimagegenesis_get()->set_image_id();
 		$large        = wp_get_attachment_image_src( $image_id, 'large' );
 		$medium_large = wp_get_attachment_image_src( $image_id, 'medium_large' );
 		$responsive   = apply_filters( 'displayfeaturedimagegenesis_responsive_backstretch', true );
