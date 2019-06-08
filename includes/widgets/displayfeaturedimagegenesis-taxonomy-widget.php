@@ -75,13 +75,10 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 
 		// Merge with defaults
 		$instance = wp_parse_args( (array) $instance, $this->defaults() );
-
-		$term_id = $instance['term'];
-		$term    = get_term_by( 'id', $term_id, $instance['taxonomy'] );
+		$term     = get_term_by( 'id', $instance['term'], $instance['taxonomy'] );
 		if ( ! $term ) {
 			return;
 		}
-
 		$args['before_widget'] = str_replace( 'class="widget ', 'class="widget ' . $term->slug . ' ', $args['before_widget'] );
 		echo $args['before_widget'];
 
@@ -89,7 +86,6 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		new DisplayFeaturedImageGenesisOutputTerm( $instance, $args, $term, $this->id_base );
 
 		echo $args['after_widget'];
-
 	}
 
 	/**
@@ -199,7 +195,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			'order'      => 'ASC',
 			'hide_empty' => false,
 		);
-		$taxonomy    = $ajax ? sanitize_text_field( $_POST['taxonomy'] ) : $instance['taxonomy'];
+		$taxonomy    = $ajax ? filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING ) : $instance['taxonomy'];
 		$terms       = get_terms( $taxonomy, $args );
 		$options[''] = '--';
 		foreach ( $terms as $term ) {
