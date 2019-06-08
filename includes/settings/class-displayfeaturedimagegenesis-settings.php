@@ -172,14 +172,6 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	}
 
 	/**
-	 * Backtretch section description
-	 * @return string
-	 */
-	public function backstretch_section_description() {
-		return __( 'These settings apply only to the backstretch (script) banner image.', 'display-featured-image-genesis' );
-	}
-
-	/**
 	 * Section description
 	 *
 	 * @since 1.1.0
