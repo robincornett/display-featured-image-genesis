@@ -82,118 +82,14 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 			return;
 		}
 
-		$title = displayfeaturedimagegenesis_get_term_meta( $term, 'headline' );
-		if ( ! $title ) {
-			$title = $term->name;
-		}
-		$permalink = get_term_link( $term );
-
 		$args['before_widget'] = str_replace( 'class="widget ', 'class="widget ' . $term->slug . ' ', $args['before_widget'] );
 		echo $args['before_widget'];
 
-		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
-		}
-
-		$this->do_image( $term_id, $title, $permalink, $instance );
-
-		$this->do_title( $title, $permalink, $instance );
-
-		$this->do_content( $term, $instance );
-
-		$this->do_archive_link( $term, $instance );
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-term.php';
+		new DisplayFeaturedImageGenesisOutputTerm( $instance, $args, $term, $this->id_base );
 
 		echo $args['after_widget'];
 
-	}
-
-	/**
-	 * Echo the term image with markup.
-	 *
-	 * @param $term_id
-	 * @param $title
-	 * @param $permalink
-	 * @param $instance
-	 */
-	protected function do_image( $term_id, $title, $permalink, $instance ) {
-		$term_image = displayfeaturedimagegenesis_get_term_image( $term_id );
-		if ( ! $term_image ) {
-			return;
-		}
-		$image = wp_get_attachment_image( $term_image, $instance['image_size'], false, array(
-			'alt' => $title,
-		) );
-
-		if ( $instance['show_image'] && $image ) {
-			$role = empty( $instance['show_title'] ) ? '' : 'aria-hidden="true"';
-			printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $instance['image_alignment'] ), $role, wp_kses_post( $image ) );
-		}
-	}
-
-	/**
-	 * Echo the term title with markup.
-	 *
-	 * @param $title
-	 * @param $permalink
-	 * @param $instance
-	 */
-	protected function do_title( $title, $permalink, $instance ) {
-		if ( ! $instance['show_title'] ) {
-			return;
-		}
-
-		if ( ! empty( $instance['show_title'] ) ) {
-
-			$title_output = sprintf( '<h2><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
-			if ( genesis_html5() ) {
-				$title_output = sprintf( '<h2 class="archive-title"><a href="%s">%s</a></h2>', esc_url( $permalink ), esc_html( $title ) );
-			}
-			echo wp_kses_post( $title_output );
-		}
-	}
-
-	/**
-	 * Echo the term intro text or description.
-	 *
-	 * @param $term
-	 * @param $instance
-	 */
-	protected function do_content( $term, $instance ) {
-		if ( ! $instance['show_content'] ) {
-			return;
-		}
-
-		echo genesis_html5() ? '<div class="term-description">' : '';
-
-		$intro_text = displayfeaturedimagegenesis_get_term_meta( $term, 'intro_text' );
-		$intro_text = apply_filters( 'display_featured_image_genesis_term_description', $intro_text );
-		if ( ! $intro_text ) {
-			$intro_text = $term->description;
-		}
-
-		if ( 'custom' === $instance['show_content'] ) {
-			$intro_text = $instance['custom_content'];
-		}
-
-		echo wp_kses_post( wpautop( $intro_text ) );
-
-		echo genesis_html5() ? '</div>' : '';
-	}
-
-	/**
-	 * Echo the term archive link.
-	 *
-	 * @param $term
-	 * @param $instance
-	 */
-	protected function do_archive_link( $term, $instance ) {
-		if ( ! $instance['archive_link'] || ! $instance['archive_link_text'] ) {
-			return;
-		}
-		printf( '<p class="more-from-category"><a href="%s">%s</a></p>',
-			esc_url( get_term_link( $term ) ),
-			esc_html( $instance['archive_link_text'] )
-		);
 	}
 
 	/**
