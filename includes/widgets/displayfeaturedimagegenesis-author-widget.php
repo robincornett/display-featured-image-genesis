@@ -69,95 +69,10 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 		echo $args['before_widget'];
 
-		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) . $args['after_title'];
-		}
-
-		$this->do_featured_image( $instance );
-
-		$text  = $this->get_gravatar( $instance );
-		$text .= $this->get_author_description( $instance );
-		echo wp_kses_post( wpautop( $text ) );
-
-		$this->do_author_link( $instance );
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
+		new DisplayFeaturedImageGenesisOutputAuthor( $instance, $args, $this->id_base );
 
 		echo $args['after_widget'];
-	}
-
-	/**
-	 * Echo the author featured image.
-	 *
-	 * @param $instance
-	 */
-	protected function do_featured_image( $instance ) {
-		if ( ! $instance['show_featured_image'] ) {
-			return;
-		}
-		$image_id = get_the_author_meta( 'displayfeaturedimagegenesis', $instance['user'] );
-		echo wp_get_attachment_image( $image_id, $instance['featured_image_size'], false, array(
-			'alt'   => get_the_author_meta( 'display_name', $instance['user'] ),
-			'class' => $instance['featured_image_alignment'],
-		) );
-	}
-
-	/**
-	 * Return the author gravatar.
-	 *
-	 * @param $instance
-	 *
-	 * @return string
-	 */
-	protected function get_gravatar( $instance ) {
-		if ( ! $instance['show_gravatar'] ) {
-			return '';
-		}
-
-		$gravatar = get_avatar( $instance['user'], $instance['size'] );
-		if ( empty( $instance['gravatar_alignment'] ) ) {
-			return $gravatar;
-		}
-
-		return '<span class="align' . esc_attr( $instance['gravatar_alignment'] ) . '">' . $gravatar . '</span>';
-	}
-
-	/**
-	 * Return the author bio/info.
-	 *
-	 * @param $instance
-	 *
-	 * @return string
-	 */
-	public function get_author_description( $instance ) {
-		if ( ! $instance['author_info'] ) {
-			return '';
-		}
-
-		return 'text' === $instance['author_info'] ? $instance['bio_text'] : get_the_author_meta( 'description', $instance['user'] );
-	}
-
-	/**
-	 * Return the author link.
-	 *
-	 * @param $instance
-	 *
-	 * @return string
-	 */
-	protected function get_author_link( $instance ) {
-		return $instance['page'] ? sprintf( ' <a class="pagelink" href="%s">%s</a>', get_page_link( $instance['page'] ), $instance['page_link_text'] ) : '';
-	}
-
-	/**
-	 * @param $instance
-	 */
-	protected function do_author_link( $instance ) {
-		if ( ! $instance['posts_link'] || ! $instance['link_text'] ) {
-			return;
-		}
-		// If posts link option checked, add posts link to output
-		$display_name = get_the_author_meta( 'display_name', $instance['user'] );
-		$user_name    = ! empty( $display_name ) && function_exists( 'genesis_a11y' ) && genesis_a11y() ? '<span class="screen-reader-text">' . $display_name . ': </span>' : '';
-
-		printf( '<div class="posts_link posts-link"><a href="%s">%s%s</a></div>', esc_url( get_author_posts_url( $instance['user'] ) ), wp_kses_post( $user_name ), esc_attr( $instance['link_text'] ) );
 	}
 
 	/**
