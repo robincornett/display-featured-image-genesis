@@ -110,7 +110,7 @@ class Display_Featured_Image_Genesis {
 			return;
 		}
 
-		require plugin_dir_path( __FILE__ ) . 'helper-functions.php';
+		require_once plugin_dir_path( __FILE__ ) . 'helper-functions.php';
 
 		// Plugin setup
 		add_action( 'after_setup_theme', array( $this, 'add_plugin_supports' ) );
