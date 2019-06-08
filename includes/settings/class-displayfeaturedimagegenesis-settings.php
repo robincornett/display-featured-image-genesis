@@ -96,9 +96,9 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		if ( $this->terms_have_been_updated() ) {
 			return;
 		}
-		$previous_user = get_option( 'displayfeaturedimagegenesis', false );
+		$previous_user = get_option( $this->page, false );
 		if ( ! $previous_user ) {
-			update_option( 'displayfeaturedimagegenesis_updatedterms', true );
+			update_option( "{$this->page}_updatedterms", true );
 
 			return;
 		}
@@ -152,7 +152,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 1.1.0
 	 */
 	public function register_settings() {
-		register_setting( 'displayfeaturedimagegenesis', 'displayfeaturedimagegenesis', array( $this, 'do_validation_things' ) );
+		register_setting( $this->page, $this->page, array( $this, 'do_validation_things' ) );
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 	 * @since 2.4.0
 	 */
 	protected function terms_have_been_updated() {
-		$updated = get_option( $this->page . '_updatedterms', false );
+		$updated = get_option( "{$this->page}_updatedterms", false );
 
 		return (bool) $updated;
 	}
