@@ -34,7 +34,7 @@ class DisplayFeaturedImageGenesisOutputCPT {
 	private $id_base;
 
 	/**
-	 * DisplayFeaturedImageGenesisOutputAuthor constructor.
+	 * DisplayFeaturedImageGenesisOutputCPT constructor.
 	 *
 	 * @param        $instance
 	 * @param        $args
@@ -50,7 +50,7 @@ class DisplayFeaturedImageGenesisOutputCPT {
 	}
 
 	/**
-	 * Output the featured author.
+	 * Output the featured post type.
 	 * @since 3.1.0
 	 */
 	private function init() {
