@@ -124,7 +124,13 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 		foreach ( $tabs as $tab ) {
 			$class = 'nav-tab';
 			if ( $active_tab === $tab['id'] ) {
-				$class .= ' nav-tab-active';
+				$class  .= ' nav-tab-active';
+				$output .= sprintf(
+					'<li class="%s">%s</li>',
+					$class,
+					$tab['tab']
+				);
+				continue;
 			}
 			$query   = add_query_arg(
 				array(
