@@ -224,7 +224,14 @@ class Display_Featured_Image_Genesis_Settings extends Display_Featured_Image_Gen
 			$options[ $post_type ] = $object->label;
 		}
 
-		return $options;
+		/**
+		 * Add a filter on the list of post types which can be assigned a featured image, etc.
+		 *
+		 * @param array $options
+		 *
+		 * @since 3.1.0
+		 */
+		return apply_filters( 'displayfeaturedimagegenesis_get_post_types', $options );
 	}
 
 	/**
