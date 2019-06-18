@@ -125,6 +125,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'widgets_init', array( $this->widgets, 'register_widgets' ) );
 		add_action( 'widgets_init', array( $this->widgets, 'register_shortcodes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this->widgets, 'enqueue_scripts' ) );
+		add_action( 'init', array( $this, 'maybe_register_block' ) );
 
 		// Taxonomies, Authors
 		add_filter( 'displayfeaturedimagegenesis_get_taxonomies', array( $this->taxonomies, 'remove_post_status_terms' ) );
@@ -247,6 +248,15 @@ class Display_Featured_Image_Genesis {
 				)
 			);
 		}
+	}
+
+	public function maybe_register_block() {
+		if ( ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+		include_once 'blocks/class-displayfeaturedimagegenesis-blocks.php';
+		$blocks = new DisplayFeaturedImageGenesisBlocks();
+		$blocks->init();
 	}
 
 	/**
