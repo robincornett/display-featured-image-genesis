@@ -26,7 +26,8 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 			'term',
 			$this->page,
 			array(
-				'sanitize_callback' => array( $this, 'save_taxonomy_custom_meta' ),
+				'type'   => 'integer',
+				'single' => true,
 			)
 		);
 
