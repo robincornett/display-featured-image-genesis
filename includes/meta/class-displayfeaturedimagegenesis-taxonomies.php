@@ -131,6 +131,7 @@ class Display_Featured_Image_Genesis_Taxonomies extends Display_Featured_Image_G
 		}
 		$input = filter_input( INPUT_POST, $this->page, FILTER_DEFAULT );
 		if ( ! $input ) {
+			delete_term_meta( $term_id, $this->page );
 			return;
 		}
 
