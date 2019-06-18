@@ -3,9 +3,9 @@
 Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: banner, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
-Requires at least: 4.4
+Requires at least: 4.8
 Tested up to: 5.2
-Stable tag: 3.0.2
+Stable tag: 3.1.0
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -204,17 +204,16 @@ Similar hooks:
 
 == Upgrade Notice ==
 
-3.0.2: fixed plugin metabox not showing in the block editor (WordPress 5.0)
-3.0.1: fixed default image not being included in image selection
-3.0.0: potential breaking changes. new minimum WP version supported is 4.4! Also, widgets have been updated, shortcodes introduced, and new settings/post meta for more image control.
+3.1.0: new scriptless image option, improved/simplified styling
 
 == Changelog ==
 
 = 3.1.0 =
 * added: option to display the banner image using only CSS and responsive images, instead of JavaScript
 * changed: CSS, mostly related to the CSS-only banner image, but also made entry title CSS less specific
-* changed: rearranged a lot of code because I like organization
+* changed: significant code reorganization for improved validation, portablility
 * changed: improved the settings/meta image uploader
+* changed: improved settings validation
 * changed: the plugin now serves minified CSS/JS files
 
 = 3.0.2 =

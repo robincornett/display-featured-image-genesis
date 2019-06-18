@@ -246,8 +246,9 @@ Similar hooks:
 ### 3.1.0
 * added: option to display the banner image using only CSS and responsive images, instead of JavaScript
 * changed: CSS, mostly related to the CSS-only banner image, but also made entry title CSS less specific
-* changed: rearranged a lot of code because I like organization
+* changed: significant code reorganization for improved validation, portablility
 * changed: improved the settings/meta image uploader
+* changed: improved settings validation
 * changed: the plugin now serves minified CSS/JS files
 
 ### 3.0.2
