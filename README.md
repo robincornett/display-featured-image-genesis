@@ -211,13 +211,15 @@ _Note:_ __Display Featured Image for Genesis__ determines the size of your banne
 If you need to control the size of the banner Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet, or the additional CSS panel in the Customizer:
 
 ```css
-.big-leader {
+.big-leader,
+.big-leader__image {
 	max-height: 700px;
 }
 
 @media only screen and (max-width: 800px) {
 
-	.big-leader {
+	.big-leader,
+	.big-leader__image {
 		max-height: 300px;
 	}
 }

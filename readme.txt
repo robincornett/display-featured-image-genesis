@@ -6,6 +6,7 @@ Tags: banner, featured image, featured images, genesis, studiopress, post thumbn
 Requires at least: 4.8
 Tested up to: 5.2
 Stable tag: 3.1.0
+Requires PHP: 5.6
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -173,13 +174,15 @@ _Note:_ __Display Featured Image for Genesis__ determines the size of your banne
 
 If you need to control the size of the banner Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet, or the additional CSS panel in the Customizer:
 
-	.big-leader {
+	.big-leader,
+	.big-leader__image {
 		max-height: 700px;
 	}
 
 	@media only screen and (max-width: 800px) {
 
-		.big-leader {
+		.big-leader,
+		.big-leader__image {
 			max-height: 300px;
 		}
 	}
@@ -213,7 +216,7 @@ Similar hooks:
 
 == Upgrade Notice ==
 
-3.1.0: new scriptless image option, improved/simplified styling
+3.1.0: new scriptless image option, improved/simplified styling. Significant changes in code organization!
 
 == Changelog ==
 
