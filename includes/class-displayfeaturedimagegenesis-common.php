@@ -301,7 +301,6 @@ class Display_Featured_Image_Genesis_Common {
 			return $attachment_url;
 		}
 
-		_deprecated_function( __FUNCTION__, '3.1.0' );
 		$attachment_id = false;
 
 		// if we're running 4.0 or later, we can do this all using a new core function.
