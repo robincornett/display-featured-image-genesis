@@ -472,4 +472,41 @@ class Display_Featured_Image_Genesis_Output {
 
 		return $key ? $this->setting[ $key ] : $this->setting;
 	}
+
+	/**
+	 * Remove Genesis titles/descriptions
+	 * Deprecated in 2.4.0 as function was moved to the descriptions class instead.
+	 *
+	 * @since 2.3.1
+	 */
+	public function remove_title_descriptions() {
+		$description = $this->get_description_class();
+		_deprecated_function( __FUNCTION__, '2.4.0', '$description->remove_title_descriptions' );
+		$description->remove_title_descriptions();
+	}
+
+	/**
+	 * Do title and description together (for excerpt output)
+	 * Deprecated in 2.4.0 as function was moved to the descriptions class instead.
+	 *
+	 * @since 2.3.1
+	 */
+	public function do_title_descriptions() {
+		$description = $this->get_description_class();
+		_deprecated_function( __FUNCTION__, '2.4.0', '$description->do_title_descriptions' );
+		$description->do_title_descriptions();
+	}
+
+	/**
+	 * Separate archive titles from descriptions. Titles show in leader image
+	 * area; descriptions show before loop.
+	 * Deprecated in 2.4.0 as function was moved to the descriptions class instead.
+	 *
+	 * @since  1.3.0
+	 */
+	public function add_descriptions() {
+		$description = $this->get_description_class();
+		_deprecated_function( __FUNCTION__, '2.4.0', '$description->add_descriptions' );
+		$description->add_descriptions();
+	}
 }
