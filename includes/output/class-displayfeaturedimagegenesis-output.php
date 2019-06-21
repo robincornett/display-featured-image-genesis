@@ -260,8 +260,9 @@ class Display_Featured_Image_Genesis_Output {
 		$exclude_front = is_front_page() && $setting['exclude_front'];
 		$post_type     = get_post_type();
 		$skip_singular = is_singular() && isset( $setting['skip'][ $post_type ] ) && $setting['skip'][ $post_type ] ? true : false;
+		$post_meta     = is_singular() && 1 === (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
 
-		if ( $this->get_skipped_posttypes() || $skip_singular || $exclude_front || 1 === (int) get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true ) ) {
+		if ( $this->get_skipped_posttypes() || $skip_singular || $exclude_front || $post_meta ) {
 			$disable = true;
 		}
 
