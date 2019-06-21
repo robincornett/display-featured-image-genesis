@@ -139,13 +139,17 @@ class DisplayFeaturedImageGenesisBlocks {
 	public function localize() {
 		$args = array();
 		foreach ( $this->blocks() as $block => $data ) {
-			$args['blocks'][ $block ] = $this->get_localization_data( $block, $data );
+			$args[ $block ] = $this->get_localization_data( $block, $data );
 		}
 		wp_localize_script( 'displayfeaturedimagegenesis-block', 'DisplayFeaturedImageGenesisBlock', $args );
 	}
 
 	/**
 	 * Get the data for localizing everything.
+	 *
+	 * @param $block
+	 * @param $data
+	 *
 	 * @return array
 	 */
 	protected function get_localization_data( $block, $data ) {

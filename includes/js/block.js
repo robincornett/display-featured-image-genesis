@@ -8,65 +8,59 @@
 		el: wp.element.createElement,
 	};
 
-	/**
-	 * Initialize and register the block.
-	 */
-	DisplayFeaturedImageBlockObject.init = function () {
+	DisplayFeaturedImageBlockObject.takeTwo = function ( block ) {
 		const registerBlockType = wp.blocks.registerBlockType,
 		      ServerSideRender  = wp.components.ServerSideRender,
 		      InspectorControls = wp.blockEditor.InspectorControls;
-		Object.keys( DisplayFeaturedImageBlockObject.params.blocks ).forEach( function ( key, index ) {
-			if ( DisplayFeaturedImageBlockObject.params.blocks.hasOwnProperty( key ) ) {
-				const data = DisplayFeaturedImageBlockObject.params.blocks[key];
-				registerBlockType( data.block, {
-					title: data.title,
-					description: data.description,
-					keywords: data.keywords,
-					icon: data.icon,
-					category: data.category,
-					supports: {
-						html: false
-					},
+		const data = DisplayFeaturedImageBlockObject.params[block];
+		// console.log( data );
+		registerBlockType( data.block, {
+			title: data.title,
+			description: data.description,
+			keywords: data.keywords,
+			icon: data.icon,
+			category: data.category,
+			supports: {
+				html: false
+			},
 
-					getEditWrapperProps( {blockAlignment} ) {
-						return {'data-align': blockAlignment};
-					},
+			getEditWrapperProps( {blockAlignment} ) {
+				return {'data-align': blockAlignment};
+			},
 
-					edit: props => {
-						const {
-							      attributes,
-							      setAttributes
-						      }                     = props,
-						      Fragment              = wp.element.Fragment,
-						      BlockControls         = wp.blockEditor.BlockControls,
-						      BlockAlignmentToolbar = wp.blockEditor.BlockAlignmentToolbar;
-						return [
-							DisplayFeaturedImageBlockObject.el( ServerSideRender, {
-								block: data.block,
-								attributes: attributes
-							} ),
-							DisplayFeaturedImageBlockObject.el( Fragment, null,
-								DisplayFeaturedImageBlockObject.el( BlockControls, null,
-									DisplayFeaturedImageBlockObject.el( BlockAlignmentToolbar, {
-										value: attributes.blockAlignment,
-										controls: ['wide', 'full'],
-										onChange: ( value ) => {
-											setAttributes( {blockAlignment: value} );
-										},
-									} )
-								),
-							),
-							DisplayFeaturedImageBlockObject.el( InspectorControls, {},
-								_getPanels( props )
-							)
-						];
-					},
+			edit: props => {
+				const {
+					      attributes,
+					      setAttributes
+				      }                     = props,
+				      Fragment              = wp.element.Fragment,
+				      BlockControls         = wp.blockEditor.BlockControls,
+				      BlockAlignmentToolbar = wp.blockEditor.BlockAlignmentToolbar;
+				return [
+					DisplayFeaturedImageBlockObject.el( ServerSideRender, {
+						block: data.block,
+						attributes: data.attributes
+					} ),
+					DisplayFeaturedImageBlockObject.el( Fragment, null,
+						DisplayFeaturedImageBlockObject.el( BlockControls, null,
+							DisplayFeaturedImageBlockObject.el( BlockAlignmentToolbar, {
+								value: props.attributes.blockAlignment,
+								controls: ['wide', 'full'],
+								onChange: ( value ) => {
+									setAttributes( {blockAlignment: value} );
+								},
+							} )
+						),
+					),
+					DisplayFeaturedImageBlockObject.el( InspectorControls, {},
+						_getPanels( props, block )
+					)
+				];
+			},
 
-					save: props => {
-						return null;
-					},
-				} );
-			}
+			save: props => {
+				return null;
+			},
 		} );
 	};
 
@@ -74,25 +68,21 @@
 	 * Get the panels for the block controls.
 	 *
 	 * @param props
+	 * @param block
 	 * @return {Array}
 	 * @private
 	 */
-	function _getPanels( props ) {
+	function _getPanels( props, block ) {
 		const panels    = [],
 		      PanelBody = wp.components.PanelBody;
-		Object.keys( DisplayFeaturedImageBlockObject.params.blocks ).forEach( function ( block_key, index ) {
-			if ( DisplayFeaturedImageBlockObject.params.blocks.hasOwnProperty( block_key ) ) {
-				const data = DisplayFeaturedImageBlockObject.params.blocks[ block_key ];
-				Object.keys( data.panels ).forEach( function ( key, index ) {
-					if ( data.panels.hasOwnProperty( key ) ) {
-						const IndividualPanel = data.panels[key];
-						panels[index] = DisplayFeaturedImageBlockObject.el( PanelBody, {
-							title: IndividualPanel.title,
-							initialOpen: IndividualPanel.initialOpen,
-							className: 'display-featured-image-panel-' + key
-						}, _getControls( props, IndividualPanel.attributes ) );
-					}
-				} );
+		const blockData = DisplayFeaturedImageBlockObject.params[block];
+		Object.keys( blockData.panels ).forEach( function ( key, index ) {
+			if ( blockData.panels.hasOwnProperty( key ) ) {
+				const IndividualPanel = blockData.panels[key];
+				panels[index] = DisplayFeaturedImageBlockObject.el( PanelBody, {
+					title: IndividualPanel.title,
+					initialOpen: IndividualPanel.initialOpen
+				}, _getControls( props, IndividualPanel.attributes ) );
 			}
 		} );
 
@@ -195,6 +185,6 @@
 	DisplayFeaturedImageBlockObject.params = typeof DisplayFeaturedImageGenesisBlock === 'undefined' ? '' : DisplayFeaturedImageGenesisBlock;
 
 	if ( typeof DisplayFeaturedImageBlockObject.params !== 'undefined' ) {
-		DisplayFeaturedImageBlockObject.init();
+		DisplayFeaturedImageBlockObject.takeTwo( 'post-type' );
 	}
 } )( wp );
