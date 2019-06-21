@@ -481,7 +481,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function remove_title_descriptions() {
 		$description = $this->get_description_class();
-		_deprecated_function( __FUNCTION__, '2.4.0', '$description->remove_title_descriptions' );
+		_deprecated_function( __FUNCTION__, '3.1.0', '$description->remove_title_descriptions' );
 		$description->remove_title_descriptions();
 	}
 
@@ -493,7 +493,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function do_title_descriptions() {
 		$description = $this->get_description_class();
-		_deprecated_function( __FUNCTION__, '2.4.0', '$description->do_title_descriptions' );
+		_deprecated_function( __FUNCTION__, '3.1.0', '$description->do_title_descriptions' );
 		$description->do_title_descriptions();
 	}
 
@@ -506,7 +506,7 @@ class Display_Featured_Image_Genesis_Output {
 	 */
 	public function add_descriptions() {
 		$description = $this->get_description_class();
-		_deprecated_function( __FUNCTION__, '2.4.0', '$description->add_descriptions' );
+		_deprecated_function( __FUNCTION__, '3.1.0', '$description->add_descriptions' );
 		$description->add_descriptions();
 	}
 }
