@@ -75,7 +75,7 @@ class Display_Featured_Image_Genesis_Settings_Validate {
 		switch ( $field['type'] ) {
 			case 'number':
 				if ( 'max_height' === $field['id'] && empty( $new_value ) ) {
-					continue;
+					break;
 				}
 				$new_value = $this->check_value( $new_value, $this->setting[ $field['id'] ], $field['min'], $field['max'] );
 				break;
