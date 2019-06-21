@@ -69,6 +69,15 @@ Yes and no. Technically, it does, even older (XHTML) themes. However, depending 
 
 As of version 3.1.0, you can choose to display even banner images completely with WordPress' native responsive images and CSS. No JavaScript required. Just visit the settings page (the Banner Output tab) and check the "Disable JavaScript" option. If you have previously used the banner (backstretch) featured image, you may notice that the output is slightly different, but it should be very close to the same, and easier to override with pure CSS if you need to.
 
+= I switched to the scriptless banner image option and the output is more than a little different. What happened? =
+
+Generally, the banner images will display more or less the same whether you choose to use the JavaScript version or not. Where you may experience a significant difference is if you have the following setup:
+
+* your theme CSS includes a max-height for the `.big-leader` element which is significantly different than the screen height (at least sometimes)
+* your plugin settings leave the max-height for the banner image empty
+
+The scriptless banner image position will ignore the parent container max-height. If you set the Maximum Height in the plugin, the new rule is added to the `.big-leader__image` instead of the `.big-leader` container. So if your theme is set up this way but you want to switch to the scriptless banner image, you can either enter the max-height number on the plugin settings options, or you can add the same max-height rule to your CSS, but on the `.big-leader__image` element in addition to the `.big-leader`. The plugin will add the rule to both elements if you use the setting.
+
 = Can I add a Display Featured Image widget to my post or page content? =
 
 Yes. As of version 3.0.0, shortcodes for each widget have been added to the plugin. Shortcodes include:
