@@ -46,18 +46,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 	 * @return array
 	 */
 	public function defaults() {
-		return array(
-			'title'             => '',
-			'post_type'         => 'post',
-			'show_image'        => 0,
-			'image_alignment'   => 'alignnone',
-			'image_size'        => 'medium',
-			'show_title'        => 0,
-			'show_content'      => 0,
-			'custom_content'    => '',
-			'archive_link'      => 0,
-			'archive_link_text' => __( 'View Content Type Archive', 'display-featured-image-genesis' ),
-		);
+		return include 'fields/cpt-defaults.php';
 	}
 
 	/**
