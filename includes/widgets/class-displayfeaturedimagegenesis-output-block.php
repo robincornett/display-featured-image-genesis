@@ -138,7 +138,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 		}
 		wp_register_script(
 			"{$this->block}block",
-			plugin_dir_url( dirname( __FILE__ ) ) . "js/test-block{$minify}.js",
+			plugin_dir_url( dirname( __FILE__ ) ) . "js/block{$minify}.js",
 			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
 			$version,
 			false
@@ -149,7 +149,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	 * Localize.
 	 */
 	public function localize() {
-		wp_localize_script( "{$this->block}block", 'DisplayFeaturedImageTestBlock', $this->get_localization_data() );
+		wp_localize_script( "{$this->block}block", 'DisplayFeaturedImageBlock', $this->get_localization_data() );
 	}
 
 	/**

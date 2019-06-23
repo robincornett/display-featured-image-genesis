@@ -4,22 +4,24 @@
 
 (function ( wp, undefined ) {
 	'use strict';
-	const DisplayFeaturedImageBlockObject = {
+	const DFIGBlockObject = {
 		el: wp.element.createElement,
 	};
 
-	DisplayFeaturedImageBlockObject.takeTwo = function ( block ) {
+	/**
+	 * Initialize and register the block.
+	 */
+	DFIGBlockObject.init = function ( params ) {
 		const registerBlockType = wp.blocks.registerBlockType,
 		      ServerSideRender  = wp.components.ServerSideRender,
-		      InspectorControls = wp.blockEditor.InspectorControls;
-		const data = DisplayFeaturedImageBlockObject.params[block];
-		// console.log( data );
-		registerBlockType( data.block, {
-			title: data.title,
-			description: data.description,
-			keywords: data.keywords,
-			icon: data.icon,
-			category: data.category,
+		      InspectorControls = wp.editor.InspectorControls;
+
+		registerBlockType( params.block, {
+			title: params.title,
+			description: params.description,
+			keywords: params.keywords,
+			icon: params.icon,
+			category: params.category,
 			supports: {
 				html: false
 			},
@@ -34,17 +36,17 @@
 					      setAttributes
 				      }                     = props,
 				      Fragment              = wp.element.Fragment,
-				      BlockControls         = wp.blockEditor.BlockControls,
-				      BlockAlignmentToolbar = wp.blockEditor.BlockAlignmentToolbar;
+				      BlockControls         = wp.editor.BlockControls,
+				      BlockAlignmentToolbar = wp.editor.BlockAlignmentToolbar;
 				return [
-					DisplayFeaturedImageBlockObject.el( ServerSideRender, {
-						block: data.block,
-						attributes: data.attributes
+					DFIGBlockObject.el( ServerSideRender, {
+						block: params.block,
+						attributes: attributes
 					} ),
-					DisplayFeaturedImageBlockObject.el( Fragment, null,
-						DisplayFeaturedImageBlockObject.el( BlockControls, null,
-							DisplayFeaturedImageBlockObject.el( BlockAlignmentToolbar, {
-								value: props.attributes.blockAlignment,
+					DFIGBlockObject.el( Fragment, null,
+						DFIGBlockObject.el( BlockControls, null,
+							DFIGBlockObject.el( BlockAlignmentToolbar, {
+								value: attributes.blockAlignment,
 								controls: ['wide', 'full'],
 								onChange: ( value ) => {
 									setAttributes( {blockAlignment: value} );
@@ -52,8 +54,8 @@
 							} )
 						),
 					),
-					DisplayFeaturedImageBlockObject.el( InspectorControls, {},
-						_getPanels( props, block )
+					DFIGBlockObject.el( InspectorControls, {},
+						_getPanels( props, params )
 					)
 				];
 			},
@@ -68,20 +70,20 @@
 	 * Get the panels for the block controls.
 	 *
 	 * @param props
-	 * @param block
+	 * @param params
 	 * @return {Array}
 	 * @private
 	 */
-	function _getPanels( props, block ) {
+	function _getPanels( props, params ) {
 		const panels    = [],
 		      PanelBody = wp.components.PanelBody;
-		const blockData = DisplayFeaturedImageBlockObject.params[block];
-		Object.keys( blockData.panels ).forEach( function ( key, index ) {
-			if ( blockData.panels.hasOwnProperty( key ) ) {
-				const IndividualPanel = blockData.panels[key];
-				panels[index] = DisplayFeaturedImageBlockObject.el( PanelBody, {
+		Object.keys( params.panels ).forEach( function ( key, index ) {
+			if ( params.panels.hasOwnProperty( key ) ) {
+				const IndividualPanel = params.panels[key];
+				panels[index] = DFIGBlockObject.el( PanelBody, {
 					title: IndividualPanel.title,
-					initialOpen: IndividualPanel.initialOpen
+					initialOpen: IndividualPanel.initialOpen,
+					className: 'scriptless-panel-' + key
 				}, _getControls( props, IndividualPanel.attributes ) );
 			}
 		} );
@@ -107,7 +109,7 @@
 				}
 				const IndividualField = fields[key],
 				      control         = _getControlType( IndividualField.method, IndividualField.type );
-				controls[index] = DisplayFeaturedImageBlockObject.el( control, _getIndividualControl( key, IndividualField, props ) );
+				controls[index] = DFIGBlockObject.el( control, _getIndividualControl( key, IndividualField, props ) );
 			}
 		} );
 
@@ -156,7 +158,6 @@
 	function _getIndividualControl( key, field, props ) {
 		const {attributes, setAttributes} = props;
 		const control = {
-			heading: field.heading,
 			label: field.label,
 			value: attributes[key],
 			className: 'displayfeaturedimagegenesis-' + key,
@@ -182,9 +183,13 @@
 		return control;
 	}
 
-	DisplayFeaturedImageBlockObject.params = typeof DisplayFeaturedImageGenesisBlock === 'undefined' ? '' : DisplayFeaturedImageGenesisBlock;
+	DFIGBlockObject.params = typeof DisplayFeaturedImageBlock === 'undefined' ? '' : DisplayFeaturedImageBlock;
 
-	if ( typeof DisplayFeaturedImageBlockObject.params !== 'undefined' ) {
-		DisplayFeaturedImageBlockObject.takeTwo( 'post-type' );
+	if ( typeof DFIGBlockObject.params !== 'undefined' ) {
+		Object.keys( DFIGBlockObject.params ).forEach( function ( key, index ) {
+			if ( DFIGBlockObject.params.hasOwnProperty( key ) ) {
+				DFIGBlockObject.init( DFIGBlockObject.params[ key ] );
+			}
+		} );
 	}
 } )( wp );

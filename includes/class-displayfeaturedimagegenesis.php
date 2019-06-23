@@ -254,9 +254,6 @@ class Display_Featured_Image_Genesis {
 		if ( ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
-//		include_once 'blocks/class-displayfeaturedimagegenesis-blocks.php';
-//		$blocks = new DisplayFeaturedImageGenesisBlocks();
-//		$blocks->init();
 		include_once 'widgets/class-displayfeaturedimagegenesis-output-block.php';
 		$block = new DisplayFeaturedImageGenesisOutputBlock();
 		$block->init();
