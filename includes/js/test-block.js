@@ -40,7 +40,7 @@
 				      BlockAlignmentToolbar = wp.editor.BlockAlignmentToolbar;
 				return [
 					DFIGBlockObject.el( ServerSideRender, {
-						block: DFIGBlockObject.params.block,
+						block: params.block,
 						attributes: attributes
 					} ),
 					DFIGBlockObject.el( Fragment, null,
@@ -55,7 +55,7 @@
 						),
 					),
 					DFIGBlockObject.el( InspectorControls, {},
-						_getPanels( props )
+						_getPanels( props, params )
 					)
 				];
 			},
@@ -70,15 +70,16 @@
 	 * Get the panels for the block controls.
 	 *
 	 * @param props
+	 * @param params
 	 * @return {Array}
 	 * @private
 	 */
-	function _getPanels( props ) {
+	function _getPanels( props, params ) {
 		const panels    = [],
 		      PanelBody = wp.components.PanelBody;
-		Object.keys( DFIGBlockObject.params.panels ).forEach( function ( key, index ) {
-			if ( DFIGBlockObject.params.panels.hasOwnProperty( key ) ) {
-				const IndividualPanel = DFIGBlockObject.params.panels[key];
+		Object.keys( params.panels ).forEach( function ( key, index ) {
+			if ( params.panels.hasOwnProperty( key ) ) {
+				const IndividualPanel = params.panels[key];
 				panels[index] = DFIGBlockObject.el( PanelBody, {
 					title: IndividualPanel.title,
 					initialOpen: IndividualPanel.initialOpen,
