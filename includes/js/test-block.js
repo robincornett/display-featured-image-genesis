@@ -186,6 +186,10 @@
 	DFIGBlockObject.params = typeof DisplayFeaturedImageTestBlock === 'undefined' ? '' : DisplayFeaturedImageTestBlock;
 
 	if ( typeof DFIGBlockObject.params !== 'undefined' ) {
-		DFIGBlockObject.init( DFIGBlockObject.params );
+		Object.keys( DFIGBlockObject.params ).forEach( function ( key, index ) {
+			if ( DFIGBlockObject.params.hasOwnProperty( key ) ) {
+				DFIGBlockObject.init( DFIGBlockObject.params[ key ] );
+			}
+		} );
 	}
 } )( wp );
