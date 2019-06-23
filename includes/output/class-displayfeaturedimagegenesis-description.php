@@ -277,6 +277,7 @@ class Display_Featured_Image_Genesis_Description {
 		global $wp_embed;
 		$original = $content;
 		$content  = trim( $content );
+		$content  = wp_kses_post( $content );
 		$content  = wptexturize( $content );
 		$content  = wpautop( $content );
 		$content  = shortcode_unautop( $content );

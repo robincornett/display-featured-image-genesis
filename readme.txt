@@ -6,6 +6,7 @@ Tags: banner, featured image, featured images, genesis, studiopress, post thumbn
 Requires at least: 4.8
 Tested up to: 5.2
 Stable tag: 3.1.0
+Requires PHP: 5.6
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -68,6 +69,15 @@ Yes and no. Technically, it does, even older (XHTML) themes. However, depending 
 = I'm not a huge fan of adding more JavaScript to my website. =
 
 As of version 3.1.0, you can choose to display even banner images completely with WordPress' native responsive images and CSS. No JavaScript required. Just visit the settings page (the Banner Output tab) and check the "Disable JavaScript" option. If you have previously used the banner (backstretch) featured image, you may notice that the output is slightly different, but it should be very close to the same, and easier to override with pure CSS if you need to.
+
+= I switched to the scriptless banner image option and the output is more than a little different. What happened? =
+
+Generally, the banner images will display more or less the same whether you choose to use the JavaScript version or not. Where you may experience a significant difference is if you have the following setup:
+
+* your theme CSS includes a max-height for the `.big-leader` element which is significantly different than the screen height (at least sometimes)
+* your plugin settings leave the max-height for the banner image empty
+
+The scriptless banner image position will ignore the parent container max-height. If you set the Maximum Height in the plugin, the new rule is added to the `.big-leader__image` instead of the `.big-leader` container. So if your theme is set up this way but you want to switch to the scriptless banner image, you can either enter the max-height number on the plugin settings options, or you can add the same max-height rule to your CSS, but on the `.big-leader__image` element in addition to the `.big-leader`. The plugin will add the rule to both elements if you use the setting.
 
 = Can I add a Display Featured Image widget to my post or page content? =
 
@@ -164,13 +174,15 @@ _Note:_ __Display Featured Image for Genesis__ determines the size of your banne
 
 If you need to control the size of the banner Featured Image output with more attention to the user's screen size, you will want to consider a CSS approach instead. You can use the plugin's Maximum Height setting, which will affect all screen sizes, or add something like this to your theme's stylesheet, or the additional CSS panel in the Customizer:
 
-	.big-leader {
+	.big-leader,
+	.big-leader__image {
 		max-height: 700px;
 	}
 
 	@media only screen and (max-width: 800px) {
 
-		.big-leader {
+		.big-leader,
+		.big-leader__image {
 			max-height: 300px;
 		}
 	}
@@ -204,7 +216,7 @@ Similar hooks:
 
 == Upgrade Notice ==
 
-3.1.0: new scriptless image option, improved/simplified styling
+3.1.0: new scriptless image option, improved/simplified styling. Significant changes in code organization!
 
 == Changelog ==
 
