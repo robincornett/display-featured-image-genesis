@@ -163,26 +163,4 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 			'archive' => include 'fields/archive.php',
 		) );
 	}
-
-	/**
-	 * Get the public registered post types on the site.
-	 *
-	 * @return mixed
-	 */
-	protected function get_post_types() {
-		$args       = array(
-			'public'      => true,
-			'_builtin'    => false,
-			'has_archive' => true,
-		);
-		$output     = 'objects';
-		$post_types = get_post_types( $args, $output );
-
-		$options['post'] = __( 'Posts', 'display-featured-image-genesis' );
-		foreach ( $post_types as $post_type ) {
-			$options[ $post_type->name ] = $post_type->label;
-		}
-
-		return $options;
-	}
 }

@@ -10,7 +10,7 @@ return array(
 			'id'      => 'post_type',
 			'label'   => __( 'Post Type:', 'display-featured-image-genesis' ),
 			'flex'    => true,
-			'choices' => $this->get_post_types(),
+			'choices' => $form->get_post_types(),
 		),
 	),
 );
