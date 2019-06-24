@@ -125,7 +125,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 			$classes[] = 'align' . $atts['blockAlignment'];
 		}
 
-		return $classes;
+		return implode( ' ', $classes );
 	}
 
 	/**
