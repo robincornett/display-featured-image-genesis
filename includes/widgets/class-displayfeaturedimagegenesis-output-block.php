@@ -54,7 +54,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	 */
 	private function blocks() {
 		return array(
-			'term'      => array(
+			'term'   => array(
 				'title'       => __( 'Display Featured Term Image', 'display-featured-image-genesis' ),
 				'description' => __( 'Display a featured term', 'display-featured-image-genesis' ),
 				'keywords'    => array(
@@ -62,7 +62,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 					__( 'Featured Image', 'display-featured-image-genesis' ),
 				),
 			),
-			'author'    => array(
+			'author' => array(
 				'title'       => __( 'Display Featured Author Profile', 'display-featured-image-genesis' ),
 				'description' => __( 'Display a featured author', 'display-featured-image-genesis' ),
 				'keywords'    => array(
@@ -70,7 +70,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 					__( 'Featured Image', 'display-featured-image-genesis' ),
 				),
 			),
-			'post-type' => array(
+			'cpt'    => array(
 				'title'       => __( 'Display Featured Post Type Archive Image', 'display-featured-image-genesis' ),
 				'description' => __( 'Display a featured content type', 'display-featured-image-genesis' ),
 				'keywords'    => array(
@@ -96,9 +96,9 @@ class DisplayFeaturedImageGenesisOutputBlock {
 			return '';
 		}
 
-		$classes = $this->get_block_classes( $atts, 'post-type' );
+		$classes = $this->get_block_classes( $atts, 'cpt' );
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
-		$output = '<div class="' . implode( ' ', $classes ) . '">';
+		$output = '<div class="' . esc_attr( $classes ) . '">';
 		ob_start();
 		new DisplayFeaturedImageGenesisOutputCPT( $atts, array(), $post_type );
 		$output .= ob_get_contents();
@@ -208,10 +208,12 @@ class DisplayFeaturedImageGenesisOutputBlock {
 		return $output;
 	}
 
+	/**
+	 * @param $block
+	 *
+	 * @return array
+	 */
 	private function get_all_fields( $block ) {
-		if ( 'post-type' === $block ) {
-			$block = 'cpt';
-		}
 		$fields     = "{$block}_fields";
 		$attributes = array_merge(
 			array(
