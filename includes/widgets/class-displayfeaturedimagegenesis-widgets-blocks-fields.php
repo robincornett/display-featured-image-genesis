@@ -80,7 +80,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 	 * @return array
 	 */
 	protected function cpt_fields() {
-		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, array() );
+		$form = $this->get_form_class();
 
 		return array_merge(
 			include 'fields/cpt-post_type.php',
@@ -94,7 +94,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 	 * @return array
 	 */
 	protected function author_fields() {
-		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, array() );
+		$form = $this->get_form_class();
 		$user = array(
 			array(
 				'method' => 'select',
@@ -178,5 +178,19 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Get the widget builder form class.
+	 *
+	 * @return \DisplayFeaturedImageGenesisWidgetsForm
+	 */
+	private function get_form_class() {
+		if ( isset( $this->form ) ) {
+			return $this->form;
+		}
+		$this->form = new DisplayFeaturedImageGenesisWidgetsForm( $this, array() );
+
+		return $this->form;
 	}
 }
