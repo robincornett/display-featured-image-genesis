@@ -1,4 +1,6 @@
 div[class^="wp-block-displayfeaturedimagegenesis"] {
+	overflow: auto;
+
 	&:before {
 		position: absolute;
 		top: 0;
