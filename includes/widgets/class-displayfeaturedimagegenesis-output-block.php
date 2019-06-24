@@ -39,6 +39,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 				"{$this->name}{$block}",
 				array(
 					'editor_script'   => "{$this->block}block",
+					'editor_style'    => "{$this->block}block",
 					'attributes'      => $this->fields( $block ),
 					'render_callback' => array( $this, "render_{$data['nickname']}" ),
 				)
@@ -133,6 +134,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	public function register_script_style() {
 		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : ' . min';
 		$version = displayfeaturedimagegenesis_get()->version;
+		wp_register_style( "{$this->block}block", plugin_dir_url( dirname( __FILE__ ) ) . 'css/blocks.css', array(), $version, 'screen' );
 		if ( ! $minify ) {
 			$version .= current_time( 'gmt' );
 		}
