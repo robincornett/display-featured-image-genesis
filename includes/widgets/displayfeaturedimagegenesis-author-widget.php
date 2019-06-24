@@ -139,24 +139,4 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			'archive' => include 'fields/author-archive.php',
 		) );
 	}
-
-	/**
-	 * Get gravatar sizes.
-	 *
-	 * @return array
-	 */
-	protected function get_gravatar_sizes() {
-		$sizes   = apply_filters( 'genesis_gravatar_sizes', array(
-			__( 'Small', 'display-featured-image-genesis' )       => 45,
-			__( 'Medium', 'display-featured-image-genesis' )      => 65,
-			__( 'Large', 'display-featured-image-genesis' )       => 85,
-			__( 'Extra Large', 'display-featured-image-genesis' ) => 125,
-		) );
-		$options = array();
-		foreach ( (array) $sizes as $label => $size ) {
-			$options[ $size ] = $label;
-		}
-
-		return $options;
-	}
 }

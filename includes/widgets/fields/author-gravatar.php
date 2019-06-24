@@ -1,6 +1,25 @@
 <?php
 
 /**
+ * Get gravatar sizes.
+ *
+ * @return array
+ */
+$sizes   = apply_filters(
+	'genesis_gravatar_sizes',
+	array(
+		__( 'Small', 'display-featured-image-genesis' )       => 45,
+		__( 'Medium', 'display-featured-image-genesis' )      => 65,
+		__( 'Large', 'display-featured-image-genesis' )       => 85,
+		__( 'Extra Large', 'display-featured-image-genesis' ) => 125,
+	)
+);
+$options = array();
+foreach ( (array) $sizes as $label => $size ) {
+	$options[ $size ] = $label;
+}
+
+/**
  * Define author specific gravatar fields.
  */
 return array(
@@ -17,7 +36,7 @@ return array(
 			'id'      => 'size',
 			'label'   => __( 'Gravatar Size:', 'display-featured-image-genesis' ),
 			'flex'    => true,
-			'choices' => $this->get_gravatar_sizes(),
+			'choices' => $options,
 		),
 	),
 	array(
