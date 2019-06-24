@@ -1,12 +1,9 @@
 <?php
-/**
- * Copyright (c) 2019 Robin Cornett
- */
 
 /**
- * Class DisplayFeaturedImageGenesisOutputBlock
+ * Class DisplayFeaturedImageGenesisWidgetsBlocks
  */
-class DisplayFeaturedImageGenesisOutputBlock {
+class DisplayFeaturedImageGenesisWidgetsBlocks {
 
 	/**
 	 * The block name.
@@ -31,8 +28,10 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	 */
 	public function init() {
 		$this->register_script_style();
+		include_once 'class-displayfeaturedimagegenesis-widgets-blocks-output.php';
+		$output = new DisplayFeaturedImageGenesisWidgetsBlocksOutput();
 		foreach ( $this->blocks() as $block => $data ) {
-			if ( empty( $data['nickname'] ) || ! is_callable( array( $this, "render_{$data['nickname']}" ) ) ) {
+			if ( empty( $data['nickname'] ) || ! is_callable( array( $output, "render_{$data['nickname']}" ) ) ) {
 				continue;
 			}
 			register_block_type(
@@ -41,7 +40,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 					'editor_script'   => "{$this->block}block",
 					'editor_style'    => "{$this->block}block",
 					'attributes'      => $this->fields( $block ),
-					'render_callback' => array( $this, "render_{$data['nickname']}" ),
+					'render_callback' => array( $output, "render_{$data['nickname']}" ),
 				)
 			);
 		}
@@ -53,109 +52,14 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	 * @return array
 	 */
 	private function blocks() {
-		return array(
-			'term'   => array(
-				'title'       => __( 'Display Featured Term Image', 'display-featured-image-genesis' ),
-				'description' => __( 'Display a featured term', 'display-featured-image-genesis' ),
-				'keywords'    => array(
-					__( 'Term', 'display-featured-image-genesis' ),
-					__( 'Featured Image', 'display-featured-image-genesis' ),
-				),
-			),
-			'author' => array(
-				'title'       => __( 'Display Featured Author Profile', 'display-featured-image-genesis' ),
-				'description' => __( 'Display a featured author', 'display-featured-image-genesis' ),
-				'keywords'    => array(
-					__( 'Author', 'display-featured-image-genesis' ),
-					__( 'Featured Image', 'display-featured-image-genesis' ),
-				),
-				'nickname'    => 'author',
-			),
-			'cpt'    => array(
-				'title'       => __( 'Display Featured Post Type Archive Image', 'display-featured-image-genesis' ),
-				'description' => __( 'Display a featured content type', 'display-featured-image-genesis' ),
-				'keywords'    => array(
-					__( 'Post Type', 'display-featured-image-genesis' ),
-					__( 'Featured Image', 'display-featured-image-genesis' ),
-				),
-				'nickname'    => 'cpt',
-			),
-		);
-	}
-
-	/**
-	 * Render the widget in a container div.
-	 *
-	 * @param $atts
-	 *
-	 * @return string
-	 */
-	public function render_cpt( $atts ) {
-		$atts      = wp_parse_args( $atts, include 'fields/cpt-defaults.php' );
-		$post_type = get_post_type_object( $atts['post_type'] );
-		if ( ! $post_type ) {
-			return '';
-		}
-
-		$classes = $this->get_block_classes( $atts, 'cpt' );
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
-		$output = '<div class="' . esc_attr( $classes ) . '">';
-		ob_start();
-		new DisplayFeaturedImageGenesisOutputCPT( $atts, array(), $post_type );
-		$output .= ob_get_contents();
-		ob_clean();
-		$output .= '</div>';
-
-		return $output;
-	}
-
-	/**
-	 * @param $atts
-	 *
-	 * @return string
-	 */
-	public function render_author( $atts ) {
-		$atts    = wp_parse_args( $atts, include 'fields/author-defaults.php' );
-		$classes = $this->get_block_classes( $atts, 'author' );
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
-
-		$output = '<div class="' . esc_attr( $classes ) . '">';
-		ob_start();
-		new DisplayFeaturedImageGenesisOutputAuthor( $atts, array() );
-		$output .= ob_get_contents();
-		ob_clean();
-		$output .= '</div>';
-
-		return $output;
-	}
-
-	/**
-	 * Get the CSS classes for the block.
-	 *
-	 * @param $atts
-	 * @param $block_id
-	 *
-	 * @return string
-	 */
-	private function get_block_classes( $atts, $block_id ) {
-		$classes = array(
-			"wp-block-{$this->block}{$block_id}",
-		);
-		if ( ! empty( $atts['className'] ) ) {
-			$classes[] = $atts['className'];
-		}
-		if ( ! empty( $atts['blockAlignment'] ) ) {
-			$classes[] = 'align' . $atts['blockAlignment'];
-		}
-
-		return implode( ' ', $classes );
+		return include 'fields/blocks.php';
 	}
 
 	/**
 	 * Register the block script and style.
 	 */
 	public function register_script_style() {
-		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : ' . min';
+		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : ' .min';
 		$version = displayfeaturedimagegenesis_get()->version;
 		wp_register_style( "{$this->block}block", plugin_dir_url( dirname( __FILE__ ) ) . 'css/blocks.css', array(), $version, 'screen' );
 		if ( ! $minify ) {
@@ -189,7 +93,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 		);
 		$output = array();
 		foreach ( $blocks as $block => $data ) {
-			if ( empty( $data['nickname'] ) || ! is_callable( array( $this, "render_{$data['nickname']}" ) ) ) {
+			if ( empty( $data['nickname'] ) ) {
 				continue;
 			}
 			$common['panels'] = array(
@@ -239,24 +143,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	private function get_all_fields( $block ) {
 		$fields     = "{$block}_fields";
 		$attributes = array_merge(
-			array(
-				'blockAlignment' => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'className'      => array(
-					'type'    => 'string',
-					'default' => '',
-				),
-				'title'          => array(
-					'type'    => 'string',
-					'default' => '',
-					'args'    => array(
-						'id'    => 'title',
-						'label' => 'Title',
-					),
-				),
-			),
+			include 'fields/blocks-attributes.php',
 			$this->$fields()
 		);
 
