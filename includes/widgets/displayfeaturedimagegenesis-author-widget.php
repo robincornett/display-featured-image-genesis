@@ -159,25 +159,4 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 		return $options;
 	}
-
-	/**
-	 * Get the pages on the site.
-	 *
-	 * @return array
-	 */
-	protected function get_pages() {
-		$page_ids = get_pages( array(
-			'post_type' => 'page',
-		) );
-		$pages    = array();
-		if ( $page_ids ) {
-			$pages[] = __( 'None', 'display-featured-image-genesis' );
-			foreach ( $page_ids as $id ) {
-				$title            = empty( $id->post_title ) ? '#' . $id->ID . __( ' (no title)', 'sixtenpress-featured-content' ) : $id->post_title;
-				$pages[ $id->ID ] = $title;
-			}
-		}
-
-		return $pages;
-	}
 }
