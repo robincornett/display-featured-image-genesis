@@ -89,8 +89,15 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 */
 	public function get_fields( $new_instance ) {
 		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $new_instance );
+		$user = array(
+			array(
+				'method' => 'select',
+				'args'   => include 'fields/author-user.php',
+			),
+		);
 
 		return array_merge(
+			array( $user ),
 			include 'fields/author-image.php',
 			include 'fields/author-gravatar.php',
 			include 'fields/author-description.php',
@@ -114,12 +121,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			'label' => __( 'Title:', 'display-featured-image-genesis' ),
 			'class' => 'widefat',
 		) );
-		$form->do_select( $instance, array(
-			'id'      => 'user',
-			'label'   => __( 'Select a user. The email address for this account will be used to pull the Gravatar image.', 'display-featured-image-genesis' ),
-			'flex'    => true,
-			'choices' => $this->get_users(),
-		) );
+		$form->do_select( $instance, include 'fields/author-user.php' );
 
 		$form->do_boxes( array(
 			'author' => include 'fields/author-image.php',
@@ -136,23 +138,6 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$form->do_boxes( array(
 			'archive' => include 'fields/author-archive.php',
 		) );
-	}
-
-	/**
-	 * Get the authors on the site.
-	 *
-	 * @return array
-	 */
-	protected function get_users() {
-		$users   = get_users( array(
-			'who' => 'authors',
-		) );
-		$options = array();
-		foreach ( $users as $user ) {
-			$options[ $user->ID ] = $user->data->display_name;
-		}
-
-		return $options;
 	}
 
 	/**
