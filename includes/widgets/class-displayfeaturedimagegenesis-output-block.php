@@ -69,6 +69,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 					__( 'Author', 'display-featured-image-genesis' ),
 					__( 'Featured Image', 'display-featured-image-genesis' ),
 				),
+				'nickname'    => 'author',
 			),
 			'cpt'    => array(
 				'title'       => __( 'Display Featured Post Type Archive Image', 'display-featured-image-genesis' ),
@@ -109,10 +110,32 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	}
 
 	/**
-	 * Get the CSS classes for the block.
 	 * @param $atts
 	 *
-	 * @return array
+	 * @return string
+	 */
+	public function render_author( $atts ) {
+		$atts    = wp_parse_args( $atts, include 'fields/author-defaults.php' );
+		$classes = $this->get_block_classes( $atts, 'author' );
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
+
+		$output = '<div class="' . esc_attr( $classes ) . '">';
+		ob_start();
+		new DisplayFeaturedImageGenesisOutputAuthor( $atts, array() );
+		$output .= ob_get_contents();
+		ob_clean();
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Get the CSS classes for the block.
+	 *
+	 * @param $atts
+	 * @param $block_id
+	 *
+	 * @return string
 	 */
 	private function get_block_classes( $atts, $block_id ) {
 		$classes = array(
@@ -202,7 +225,7 @@ class DisplayFeaturedImageGenesisOutputBlock {
 			if ( ! empty( $value['args']['id'] ) ) {
 				$key = $value['args']['id'];
 			}
-			$output[ $key ] = $this->get_individual_field_attributes( $value );
+			$output[ $key ] = $this->get_individual_field_attributes( $value, $block );
 		}
 
 		return $output;
@@ -240,6 +263,9 @@ class DisplayFeaturedImageGenesisOutputBlock {
 		return $attributes;
 	}
 
+	/**
+	 * @return array
+	 */
 	protected function cpt_fields() {
 		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, array() );
 
@@ -252,19 +278,41 @@ class DisplayFeaturedImageGenesisOutputBlock {
 	}
 
 	/**
+	 * @return array
+	 */
+	protected function author_fields() {
+		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, array() );
+		$user = array(
+			array(
+				'method' => 'select',
+				'args'   => include 'fields/author-user.php',
+			),
+		);
+
+		return array_merge(
+			$user,
+			include 'fields/author-image.php',
+			include 'fields/author-gravatar.php',
+			include 'fields/author-description.php',
+			include 'fields/author-archive.php'
+		);
+	}
+
+	/**
 	 * Get an array of attributes for an individual field.
 	 *
 	 * @param $field
+	 * @param $block
 	 *
 	 * @return array
 	 */
-	protected function get_individual_field_attributes( $field ) {
+	protected function get_individual_field_attributes( $field, $block ) {
 		$method     = empty( $field['method'] ) ? 'text' : $field['method'];
 		$field_type = $this->get_field_type( $method );
 		if ( empty( $field['args']['label'] ) ) {
 			return $field;
 		}
-		$defaults   = include 'fields/cpt-defaults.php';
+		$defaults   = include "fields/{$block}-defaults.php";
 		$attributes = array(
 			'type'    => $field_type,
 			'default' => $defaults[ $field['args']['id'] ],
