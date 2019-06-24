@@ -78,42 +78,8 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 	 * Localize.
 	 */
 	public function localize() {
-		wp_localize_script( "{$this->block}block", 'DisplayFeaturedImageBlock', $this->get_localization_data() );
-	}
-
-	/**
-	 * Get the data for localizing everything.
-	 * @return array
-	 */
-	protected function get_localization_data() {
-		$common = array(
-			'icon'     => 'format-image',
-			'category' => 'widgets',
-		);
-		$output = array();
 		$fields = $this->get_fields_class();
-		foreach ( $this->blocks() as $block => $data ) {
-			if ( empty( $data['nickname'] ) ) {
-				continue;
-			}
-			$common['panels'] = array(
-				'main' => array(
-					'title'       => __( 'Block Settings', 'display-featured-image-genesis' ),
-					'initialOpen' => true,
-					'attributes'  => $fields->fields( $block ),
-				),
-			);
-			$common['block']  = "{$this->name}{$block}";
-			if ( ! empty( $data['nickname'] ) ) {
-				$block = $data['nickname'];
-			}
-			$output[ $block ] = array_merge(
-				$data,
-				$common
-			);
-		}
-
-		return $output;
+		wp_localize_script( "{$this->block}block", 'DisplayFeaturedImageBlock', $fields->get_localization_data() );
 	}
 
 	/**

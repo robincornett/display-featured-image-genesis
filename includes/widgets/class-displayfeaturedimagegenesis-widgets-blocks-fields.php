@@ -1,6 +1,46 @@
 <?php
 
+/**
+ * Class DisplayFeaturedImageGenesisWidgetsBlocksFields
+ */
 class DisplayFeaturedImageGenesisWidgetsBlocksFields {
+
+	/**
+	 * @var \DisplayFeaturedImageGenesisWidgetsForm
+	 */
+	private $form;
+
+	/**
+	 * Get the data for localizing everything.
+	 * @return array
+	 */
+	public function get_localization_data() {
+		$common = array(
+			'icon'     => 'format-image',
+			'category' => 'widgets',
+		);
+		$output = array();
+		$blocks = include 'fields/blocks.php';
+		foreach ( $blocks as $block => $data ) {
+			if ( empty( $data['nickname'] ) ) {
+				continue;
+			}
+			$common['panels'] = array(
+				'main' => array(
+					'title'       => __( 'Block Settings', 'display-featured-image-genesis' ),
+					'initialOpen' => true,
+					'attributes'  => $this->fields( $block ),
+				),
+			);
+			$common['block']  = "displayfeaturedimagegenesis/{$block}";
+			$output[ $block ] = array_merge(
+				$data,
+				$common
+			);
+		}
+
+		return $output;
+	}
 
 	/**
 	 * Get the fields for the block.
