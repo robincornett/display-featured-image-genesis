@@ -70,7 +70,7 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 
 		echo $args['before_widget'];
 
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
 		new DisplayFeaturedImageGenesisOutputCPT( $instance, $args, $post_type, $this->id_base );
 
 		echo $args['after_widget'];

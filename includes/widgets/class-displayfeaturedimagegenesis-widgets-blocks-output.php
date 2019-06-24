@@ -19,7 +19,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 		}
 
 		$classes = $this->get_block_classes( $atts, 'cpt' );
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
 		$output = '<div class="' . esc_attr( $classes ) . '">';
 		ob_start();
 		new DisplayFeaturedImageGenesisOutputCPT( $atts, array(), $post_type );
@@ -38,7 +38,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	public function render_author( $atts ) {
 		$atts    = wp_parse_args( $atts, include 'fields/author-defaults.php' );
 		$classes = $this->get_block_classes( $atts, 'author' );
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
 
 		$output = '<div class="' . esc_attr( $classes ) . '">';
 		ob_start();
