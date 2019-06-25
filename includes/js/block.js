@@ -166,7 +166,9 @@
 			value: attributes[key],
 			className: 'displayfeaturedimagegenesis-' + key,
 			onChange: ( value ) => {
-				onChangeSelect( key, value, props, blockName );
+				if ( 'taxonomy' === key ) {
+					onChangeSelect( key, value, props, blockName );
+				}
 				setAttributes( {[key]: value} );
 			}
 		};
