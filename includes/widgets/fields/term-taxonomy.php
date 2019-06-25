@@ -9,6 +9,10 @@ $tax_options = array();
 foreach ( $taxonomies as $taxonomy ) {
 	$tax_options[ $taxonomy->name ] = $taxonomy->label;
 }
+if ( empty( $instance ) ) {
+	$instance = include 'term-defaults.php';
+}
+
 /**
  * Define term specific taxonomy fields.
  */
