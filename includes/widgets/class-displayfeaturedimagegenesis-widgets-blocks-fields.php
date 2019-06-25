@@ -19,7 +19,10 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 			'icon'     => 'format-image',
 			'category' => 'widgets',
 		);
-		$output = array();
+		$output = array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'security' => wp_create_nonce( 'displayfeaturedimagegenesis-block-nonce' ),
+		);
 		$blocks = include 'fields/blocks.php';
 		foreach ( $blocks as $block => $data ) {
 			if ( empty( $data['nickname'] ) ) {
@@ -59,6 +62,14 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Set the block term action callback here since this class already has a getter for the form class.
+	 */
+	public function term_action_callback() {
+		$form = $this->get_form_class();
+		$form->term_action_callback();
 	}
 
 	/**
@@ -108,6 +119,20 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 			include 'fields/author-gravatar.php',
 			include 'fields/author-description.php',
 			include 'fields/author-archive.php'
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function term_fields() {
+		$form = $this->get_form_class();
+
+		return array_merge(
+			include 'fields/text.php',
+			include 'fields/term-taxonomy.php',
+			include 'fields/image.php',
+			include 'fields/archive.php'
 		);
 	}
 

@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class DisplayFeaturedImageGenesisWidgetsBlocksOutput
+ */
 class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 
+	/**
+	 * @var string
+	 */
 	private $block = 'displayfeaturedimagegenesis-';
 
 	/**
@@ -43,6 +49,33 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 		$output = '<div class="' . esc_attr( $classes ) . '">';
 		ob_start();
 		new DisplayFeaturedImageGenesisOutputAuthor( $atts, array() );
+		$output .= ob_get_contents();
+		ob_clean();
+		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * @param $atts
+	 *
+	 * @return string
+	 */
+	public function render_term( $atts ) {
+		if ( empty( $atts['term'] ) ) {
+			return '<div class="displayfeaturedimagegenesis-placeholder">' . __( 'Please select a term.', 'sixtenpress' ) . '</div>';
+		}
+		$atts = wp_parse_args( $atts, include 'fields/term-defaults.php' );
+		$term = get_term_by( 'id', $atts['term'], $atts['taxonomy'] );
+		if ( ! $term ) {
+			return '';
+		}
+		$classes = $this->get_block_classes( $atts, 'term' );
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-term.php';
+
+		$output = '<div class="' . esc_attr( $classes ) . '">';
+		ob_start();
+		new DisplayFeaturedImageGenesisOutputTerm( $atts, array(), $term );
 		$output .= ob_get_contents();
 		ob_clean();
 		$output .= '</div>';

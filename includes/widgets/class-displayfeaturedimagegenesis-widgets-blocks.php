@@ -45,6 +45,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 			);
 		}
 		add_action( 'enqueue_block_editor_assets', array( $this, 'localize' ) );
+		add_action( 'wp_ajax_displayfeaturedimagegenesis_block', array( $fields, 'term_action_callback' ) );
 	}
 
 	/**
