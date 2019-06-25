@@ -289,9 +289,9 @@
 	DFIGBlockObject.params = typeof DisplayFeaturedImageBlock === 'undefined' ? '' : DisplayFeaturedImageBlock;
 
 	if ( typeof DFIGBlockObject.params !== 'undefined' ) {
-		Object.keys( DFIGBlockObject.params ).forEach( function ( key, index ) {
-			if ( DFIGBlockObject.params.hasOwnProperty( key ) ) {
-				DFIGBlockObject.init( DFIGBlockObject.params[ key ] );
+		Object.keys( DFIGBlockObject.params.blocks ).forEach( function ( key, index ) {
+			if ( DFIGBlockObject.params.blocks.hasOwnProperty( key ) ) {
+				DFIGBlockObject.init( DFIGBlockObject.params.blocks[ key ] );
 			}
 		} );
 	}

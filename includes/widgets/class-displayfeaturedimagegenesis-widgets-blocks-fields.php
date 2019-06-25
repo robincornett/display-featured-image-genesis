@@ -22,21 +22,22 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 		$output = array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'security' => wp_create_nonce( 'displayfeaturedimagegenesis-block-nonce' ),
+			'blocks'   => array(),
 		);
 		$blocks = include 'fields/blocks.php';
 		foreach ( $blocks as $block => $data ) {
 			if ( empty( $data['nickname'] ) ) {
 				continue;
 			}
-			$common['panels'] = array(
+			$common['panels']           = array(
 				'main' => array(
 					'title'       => __( 'Block Settings', 'display-featured-image-genesis' ),
 					'initialOpen' => true,
 					'attributes'  => $this->fields( $block ),
 				),
 			);
-			$common['block']  = "displayfeaturedimagegenesis/{$block}";
-			$output[ $block ] = array_merge(
+			$common['block']            = "displayfeaturedimagegenesis/{$block}";
+			$output['blocks'][ $block ] = array_merge(
 				$data,
 				$common
 			);
