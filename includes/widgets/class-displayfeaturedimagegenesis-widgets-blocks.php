@@ -31,7 +31,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 		$output = new DisplayFeaturedImageGenesisWidgetsBlocksOutput();
 		$fields = $this->get_fields_class();
 		foreach ( $this->blocks() as $block => $data ) {
-			if ( empty( $data['nickname'] ) || ! is_callable( array( $output, "render_{$data['nickname']}" ) ) ) {
+			if ( ! is_callable( array( $output, "render_{$block}" ) ) ) {
 				continue;
 			}
 			register_block_type(
@@ -40,7 +40,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 					'editor_script'   => "{$this->block}block",
 					'editor_style'    => "{$this->block}block",
 					'attributes'      => $fields->fields( $block ),
-					'render_callback' => array( $output, "render_{$data['nickname']}" ),
+					'render_callback' => array( $output, "render_{$block}" ),
 				)
 			);
 		}

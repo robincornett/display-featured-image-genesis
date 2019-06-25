@@ -26,9 +26,6 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 		);
 		$blocks = include 'fields/blocks.php';
 		foreach ( $blocks as $block => $data ) {
-			if ( empty( $data['nickname'] ) ) {
-				continue;
-			}
 			$common['panels']           = array(
 				'main' => array(
 					'title'       => __( 'Block Settings', 'display-featured-image-genesis' ),

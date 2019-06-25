@@ -8,7 +8,6 @@ return array(
 			__( 'Term', 'display-featured-image-genesis' ),
 			__( 'Featured Image', 'display-featured-image-genesis' ),
 		),
-		'nickname' => 'term',
 	),
 	'author' => array(
 		'title'       => __( 'Display Featured Author Profile', 'display-featured-image-genesis' ),
@@ -17,7 +16,6 @@ return array(
 			__( 'Author', 'display-featured-image-genesis' ),
 			__( 'Featured Image', 'display-featured-image-genesis' ),
 		),
-		'nickname'    => 'author',
 	),
 	'cpt'    => array(
 		'title'       => __( 'Display Featured Post Type Archive Image', 'display-featured-image-genesis' ),
@@ -26,6 +24,5 @@ return array(
 			__( 'Post Type', 'display-featured-image-genesis' ),
 			__( 'Featured Image', 'display-featured-image-genesis' ),
 		),
-		'nickname'    => 'cpt',
 	),
 );
