@@ -1,5 +1,14 @@
 <?php
 
+$args        = array(
+	'public'  => true,
+	'show_ui' => true,
+);
+$taxonomies  = get_taxonomies( $args, 'objects' );
+$tax_options = array();
+foreach ( $taxonomies as $taxonomy ) {
+	$tax_options[ $taxonomy->name ] = $taxonomy->label;
+}
 /**
  * Define term specific taxonomy fields.
  */
@@ -11,7 +20,7 @@ return array(
 			'label'    => __( 'Taxonomy:', 'display-featured-image-genesis' ),
 			'flex'     => true,
 			'onchange' => sprintf( 'term_postback(\'%s\', this.value );', esc_attr( $this->get_field_id( 'term' ) ) ),
-			'choices'  => $this->get_taxonomies(),
+			'choices'  => $tax_options,
 		),
 	),
 	array(

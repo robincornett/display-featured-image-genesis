@@ -155,23 +155,6 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 	}
 
 	/**
-	 * @return array
-	 */
-	protected function get_taxonomies() {
-		$args       = array(
-			'public'  => true,
-			'show_ui' => true,
-		);
-		$taxonomies = get_taxonomies( $args, 'objects' );
-		$options    = array();
-		foreach ( $taxonomies as $taxonomy ) {
-			$options[ $taxonomy->name ] = $taxonomy->label;
-		}
-
-		return $options;
-	}
-
-	/**
 	 * @param $instance
 	 * @param bool $ajax
 	 *
