@@ -14,7 +14,7 @@
 	DFIGBlockObject.init = function ( params ) {
 		const registerBlockType = wp.blocks.registerBlockType,
 		      ServerSideRender  = wp.components.ServerSideRender,
-		      InspectorControls = wp.editor.InspectorControls;
+		      InspectorControls = wp.blockEditor.InspectorControls;
 
 		registerBlockType( params.block, {
 			title: params.title,
@@ -36,8 +36,8 @@
 					      setAttributes
 				      }                     = props,
 				      Fragment              = wp.element.Fragment,
-				      BlockControls         = wp.editor.BlockControls,
-				      BlockAlignmentToolbar = wp.editor.BlockAlignmentToolbar;
+				      BlockControls         = wp.blockEditor.BlockControls,
+				      BlockAlignmentToolbar = wp.blockEditor.BlockAlignmentToolbar;
 				return [
 					DFIGBlockObject.el( ServerSideRender, {
 						block: params.block,
@@ -82,7 +82,7 @@
 		Object.keys( params.panels ).forEach( function ( key, index ) {
 			if ( params.panels.hasOwnProperty( key ) ) {
 				const IndividualPanel = params.panels[key];
-				panels[index] = DFIGBlockObject.el( PanelBody, {
+				panels[ index ] = DFIGBlockObject.el( PanelBody, {
 					title: IndividualPanel.title,
 					initialOpen: IndividualPanel.initialOpen,
 					className: 'scriptless-panel-' + key
