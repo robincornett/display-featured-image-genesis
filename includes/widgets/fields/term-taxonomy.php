@@ -33,7 +33,7 @@ return array(
 			'id'      => 'term',
 			'label'   => __( 'Term:', 'display-featured-image-genesis' ),
 			'flex'    => true,
-			'choices' => $this->get_term_lists( $instance, false ),
+			'choices' => $form->get_term_lists( $instance, false ),
 		),
 	),
 );

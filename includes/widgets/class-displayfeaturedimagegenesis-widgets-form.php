@@ -74,6 +74,44 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	}
 
 	/**
+	 * @param $instance
+	 * @param bool $ajax
+	 *
+	 * @return mixed
+	 */
+	public function get_term_lists( $instance, $ajax = false ) {
+		$args        = array(
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'hide_empty' => false,
+		);
+		$taxonomy    = $ajax ? filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING ) : $instance['taxonomy'];
+		$terms       = get_terms( $taxonomy, $args );
+		$options[''] = '--';
+		foreach ( $terms as $term ) {
+			if ( is_object( $term ) ) {
+				$options[ $term->term_id ] = $term->name;
+			}
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Handles the callback to populate the custom term dropdown. The
+	 * selected post type is provided in $_POST['taxonomy'], and the
+	 * calling script expects a JSON array of term objects.
+	 */
+	public function term_action_callback() {
+
+		$list = $this->get_term_lists( array(), true );
+
+		// And emit it
+		echo wp_json_encode( $list );
+		die();
+	}
+
+	/**
 	 * Build boxes with fields.
 	 *
 	 * @param $boxes
