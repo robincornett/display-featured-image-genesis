@@ -18,7 +18,8 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	 * @return string
 	 */
 	public function render_cpt( $atts ) {
-		$atts      = wp_parse_args( $atts, include 'fields/cpt-defaults.php' );
+		$block_id  = 'cpt';
+		$atts      = $this->update_attributes( $atts, $block_id );
 		$post_type = get_post_type_object( $atts['post_type'] );
 		if ( ! $post_type ) {
 			return '';
@@ -42,8 +43,9 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	 * @return string
 	 */
 	public function render_author( $atts ) {
-		$atts    = wp_parse_args( $atts, include 'fields/author-defaults.php' );
 		$classes = $this->get_block_classes( $atts, 'author' );
+		$block_id = 'author';
+		$atts     = $this->update_attributes( $atts, $block_id );
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
 
 		$output = '<div class="' . esc_attr( $classes ) . '">';
@@ -62,8 +64,9 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	 * @return string
 	 */
 	public function render_term( $atts ) {
-		$atts = wp_parse_args( $atts, include 'fields/term-defaults.php' );
 		$term = get_term_by( 'id', $atts['term'], $atts['taxonomy'] );
+		$block_id = 'term';
+		$atts     = $this->update_attributes( $atts, $block_id );
 		if ( ! $term ) {
 			return '';
 		}
@@ -78,6 +81,18 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 		$output .= '</div>';
 
 		return $output;
+	}
+
+	/**
+	 * Update the block attributes by merging with defaults.
+	 *
+	 * @param $atts
+	 * @param $block_id
+	 *
+	 * @return array
+	 */
+	private function update_attributes( $atts, $block_id ) {
+		return wp_parse_args( $atts, include "fields/{$block_id}-defaults.php" );
 	}
 
 	/**
