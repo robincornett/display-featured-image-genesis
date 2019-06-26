@@ -24,9 +24,9 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 		if ( ! $post_type ) {
 			return '';
 		}
-
 		$classes = $this->get_block_classes( $atts, $block_id );
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
+		$this->include_output_file( $block_id );
+
 		ob_start();
 		echo '<div class="' . esc_attr( $classes ) . '">';
 		new DisplayFeaturedImageGenesisOutputCPT( $atts, array(), $post_type );
@@ -45,11 +45,11 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	public function render_author( $atts ) {
 		$block_id = 'author';
 		$atts     = $this->update_attributes( $atts, $block_id );
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
 		if ( empty( $atts['user'] ) ) {
 			return '';
 		}
 		$classes = $this->get_block_classes( $atts, $block_id );
+		$this->include_output_file( $block_id );
 
 		ob_start();
 		echo '<div class="' . esc_attr( $classes ) . '">';
@@ -74,7 +74,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 			return '';
 		}
 		$classes = $this->get_block_classes( $atts, $block_id );
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-term.php';
+		$this->include_output_file( $block_id );
 
 		ob_start();
 		echo '<div class="' . esc_attr( $classes ) . '">';
@@ -118,5 +118,14 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 		}
 
 		return implode( ' ', $classes );
+	}
+
+	/**
+	 * Load the block output file.
+	 *
+	 * @param $block_id
+	 */
+	private function include_output_file( $block_id ) {
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . "output/class-displayfeaturedimagegenesis-output-{$block_id}.php";
 	}
 }
