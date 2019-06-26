@@ -8,7 +8,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	/**
 	 * @var string
 	 */
-	private $block = 'displayfeaturedimagegenesis-';
+	private $block = 'displayfeaturedimagegenesis';
 
 	/**
 	 * Render the widget in a container div.
@@ -105,7 +105,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	 */
 	private function get_block_classes( $atts, $block_id ) {
 		$classes = array(
-			"wp-block-{$this->block}{$block_id}",
+			"wp-block-{$this->block}-{$block_id}",
 		);
 		if ( ! empty( $atts['className'] ) ) {
 			$classes[] = $atts['className'];
