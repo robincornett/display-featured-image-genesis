@@ -18,6 +18,8 @@ return array(
 			__( 'Author', 'display-featured-image-genesis' ),
 			__( 'Featured Image', 'display-featured-image-genesis' ),
 		),
+		'placeholder' => __( 'Please select an author.', 'display-featured-image-genesis' ),
+		'required'    => 'user',
 	),
 	'cpt'    => array(
 		'title'       => __( 'Display Featured Post Type Archive Image', 'display-featured-image-genesis' ),
@@ -26,5 +28,7 @@ return array(
 			__( 'Post Type', 'display-featured-image-genesis' ),
 			__( 'Featured Image', 'display-featured-image-genesis' ),
 		),
+		'placeholder' => __( 'Please select a post type.', 'display-featured-image-genesis' ),
+		'required'    => 'post_type',
 	),
 );

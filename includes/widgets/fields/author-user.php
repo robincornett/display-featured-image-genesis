@@ -5,7 +5,9 @@ $users   = get_users(
 		'who' => 'authors',
 	)
 );
-$options = array();
+$options = array(
+	'' => '--',
+);
 foreach ( $users as $user ) {
 	$options[ $user->ID ] = $user->data->display_name;
 }

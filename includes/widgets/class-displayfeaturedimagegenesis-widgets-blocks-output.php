@@ -45,8 +45,11 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	public function render_author( $atts ) {
 		$block_id = 'author';
 		$atts     = $this->update_attributes( $atts, $block_id );
-		$classes  = $this->get_block_classes( $atts, $block_id );
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
+		if ( empty( $atts['user'] ) ) {
+			return '';
+		}
+		$classes = $this->get_block_classes( $atts, $block_id );
 
 		ob_start();
 		echo '<div class="' . esc_attr( $classes ) . '">';

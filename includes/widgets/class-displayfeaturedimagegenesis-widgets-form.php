@@ -40,7 +40,10 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 		$output     = 'objects';
 		$post_types = get_post_types( $args, $output );
 
-		$options['post'] = __( 'Posts', 'display-featured-image-genesis' );
+		$options = array(
+			''     => '--',
+			'post' => __( 'Posts', 'display-featured-image-genesis' ),
+		);
 		foreach ( $post_types as $post_type ) {
 			$options[ $post_type->name ] = $post_type->label;
 		}
