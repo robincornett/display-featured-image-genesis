@@ -27,6 +27,31 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	}
 
 	/**
+	 * Get the public registered post types on the site.
+	 *
+	 * @return mixed
+	 */
+	public function get_post_types() {
+		$args       = array(
+			'public'      => true,
+			'_builtin'    => false,
+			'has_archive' => true,
+		);
+		$output     = 'objects';
+		$post_types = get_post_types( $args, $output );
+
+		$options = array(
+			''     => '--',
+			'post' => __( 'Posts', 'display-featured-image-genesis' ),
+		);
+		foreach ( $post_types as $post_type ) {
+			$options[ $post_type->name ] = $post_type->label;
+		}
+
+		return $options;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function get_image_size() {
@@ -49,6 +74,44 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 			'alignright'  => __( 'Right', 'display-featured-image-genesis' ),
 			'aligncenter' => __( 'Center', 'display-featured-image-genesis' ),
 		);
+	}
+
+	/**
+	 * @param $instance
+	 * @param bool $ajax
+	 *
+	 * @return mixed
+	 */
+	public function get_term_lists( $instance, $ajax = false ) {
+		$args        = array(
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+			'hide_empty' => false,
+		);
+		$taxonomy    = $ajax ? filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING ) : $instance['taxonomy'];
+		$terms       = get_terms( $taxonomy, $args );
+		$options[''] = '--';
+		foreach ( $terms as $term ) {
+			if ( is_object( $term ) ) {
+				$options[ $term->term_id ] = $term->name;
+			}
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Handles the callback to populate the custom term dropdown. The
+	 * selected post type is provided in $_POST['taxonomy'], and the
+	 * calling script expects a JSON array of term objects.
+	 */
+	public function term_action_callback() {
+
+		$list = $this->get_term_lists( array(), true );
+
+		// And emit it
+		echo wp_json_encode( $list );
+		die();
 	}
 
 	/**

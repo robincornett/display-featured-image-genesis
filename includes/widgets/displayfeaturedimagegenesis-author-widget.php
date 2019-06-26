@@ -38,22 +38,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 * @return array
 	 */
 	public function defaults() {
-		return array(
-			'title'                    => '',
-			'show_featured_image'      => 0,
-			'featured_image_alignment' => 'alignnone',
-			'featured_image_size'      => 'medium',
-			'gravatar_alignment'       => 'left',
-			'user'                     => '',
-			'show_gravatar'            => 0,
-			'size'                     => 45,
-			'author_info'              => '',
-			'bio_text'                 => '',
-			'page'                     => '',
-			'page_link_text'           => __( 'Read More', 'display-featured-image-genesis' ) . '&#x02026;',
-			'posts_link'               => 0,
-			'link_text'                => __( 'View My Blog Posts', 'display-featured-image-genesis' ),
-		);
+		return include 'fields/author-defaults.php';
 	}
 
 	/**
@@ -69,7 +54,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 		echo $args['before_widget'];
 
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
 		new DisplayFeaturedImageGenesisOutputAuthor( $instance, $args, $this->id_base );
 
 		echo $args['after_widget'];
@@ -104,8 +89,15 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	 */
 	public function get_fields( $new_instance ) {
 		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $new_instance );
+		$user = array(
+			array(
+				'method' => 'select',
+				'args'   => include 'fields/author-user.php',
+			),
+		);
 
 		return array_merge(
+			array( $user ),
 			include 'fields/author-image.php',
 			include 'fields/author-gravatar.php',
 			include 'fields/author-description.php',
@@ -129,12 +121,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 			'label' => __( 'Title:', 'display-featured-image-genesis' ),
 			'class' => 'widefat',
 		) );
-		$form->do_select( $instance, array(
-			'id'      => 'user',
-			'label'   => __( 'Select a user. The email address for this account will be used to pull the Gravatar image.', 'display-featured-image-genesis' ),
-			'flex'    => true,
-			'choices' => $this->get_users(),
-		) );
+		$form->do_select( $instance, include 'fields/author-user.php' );
 
 		$form->do_boxes( array(
 			'author' => include 'fields/author-image.php',
@@ -151,63 +138,5 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$form->do_boxes( array(
 			'archive' => include 'fields/author-archive.php',
 		) );
-	}
-
-	/**
-	 * Get the authors on the site.
-	 *
-	 * @return array
-	 */
-	protected function get_users() {
-		$users   = get_users( array(
-			'who' => 'authors',
-		) );
-		$options = array();
-		foreach ( $users as $user ) {
-			$options[ $user->ID ] = $user->data->display_name;
-		}
-
-		return $options;
-	}
-
-	/**
-	 * Get gravatar sizes.
-	 *
-	 * @return array
-	 */
-	protected function get_gravatar_sizes() {
-		$sizes   = apply_filters( 'genesis_gravatar_sizes', array(
-			__( 'Small', 'display-featured-image-genesis' )       => 45,
-			__( 'Medium', 'display-featured-image-genesis' )      => 65,
-			__( 'Large', 'display-featured-image-genesis' )       => 85,
-			__( 'Extra Large', 'display-featured-image-genesis' ) => 125,
-		) );
-		$options = array();
-		foreach ( (array) $sizes as $label => $size ) {
-			$options[ $size ] = $label;
-		}
-
-		return $options;
-	}
-
-	/**
-	 * Get the pages on the site.
-	 *
-	 * @return array
-	 */
-	protected function get_pages() {
-		$page_ids = get_pages( array(
-			'post_type' => 'page',
-		) );
-		$pages    = array();
-		if ( $page_ids ) {
-			$pages[] = __( 'None', 'display-featured-image-genesis' );
-			foreach ( $page_ids as $id ) {
-				$title            = empty( $id->post_title ) ? '#' . $id->ID . __( ' (no title)', 'sixtenpress-featured-content' ) : $id->post_title;
-				$pages[ $id->ID ] = $title;
-			}
-		}
-
-		return $pages;
 	}
 }
