@@ -13,7 +13,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @return string
 	 */
 	public function shortcode_author( $atts ) {
-		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_author', 'Display_Featured_Image_Genesis_Author_Widget' );
+		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_author', 'Display_Featured_Image_Genesis_Author_Widget', 'author' );
 	}
 
 	/**
@@ -24,7 +24,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @return string
 	 */
 	public function shortcode_post_type( $atts ) {
-		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_post_type', 'Display_Featured_Image_Genesis_Widget_CPT' );
+		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_post_type', 'Display_Featured_Image_Genesis_Widget_CPT', 'cpt' );
 	}
 
 	/**
@@ -35,7 +35,7 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 * @return string
 	 */
 	public function shortcode_term( $atts ) {
-		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_term', 'Display_Featured_Image_Genesis_Widget_Taxonomy' );
+		return $this->build_shortcode( $atts, 'displayfeaturedimagegenesis_term', 'Display_Featured_Image_Genesis_Widget_Taxonomy', 'term' );
 	}
 
 	/**
@@ -47,8 +47,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 *
 	 * @return string
 	 */
-	protected function build_shortcode( $atts, $shortcode, $class ) {
-		$defaults = $this->get_defaults( $class );
+	protected function build_shortcode( $atts, $shortcode, $class, $id ) {
+		$defaults = $this->get_defaults( $id );
 		$atts     = shortcode_atts( $defaults, $atts, $shortcode );
 		$atts     = $this->validate_shortcode( $atts, $class );
 
@@ -62,10 +62,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 *
 	 * @return mixed
 	 */
-	protected function get_defaults( $class ) {
-		$widget_class = new $class();
-
-		return $widget_class->defaults();
+	protected function get_defaults( $id ) {
+		return include "fields/{$id}-defaults.php";
 	}
 
 	/**
