@@ -204,7 +204,6 @@
 		if ( DFIGBlockObject.params.prefix + '/term' !== props.name ) {
 			return;
 		}
-		console.log( props );
 		const data = _getAjaxData( select_id, value, props );
 		_doAjaxUpdate( data, select_id, props );
 	}
