@@ -8,6 +8,8 @@ return array(
 			__( 'Term', 'display-featured-image-genesis' ),
 			__( 'Featured Image', 'display-featured-image-genesis' ),
 		),
+		'placeholder' => __( 'Please select a term.', 'display-featured-image-genesis' ),
+		'required'    => 'term',
 	),
 	'author' => array(
 		'title'       => __( 'Display Featured Author Profile', 'display-featured-image-genesis' ),

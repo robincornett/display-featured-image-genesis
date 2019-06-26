@@ -4,7 +4,8 @@
 
 (function ( wp, undefined ) {
 	'use strict';
-	const DFIGBlockObject = {
+	const prefix          = 'displayfeaturedimagegenesis',
+	      DFIGBlockObject = {
 		el: wp.element.createElement,
 	};
 
@@ -38,11 +39,18 @@
 				      Fragment              = wp.element.Fragment,
 				      BlockControls         = wp.blockEditor.BlockControls,
 				      BlockAlignmentToolbar = wp.blockEditor.BlockAlignmentToolbar;
+				let render = DFIGBlockObject.el( ServerSideRender, {
+					block: params.block,
+					attributes: attributes
+				} );
+				if ( params.placeholder && ! attributes[ params.required ] ) {
+					render = DFIGBlockObject.el( 'div', {
+						className: prefix + '-placeholder',
+					}, params.placeholder );
+				}
+
 				return [
-					DFIGBlockObject.el( ServerSideRender, {
-						block: params.block,
-						attributes: attributes
-					} ),
+					render,
 					DFIGBlockObject.el( Fragment, null,
 						DFIGBlockObject.el( BlockControls, null,
 							DFIGBlockObject.el( BlockAlignmentToolbar, {
@@ -85,7 +93,7 @@
 				panels[ index ] = DFIGBlockObject.el( PanelBody, {
 					title: IndividualPanel.title,
 					initialOpen: IndividualPanel.initialOpen,
-					className: 'scriptless-panel-' + key
+					className: prefix + '-panel-' + key
 				}, _getControls( props, IndividualPanel.attributes, blockName ) );
 			}
 		} );
@@ -164,7 +172,7 @@
 		const control = {
 			label: field.label,
 			value: attributes[key],
-			className: 'displayfeaturedimagegenesis-' + key,
+			className: prefix + '-' + key,
 			onChange: ( value ) => {
 				if ( 'taxonomy' === key ) {
 					onChangeSelect( key, value, props, blockName );
@@ -198,7 +206,7 @@
 	 * @param blockName
 	 */
 	function onChangeSelect( select_id, value, props, blockName ) {
-		if ( 'displayfeaturedimagegenesis/term' !== blockName ) {
+		if ( prefix + '/term' !== blockName ) {
 			return;
 		}
 		const data = _getAjaxData( select_id, value, props );
@@ -215,7 +223,7 @@
 	 */
 	function _getAjaxData( select_id, value, props ) {
 		const data         = {
-			      action: 'displayfeaturedimagegenesis_block',
+			      action: prefix + '_block',
 			      security: DFIGBlockObject.params.security
 		      },
 		      {attributes} = props;
@@ -263,7 +271,7 @@
 	 * @private
 	 */
 	function _modifySelectInput( options, key, attributes ) {
-		const selectID = $( '.displayfeaturedimagegenesis-' + key + ' select' ),
+		const selectID = $( '.' + prefix + '-' + key + ' select' ),
 		      oldValue = attributes[key] || '';
 		selectID.empty();
 		_updateSelectOptions( options, selectID, oldValue );

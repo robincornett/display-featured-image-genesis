@@ -62,9 +62,6 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	 * @return string
 	 */
 	public function render_term( $atts ) {
-		if ( empty( $atts['term'] ) ) {
-			return '<div class="displayfeaturedimagegenesis-placeholder">' . __( 'Please select a term.', 'sixtenpress' ) . '</div>';
-		}
 		$atts = wp_parse_args( $atts, include 'fields/term-defaults.php' );
 		$term = get_term_by( 'id', $atts['term'], $atts['taxonomy'] );
 		if ( ! $term ) {
