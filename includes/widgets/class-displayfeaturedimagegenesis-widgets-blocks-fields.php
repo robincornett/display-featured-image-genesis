@@ -156,10 +156,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 			'label'   => $field['args']['label'],
 			'method'  => $method,
 		);
-		if ( in_array( 'number', array( $field_type, $method ), true ) ) {
-			$attributes['min'] = $field['args']['min'];
-			$attributes['max'] = $field['args']['max'];
-		} elseif ( 'select' === $method ) {
+		if ( 'select' === $method ) {
 			$attributes['options'] = $this->convert_choices_for_select( $field['args']['choices'] );
 		}
 
@@ -175,9 +172,6 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 	 */
 	private function get_field_type( $method ) {
 		$type = 'string';
-		if ( 'number' === $method ) {
-			return $method;
-		}
 		if ( 'checkbox' === $method ) {
 			return 'boolean';
 		}

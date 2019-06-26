@@ -135,15 +135,12 @@
 		const {
 			      TextControl,
 			      SelectControl,
-			      RangeControl,
 			      CheckboxControl,
 			      TextareaControl
 		      } = wp.components;
 		const control = TextControl;
 		if ( 'select' === method ) {
 			return SelectControl;
-		} else if ( 'number' === method && 'number' === control_type ) {
-			return RangeControl;
 		} else if ( 'checkbox' === method ) {
 			return CheckboxControl;
 		} else if ( 'textarea' === method ) {
@@ -179,14 +176,6 @@
 
 		if ( 'select' === field.method ) {
 			control.options = field.options;
-		} else if ( 'number' === field.method ) {
-			control.min = field.min;
-			control.max = field.max;
-			if ( 'number' !== field.type ) {
-				control.type = 'number';
-			} else {
-				control.initialPosition = field.min;
-			}
 		} else if ( 'checkbox' === field.method ) {
 			control.checked = attributes[key];
 		}
