@@ -20,6 +20,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 			'category' => 'widgets',
 		);
 		$output = array(
+			'prefix'   => 'displayfeaturedimagegenesis',
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'security' => wp_create_nonce( 'displayfeaturedimagegenesis-block-nonce' ),
 			'blocks'   => array(),

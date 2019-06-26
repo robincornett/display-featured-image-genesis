@@ -4,8 +4,7 @@
 
 (function ( wp, undefined ) {
 	'use strict';
-	const prefix          = 'displayfeaturedimagegenesis',
-	      DFIGBlockObject = {
+	const DFIGBlockObject = {
 		el: wp.element.createElement,
 	};
 
@@ -45,7 +44,7 @@
 				} );
 				if ( params.placeholder && ! attributes[ params.required ] ) {
 					render = DFIGBlockObject.el( 'div', {
-						className: prefix + '-placeholder',
+						className: DFIGBlockObject.params.prefix + '-placeholder',
 					}, params.placeholder );
 				}
 
@@ -63,7 +62,7 @@
 						),
 					),
 					DFIGBlockObject.el( InspectorControls, {},
-						_getPanels( props, params, params.block ),
+						_getPanels( props, params ),
 						onChangeSelect( false, false, props )
 					)
 				];
@@ -80,11 +79,10 @@
 	 *
 	 * @param props
 	 * @param params
-	 * @param blockName
 	 * @return {Array}
 	 * @private
 	 */
-	function _getPanels( props, params, blockName ) {
+	function _getPanels( props, params ) {
 		const panels    = [],
 		      PanelBody = wp.components.PanelBody;
 		Object.keys( params.panels ).forEach( function ( key, index ) {
@@ -93,8 +91,8 @@
 				panels[ index ] = DFIGBlockObject.el( PanelBody, {
 					title: IndividualPanel.title,
 					initialOpen: IndividualPanel.initialOpen,
-					className: prefix + '-panel-' + key
-				}, _getControls( props, IndividualPanel.attributes, blockName ) );
+					className: DFIGBlockObject.params.prefix + '-panel-' + key
+				}, _getControls( props, IndividualPanel.attributes ) );
 			}
 		} );
 
@@ -106,11 +104,10 @@
 	 *
 	 * @param props
 	 * @param fields
-	 * @param blockName
 	 * @return {Array}
 	 * @private
 	 */
-	function _getControls( props, fields, blockName ) {
+	function _getControls( props, fields ) {
 		const controls = [];
 		Object.keys( fields ).forEach( function ( key, index ) {
 			if ( fields.hasOwnProperty( key ) ) {
@@ -120,7 +117,7 @@
 				}
 				const IndividualField = fields[key],
 				      control         = _getControlType( IndividualField.method, IndividualField.type );
-				controls[index] = DFIGBlockObject.el( control, _getIndividualControl( key, IndividualField, props, blockName ) );
+				controls[index] = DFIGBlockObject.el( control, _getIndividualControl( key, IndividualField, props ) );
 			}
 		} );
 
@@ -163,19 +160,18 @@
 	 * @param key
 	 * @param field
 	 * @param props
-	 * @param blockName
 	 * @return {{label: *, value: *, className: string, onChange: onChange}}
 	 * @private
 	 */
-	function _getIndividualControl( key, field, props, blockName ) {
+	function _getIndividualControl( key, field, props ) {
 		const {attributes, setAttributes} = props;
 		const control = {
 			label: field.label,
 			value: attributes[key],
-			className: prefix + '-' + key,
+			className: DFIGBlockObject.params.prefix + '-' + key,
 			onChange: ( value ) => {
 				if ( 'taxonomy' === key ) {
-					onChangeSelect( key, value, props, blockName );
+					onChangeSelect( key, value, props );
 				}
 				setAttributes( {[key]: value} );
 			}
@@ -203,12 +199,12 @@
 	 * @param select_id
 	 * @param value
 	 * @param props
-	 * @param blockName
 	 */
-	function onChangeSelect( select_id, value, props, blockName ) {
-		if ( prefix + '/term' !== blockName ) {
+	function onChangeSelect( select_id, value, props ) {
+		if ( DFIGBlockObject.params.prefix + '/term' !== props.name ) {
 			return;
 		}
+		console.log( props );
 		const data = _getAjaxData( select_id, value, props );
 		_doAjaxUpdate( data, select_id, props );
 	}
@@ -223,7 +219,7 @@
 	 */
 	function _getAjaxData( select_id, value, props ) {
 		const data         = {
-			      action: prefix + '_block',
+			      action: DFIGBlockObject.params.prefix + '_block',
 			      security: DFIGBlockObject.params.security
 		      },
 		      {attributes} = props;
@@ -271,7 +267,7 @@
 	 * @private
 	 */
 	function _modifySelectInput( options, key, attributes ) {
-		const selectID = $( '.' + prefix + '-' + key + ' select' ),
+		const selectID = $( '.' + DFIGBlockObject.params.prefix + '-' + key + ' select' ),
 		      oldValue = attributes[key] || '';
 		selectID.empty();
 		_updateSelectOptions( options, selectID, oldValue );
