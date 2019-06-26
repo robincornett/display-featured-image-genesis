@@ -6,16 +6,11 @@
 class DisplayFeaturedImageGenesisWidgetsBlocks {
 
 	/**
-	 * The block name.
+	 * The plugin/block prefix.
 	 *
 	 * @var string
 	 */
-	protected $name = 'displayfeaturedimagegenesis/';
-
-	/**
-	 * @var string
-	 */
-	protected $block = 'displayfeaturedimagegenesis-';
+	private $prefix = 'displayfeaturedimagegenesis';
 
 	/**
 	 * @var \DisplayFeaturedImageGenesisWidgetsBlocksFields
@@ -35,10 +30,10 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 				continue;
 			}
 			register_block_type(
-				"{$this->name}{$block}",
+				"{$this->prefix}/{$block}",
 				array(
-					'editor_script'   => "{$this->block}block",
-					'editor_style'    => "{$this->block}block",
+					'editor_script'   => "{$this->prefix}-block",
+					'editor_style'    => "{$this->prefix}-block",
 					'attributes'      => $fields->fields( $block ),
 					'render_callback' => array( $output, "render_{$block}" ),
 				)
@@ -62,12 +57,12 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 	public function register_script_style() {
 		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : ' .min';
 		$version = displayfeaturedimagegenesis_get()->version;
-		wp_register_style( "{$this->block}block", plugin_dir_url( dirname( __FILE__ ) ) . 'css/blocks.css', array(), $version, 'screen' );
+		wp_register_style( "{$this->prefix}-block", plugin_dir_url( dirname( __FILE__ ) ) . 'css/blocks.css', array(), $version, 'screen' );
 		if ( ! $minify ) {
 			$version .= current_time( 'gmt' );
 		}
 		wp_register_script(
-			"{$this->block}block",
+			"{$this->prefix}-block",
 			plugin_dir_url( dirname( __FILE__ ) ) . "js/block{$minify}.js",
 			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
 			$version,
@@ -80,7 +75,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 	 */
 	public function localize() {
 		$fields = $this->get_fields_class();
-		wp_localize_script( "{$this->block}block", 'DisplayFeaturedImageBlock', $fields->get_localization_data() );
+		wp_localize_script( "{$this->prefix}-block", 'DisplayFeaturedImageBlock', $fields->get_localization_data() );
 	}
 
 	/**
