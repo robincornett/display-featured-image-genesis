@@ -25,14 +25,14 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 			return '';
 		}
 
-		$classes = $this->get_block_classes( $atts, 'cpt' );
+		$classes = $this->get_block_classes( $atts, $block_id );
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-cpt.php';
-		$output = '<div class="' . esc_attr( $classes ) . '">';
 		ob_start();
+		echo '<div class="' . esc_attr( $classes ) . '">';
 		new DisplayFeaturedImageGenesisOutputCPT( $atts, array(), $post_type );
-		$output .= ob_get_contents();
+		echo '</div>';
+		$output = ob_get_contents();
 		ob_clean();
-		$output .= '</div>';
 
 		return $output;
 	}
@@ -43,17 +43,17 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	 * @return string
 	 */
 	public function render_author( $atts ) {
-		$classes = $this->get_block_classes( $atts, 'author' );
 		$block_id = 'author';
 		$atts     = $this->update_attributes( $atts, $block_id );
+		$classes  = $this->get_block_classes( $atts, $block_id );
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
 
-		$output = '<div class="' . esc_attr( $classes ) . '">';
 		ob_start();
+		echo '<div class="' . esc_attr( $classes ) . '">';
 		new DisplayFeaturedImageGenesisOutputAuthor( $atts, array() );
-		$output .= ob_get_contents();
+		$output = ob_get_contents();
+		echo '</div>';
 		ob_clean();
-		$output .= '</div>';
 
 		return $output;
 	}
@@ -64,21 +64,21 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 	 * @return string
 	 */
 	public function render_term( $atts ) {
-		$term = get_term_by( 'id', $atts['term'], $atts['taxonomy'] );
 		$block_id = 'term';
 		$atts     = $this->update_attributes( $atts, $block_id );
+		$term     = get_term_by( 'id', $atts['term'], $atts['taxonomy'] );
 		if ( ! $term ) {
 			return '';
 		}
-		$classes = $this->get_block_classes( $atts, 'term' );
+		$classes = $this->get_block_classes( $atts, $block_id );
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-term.php';
 
-		$output = '<div class="' . esc_attr( $classes ) . '">';
 		ob_start();
+		echo '<div class="' . esc_attr( $classes ) . '">';
 		new DisplayFeaturedImageGenesisOutputTerm( $atts, array(), $term );
-		$output .= ob_get_contents();
+		echo '</div>';
+		$output = ob_get_contents();
 		ob_clean();
-		$output .= '</div>';
 
 		return $output;
 	}
