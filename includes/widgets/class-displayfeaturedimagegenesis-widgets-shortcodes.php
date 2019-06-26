@@ -95,48 +95,8 @@ class DisplayFeaturedImageGenesisWidgetsShortcodes {
 	 */
 	protected function validate_shortcode( $atts, $class ) {
 		$fields = new $class();
-		foreach ( $fields->get_fields( $atts ) as $field ) {
-			$value = $field['args']['id'];
-			if ( ! isset( $atts[ $value ] ) ) {
-				continue;
-			}
-			switch ( $field['method'] ) {
-				// Sanitize numbers
-				case 'number':
-					$atts[ $value ] = $atts[ $value ] ? absint( $atts[ $value ] ) : '';
-					break;
+		$update = new DisplayFeaturedImageGenesisWidgetsUpdate();
 
-				// Sanitize checkboxes
-				case 'checkbox':
-					$atts[ $value ] = filter_var( $atts[ $value ], FILTER_VALIDATE_BOOLEAN );
-					break;
-
-				// Sanitize text fields
-				case 'text':
-					$atts[ $value ] = wp_strip_all_tags( $atts[ $value ] );
-					break;
-
-				// Escape select options
-				case 'select':
-					$atts[ $value ] = esc_attr( $atts[ $value ] );
-					break;
-
-				case 'textarea':
-					if ( function_exists( 'sanitize_textarea_field' ) ) {
-						$atts[ $value ] = sanitize_textarea_field( $atts[ $value ] );
-					} else {
-						$atts[ $value ] = esc_textarea( $atts[ $value ] );
-					}
-					break;
-
-				// Default
-				default:
-					$atts[ $value ] = esc_attr( $atts[ $value ] );
-					break;
-			}
-		}
-		$atts['title'] = wp_strip_all_tags( $atts['title'] );
-
-		return $atts;
+		return $update->update( $atts, array(), $fields->get_fields( $atts ) );
 	}
 }
