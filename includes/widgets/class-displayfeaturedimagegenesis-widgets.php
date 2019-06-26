@@ -48,6 +48,18 @@ class DisplayFeaturedImageGenesisWidgets {
 	}
 
 	/**
+	 * Register our featured image blocks.
+	 */
+	public function register_blocks() {
+		if ( ! function_exists( 'register_block_type' ) ) {
+			return;
+		}
+		require_once 'class-displayfeaturedimagegenesis-widgets-blocks.php';
+		$block = new DisplayFeaturedImageGenesisWidgetsBlocks();
+		$block->init();
+	}
+
+	/**
 	 * Enqueue and localize widget scripts.
 	 */
 	public function enqueue_scripts() {
