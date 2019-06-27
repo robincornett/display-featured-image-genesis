@@ -55,7 +55,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 	 * Register the block script and style.
 	 */
 	public function register_script_style() {
-		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : ' .min';
+		$minify  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		$version = displayfeaturedimagegenesis_get()->version;
 		wp_register_style( "{$this->prefix}-block", plugin_dir_url( dirname( __FILE__ ) ) . 'css/blocks.css', array(), $version, 'screen' );
 		if ( ! $minify ) {
