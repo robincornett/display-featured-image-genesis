@@ -259,6 +259,9 @@ Similar hooks:
 * fixed: output when multiple widgets/blocks are displayed
 * updated: shortcode/block validation
 
+### 3.1.1
+* fix widget output error when multiple instances are called on a page
+
 ### 3.1.0
 * added: option to display the banner image using only CSS and responsive images, instead of JavaScript
 * changed: CSS, mostly related to the CSS-only banner image, but also made entry title CSS less specific
