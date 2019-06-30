@@ -69,7 +69,7 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 
 		echo $args['before_widget'];
 
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-author.php';
 		new DisplayFeaturedImageGenesisOutputAuthor( $instance, $args, $this->id_base );
 
 		echo $args['after_widget'];
