@@ -3,9 +3,9 @@
 Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: banner, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
-Requires at least: 4.8
+Requires at least: 5.0
 Tested up to: 5.2
-Stable tag: 3.1.0
+Stable tag: 3.2.0
 Requires PHP: 5.6
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -216,9 +216,14 @@ Similar hooks:
 
 == Upgrade Notice ==
 
-3.1.0: new scriptless image option, improved/simplified styling. Significant changes in code organization!
+3.2.0: the featured image widgets are now available as blocks!
 
 == Changelog ==
+
+= 3.2.0 =
+* added: blocks for featured term, featured content type, and featured author
+* fixed: output when multiple widgets/blocks are displayed
+* updated: shortcode/block validation
 
 = 3.1.0 =
 * added: option to display the banner image using only CSS and responsive images, instead of JavaScript

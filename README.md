@@ -46,7 +46,7 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 * `.featured` is appended to the large image output directly above the post/page content.
 
 ## Requirements
-* WordPress 4.8, tested up to 5.2
+* WordPress 5.0, tested up to 5.2
 * the Genesis Framework
 
 ## Installation
@@ -65,7 +65,7 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 3. Copy the folder to your `/wp-content/plugins/` directory.
 4. Go to the Plugins screen and click __Activate__.
 
-Check out the Codex for more information about [installing plugins manually](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
+Check out the Codex for more information about [installing plugins manually](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 ### Git
 
@@ -253,6 +253,11 @@ Similar hooks:
 * Built by [Robin Cornett](https://robincornett.com/)
 
 ## Changelog
+
+### 3.2.0
+* added: blocks for featured term, featured content type, and featured author
+* fixed: output when multiple widgets/blocks are displayed
+* updated: shortcode/block validation
 
 ### 3.1.0
 * added: option to display the banner image using only CSS and responsive images, instead of JavaScript
