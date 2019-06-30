@@ -82,7 +82,7 @@ class Display_Featured_Image_Genesis_Widget_Taxonomy extends WP_Widget {
 		$args['before_widget'] = str_replace( 'class="widget ', 'class="widget ' . $term->slug . ' ', $args['before_widget'] );
 		echo $args['before_widget'];
 
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-term.php';
+		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'output/class-displayfeaturedimagegenesis-output-term.php';
 		new DisplayFeaturedImageGenesisOutputTerm( $instance, $args, $term, $this->id_base );
 
 		echo $args['after_widget'];
