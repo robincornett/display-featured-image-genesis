@@ -443,6 +443,7 @@ class Display_Featured_Image_Genesis_Common {
 /**
  * Helper function to return an instance of the common class.
  * @return \Display_Featured_Image_Genesis_Common
+ * @since 3.1.0
  */
 function displayfeaturedimagegenesis_get() {
 	return Display_Featured_Image_Genesis_Common::instance();
