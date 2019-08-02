@@ -90,10 +90,8 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 	public function get_fields( $new_instance ) {
 		$form = new DisplayFeaturedImageGenesisWidgetsForm( $this, $new_instance );
 		$user = array(
-			array(
-				'method' => 'select',
-				'args'   => include 'fields/author-user.php',
-			),
+			'method' => 'select',
+			'args'   => include 'fields/author-user.php',
 		);
 
 		return array_merge(
