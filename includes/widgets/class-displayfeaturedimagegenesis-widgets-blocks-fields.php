@@ -207,6 +207,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 		if ( isset( $this->form ) ) {
 			return $this->form;
 		}
+		include_once 'class-displayfeaturedimagegenesis-widgets-form.php';
 		$this->form = new DisplayFeaturedImageGenesisWidgetsForm( $this, array() );
 
 		return $this->form;
