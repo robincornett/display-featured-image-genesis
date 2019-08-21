@@ -436,7 +436,7 @@ class Display_Featured_Image_Genesis_Common {
 	private static function has_static_front_page() {
 		$frontpage = get_option( 'show_on_front' );
 
-		return (bool) 'page' === $frontpage;
+		return (bool) ( 'page' === $frontpage );
 	}
 }
 
