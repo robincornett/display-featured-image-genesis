@@ -254,6 +254,9 @@ Similar hooks:
 
 ## Changelog
 
+### 3.1.2
+* fixed: posts page checks for title and post meta
+
 ### 3.1.1
 * fix widget output error when multiple instances are called on a page
 
