@@ -397,7 +397,8 @@ class Display_Featured_Image_Genesis_Common {
 	public static function image_size() {
 		$setting    = displayfeaturedimagegenesis_get_setting();
 		$image_size = $setting['image_size'];
-		$post_meta  = get_post_meta( get_the_ID(), '_displayfeaturedimagegenesis_disable', true );
+		$post_id    = self::get_post_id();
+		$post_meta  = get_post_meta( $post_id, '_displayfeaturedimagegenesis_disable', true );
 		if ( $post_meta && ! is_numeric( $post_meta ) ) {
 			return $post_meta;
 		}
@@ -437,6 +438,21 @@ class Display_Featured_Image_Genesis_Common {
 		$frontpage = get_option( 'show_on_front' );
 
 		return (bool) ( 'page' === $frontpage );
+	}
+
+	/**
+	 * Get the current post ID.
+	 *
+	 * @return mixed
+	 */
+	public static function get_post_id() {
+		if ( is_singular() ) {
+			return get_the_ID();
+		}
+		if ( is_home() && self::has_static_front_page() ) {
+			return get_option( 'page_for_posts' );
+		}
+		return false;
 	}
 }
 
