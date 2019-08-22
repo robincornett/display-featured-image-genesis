@@ -56,7 +56,7 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 */
 	public function enqueue_scripts() {
 		$minify = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_register_script( 'backstretch', plugins_url( "/js/backstretch{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), '2.1.16', true );
+		wp_register_script( 'backstretch', plugins_url( "/js/backstretch{$minify}.js", dirname( __FILE__ ) ), array( 'jquery' ), '2.1.17', true );
 		wp_enqueue_script(
 			'displayfeaturedimage-backstretch-set',
 			plugins_url( "/js/backstretch-set{$minify}.js", dirname( __FILE__ ) ),
