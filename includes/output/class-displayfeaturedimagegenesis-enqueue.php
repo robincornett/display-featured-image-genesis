@@ -197,7 +197,6 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 * @since 3.1.0
 	 */
 	private function get_object_position() {
-		$this->setting = displayfeaturedimagegenesis_get_setting();
 		if ( ! $this->setting['scriptless'] ) {
 			return '';
 		}
