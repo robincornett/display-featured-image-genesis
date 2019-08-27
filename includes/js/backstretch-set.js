@@ -1,4 +1,4 @@
-(function ( document, $, undefined ) {
+( function ( document, $, undefined ) {
 	'use strict';
 
 	var plugin = {};
@@ -11,7 +11,7 @@
 	 * Private Functions
 	 ********************/
 
-	function _backstretchHandler() {
+	function _backstretchHandler () {
 
 		var $el = $( '.big-leader' );
 
@@ -20,25 +20,24 @@
 		}
 
 		$el.css( {
-			height: ( $( window ).height() ) - ( [plugin.params.height] ) + 'px'
+			height: ( $( window ).height() ) - ( [ plugin.params.height ] ) + 'px'
 		} );
 
-		$el.backstretch(
-			[ _getSource() ], {
-				alignX: plugin.params.alignX,
-				alignY: plugin.params.alignY,
-				fade: parseInt( plugin.params.fade ),
-				scale: 'cover'
-			}
-		);
+		$el.backstretch( _getSource(), _getArgs() );
 
 		var image = $( '.big-leader .backstretch img' );
 		image.attr( 'alt', plugin.params.title ).attr( 'aria-hidden', true );
 	}
 
-	function _getSource() {
+	/**
+	 * Get the image source based on the screen size and available image sizes.
+	 */
+	function _getSource () {
+		if ( plugin.params.slider ) {
+			return plugin.params.slider;
+		}
 		var source = plugin.params.source.backstretch,
-			width  = window.innerWidth,
+			width = window.innerWidth,
 			height = $( '.big-leader' ).height();
 
 		if ( plugin.params.source.large && ( plugin.params.width.large >= width && plugin.params.image_height.large >= height ) ) {
@@ -50,9 +49,26 @@
 		return source;
 	}
 
+	/**
+	 * Get the backstretch parameters.
+	 */
+	function _getArgs () {
+		var args = {
+			alignX: plugin.params.alignX,
+			alignY: plugin.params.alignY,
+			fade: parseInt( plugin.params.fade ),
+			scale: 'cover'
+		};
+		if ( plugin.params.slider ) {
+			args.duration = parseInt( plugin.params.duration );
+		}
+
+		return args;
+	}
+
 	plugin.params = typeof BackStretchVars === 'undefined' ? '' : BackStretchVars;
 	if ( typeof plugin.params !== 'undefined' ) {
 		plugin.init();
 	}
 
-})( document, jQuery );
+} )( document, jQuery );

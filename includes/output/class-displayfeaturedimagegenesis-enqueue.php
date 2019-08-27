@@ -77,13 +77,24 @@ class DisplayFeaturedImageGenesisEnqueue {
 	 * @since 2.3.0
 	 */
 	public function localize_scripts() {
-		// backstretch settings which can be filtered
+		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', $this->get_localization_data() );
+	}
+
+	/**
+	 * Define the localization data for the backstretch script.
+	 * Some of it can be filtered here.
+	 *
+	 * @return array
+	 */
+	private function get_localization_data() {
 		$backstretch_vars = apply_filters(
 			'display_featured_image_genesis_backstretch_variables',
 			array(
 				'centeredX' => $this->setting['centeredX'] ? 'center' : 'left',
 				'centeredY' => $this->setting['centeredY'] ? 'center' : 'top',
 				'fade'      => $this->setting['fade'],
+				'slider'    => null,
+				'duration'  => 3000,
 			)
 		);
 
@@ -94,7 +105,12 @@ class DisplayFeaturedImageGenesisEnqueue {
 			'fade'   => (int) $backstretch_vars['fade'],
 		);
 
-		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array_merge( $this->localize_sizes(), $output ) );
+		if ( $backstretch_vars['slider'] ) {
+			$output['slider']   = $backstretch_vars['slider'];
+			$output['duration'] = $backstretch_vars['duration'];
+		}
+
+		return array_merge( $output, $this->localize_sizes() );
 	}
 
 	/**
