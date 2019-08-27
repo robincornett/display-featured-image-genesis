@@ -87,13 +87,11 @@ class DisplayFeaturedImageGenesisEnqueue {
 			)
 		);
 
-		$image_id = displayfeaturedimagegenesis_get()->set_image_id();
-		$output   = array(
+		$output = array(
 			'height' => (int) $this->setting['less_header'],
 			'alignX' => $backstretch_vars['centeredX'],
 			'alignY' => $backstretch_vars['centeredY'],
 			'fade'   => (int) $backstretch_vars['fade'],
-			'title'  => esc_attr( $this->get_image_alt_text( $image_id ) ),
 		);
 
 		wp_localize_script( 'displayfeaturedimage-backstretch-set', 'BackStretchVars', array_merge( $this->localize_sizes(), $output ) );
@@ -126,6 +124,7 @@ class DisplayFeaturedImageGenesisEnqueue {
 				'large'        => $large[3] ? $large[2] : '',
 				'medium_large' => $medium_large[3] ? $medium_large[2] : '',
 			),
+			'title'        => esc_attr( $this->get_image_alt_text( $image_id ) ),
 		);
 	}
 
