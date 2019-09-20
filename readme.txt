@@ -222,7 +222,7 @@ Similar hooks:
 
 = 3.2.0 =
 * added: blocks for featured term, featured content type, and featured author
-* fixed: output when multiple widgets/blocks are displayed
+* changed: backstretch variables filter now allows for slideshow/slider output
 * updated: shortcode/block validation
 
 = 3.1.2 =
