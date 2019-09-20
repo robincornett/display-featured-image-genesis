@@ -63,14 +63,11 @@ class Display_Featured_Image_Genesis_Common {
 			$item->content = strpos( $post_content, 'src="' . $item->backstretch[0] );
 		}
 
-		// $title is set by new title function
-		$title = self::set_item_title();
-
 		/**
 		 * Optional filter to change the title text
 		 * @since 2.2.0
 		 */
-		$item->title = apply_filters( 'display_featured_image_genesis_title', $title );
+		$item->title = apply_filters( 'display_featured_image_genesis_title', self::set_item_title() );
 
 		return $item;
 	}
