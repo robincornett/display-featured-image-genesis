@@ -64,7 +64,7 @@ class DisplayFeaturedImageGenesisWidgetsBlocks {
 		wp_register_script(
 			"{$this->prefix}-block",
 			plugin_dir_url( dirname( __FILE__ ) ) . "js/block{$minify}.js",
-			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
+			array( 'jquery', 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor' ),
 			$version,
 			false
 		);
