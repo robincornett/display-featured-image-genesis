@@ -54,6 +54,9 @@ class Display_Featured_Image_Genesis_Common {
 		$image_id          = self::set_image_id();
 		$image_size        = self::image_size();
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
+		if ( empty( $item->backstretch[3] ) ) {
+			$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
+		}
 
 		// set a content variable so backstretch doesn't show if full size image exists in post.
 		$item->content = false;
@@ -392,10 +395,11 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 2.5.0
 	 */
 	public static function image_size() {
-		$setting    = displayfeaturedimagegenesis_get_setting();
-		$image_size = $setting['image_size'];
-		$post_id    = self::get_post_id();
-		$post_meta  = get_post_meta( $post_id, '_displayfeaturedimagegenesis_disable', true );
+		$setting         = displayfeaturedimagegenesis_get_setting();
+		$registered_size = self::banner_image_size();
+		$image_size      = 'large' !== $setting['image_size'] ? $registered_size : $setting['image_size'];
+		$post_id         = self::get_post_id();
+		$post_meta       = get_post_meta( $post_id, '_displayfeaturedimagegenesis_disable', true );
 		if ( $post_meta && ! is_numeric( $post_meta ) ) {
 			return $post_meta;
 		}
@@ -409,6 +413,16 @@ class Display_Featured_Image_Genesis_Common {
 		}
 
 		return apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
+	}
+
+	/**
+	 * If the new WordPress image sizes have been registered, use them instead of the old one.
+	 *
+	 * @return string
+	 * @since 3.2.0
+	 */
+	public static function banner_image_size() {
+		return has_image_size( '2048x2048' ) ? '2048x2048' : 'displayfeaturedimage_backstretch';
 	}
 
 	/**

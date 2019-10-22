@@ -44,7 +44,7 @@ class DisplayFeaturedImageGenesisGetSetting {
 				'large_hook'           => 'genesis_before_loop',
 				'large_priority'       => 12,
 				'large'                => array(),
-				'image_size'           => 'displayfeaturedimage_backstretch',
+				'image_size'           => 'banner',
 				'scriptless'           => 0,
 			)
 		);

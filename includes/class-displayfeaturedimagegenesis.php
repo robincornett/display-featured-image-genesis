@@ -195,12 +195,17 @@ class Display_Featured_Image_Genesis {
 	 */
 	public function add_plugin_supports() {
 
-		$args = apply_filters( 'displayfeaturedimagegenesis_custom_image_size', array(
-			'width'  => 2000,
-			'height' => 2000,
-			'crop'   => false,
-		) );
-		add_image_size( 'displayfeaturedimage_backstretch', (int) $args['width'], (int) $args['height'], (bool) $args['crop'] );
+		if ( ! has_image_size( '2048x2048' ) ) {
+			$args = apply_filters(
+				'displayfeaturedimagegenesis_custom_image_size',
+				array(
+					'width'  => 2000,
+					'height' => 2000,
+					'crop'   => false,
+				)
+			);
+			add_image_size( 'displayfeaturedimage_backstretch', (int) $args['width'], (int) $args['height'], (bool) $args['crop'] );
+		}
 
 		$move_excerpts = displayfeaturedimagegenesis_get_setting( 'move_excerpts' );
 		if ( $move_excerpts ) {
