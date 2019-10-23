@@ -462,5 +462,3 @@ class Display_Featured_Image_Genesis_Common {
 function displayfeaturedimagegenesis_get() {
 	return Display_Featured_Image_Genesis_Common::instance();
 }
-
-displayfeaturedimagegenesis_get();
