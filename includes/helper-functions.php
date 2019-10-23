@@ -68,11 +68,8 @@ function display_featured_image_genesis_get_term_image_id( $image_id = '' ) {
  *
  * @since  2.1.0
  */
-function display_featured_image_genesis_get_term_image_url( $size = '' ) {
+function display_featured_image_genesis_get_term_image_url( $size = '2048x2048' ) {
 
-	if ( ! $size ) {
-		$size = displayfeaturedimagegenesis_get()->banner_image_size();
-	}
 	$image_id  = display_featured_image_genesis_get_term_image_id();
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
@@ -102,11 +99,8 @@ function display_featured_image_genesis_get_default_image_id( $image_id = '' ) {
  *
  * @since  2.1.0
  */
-function display_featured_image_genesis_get_default_image_url( $size = '' ) {
+function display_featured_image_genesis_get_default_image_url( $size = '2048x2048' ) {
 
-	if ( ! $size ) {
-		$size = displayfeaturedimagegenesis_get()->banner_image_size();
-	}
 	$image_id  = display_featured_image_genesis_get_default_image_id();
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 
@@ -153,11 +147,8 @@ function display_featured_image_genesis_get_cpt_image_id( $image_id = '' ) {
  *
  * @since  2.1.0
  */
-function display_featured_image_genesis_get_cpt_image_url( $size = '' ) {
+function display_featured_image_genesis_get_cpt_image_url( $size = '2048x2048' ) {
 
-	if ( ! $size ) {
-		$size = displayfeaturedimagegenesis_get()->banner_image_size();
-	}
 	$image_id  = display_featured_image_genesis_get_cpt_image_id();
 	$image_url = wp_get_attachment_image_src( $image_id, $size );
 

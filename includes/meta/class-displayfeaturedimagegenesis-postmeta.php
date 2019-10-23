@@ -131,8 +131,8 @@ class Display_Featured_Image_Genesis_Post_Meta {
 		$image_sizes = apply_filters(
 			'displayfeaturedimagegenesis_image_size_choices',
 			array(
-				'banner' => __( 'Use a banner image if it exists', 'display-featured-image-genesis' ),
-				'large'  => __( 'Use a large (not banner) image', 'display-featured-image-genesis' ),
+				'2048x2048' => __( 'Use a banner image if it exists', 'display-featured-image-genesis' ),
+				'large'     => __( 'Use a large (not banner) image', 'display-featured-image-genesis' ),
 			)
 		);
 
@@ -173,7 +173,10 @@ class Display_Featured_Image_Genesis_Post_Meta {
 	 * @return string
 	 */
 	protected function do_select( $args, $post_id ) {
-		$value  = get_post_meta( $post_id, $args['setting'], true );
+		$value = get_post_meta( $post_id, $args['setting'], true );
+		if ( 'displayfeaturedimage_backstretch' === $value ) {
+			$value = '2048x2048';
+		}
 		$output = sprintf(
 			'<p>%1$s<select id="%2$s" name="%2$s">',
 			esc_attr( $args['label'] ),

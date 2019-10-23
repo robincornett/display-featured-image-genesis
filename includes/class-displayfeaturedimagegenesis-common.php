@@ -47,8 +47,6 @@ class Display_Featured_Image_Genesis_Common {
 
 		$item = new stdClass();
 
-		$item->backstretch = '';
-
 		add_filter( 'jetpack_photon_override_image_downsize', '__return_true' ); // turn Photon off so we can get the correct image
 
 		$image_id          = self::set_image_id();
@@ -395,14 +393,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 2.5.0
 	 */
 	public static function image_size() {
-		$setting         = displayfeaturedimagegenesis_get_setting();
-		$registered_size = self::banner_image_size();
-		$image_size      = 'large' !== $setting['image_size'] ? $registered_size : $setting['image_size'];
-		$post_id         = self::get_post_id();
-		$post_meta       = get_post_meta( $post_id, '_displayfeaturedimagegenesis_disable', true );
-		if ( $post_meta && ! is_numeric( $post_meta ) ) {
-			return $post_meta;
-		}
+		$setting = displayfeaturedimagegenesis_get_setting();
 		/**
 		 * Creates display_featured_image_genesis_use_large_image filter to check
 		 * whether get_post_type array should use large image instead of backstretch.
@@ -411,18 +402,14 @@ class Display_Featured_Image_Genesis_Common {
 		if ( self::is_in_array( 'use_large_image' ) || self::use_large_image_singular( $setting ) ) {
 			return 'large';
 		}
+		$image_size = $setting['image_size'];
+		$post_id    = self::get_post_id();
+		$post_meta  = get_post_meta( $post_id, '_displayfeaturedimagegenesis_disable', true );
+		if ( $post_meta && ! is_numeric( $post_meta ) ) {
+			return 'displayfeaturedimage_backstretch' === $post_meta ? '2048x2048' : $post_meta;
+		}
 
 		return apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
-	}
-
-	/**
-	 * If the new WordPress image sizes have been registered, use them instead of the old one.
-	 *
-	 * @return string
-	 * @since 3.2.0
-	 */
-	public static function banner_image_size() {
-		return has_image_size( '2048x2048' ) ? '2048x2048' : 'displayfeaturedimage_backstretch';
 	}
 
 	/**

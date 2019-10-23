@@ -44,7 +44,7 @@ class DisplayFeaturedImageGenesisGetSetting {
 				'large_hook'           => 'genesis_before_loop',
 				'large_priority'       => 12,
 				'large'                => array(),
-				'image_size'           => 'banner',
+				'image_size'           => '2048x2048',
 				'scriptless'           => 0,
 			)
 		);

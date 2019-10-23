@@ -28,8 +28,8 @@ return array(
 		'choices' => apply_filters(
 			'displayfeaturedimagegenesis_image_size_choices',
 			array(
-				'banner' => __( 'Banner (default)', 'display-featured-image-genesis' ),
-				'large'  => __( 'Large', 'display-featured-image-genesis' ),
+				'2048x2048' => __( 'Banner (default)', 'display-featured-image-genesis' ),
+				'large'     => __( 'Large', 'display-featured-image-genesis' ),
 			)
 		),
 		'type'    => 'select',
