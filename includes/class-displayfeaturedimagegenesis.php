@@ -189,9 +189,12 @@ class Display_Featured_Image_Genesis {
 
 
 	/**
-	 * add plugin support for new image size and excerpts on pages, if move excerpts option is enabled
-	 *
+	 * Register a custom image size for banners, and add excerpt support for pages if needed.
 	 * @since 1.3.0
+	 *
+	 * If the Core image size has not been registered (pre-5.3), register it. The plugin is
+	 * transitioning to using the new 2048x2048 image size.
+	 * @since 3.2.0
 	 */
 	public function add_plugin_supports() {
 
@@ -199,12 +202,12 @@ class Display_Featured_Image_Genesis {
 			$args = apply_filters(
 				'displayfeaturedimagegenesis_custom_image_size',
 				array(
-					'width'  => 2000,
-					'height' => 2000,
+					'width'  => 2048,
+					'height' => 2048,
 					'crop'   => false,
 				)
 			);
-			add_image_size( 'displayfeaturedimage_backstretch', (int) $args['width'], (int) $args['height'], (bool) $args['crop'] );
+			add_image_size( '2048x2048', (int) $args['width'], (int) $args['height'], (bool) $args['crop'] );
 		}
 
 		$move_excerpts = displayfeaturedimagegenesis_get_setting( 'move_excerpts' );
