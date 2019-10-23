@@ -116,6 +116,7 @@ class Display_Featured_Image_Genesis {
 		add_action( 'after_setup_theme', array( $this, 'add_plugin_supports' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_filter( 'plugin_action_links_' . DISPLAYFEATUREDIMAGEGENESIS_BASENAME, array( $this, 'add_settings_link' ) );
+		add_action( 'init', array( $this, 'check_settings' ) );
 
 		// Admin
 		add_action( 'admin_init', array( $this->admin, 'set_up_columns' ) );
@@ -268,5 +269,43 @@ class Display_Featured_Image_Genesis {
 	public function add_settings_link( $links ) {
 		$links[] = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( 'themes.php?page=displayfeaturedimagegenesis' ) ), esc_attr__( 'Settings', 'display-featured-image-genesis' ) );
 		return $links;
+	}
+
+	/**
+	 * Check the plugin setting and maybe update it to use the new image size,
+	 * which is registered in Core in WP5.3.
+	 *
+	 * @since 3.2.0
+	 */
+	public function check_settings() {
+
+		$setting = displayfeaturedimagegenesis_get_setting();
+		if ( empty( $setting ) ) {
+			return;
+		}
+
+		$new_setting = array();
+		if ( 'displayfeaturedimage_backstretch' === $setting['image_size'] ) {
+			$new_setting['image_size'] = '2048x2048';
+		}
+
+		if ( $new_setting ) {
+			$this->update_settings(
+				$new_setting,
+				$setting
+			);
+		}
+	}
+
+	/**
+	 * Takes an array of new settings, merges with the current setting, and updates the setting.
+	 *
+	 * @param array $new
+	 * @param array $old_setting
+	 * @return boolean
+	 * @since 3.2.0
+	 */
+	private function update_settings( $new = array(), $old_setting ) {
+		return update_option( 'displayfeaturedimagegenesis', wp_parse_args( $new, $old_setting ) );
 	}
 }
