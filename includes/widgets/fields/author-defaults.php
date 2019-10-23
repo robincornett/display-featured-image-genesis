@@ -2,7 +2,7 @@
 
 return array(
 	'title'                    => '',
-	'show_featured_image'      => 0,
+	'show_featured_image'      => 1,
 	'featured_image_alignment' => 'alignnone',
 	'featured_image_size'      => 'medium',
 	'gravatar_alignment'       => 'left',
