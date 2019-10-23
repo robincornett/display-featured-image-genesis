@@ -393,7 +393,13 @@ class Display_Featured_Image_Genesis_Common {
 	 * @since 2.5.0
 	 */
 	public static function image_size() {
-		$setting = displayfeaturedimagegenesis_get_setting();
+		$setting    = displayfeaturedimagegenesis_get_setting();
+		$image_size = $setting['image_size'];
+		$post_id    = self::get_post_id();
+		$post_meta  = get_post_meta( $post_id, '_displayfeaturedimagegenesis_disable', true );
+		if ( $post_meta && ! is_numeric( $post_meta ) ) {
+			return 'displayfeaturedimage_backstretch' === $post_meta ? '2048x2048' : $post_meta;
+		}
 		/**
 		 * Creates display_featured_image_genesis_use_large_image filter to check
 		 * whether get_post_type array should use large image instead of backstretch.
@@ -401,12 +407,6 @@ class Display_Featured_Image_Genesis_Common {
 		 */
 		if ( self::is_in_array( 'use_large_image' ) || self::use_large_image_singular( $setting ) ) {
 			return 'large';
-		}
-		$image_size = $setting['image_size'];
-		$post_id    = self::get_post_id();
-		$post_meta  = get_post_meta( $post_id, '_displayfeaturedimagegenesis_disable', true );
-		if ( $post_meta && ! is_numeric( $post_meta ) ) {
-			return 'displayfeaturedimage_backstretch' === $post_meta ? '2048x2048' : $post_meta;
 		}
 
 		return apply_filters( 'displayfeaturedimagegenesis_image_size', $image_size );
