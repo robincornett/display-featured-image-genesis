@@ -172,7 +172,7 @@ class Display_Featured_Image_Genesis_Output {
 		$image_id = displayfeaturedimagegenesis_get()->set_image_id();
 		return wp_get_attachment_image(
 			$image_id,
-			'2048x2048',
+			displayfeaturedimagegenesis_get()->image_size(),
 			false,
 			array(
 				'alt'         => $this->get_image_alt_text( $image_id ),
