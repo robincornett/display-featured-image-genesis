@@ -26,8 +26,11 @@
 				html: false
 			},
 
-			getEditWrapperProps ( { blockAlignment } ) {
-				return { 'data-align': blockAlignment };
+			getEditWrapperProps ( { blockAlignment, alignment } ) {
+				return {
+					'data-align': blockAlignment,
+					'alignment': alignment
+				};
 			},
 
 			edit: props => {
@@ -37,7 +40,8 @@
 				} = props,
 					Fragment = wp.element.Fragment,
 					BlockControls = wp.blockEditor.BlockControls,
-					BlockAlignmentToolbar = wp.blockEditor.BlockAlignmentToolbar;
+					BlockAlignmentToolbar = wp.blockEditor.BlockAlignmentToolbar,
+					AlignmentToolbar = wp.blockEditor.AlignmentToolbar;
 				let render = DFIGBlockObject.el( ServerSideRender, {
 					block: params.block,
 					attributes: attributes
@@ -57,6 +61,13 @@
 								controls: [ 'wide', 'full' ],
 								onChange: ( value ) => {
 									setAttributes( { blockAlignment: value } );
+								},
+							} ),
+							DFIGBlockObject.el( AlignmentToolbar, {
+								value: attributes.alignment,
+								controls: [ 'left', 'right', 'center' ],
+								onChange: ( value ) => {
+									setAttributes( { alignment: value } );
 								},
 							} )
 						),
@@ -111,7 +122,7 @@
 		const controls = [];
 		Object.keys( fields ).forEach( function ( key, index ) {
 			if ( fields.hasOwnProperty( key ) ) {
-				var skipped = [ 'blockAlignment', 'className' ];
+				var skipped = [ 'blockAlignment', 'className', 'alignment' ];
 				if ( -1 !== skipped.indexOf( key ) ) {
 					return;
 				}

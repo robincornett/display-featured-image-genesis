@@ -5,6 +5,10 @@ return array(
 		'type'    => 'string',
 		'default' => '',
 	),
+	'alignment'      => array(
+		'type'    => 'string',
+		'default' => '',
+	),
 	'className'      => array(
 		'type'    => 'string',
 		'default' => '',

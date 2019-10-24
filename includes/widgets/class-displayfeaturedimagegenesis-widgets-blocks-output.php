@@ -116,6 +116,9 @@ class DisplayFeaturedImageGenesisWidgetsBlocksOutput {
 		if ( ! empty( $atts['blockAlignment'] ) ) {
 			$classes[] = 'align' . $atts['blockAlignment'];
 		}
+		if ( ! empty( $atts['alignment'] ) ) {
+			$classes[] = 'has-text-align-' . $atts['alignment'];
+		}
 
 		return implode( ' ', $classes );
 	}
