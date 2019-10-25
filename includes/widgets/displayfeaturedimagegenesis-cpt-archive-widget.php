@@ -129,27 +129,39 @@ class Display_Featured_Image_Genesis_Widget_CPT extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults() );
 		$form     = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
-		$form->do_text( $instance, array(
-			'id'    => 'title',
-			'label' => __( 'Title:', 'display-featured-image-genesis' ),
-			'class' => 'widefat',
-		) );
+		$form->do_text(
+			$instance,
+			array(
+				'id'    => 'title',
+				'label' => __( 'Title:', 'display-featured-image-genesis' ),
+				'class' => 'widefat',
+			)
+		);
 
-		$form->do_boxes( array(
-			'post_type' => include 'fields/cpt-post_type.php',
-		), 'genesis-widget-column-box-top' );
+		$form->do_boxes(
+			array(
+				'post_type' => include 'fields/cpt-post_type.php',
+			),
+			'genesis-widget-column-box-top'
+		);
 
 		$label = __( 'Archive', 'display-featured-image-genesis' );
-		$form->do_boxes( array(
-			'words' => include 'fields/text.php',
-		) );
+		$form->do_boxes(
+			array(
+				'words' => include 'fields/text.php',
+			)
+		);
 
-		$form->do_boxes( array(
-			'image' => include 'fields/image.php',
-		) );
+		$form->do_boxes(
+			array(
+				'image' => include 'fields/image.php',
+			)
+		);
 
-		$form->do_boxes( array(
-			'archive' => include 'fields/archive.php',
-		) );
+		$form->do_boxes(
+			array(
+				'archive' => include 'fields/archive.php',
+			)
+		);
 	}
 }

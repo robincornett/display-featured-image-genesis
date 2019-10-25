@@ -114,27 +114,39 @@ class Display_Featured_Image_Genesis_Author_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $this->defaults() );
 		$form     = new DisplayFeaturedImageGenesisWidgetsForm( $this, $instance );
 
-		$form->do_text( $instance, array(
-			'id'    => 'title',
-			'label' => __( 'Title:', 'display-featured-image-genesis' ),
-			'class' => 'widefat',
-		) );
+		$form->do_text(
+			$instance,
+			array(
+				'id'    => 'title',
+				'label' => __( 'Title:', 'display-featured-image-genesis' ),
+				'class' => 'widefat',
+			)
+		);
 		$form->do_select( $instance, include 'fields/author-user.php' );
 
-		$form->do_boxes( array(
-			'author' => include 'fields/author-image.php',
-		), 'genesis-widget-column-box-top' );
+		$form->do_boxes(
+			array(
+				'author' => include 'fields/author-image.php',
+			),
+			'genesis-widget-column-box-top'
+		);
 
-		$form->do_boxes( array(
-			'gravatar' => include 'fields/author-gravatar.php',
-		) );
+		$form->do_boxes(
+			array(
+				'gravatar' => include 'fields/author-gravatar.php',
+			)
+		);
 
-		$form->do_boxes( array(
-			'description' => include 'fields/author-description.php',
-		) );
+		$form->do_boxes(
+			array(
+				'description' => include 'fields/author-description.php',
+			)
+		);
 
-		$form->do_boxes( array(
-			'archive' => include 'fields/author-archive.php',
-		) );
+		$form->do_boxes(
+			array(
+				'archive' => include 'fields/author-archive.php',
+			)
+		);
 	}
 }
