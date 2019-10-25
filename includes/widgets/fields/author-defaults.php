@@ -12,7 +12,7 @@ return array(
 	'author_info'              => '',
 	'bio_text'                 => '',
 	'page'                     => '',
-	'page_link_text'           => __( 'Read More', 'display-featured-image-genesis' ) . '&#x02026;',
+	'page_link_text'           => __( 'Read More', 'display-featured-image-genesis' ),
 	'posts_link'               => 0,
 	'link_text'                => __( 'View My Blog Posts', 'display-featured-image-genesis' ),
 );
