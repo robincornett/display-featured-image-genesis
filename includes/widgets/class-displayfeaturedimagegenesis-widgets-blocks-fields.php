@@ -128,9 +128,9 @@ class DisplayFeaturedImageGenesisWidgetsBlocksFields {
 		$form = $this->get_form_class();
 
 		return array_merge(
-			include 'fields/text.php',
 			include 'fields/term-taxonomy.php',
 			include 'fields/image.php',
+			include 'fields/text.php',
 			include 'fields/archive.php'
 		);
 	}
