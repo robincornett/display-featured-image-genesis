@@ -56,7 +56,7 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 		$text .= $this->get_author_description();
 		echo wp_kses_post( wpautop( $text ) );
 
-		$this->do_author_link();
+		$this->do_author_archive_link();
 	}
 
 	/**
@@ -126,7 +126,7 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 	/**
 	 * Output the author link.
 	 */
-	protected function do_author_link() {
+	private function do_author_archive_link() {
 		if ( ! $this->instance['posts_link'] || ! $this->instance['link_text'] ) {
 			return;
 		}
