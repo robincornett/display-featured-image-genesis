@@ -216,14 +216,16 @@ Similar hooks:
 
 == Upgrade Notice ==
 
-3.2.0: the featured image widgets are now available as blocks!
+3.2.0: featured image widgets are now available as blocks; banner image size has been changed due to WordPress 5.3 changes
 
 == Changelog ==
 
 = 3.2.0 =
 * added: blocks for featured term, featured content type, and featured author
+* changed: plugin's registered image size is being replaced in 5.3, so new images will be used at that size
 * changed: backstretch variables filter now allows for slideshow/slider output
 * updated: shortcode/block validation
+* updated: new minimum WordPress version is 5.0
 
 = 3.1.2 =
 * fixed: posts page checks for title and post meta

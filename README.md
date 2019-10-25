@@ -46,7 +46,7 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 * `.featured` is appended to the large image output directly above the post/page content.
 
 ## Requirements
-* WordPress 5.0, tested up to 5.2
+* WordPress 5.0, tested up to 5.3
 * the Genesis Framework
 
 ## Installation
@@ -256,8 +256,10 @@ Similar hooks:
 
 ### 3.2.0
 * added: blocks for featured term, featured content type, and featured author
-* fixed: output when multiple widgets/blocks are displayed
+* changed: plugin's registered image size is being replaced in 5.3, so new images will be used at that size
+* changed: backstretch variables filter now allows for slideshow/slider output
 * updated: shortcode/block validation
+* updated: new minimum WordPress version is 5.0
 
 ### 3.1.2
 * fixed: posts page checks for title and post meta
