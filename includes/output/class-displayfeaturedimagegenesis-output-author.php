@@ -54,6 +54,7 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 
 		$text  = $this->get_gravatar();
 		$text .= $this->get_author_description();
+		$text .= $this->get_author_link();
 		echo wp_kses_post( wpautop( $text ) );
 
 		$this->do_author_archive_link();
@@ -119,8 +120,8 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 	 *
 	 * @return string
 	 */
-	protected function get_author_link() {
-		return $this->instance['page'] ? sprintf( ' <a class="pagelink" href="%s">%s</a>', get_page_link( $this->instance['page'] ), $this->instance['page_link_text'] ) : '';
+	private function get_author_link() {
+		return $this->instance['page'] && $this->instance['page_link_text'] ? sprintf( ' <a class="pagelink" href="%s">%s</a>', get_page_link( $this->instance['page'] ), $this->instance['page_link_text'] ) : '';
 	}
 
 	/**
