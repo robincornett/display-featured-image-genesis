@@ -34,10 +34,10 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 	 * @param        $args
 	 * @param string $id_base
 	 */
-	public function __construct( $instance, $args, $id_base = '' ) {
+	public function __construct( $instance, $args, $id_base = 'display-featured-image-genesis-author' ) {
 		$this->instance = $instance;
 		$this->args     = $this->update_args( $args );
-		$this->id_base  = $id_base ? $id_base : 'display-featured-image-genesis-author';
+		$this->id_base  = $id_base;
 		$this->init();
 	}
 

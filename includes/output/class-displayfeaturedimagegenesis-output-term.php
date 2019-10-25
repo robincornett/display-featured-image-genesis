@@ -41,11 +41,11 @@ class DisplayFeaturedImageGenesisOutputTerm {
 	 * @param        $term
 	 * @param string $id_base
 	 */
-	public function __construct( $instance, $args, $term, $id_base = '' ) {
+	public function __construct( $instance, $args, $term, $id_base = 'display-featured-image-genesis-term' ) {
 		$this->instance = $instance;
 		$this->args     = $this->update_args( $args );
 		$this->term     = $term;
-		$this->id_base  = $id_base ? $id_base : 'display-featured-image-genesis-term';
+		$this->id_base  = $id_base;
 		$this->init();
 	}
 

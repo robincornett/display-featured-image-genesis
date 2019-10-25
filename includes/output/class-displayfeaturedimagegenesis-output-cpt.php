@@ -41,11 +41,11 @@ class DisplayFeaturedImageGenesisOutputCPT {
 	 * @param        $post_type
 	 * @param string $id_base
 	 */
-	public function __construct( $instance, $args, $post_type, $id_base = '' ) {
+	public function __construct( $instance, $args, $post_type, $id_base = 'display-featured-image-genesis-cpt' ) {
 		$this->instance  = $instance;
 		$this->args      = $this->update_args( $args );
 		$this->post_type = $post_type;
-		$this->id_base   = $id_base ? $id_base : 'display-featured-image-genesis-cpt';
+		$this->id_base   = $id_base;
 		$this->init();
 	}
 
