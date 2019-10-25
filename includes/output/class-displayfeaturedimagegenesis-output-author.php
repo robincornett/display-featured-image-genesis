@@ -62,7 +62,7 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 	/**
 	 * Echo the author featured image.
 	 */
-	protected function do_featured_image() {
+	private function do_featured_image() {
 		if ( ! $this->instance['show_featured_image'] ) {
 			return;
 		}
@@ -86,7 +86,7 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 	 *
 	 * @return string
 	 */
-	protected function get_gravatar() {
+	private function get_gravatar() {
 		if ( ! $this->instance['show_gravatar'] ) {
 			return '';
 		}
@@ -106,7 +106,7 @@ class DisplayFeaturedImageGenesisOutputAuthor {
 	 *
 	 * @return string
 	 */
-	public function get_author_description() {
+	private function get_author_description() {
 		if ( ! $this->instance['author_info'] ) {
 			return '';
 		}
