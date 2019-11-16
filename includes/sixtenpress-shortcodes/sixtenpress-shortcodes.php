@@ -10,7 +10,7 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @copyright 2017-2018 Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
- * @version   0.7.0
+ * @version   0.7.1
  * @link      https://gitlab.com/robincornett/sixtenpress-shortcodes
  * @since     0.1.0
  */
@@ -37,7 +37,7 @@
  * Loader versioning: http://jtsternberg.github.io/wp-lib-loader/
  */
 
-if ( ! class_exists( 'SixTenPressShortcodes_070', false ) ) {
+if ( ! class_exists( 'SixTenPressShortcodes_071', false ) ) {
 
 	/**
 	 * Versioned loader class-name
@@ -48,18 +48,18 @@ if ( ! class_exists( 'SixTenPressShortcodes_070', false ) ) {
 	 * @package  SixTenPressShortcodes
 	 * @author   Robin Cornett <hello@robincornett.com>
 	 * @license  GPL-2.0+
-	 * @version  0.7.0
+	 * @version  0.7.1
 	 * @link     https://gitlab.com/robincornett/sixtenpress-shortcodes
 	 * @since    0.1.0
 	 */
-	class SixTenPressShortcodes_070 {
+	class SixTenPressShortcodes_071 {
 
 		/**
 		 * SixTenPressShortcodes version number
 		 * @var   string
 		 * @since 0.1.0
 		 */
-		const VERSION = '0.7.0';
+		const VERSION = '0.7.1';
 
 		/**
 		 * Current version hook priority.
@@ -68,7 +68,7 @@ if ( ! class_exists( 'SixTenPressShortcodes_070', false ) ) {
 		 * @var   int
 		 * @since 0.1.0
 		 */
-		const PRIORITY = 9980;
+		const PRIORITY = 9979;
 
 		/**
 		 * Starts the version checking process.
@@ -142,7 +142,7 @@ if ( ! class_exists( 'SixTenPressShortcodes_070', false ) ) {
 				/**
 				 * Defines the directory of the currently loaded version of SixTenPressShortcodes.
 				 */
-				define( 'SIXTENPRESSSHORTCODES_DIR', dirname( __FILE__ ) . '/' );
+				define( 'SIXTENPRESSSHORTCODES_DIR', trailingslashit( __DIR__ ) );
 			}
 
 			// Include and initiate SixTenPressShortcodes.
@@ -156,5 +156,5 @@ if ( ! class_exists( 'SixTenPressShortcodes_070', false ) ) {
 	}
 
 	// Kick it off.
-	new SixTenPressShortcodes_070();
+	new SixTenPressShortcodes_071();
 }

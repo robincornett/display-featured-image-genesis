@@ -102,6 +102,9 @@ If an image ID is required, Six/Ten Press image fields in a group will work, as 
 
 ### Changelog
 
+#### 0.7.1
+* fixed: prevent scripts/styles loading if the post type doesn't support the editor
+
 #### 0.7.0
 * changed: moved all actions past a block editor/Gutenberg check to prevent media button scripts/modals loading when they shouldn't
 

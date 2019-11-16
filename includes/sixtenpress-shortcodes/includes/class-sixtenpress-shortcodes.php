@@ -130,6 +130,9 @@ class SixTenPressShortcodes {
 	 * Load all needful functions for the editor.
 	 */
 	public function start_editor() {
+		if ( $this->quit() ) {
+			return;
+		}
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ), 4 );
 		do_action( 'sixtenpress_shortcode_load' );
 	}
@@ -138,9 +141,6 @@ class SixTenPressShortcodes {
 	 * Do not enqueue scripts if we're on a block editor page.
 	 */
 	public function enqueue() {
-		if ( $this->quit() ) {
-			return;
-		}
 		add_action( 'media_buttons', array( $this, 'media_buttons' ), 98 );
 		add_action( 'admin_footer', array( $this, 'widget_builder_modal' ) );
 		add_filter( 'sixtenpress_admin_color_picker', '__return_true' );
@@ -270,6 +270,9 @@ class SixTenPressShortcodes {
 			return true;
 		}
 		$screen = get_current_screen();
+		if ( ! post_type_supports( $screen->post_type, 'editor' ) ) {
+			return true;
+		}
 		if ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) {
 			return true;
 		}
