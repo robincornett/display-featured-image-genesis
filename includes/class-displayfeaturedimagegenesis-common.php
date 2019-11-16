@@ -52,7 +52,7 @@ class Display_Featured_Image_Genesis_Common {
 		$image_id          = self::set_image_id();
 		$image_size        = self::image_size();
 		$item->backstretch = wp_get_attachment_image_src( $image_id, $image_size );
-		if ( empty( $item->backstretch[3] ) ) {
+		if ( empty( $item->backstretch[3] ) && '2048x2048' === $image_size ) {
 			$item->backstretch = wp_get_attachment_image_src( $image_id, 'displayfeaturedimage_backstretch' );
 		}
 
