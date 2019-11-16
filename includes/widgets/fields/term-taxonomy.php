@@ -13,7 +13,7 @@ if ( empty( $instance ) ) {
 	$instance = include 'term-defaults.php';
 }
 
-$onchange = is_callable( $this, 'get_field_id ' ) ? sprintf( 'term_postback(\'%s\', this.value );', esc_attr( $this->get_field_id( 'term' ) ) ) : '';
+$onchange = method_exists( $this, 'get_field_id' ) ? sprintf( 'term_postback(\'%s\', this.value );', esc_attr( $this->get_field_id( 'term' ) ) ) : '';
 
 /**
  * Define term specific taxonomy fields.
@@ -25,7 +25,7 @@ return array(
 			'id'       => 'taxonomy',
 			'label'    => __( 'Taxonomy:', 'display-featured-image-genesis' ),
 			'flex'     => true,
-			'onchange' => '',
+			'onchange' => $onchange,
 			'choices'  => $tax_options,
 		),
 	),
