@@ -82,7 +82,7 @@ _Screenshot of a page using the Backstretch Featured Image._
 ![Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-2.jpg)  
 _Set a Default Featured Image on the Appearance > Display Featured Image for Genesis settings page._
 
-![Optionally, set featured images for custom content types, or change plugin behavior for custom content types.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-3.jpg)
+![Optionally, set featured images for custom content types, or change plugin behavior for custom content types.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-3.jpg)  
 _Optionally, set featured images for custom content types, or change plugin behavior for custom content types._
 
 ![Quickly see which posts and terms have been assigned a Featured Image.](https://github.com/robincornett/display-featured-image-genesis/blob/develop/assets/screenshot-4.png)  
@@ -109,7 +109,9 @@ The scriptless banner image position will ignore the parent container max-height
 
 ### Can I add a Display Featured Image widget to my post or page content?
 
-Yes. As of version 3.0.0, shortcodes for each widget have been added to the plugin. Shortcodes include:
+Yes. As of version 3.2.0, blocks have been registered for each widget. Add a featured term, author, or post type block anywhere you can add a block.
+
+Alternatively, but not as nice: shortcodes for each widget include:
 
 * displayfeaturedimagegenesis_author
 * displayfeaturedimagegenesis_term

@@ -5,7 +5,7 @@ Donate link: https://robincornett.com/donate/
 Tags: banner, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 5.0
 Tested up to: 5.3
-Stable tag: 3.2.0beta
+Stable tag: 3.2.0
 Requires PHP: 5.6
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -81,7 +81,9 @@ The scriptless banner image position will ignore the parent container max-height
 
 = Can I add a Display Featured Image widget to my post or page content? =
 
-Yes. As of version 3.0.0, shortcodes for each widget have been added to the plugin. Shortcodes include:
+Yes. As of version 3.2.0, blocks have been registered for each widget. Add a featured term, author, or post type block anywhere you can add a block.
+
+Alternatively, but not as nice: shortcodes for each widget include:
 
 * displayfeaturedimagegenesis_author
 * displayfeaturedimagegenesis_term
