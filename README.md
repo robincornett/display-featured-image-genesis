@@ -256,6 +256,10 @@ Similar hooks:
 
 ## Changelog
 
+### 3.2.1
+* updated: shortcodes library
+* fixed: dynamic term selector on widgets page
+
 ### 3.2.0
 * added: blocks for featured term, featured content type, and featured author
 * changed: plugin's registered image size is being replaced in 5.3, so new images will be used at that size
