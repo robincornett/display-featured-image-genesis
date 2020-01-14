@@ -124,7 +124,7 @@ class DisplayFeaturedImageGenesisOutputCPT {
 		}
 		$image = $this->get_image( $title );
 		if ( $image ) {
-			$role = empty( $this->instance['show_title'] ) ? '' : 'aria-hidden="true"';
+			$role = empty( $this->instance['show_title'] ) ? '' : 'aria-hidden="true" tabindex="-1"';
 			printf( '<a href="%s" title="%s" class="%s" %s>%s</a>', esc_url( $permalink ), esc_html( $title ), esc_attr( $this->instance['image_alignment'] ), $role, $image );
 		}
 	}
