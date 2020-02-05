@@ -44,14 +44,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 * @since  2.0.0
 	 */
 	protected function set_up_post_type_columns() {
-		$args       = array(
-			'_builtin' => false,
-			'show_ui'  => true,
-		);
-		$output     = 'names';
-		$post_types = get_post_types( $args, $output );
-		$post_types['post'] = 'post';
-		$post_types['page'] = 'page';
+		$post_types = $this->get_post_types();
 		foreach ( $post_types as $post_type ) {
 			if ( ! post_type_supports( $post_type, 'thumbnail' ) ) {
 				continue;
@@ -60,6 +53,24 @@ class Display_Featured_Image_Genesis_Admin {
 			add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'custom_post_columns' ), 10, 2 );
 			add_filter( "manage_edit-{$post_type}_sortable_columns", array( $this, 'make_sortable' ) );
 		}
+	}
+
+	/**
+	 * Get a list of post types which can show a featured image column.
+	 *
+	 * @return array
+	 * @since 3.2.1
+	 */
+	private function get_post_types() {
+		$args               = array(
+			'_builtin' => false,
+			'show_ui'  => true,
+		);
+		$post_types         = get_post_types( $args, 'names' );
+		$post_types['post'] = 'post';
+		$post_types['page'] = 'page';
+
+		return apply_filters( 'displayfeaturedimagegenesis_admin_column_post_types', $post_types );
 	}
 
 	/**
