@@ -56,7 +56,7 @@ class Display_Featured_Image_Genesis_Output {
 
 		$large = $this->get_minimum_backstretch_width();
 		$item  = $this->get_item();
-		$width = absint( $item->backstretch[1] );
+		$width = empty( $item->backstretch[1] ) ? 0 : (int) $item->backstretch[1];
 		/**
 		 * Creates display_featured_image_genesis_force_backstretch filter to check
 		 * whether get_post_type array should force the backstretch effect for this post type.
@@ -295,7 +295,7 @@ class Display_Featured_Image_Genesis_Output {
 		$can_do = true;
 		$item   = $this->get_item();
 		$medium = (int) apply_filters( 'displayfeaturedimagegenesis_set_medium_width', get_option( 'medium_size_w' ) );
-		$width  = (int) $item->backstretch[1];
+		$width  = empty( $item->backstretch[1] ) ? 0 : (int) $item->backstretch[1];
 
 		// check if they have enabled display on subsequent pages
 		$is_paged = $this->get_setting( 'is_paged' );
@@ -431,16 +431,19 @@ class Display_Featured_Image_Genesis_Output {
 			}
 		}
 
-		return apply_filters( 'displayfeaturedimagegenesis_hooks', array(
-			'backstretch' => array(
-				'hook'     => apply_filters( 'display_featured_image_move_backstretch_image', $setting['backstretch_hook'] ),
-				'priority' => apply_filters( 'display_featured_image_move_backstretch_image_priority', $setting['backstretch_priority'] ),
-			),
-			'large'       => array(
-				'hook'     => $large_hook,
-				'priority' => apply_filters( 'display_featured_image_genesis_move_large_image_priority', $setting['large_priority'] ),
-			),
-		) );
+		return apply_filters(
+			'displayfeaturedimagegenesis_hooks',
+			array(
+				'backstretch' => array(
+					'hook'     => apply_filters( 'display_featured_image_move_backstretch_image', $setting['backstretch_hook'] ),
+					'priority' => apply_filters( 'display_featured_image_move_backstretch_image_priority', $setting['backstretch_priority'] ),
+				),
+				'large'       => array(
+					'hook'     => $large_hook,
+					'priority' => apply_filters( 'display_featured_image_genesis_move_large_image_priority', $setting['large_priority'] ),
+				),
+			)
+		);
 	}
 
 	/**

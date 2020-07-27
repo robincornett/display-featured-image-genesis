@@ -59,7 +59,7 @@ class Display_Featured_Image_Genesis_Common {
 		// set a content variable so backstretch doesn't show if full size image exists in post.
 		$item->content = false;
 		// declare this last so that $item->backstretch is set.
-		if ( ! is_admin() && is_singular() ) {
+		if ( ! is_admin() && is_singular() && ! empty( $item->backstretch[0] ) ) {
 			$post_content  = get_post_field( 'post_content' );
 			$item->content = strpos( $post_content, 'src="' . $item->backstretch[0] );
 		}
@@ -350,7 +350,8 @@ class Display_Featured_Image_Genesis_Common {
 				FROM {$wpdb->posts} wposts, {$wpdb->postmeta} wpostmeta
 				WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value IN ( %s, %s ) AND wposts.post_type = 'attachment'
 			",
-			$url_stripped, $attachment_url
+			$url_stripped,
+			$attachment_url
 		);
 
 		$result = $wpdb->get_col( $query_sql );
