@@ -283,7 +283,6 @@ class Display_Featured_Image_Genesis_Description {
 		$content  = shortcode_unautop( $content );
 		$content  = prepend_attachment( $content );
 		$content  = convert_smilies( $content );
-		$content  = wp_make_content_images_responsive( $content );
 		$content  = $wp_embed->autoembed( $content );
 		$content  = do_shortcode( $content );
 
