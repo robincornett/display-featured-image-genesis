@@ -4,7 +4,7 @@ Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: banner, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 5.0
-Tested up to: 5.3
+Tested up to: 5.5
 Stable tag: 3.2.1
 Requires PHP: 5.6
 License: GPL-2.0+
@@ -225,6 +225,7 @@ Similar hooks:
 = 3.2.1 =
 * updated: shortcodes library
 * fixed: dynamic term selector on widgets page
+* fixed: notices in PHP 7.4 if no featured image is set
 
 = 3.2.0 =
 * added: blocks for featured term, featured content type, and featured author

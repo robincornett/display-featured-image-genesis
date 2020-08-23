@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Display Featured Image for Genesis
+# Copyright (C) 2020 Display Featured Image for Genesis
 # This file is distributed under the same license as the Display Featured Image for Genesis package.
 msgid ""
 msgstr ""
@@ -8,7 +8,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/class-displayfeaturedimagegenesis-admin.php:86
+#: includes/class-displayfeaturedimagegenesis-admin.php:97
 msgid "Image"
 msgstr ""
 
@@ -82,35 +82,35 @@ msgstr ""
 msgid "You may set a featured image for your terms. This image will be used on the term archive page, and as a fallback image on a single post page if it does not have a featured image of its own."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:59, includes/settings/class-displayfeaturedimagegenesis-settings.php:22, includes/settings/class-displayfeaturedimagegenesis-settings.php:23
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:61, includes/settings/class-displayfeaturedimagegenesis-settings.php:22, includes/settings/class-displayfeaturedimagegenesis-settings.php:23
 msgid "Display Featured Image for Genesis"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:60
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:62
 msgid "Only general settings are available in the Customizer; more can be found on the Display Featured Image for Genesis settings page."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:66, includes/settings/tabs.php:6
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:69, includes/settings/tabs.php:6
 msgid "Main"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:71
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:74
 msgid "Backstretch Output"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:76, includes/settings/tabs.php:14
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:79, includes/settings/tabs.php:14
 msgid "Content Types"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:78
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:81
 msgid "Optional: set a custom image for search results and 404 (no results found) pages, as well as content types."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:82, includes/settings/tabs.php:18
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:85, includes/settings/tabs.php:18
 msgid "Advanced"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:266
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:272
 msgid "Default"
 msgstr ""
 

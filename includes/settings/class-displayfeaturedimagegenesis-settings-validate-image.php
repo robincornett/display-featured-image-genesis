@@ -3,7 +3,7 @@
 /**
  * Class DisplayFeaturedImageGenesisSettingsValidateImage
  * @since     3.1.0
- * @copyright 2019 Robin Cornett
+ * @copyright 2019-2020 Robin Cornett
  */
 class DisplayFeaturedImageGenesisSettingsValidateImage {
 
