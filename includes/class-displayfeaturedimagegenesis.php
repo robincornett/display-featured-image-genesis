@@ -5,7 +5,7 @@
  * @package   DisplayFeaturedImageGenesis
  * @author    Robin Cornett <hello@robincornett.com>
  * @link      https://github.com/robincornett/display-featured-image-genesis/
- * @copyright 2014-2017 Robin Cornett
+ * @copyright 2014-2020 Robin Cornett
  * @license   GPL-2.0+
  */
 

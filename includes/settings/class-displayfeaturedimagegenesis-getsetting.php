@@ -3,7 +3,7 @@
 /**
  * Class DisplayFeaturedImageGenesisDoSetting
  * @package   Display_Featured_Image_Genesis
- * @copyright 2016 Robin Cornett
+ * @copyright 2016-2020 Robin Cornett
  */
 class DisplayFeaturedImageGenesisGetSetting {
 

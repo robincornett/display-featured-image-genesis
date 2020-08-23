@@ -7,7 +7,7 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      https://robincornett.com
- * @copyright 2015-2017 Robin Cornett Creative, LLC
+ * @copyright 2015-2020 Robin Cornett Creative, LLC
  * @since 2.0.0
  */
 
@@ -170,7 +170,8 @@ class Display_Featured_Image_Genesis_Admin {
 				.edit-tags-php .column-featured_image { width: 60px; }
 				.column-featured_image img { margin: 0 auto; height: auto; width: auto; max-width: 60px; max-height: 80px; }
 				@media screen and (max-width: 782px) { .column-featured_image, .wp-list-table .is-expanded td.column-featured_image:not(.hidden) { display: table-cell !important; width: 52px; } .column-featured_image.hidden { display: none !important; } .column-featured_image img { margin: 0; max-width: 42px; } }
-			</style> <?php
+			</style> 
+			<?php
 		}
 	}
 
@@ -242,7 +243,8 @@ class Display_Featured_Image_Genesis_Admin {
 		$orderby = $query->get( 'orderby' );
 		if ( 'featured_image' === $orderby ) {
 			$query->set(
-				'meta_query', array(
+				'meta_query',
+				array(
 					'relation' => 'OR',
 					array(
 						'key'     => '_thumbnail_id',

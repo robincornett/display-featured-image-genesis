@@ -6,7 +6,7 @@
  * @author    Robin Cornett <hello@robincornett.com>
  * @license   GPL-2.0+
  * @link      https://robincornett.com
- * @copyright 2014-2019 Robin Cornett Creative, LLC
+ * @copyright 2014-2020 Robin Cornett Creative, LLC
  */
 class Display_Featured_Image_Genesis_Post_Meta {
 

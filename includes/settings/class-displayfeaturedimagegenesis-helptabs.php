@@ -4,7 +4,7 @@
  * Set up the help tabs for the Display Featured Image Genesis Settings page.
  * Class Display_Featured_Image_Genesis_HelpTabs
  * @package DisplayFeaturedImageGenesis
- * @copyright 2016 Robin Cornett
+ * @copyright 2016-2020 Robin Cornett
  */
 class Display_Featured_Image_Genesis_HelpTabs extends Display_Featured_Image_Genesis_Helper {
 

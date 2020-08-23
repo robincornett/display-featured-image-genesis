@@ -3,7 +3,7 @@
 /**
  * Class Display_Featured_Image_Genesis_Helper
  * @package DisplayFeaturedImageGenesis
- * @copyright 2017 Robin Cornett
+ * @copyright 2017-2020 Robin Cornett
  */
 class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisGetSetting {
 

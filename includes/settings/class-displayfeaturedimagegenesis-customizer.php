@@ -4,7 +4,7 @@
  * Class to add customizer settings.
  * Class Display_Featured_Image_Genesis_Customizer
  * @package   Display_Featured_Image_Genesis
- * @copyright 2016 Robin Cornett
+ * @copyright 2016-2020 Robin Cornett
  */
 class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_Genesis_Settings {
 
@@ -52,13 +52,16 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 		if ( ! $this->setting ) {
 			add_option( 'displayfeaturedimagegenesis', $this->defaults );
 		}
-		$wp_customize->add_panel( $this->section, array(
-			'priority'       => 90,
-			'capability'     => 'edit_theme_options',
-			'theme_supports' => '',
-			'title'          => __( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
-			'description'    => __( 'Only general settings are available in the Customizer; more can be found on the Display Featured Image for Genesis settings page.', 'display-featured-image-genesis' ),
-		) );
+		$wp_customize->add_panel(
+			$this->section,
+			array(
+				'priority'       => 90,
+				'capability'     => 'edit_theme_options',
+				'theme_supports' => '',
+				'title'          => __( 'Display Featured Image for Genesis', 'display-featured-image-genesis' ),
+				'description'    => __( 'Only general settings are available in the Customizer; more can be found on the Display Featured Image for Genesis settings page.', 'display-featured-image-genesis' ),
+			)
+		);
 
 		$sections = array(
 			array(
@@ -84,11 +87,14 @@ class Display_Featured_Image_Genesis_Customizer extends Display_Featured_Image_G
 			),
 		);
 		foreach ( $sections as $section ) {
-			$wp_customize->add_section( $this->section . '_' . $section['id'], array(
-				'title'       => $section['title'],
-				'panel'       => $this->section,
-				'description' => isset( $section['description'] ) ? $section['description'] : '',
-			) );
+			$wp_customize->add_section(
+				$this->section . '_' . $section['id'],
+				array(
+					'title'       => $section['title'],
+					'panel'       => $this->section,
+					'description' => isset( $section['description'] ) ? $section['description'] : '',
+				)
+			);
 			$this->add_section_controls( $wp_customize, $section['fields'], $this->section . '_' . $section['id'] );
 		}
 

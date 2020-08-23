@@ -5,7 +5,7 @@
  * @package   DisplayFeaturedImageGenesis
  * @author    Robin Cornett <hello@robincornett.com>
  * @link      https://robincornett.com
- * @copyright 2014-2017 Robin Cornett Creative, LLC
+ * @copyright 2014-2020 Robin Cornett Creative, LLC
  * @license   GPL-2.0+
  * @since     2.0.0
  */
