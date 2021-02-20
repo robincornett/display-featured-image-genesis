@@ -80,7 +80,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	protected function set_up_author_columns() {
 		add_filter( 'manage_users_columns', array( $this, 'add_column' ) );
-		add_action( 'manage_users_custom_column', array( $this, 'manage_user_column' ), 10, 3 );
+		add_filter( 'manage_users_custom_column', array( $this, 'manage_user_column' ), 10, 3 );
 	}
 
 	/**
@@ -170,7 +170,7 @@ class Display_Featured_Image_Genesis_Admin {
 				.edit-tags-php .column-featured_image { width: 60px; }
 				.column-featured_image img { margin: 0 auto; height: auto; width: auto; max-width: 60px; max-height: 80px; }
 				@media screen and (max-width: 782px) { .column-featured_image, .wp-list-table .is-expanded td.column-featured_image:not(.hidden) { display: table-cell !important; width: 52px; } .column-featured_image.hidden { display: none !important; } .column-featured_image img { margin: 0; max-width: 42px; } }
-			</style> 
+			</style>
 			<?php
 		}
 	}
@@ -186,7 +186,7 @@ class Display_Featured_Image_Genesis_Admin {
 	 */
 	public function manage_user_column( $value, $column_name, $user_id ) {
 		if ( 'featured_image' !== $column_name ) {
-			return '';
+			return $value;
 		}
 		$image_id = get_the_author_meta( 'displayfeaturedimagegenesis', (int) $user_id );
 		if ( ! $image_id ) {
