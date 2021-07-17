@@ -109,7 +109,7 @@ class DisplayFeaturedImageGenesisSettingsValidateImage {
 	 * @since 2.5.0
 	 */
 	private function allowed_file_types() {
-		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif' ) );
+		$allowed = apply_filters( 'displayfeaturedimage_valid_img_types', array( 'jpg', 'jpeg', 'png', 'gif', 'webp' ) );
 
 		return is_array( $allowed ) ? $allowed : explode( ',', $allowed );
 	}
