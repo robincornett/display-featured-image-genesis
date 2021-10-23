@@ -46,7 +46,7 @@ __Display Featured Image for Genesis__ has some styling built in but I have inte
 * `.featured` is appended to the large image output directly above the post/page content.
 
 ## Requirements
-* WordPress 5.0, tested up to 5.3
+* WordPress 5.0, tested up to 5.8
 * the Genesis Framework
 
 ## Installation
@@ -256,6 +256,10 @@ Similar hooks:
 
 ## Changelog
 
+### 3.2.2
+* added: support for webp images
+* fixed: user's custom column filter
+* udpated: tested to version
 ### 3.2.1
 * updated: shortcodes library
 * fixed: dynamic term selector on widgets page

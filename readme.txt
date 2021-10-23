@@ -4,8 +4,8 @@ Contributors: littler.chicken
 Donate link: https://robincornett.com/donate/
 Tags: banner, featured image, featured images, genesis, studiopress, post thumbnails, featured image rss, rss
 Requires at least: 5.0
-Tested up to: 5.5
-Stable tag: 3.2.1
+Tested up to: 5.8
+Stable tag: 3.2.2
 Requires PHP: 5.6
 License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -221,6 +221,11 @@ Similar hooks:
 3.2.0: featured image widgets are now available as blocks; banner image size has been changed due to WordPress 5.3 changes
 
 == Changelog ==
+
+= 3.2.2 =
+* added: support for webp images
+* fixed: user's custom column filter
+* udpated: tested to version
 
 = 3.2.1 =
 * updated: shortcodes library
