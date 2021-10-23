@@ -259,7 +259,9 @@ Similar hooks:
 ### 3.2.2
 * added: support for webp images
 * fixed: user's custom column filter
-* udpated: tested to version
+* fixed: missing label for post meta select input
+* updated: tested to version
+
 ### 3.2.1
 * updated: shortcodes library
 * fixed: dynamic term selector on widgets page

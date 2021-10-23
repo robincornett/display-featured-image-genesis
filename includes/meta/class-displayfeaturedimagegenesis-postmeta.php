@@ -178,7 +178,7 @@ class Display_Featured_Image_Genesis_Post_Meta {
 			$value = '2048x2048';
 		}
 		$output = sprintf(
-			'<p>%1$s<select id="%2$s" name="%2$s">',
+			'<p><label for="%2$s">%1$s</label><select id="%2$s" name="%2$s">',
 			esc_attr( $args['label'] ),
 			esc_attr( $args['setting'] )
 		);
