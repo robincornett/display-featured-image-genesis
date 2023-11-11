@@ -12,7 +12,10 @@
  * Plugin Name:       Display Featured Image for Genesis
  * Plugin URI:        https://github.com/robincornett/display-featured-image-genesis/
  * Description:       This plugin works within the Genesis Framework, to display featured images in beautiful and dynamic ways.
- * Version:           3.2.2
+ * Version:           3.2.3
+ * Requires at least: 5.2
+ * Requires PHP:      7.4
+ * Tested up to:      6.4
  * Author:            Robin Cornett
  * Author URI:        https://robincornett.com
  * Text Domain:       display-featured-image-genesis

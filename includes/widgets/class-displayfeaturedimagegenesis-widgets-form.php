@@ -83,13 +83,14 @@ class DisplayFeaturedImageGenesisWidgetsForm {
 	 * @return mixed
 	 */
 	public function get_term_lists( $instance, $ajax = false ) {
+		$taxonomy    = $ajax ? filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_SPECIAL_CHARS ) : $instance['taxonomy'];
 		$args        = array(
+			'taxonomy'   => $taxonomy,
 			'orderby'    => 'name',
 			'order'      => 'ASC',
 			'hide_empty' => false,
 		);
-		$taxonomy    = $ajax ? filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING ) : $instance['taxonomy'];
-		$terms       = get_terms( $taxonomy, $args );
+		$terms       = get_terms( $args );
 		$options[''] = '--';
 		foreach ( $terms as $term ) {
 			if ( is_object( $term ) ) {

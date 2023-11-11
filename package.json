@@ -1,16 +1,16 @@
 {
   "name": "display-featured-image-genesis",
   "description": "Display Featured Image for Genesis",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "private": true,
   "license": "GPL-2.0+",
   "devDependencies": {
-    "autoprefixer": "10.4.13",
+    "autoprefixer": "10.4.16",
     "browser-sync": "2.27.11",
     "css-mqpacker": "7.0.0",
-    "del": "7.0.0",
+    "del": "7.1.0",
     "gulp": "^4.0.2",
-    "gulp-chmod": "3.0.0",
+    "gulp-chmod": "4.0.0",
     "gulp-notify": "4.0.0",
     "gulp-postcss": "9.0.1",
     "gulp-rename": "2.0.0",
@@ -20,22 +20,25 @@
     "gulp-wp-pot": "^2.3.2",
     "gulp-zip": "5.1.0",
     "perfectionist": "^2.4.0",
-    "postcss": "^8.4.4",
+    "postcss": "^8.4.31",
     "postcss-import": "15.1.0",
-    "sass": "^1.41.1"
+    "sass": "^1.69.5"
   },
   "dependencies": {
-    "@wordpress/browserslist-config": "5.7.0",
+    "@wordpress/browserslist-config": "5.28.0",
     "glob-parent": ">=5.1.2",
     "gulp-sass-unicode": "^1.0.5",
     "gulp-svg-sprites": "^4.1.2",
     "normalize.css": "8.0.1",
     "trim-newlines": ">=3.0.1",
     "set-value": ">=4.0.1",
-    "axios": ">=0.24.0",
+    "axios": "1.6.1",
     "nth-check": ">=2.0.1"
   },
   "browserslist": [
     "extends @wordpress/browserslist-config"
-  ]
+  ],
+  "scripts": {
+    "translate": "wp i18n make-pot . languages/display-featured-image-genesis.pot --exclude=node_modules --domain=display-featured-image-genesis"
+  }
 }

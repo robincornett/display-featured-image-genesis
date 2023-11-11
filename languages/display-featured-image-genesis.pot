@@ -1,12 +1,41 @@
-# Copyright (C) 2020 Display Featured Image for Genesis
-# This file is distributed under the same license as the Display Featured Image for Genesis package.
+# Copyright (C) 2023 Robin Cornett
+# This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Display Featured Image for Genesis\n"
+"Project-Id-Version: Display Featured Image for Genesis 3.2.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/display-featured-image-genesis\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: 2023-11-11T17:12:49+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: display-featured-image-genesis\n"
+
+#. Plugin Name of the plugin
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:61
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:22
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:23
+msgid "Display Featured Image for Genesis"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/robincornett/display-featured-image-genesis/"
+msgstr ""
+
+#. Description of the plugin
+msgid "This plugin works within the Genesis Framework, to display featured images in beautiful and dynamic ways."
+msgstr ""
+
+#. Author of the plugin
+msgid "Robin Cornett"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://robincornett.com"
+msgstr ""
 
 #: includes/class-displayfeaturedimagegenesis-admin.php:97
 msgid "Image"
@@ -21,7 +50,8 @@ msgstr ""
 msgid " But since we're talking anyway, did you know that your server is running PHP version %1$s, which is outdated? You should ask your host to update that for you."
 msgstr ""
 
-#: includes/class-displayfeaturedimagegenesis.php:256, includes/settings/class-displayfeaturedimagegenesis-settings-images.php:164
+#: includes/class-displayfeaturedimagegenesis.php:256
+#: includes/settings/class-displayfeaturedimagegenesis-settings-images.php:164
 msgid "Select Image"
 msgstr ""
 
@@ -29,7 +59,12 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/meta/class-displayfeaturedimagegenesis-author.php:46, includes/meta/class-displayfeaturedimagegenesis-taxonomies.php:101, includes/meta/class-displayfeaturedimagegenesis-taxonomies.php:185, includes/widgets/fields/blocks.php:9, includes/widgets/fields/blocks.php:19, includes/widgets/fields/blocks.php:29
+#: includes/meta/class-displayfeaturedimagegenesis-author.php:46
+#: includes/meta/class-displayfeaturedimagegenesis-taxonomies.php:101
+#: includes/meta/class-displayfeaturedimagegenesis-taxonomies.php:185
+#: includes/widgets/fields/blocks.php:9
+#: includes/widgets/fields/blocks.php:19
+#: includes/widgets/fields/blocks.php:29
 msgid "Featured Image"
 msgstr ""
 
@@ -37,7 +72,8 @@ msgstr ""
 msgid "Upload an image to use as your author page featured image."
 msgstr ""
 
-#: includes/meta/class-displayfeaturedimagegenesis-author.php:74, includes/settings/class-displayfeaturedimagegenesis-settings.php:272
+#: includes/meta/class-displayfeaturedimagegenesis-author.php:74
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:272
 msgid "Something unexpected happened. Please try again."
 msgstr ""
 
@@ -82,15 +118,12 @@ msgstr ""
 msgid "You may set a featured image for your terms. This image will be used on the term archive page, and as a fallback image on a single post page if it does not have a featured image of its own."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:61, includes/settings/class-displayfeaturedimagegenesis-settings.php:22, includes/settings/class-displayfeaturedimagegenesis-settings.php:23
-msgid "Display Featured Image for Genesis"
-msgstr ""
-
 #: includes/settings/class-displayfeaturedimagegenesis-customizer.php:62
 msgid "Only general settings are available in the Customizer; more can be found on the Display Featured Image for Genesis settings page."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:69, includes/settings/tabs.php:6
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:69
+#: includes/settings/tabs.php:6
 msgid "Main"
 msgstr ""
 
@@ -98,7 +131,8 @@ msgstr ""
 msgid "Backstretch Output"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:79, includes/settings/tabs.php:14
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:79
+#: includes/settings/tabs.php:14
 msgid "Content Types"
 msgstr ""
 
@@ -106,7 +140,8 @@ msgstr ""
 msgid "Optional: set a custom image for search results and 404 (no results found) pages, as well as content types."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:85, includes/settings/tabs.php:18
+#: includes/settings/class-displayfeaturedimagegenesis-customizer.php:85
+#: includes/settings/tabs.php:18
 msgid "Advanced"
 msgstr ""
 
@@ -114,7 +149,8 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:47, includes/settings/fields-style.php:13
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:47
+#: includes/settings/fields-style.php:13
 msgid "Height"
 msgstr ""
 
@@ -122,7 +158,8 @@ msgstr ""
 msgid "Centering"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:57, includes/settings/fields-style.php:49
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:57
+#: includes/settings/fields-style.php:49
 msgid "Fade"
 msgstr ""
 
@@ -130,7 +167,8 @@ msgstr ""
 msgid "Special Pages"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:72, includes/settings/fields-cpt.php:6
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:72
+#: includes/settings/fields-cpt.php:6
 msgid "Skip Content Types"
 msgstr ""
 
@@ -142,15 +180,18 @@ msgstr ""
 msgid "Custom Content Types"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:94, includes/settings/sections.php:6
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:94
+#: includes/settings/sections.php:6
 msgid "Optional Sitewide Settings"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:99, includes/settings/sections.php:11
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:99
+#: includes/settings/sections.php:11
 msgid "Optional Archive Settings"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:104, includes/settings/sections.php:16
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:104
+#: includes/settings/sections.php:16
 msgid "Optional Default Image"
 msgstr ""
 
@@ -178,7 +219,8 @@ msgstr ""
 msgid "If you choose \"Always Use Default\", your default image will be used site wide, no matter what content types/posts/etc. have featured images set."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:150, includes/settings/fields-main.php:39
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:150
+#: includes/settings/fields-main.php:39
 msgid "Skip Front Page"
 msgstr ""
 
@@ -186,7 +228,8 @@ msgstr ""
 msgid "If you set a Default Featured Image, it will show on every post/page of your site. This may not be desirable on child themes with a front page constructed with widgets, so you can select this option to prevent the Featured Image from showing on the front page. Checking this will prevent the Featured Image from showing on the Front Page, even if you have set an image for that page individually."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:162, includes/settings/fields-main.php:46
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:162
+#: includes/settings/fields-main.php:46
 msgid "Do Not Move Titles"
 msgstr ""
 
@@ -222,7 +265,8 @@ msgstr ""
 msgid "If your RSS feed is set to Full Text, the Featured Image will be added to the entry content. If it is set to Summary, the Featured Image will be added to the excerpt instead."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:211, includes/settings/fields-main.php:74
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:211
+#: includes/settings/fields-main.php:74
 msgid "Archive Thumbnails"
 msgstr ""
 
@@ -274,7 +318,8 @@ msgstr ""
 msgid "By default, the banner image takes 750 milliseconds to fade in once the image has loaded into the browser. You can make the image fade in more quickly or slowly, as you prefer."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:289, includes/settings/fields-main.php:26
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:289
+#: includes/settings/fields-main.php:26
 msgid "Preferred Image Size"
 msgstr ""
 
@@ -282,7 +327,8 @@ msgstr ""
 msgid "Set the default image size you would like to use sitewide. This can be overridden per content type, or on an individual post."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:301, includes/settings/fields-style.php:6
+#: includes/settings/class-displayfeaturedimagegenesis-helptabs.php:301
+#: includes/settings/fields-style.php:6
 msgid "Disable JavaScript"
 msgstr ""
 
@@ -348,7 +394,8 @@ msgstr ""
 
 #. translators: the placeholder is the name of the featured image; eg. default, search, or the name of a content type.
 #. translators: the user display name
-#: includes/settings/class-displayfeaturedimagegenesis-settings-validate-image.php:72, includes/settings/class-displayfeaturedimagegenesis-settings-validate-image.php:89
+#: includes/settings/class-displayfeaturedimagegenesis-settings-validate-image.php:72
+#: includes/settings/class-displayfeaturedimagegenesis-settings-validate-image.php:89
 msgid " The %s Featured Image has been reset to the last valid setting."
 msgstr ""
 
@@ -376,7 +423,8 @@ msgstr ""
 msgid "Optionally, change the hook location and priority of the featured image output. Use with caution. Note: this will change the hook/priority of the featured image sitewide. If you need to make changes based on content type, check the readme for code examples."
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-settings.php:210, includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:75
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:210
+#: includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:75
 msgid "Center"
 msgstr ""
 
@@ -384,11 +432,14 @@ msgstr ""
 msgid "Do Not Center"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-settings.php:244, includes/settings/fields-advanced.php:11
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:244
+#: includes/settings/fields-advanced.php:11
 msgid "(default)"
 msgstr ""
 
-#: includes/settings/class-displayfeaturedimagegenesis-settings.php:249, includes/settings/class-displayfeaturedimagegenesis-settings.php:250, includes/settings/class-displayfeaturedimagegenesis-settings.php:251
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:249
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:250
+#: includes/settings/class-displayfeaturedimagegenesis-settings.php:251
 msgid "(HTML5 themes)"
 msgstr ""
 
@@ -465,7 +516,8 @@ msgstr ""
 msgid "Banner (default)"
 msgstr ""
 
-#: includes/settings/fields-main.php:32, includes/widgets/fields/author-gravatar.php:13
+#: includes/settings/fields-main.php:32
+#: includes/widgets/fields/author-gravatar.php:13
 msgid "Large"
 msgstr ""
 
@@ -585,15 +637,21 @@ msgstr ""
 msgid "Posts"
 msgstr ""
 
-#: includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:72, includes/widgets/fields/author-archive.php:9, includes/widgets/fields/author-description.php:14, includes/widgets/fields/author-gravatar.php:49, includes/widgets/fields/text.php:25
+#: includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:72
+#: includes/widgets/fields/author-archive.php:9
+#: includes/widgets/fields/author-description.php:14
+#: includes/widgets/fields/author-gravatar.php:49
+#: includes/widgets/fields/text.php:25
 msgid "None"
 msgstr ""
 
-#: includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:73, includes/widgets/fields/author-gravatar.php:50
+#: includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:73
+#: includes/widgets/fields/author-gravatar.php:50
 msgid "Left"
 msgstr ""
 
-#: includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:74, includes/widgets/fields/author-gravatar.php:51
+#: includes/widgets/class-displayfeaturedimagegenesis-widgets-form.php:74
+#: includes/widgets/fields/author-gravatar.php:51
 msgid "Right"
 msgstr ""
 
@@ -625,11 +683,14 @@ msgstr ""
 msgid "Displays user profile block with Gravatar"
 msgstr ""
 
-#: includes/widgets/displayfeaturedimagegenesis-author-widget.php:31, includes/widgets/fields/blocks.php:15
+#: includes/widgets/displayfeaturedimagegenesis-author-widget.php:31
+#: includes/widgets/fields/blocks.php:15
 msgid "Display Featured Author Profile"
 msgstr ""
 
-#: includes/widgets/displayfeaturedimagegenesis-author-widget.php:121, includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:136, includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:138
+#: includes/widgets/displayfeaturedimagegenesis-author-widget.php:121
+#: includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:136
+#: includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:138
 msgid "Title:"
 msgstr ""
 
@@ -637,7 +698,8 @@ msgstr ""
 msgid "Displays a post type archive with its featured image"
 msgstr ""
 
-#: includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:40, includes/widgets/fields/blocks.php:25
+#: includes/widgets/displayfeaturedimagegenesis-cpt-archive-widget.php:40
+#: includes/widgets/fields/blocks.php:25
 msgid "Display Featured Post Type Archive Image"
 msgstr ""
 
@@ -649,11 +711,13 @@ msgstr ""
 msgid "Displays a term with its featured image"
 msgstr ""
 
-#: includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:40, includes/widgets/fields/blocks.php:5
+#: includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:40
+#: includes/widgets/fields/blocks.php:5
 msgid "Display Featured Term Image"
 msgstr ""
 
-#: includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:150, includes/widgets/fields/blocks.php:8
+#: includes/widgets/displayfeaturedimagegenesis-taxonomy-widget.php:150
+#: includes/widgets/fields/blocks.php:8
 msgid "Term"
 msgstr ""
 
@@ -697,7 +761,8 @@ msgstr ""
 msgid "Author Bio (from profile)"
 msgstr ""
 
-#: includes/widgets/fields/author-description.php:16, includes/widgets/fields/text.php:27
+#: includes/widgets/fields/author-description.php:16
+#: includes/widgets/fields/text.php:27
 msgid "Custom Text (below)"
 msgstr ""
 
@@ -733,7 +798,8 @@ msgstr ""
 msgid "Show the user's featured image."
 msgstr ""
 
-#: includes/widgets/fields/author-image.php:18, includes/widgets/fields/image.php:18
+#: includes/widgets/fields/author-image.php:18
+#: includes/widgets/fields/image.php:18
 msgid "Image Size:"
 msgstr ""
 

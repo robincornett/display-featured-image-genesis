@@ -18,7 +18,7 @@ class Display_Featured_Image_Genesis_Common {
 	 * @var string
 	 * @since  1.4.3
 	 */
-	public $version = '3.2.2';
+	public $version = '3.2.3';
 
 	/**
 	 * @var $instance

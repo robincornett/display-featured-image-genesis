@@ -99,7 +99,7 @@ class Display_Featured_Image_Genesis_Helper extends DisplayFeaturedImageGenesisG
 	 * @since 2.5.0
 	 */
 	protected function get_active_tab() {
-		$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING );
+		$tab = filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_SPECIAL_CHARS );
 
 		return $tab ? $tab : 'main';
 	}

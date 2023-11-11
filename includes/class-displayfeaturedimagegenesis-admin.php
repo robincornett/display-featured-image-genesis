@@ -97,7 +97,6 @@ class Display_Featured_Image_Genesis_Admin {
 		$new_columns['featured_image'] = __( 'Image', 'display-featured-image-genesis' );
 
 		return array_merge( $new_columns, $columns );
-
 	}
 
 	/**
@@ -119,7 +118,7 @@ class Display_Featured_Image_Genesis_Admin {
 			return;
 		}
 
-		$taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_STRING );
+		$taxonomy = filter_input( INPUT_POST, 'taxonomy', FILTER_SANITIZE_SPECIAL_CHARS );
 		$taxonomy = ! is_null( $taxonomy ) ? $taxonomy : get_current_screen()->taxonomy;
 		$args     = array(
 			'image_id' => $image_id,
@@ -128,7 +127,6 @@ class Display_Featured_Image_Genesis_Admin {
 		);
 
 		echo wp_kses_post( $this->admin_featured_image( $args ) );
-
 	}
 
 	/**
@@ -156,7 +154,6 @@ class Display_Featured_Image_Genesis_Admin {
 		);
 
 		echo wp_kses_post( $this->admin_featured_image( $args ) );
-
 	}
 
 	/**
@@ -199,7 +196,6 @@ class Display_Featured_Image_Genesis_Admin {
 		);
 
 		return $this->admin_featured_image( $args );
-
 	}
 
 	/**

@@ -305,7 +305,7 @@ class Display_Featured_Image_Genesis {
 	 * @return boolean
 	 * @since 3.2.0
 	 */
-	private function update_settings( $new = array(), $old_setting ) {
-		return update_option( 'displayfeaturedimagegenesis', wp_parse_args( $new, $old_setting ) );
+	private function update_settings( $new_setting = array(), $old_setting = array() ) {
+		return update_option( 'displayfeaturedimagegenesis', wp_parse_args( $new_setting, $old_setting ) );
 	}
 }
